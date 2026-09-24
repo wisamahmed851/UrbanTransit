@@ -9,7 +9,10 @@ CONF_SRC="$(cd "$(dirname "$0")" && pwd)/conf"
 cp "$CONF_SRC/core-site.xml" "$CONF_SRC/hdfs-site.xml" "$HADOOP_CONF_DIR/"
 grep -q '^export JAVA_HOME=' "$HADOOP_CONF_DIR/hadoop-env.sh" \
     || echo "export JAVA_HOME=$JAVA_HOME" >> "$HADOOP_CONF_DIR/hadoop-env.sh"
-mkdir -p "$HDFS_DATA_DIR"/{namenode,datanode,tmp}
+# Daemons are launched over ssh and only see hadoop-env.sh, so the pid dir must be set here
+grep -q '^export HADOOP_PID_DIR=' "$HADOOP_CONF_DIR/hadoop-env.sh" \
+    || echo "export HADOOP_PID_DIR=$HADOOP_PID_DIR" >> "$HADOOP_CONF_DIR/hadoop-env.sh"
+mkdir -p "$HDFS_DATA_DIR"/{namenode,datanode,tmp,pids}
 
 # 2) Passwordless SSH to localhost (start-dfs.sh needs it)
 mkdir -p ~/.ssh && chmod 700 ~/.ssh

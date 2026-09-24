@@ -3,5 +3,6 @@
 set -euo pipefail
 source "$(dirname "$0")/env.sh"
 
+ensure_sshd
 stop-dfs.sh
 echo "HDFS stopped."
