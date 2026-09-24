@@ -1,0 +1,166 @@
+# UrbanTransit IQ - data-quality rules and cleaning actions (Phase 3)
+# ---------------------------------------------------------------------------
+# Every rule is GENERIC: it names a check type (implemented once in
+# spark_jobs/dq_rules.py), the table/columns it applies to, and thresholds.
+# Nothing here refers to a specific stop, route, vehicle or passenger ID, so the
+# same rules run unchanged on new data (new stops, unknown vehicles, new schedules).
+#
+# action (what clean_data.py does with rows the rule finds):
+#   correct    - replace the value using a deterministic derivation from other fields
+#                (never a guess); if the derivation is impossible the row falls back
+#                to `fallback` (flag or quarantine)
+#   flag       - keep the row, add the rule ID to the row's dq_flags column
+#   remove     - drop the row (only exact duplicates of a row that is kept)
+#   quarantine - move the row to the cleaning quarantine (cannot be trusted or fixed)
+# severity: critical | high | medium | low
+
+params:
+  timestamp_format: "yyyy-MM-dd HH:mm:ss"
+  capacity_violation_factor: 1.5        # max_load above 1.5 x design capacity is physically impossible
+  delay_valid_min_minutes: -60          # earlier than 1 h ahead of schedule is not a real delay record
+  delay_valid_max_minutes: 600          # more than 10 h late is not a real delay record
+  impossible_time_gap_hours: 12         # actual vs scheduled time further apart than this is impossible
+  route_distance_min_km: 0              # exclusive
+  route_distance_max_km: 300
+  timestamp_date_window_days: [-1, 2]   # event time must fall between service_date-1 and service_date+2
+  geo_bounds: {lat_min: 31.2, lat_max: 31.8, lon_min: 74.0, lon_max: 74.6}   # operating area (set per city)
+  sample_rows: 5                        # sample violating rows shown per rule in the report
+  minimum_volumes:                      # SRS minimums that must still hold after cleaning
+    apply_to_modes: [full]
+    tables: {tickets: 2000000, passenger_counts: 600000, delays: 300000, routes: 110, stops: 550, vehicles: 270, passengers: 55000}
+
+rules:
+  # ---- the 16 SRS defect types ------------------------------------------------
+  - {id: DQ01, defect_type: missing_ticket_records, table: passenger_counts, severity: medium,
+     check: count_vs_children, params: {count_column: card_taps, child_table: tickets, child_key: ticket_id, join_column: trip_id},
+     action: flag,
+     description: "Card validations counted on the vehicle (card_taps) exceed the ticket records stored for the trip",
+     rationale: "The missing ticket rows cannot be recreated (we do not know who tapped in or where), but the counted trip is real: flag the passenger_counts row so O-D analyses know tickets are incomplete for that trip."}
+  - {id: DQ02a, defect_type: missing_route_ids, table: tickets, severity: high,
+     check: required_value, params: {column: route_id},
+     action: correct, correction: {method: lookup, via_column: trip_id, lookup_table: trips, lookup_key: trip_id, lookup_value: route_id},
+     fallback: flag,
+     description: "Ticket without a route ID",
+     rationale: "Every ticket belongs to a trip and every trip has exactly one route, so the route can be looked up from the ticket's trip (deterministic, not a guess). If the trip is unknown or has no route, flag."}
+  - {id: DQ02b, defect_type: missing_route_ids, table: trips, severity: high,
+     check: required_value, params: {column: route_id},
+     action: correct, correction: {method: lookup, via_column: schedule_id, lookup_table: schedules, lookup_key: schedule_id, lookup_value: route_id},
+     fallback: flag,
+     description: "Trip without a route ID",
+     rationale: "A trip's schedule row belongs to exactly one route, so the route can be looked up from schedule_id. Otherwise flag."}
+  - {id: DQ03a, defect_type: invalid_stop_ids, table: tickets, severity: high,
+     check: foreign_key, params: {columns: [entry_stop_id, exit_stop_id], parent_table: stops, parent_key: stop_id},
+     action: quarantine,
+     description: "Ticket tap-in or tap-out stop does not exist in stops",
+     rationale: "Tickets are used for origin-destination analysis; an unknown tap-in/tap-out stop cannot be repaired, so the row is quarantined."}
+  - {id: DQ03b, defect_type: invalid_stop_ids, table: delays, severity: medium,
+     check: foreign_key, params: {columns: [stop_id], parent_table: stops, parent_key: stop_id},
+     action: flag,
+     description: "Delay recorded at a stop that does not exist in stops",
+     rationale: "The delay value itself is still valid for trip/route delay analysis; only the stop reference is unusable. Flag and keep."}
+  - {id: DQ04, defect_type: duplicate_tickets, table: tickets, severity: high,
+     check: duplicate_key, params: {},
+     action: remove,
+     description: "More than one row with the same ticket_id (duplicate transaction)",
+     rationale: "Exact copies of the same transaction would double-count revenue and ridership. Keep one copy, remove the rest; if the copies differ, the true version is unknown and all copies are quarantined."}
+  - {id: DQ05, defect_type: duplicate_trips, table: trips, severity: high,
+     check: duplicate_key, params: {},
+     action: remove,
+     description: "More than one row with the same trip_id",
+     rationale: "Same as DQ04 for trips: duplicate trip rows double-count service. Keep one identical copy; quarantine conflicting versions."}
+  - {id: DQ06, defect_type: negative_passenger_counts, table: passenger_counts, severity: critical,
+     check: non_negative, params: {columns: [boardings, alightings, max_load, denied_boardings, card_taps]},
+     action: quarantine,
+     description: "Negative passenger count",
+     rationale: "A negative count is impossible and the true value is unknown; quarantine rather than guess."}
+  - {id: DQ07, defect_type: invalid_timestamps, table: tickets, severity: high,
+     check: unparseable, params: {columns: [entry_time, exit_time]},
+     action: quarantine,
+     description: "Timestamp that cannot be parsed (row was quarantined at ingestion)",
+     rationale: "A tap-in time that cannot be parsed cannot be reconstructed; the row stays quarantined."}
+  - {id: DQ08a, defect_type: impossible_arrival_times, table: delays, severity: high,
+     check: time_gap, params: {column: actual_arrival, reference: scheduled_arrival},
+     action: quarantine,
+     description: "Actual arrival more than impossible_time_gap_hours away from the scheduled arrival",
+     rationale: "An arrival days or years away from the timetable is a corrupted record; the real time is unknown. Quarantine."}
+  - {id: DQ08b, defect_type: impossible_arrival_times, table: trips, severity: high,
+     check: time_gap, params: {column: actual_arrival, reference: scheduled_arrival},
+     action: quarantine,
+     description: "Trip actual arrival more than impossible_time_gap_hours away from the scheduled arrival",
+     rationale: "Same as DQ08a at trip level."}
+  - {id: DQ09a, defect_type: departure_before_arrival, table: delays, severity: medium,
+     check: time_order, params: {earlier: actual_arrival, later: actual_departure},
+     action: flag,
+     description: "Departure from the stop recorded before the arrival at it",
+     rationale: "The arrival (and the delay derived from it) is still usable; only the departure time is inconsistent. Flag and keep."}
+  - {id: DQ09b, defect_type: departure_before_arrival, table: trips, severity: high,
+     check: time_order, params: {earlier: actual_departure, later: actual_arrival},
+     action: quarantine,
+     description: "Trip arrives at the last stop before it departed from the first",
+     rationale: "A trip that arrives before it departs has no usable running time; quarantine."}
+  - {id: DQ10, defect_type: vehicle_capacity_violations, table: passenger_counts, severity: high,
+     check: capacity, params: {load_column: max_load, vehicle_column: vehicle_id},
+     action: quarantine,
+     description: "Peak load above capacity_violation_factor x the vehicle's design capacity",
+     rationale: "A load several times the vehicle capacity is a counter error; the true load is unknown. Quarantine."}
+  - {id: DQ11, defect_type: invalid_delay_values, table: delays, severity: medium,
+     check: value_range, params: {column: delay_minutes, min_param: delay_valid_min_minutes, max_param: delay_valid_max_minutes, include_unparseable: true},
+     action: correct, correction: {method: minutes_between, start: scheduled_arrival, end: actual_arrival},
+     fallback: quarantine,
+     description: "Delay value that is not numeric or outside the valid range",
+     rationale: "delay_minutes is redundant: it equals actual_arrival - scheduled_arrival. When both timestamps are valid and plausible the value is recomputed exactly; otherwise quarantine."}
+  - {id: DQ12, defect_type: missing_vehicle_assignments, table: trips, severity: medium,
+     check: required_value, params: {column: vehicle_id},
+     action: correct, correction: {method: lookup, via_column: trip_id, lookup_table: passenger_counts, lookup_key: trip_id, lookup_value: vehicle_id},
+     fallback: flag,
+     description: "Trip without a vehicle",
+     rationale: "The on-board passenger counter reports which vehicle ran the trip, so the vehicle can be taken from passenger_counts for the same trip. If there is no count record, flag."}
+  - {id: DQ13, defect_type: broken_stop_sequences, table: route_stops, severity: high,
+     check: sequence_integrity, params: {group_by: [route_id, direction], sequence_column: stop_sequence},
+     action: correct, correction: {method: resequence, order_by: distance_from_start_km},
+     description: "Stop sequence of a route direction is not exactly 1..n (gap or repeated number)",
+     rationale: "The order of stops is defined by their distance along the route, so sequence numbers are rebuilt 1..n in distance order. A gap is closed but the missing stop cannot be restored (noted in the log)."}
+  - {id: DQ14, defect_type: invalid_route_distances, table: routes, severity: medium,
+     check: value_range, params: {column: distance_km, min_param: route_distance_min_km, max_param: route_distance_max_km, min_exclusive: true},
+     action: correct, correction: {method: max_child_value, child_table: route_stops, child_key: route_id, child_value: distance_from_start_km, child_filter: "direction = 0"},
+     fallback: flag,
+     description: "Route distance not positive or implausibly large",
+     rationale: "A route's length equals the distance of its last stop in direction 0 (route_stops), so the distance is recomputed from there; if route_stops has no rows, flag."}
+  - {id: DQ15, defect_type: unknown_passengers, table: tickets, severity: medium,
+     check: foreign_key, params: {columns: [passenger_id], parent_table: passengers, parent_key: passenger_id},
+     action: flag,
+     description: "Ticket for a passenger ID that is not registered",
+     rationale: "The journey is real and still valid for route/stop demand and O-D; only passenger segmentation is impossible. Flag and keep."}
+  - {id: DQ16, defect_type: missing_trip_records, table: trips, severity: high,
+     check: missing_parent, params: {parent_key: trip_id, child_tables: [passenger_counts, tickets, delays, gps_events], child_column: trip_id},
+     action: flag,
+     description: "Trip IDs referenced by counts/tickets/delays/GPS but absent from trips (child rows are flagged)",
+     rationale: "The counts, tickets, delays and GPS pings of a missing trip are real observations; the trip record cannot be recreated. Flag the child rows so trip-level joins can exclude them."}
+
+  # ---- additional generic rules (readiness for unseen defects) -------------------
+  - {id: DQ17, defect_type: unknown_vehicle_ids, table: trips, severity: medium,
+     check: foreign_key, params: {columns: [vehicle_id], parent_table: vehicles, parent_key: vehicle_id},
+     action: flag,
+     description: "Trip operated by a vehicle not present in vehicles",
+     rationale: "The trip happened; the vehicle is simply not registered (e.g. a new bus). Flag so capacity-based metrics skip it."}
+  - {id: DQ18, defect_type: future_timestamps, table: tickets, severity: high,
+     check: timestamp_date_window, params: {column: entry_time, date_column: service_date},
+     action: quarantine,
+     description: "Tap-in time outside the timestamp_date_window_days around the service date",
+     rationale: "A tap-in far outside the service day cannot be trusted (clock error); quarantine."}
+  - {id: DQ19, defect_type: out_of_bounds_coordinates, table: stops, severity: medium,
+     check: geo_bounds, params: {lat: latitude, lon: longitude},
+     action: correct, correction: {method: swap_coordinates},
+     fallback: flag,
+     description: "Stop coordinates outside the operating area",
+     rationale: "Swapped latitude/longitude is a common entry error and swapping back is verifiable (the result must fall inside the operating area); anything else (e.g. 0,0) is flagged."}
+  - {id: DQ20, defect_type: negative_fares, table: tickets, severity: medium,
+     check: non_negative, params: {columns: [fare_amount]},
+     action: flag,
+     description: "Negative fare amount",
+     rationale: "A negative fare is an accounting error of unknown size; keep the journey for demand/O-D but flag it for revenue analysis."}
+  - {id: DQ21, defect_type: orphan_route_ids, table: trips, severity: medium,
+     check: foreign_key, params: {columns: [route_id], parent_table: routes, parent_key: route_id},
+     action: flag,
+     description: "Trip for a route ID not present in routes",
+     rationale: "The trip happened; the route is not in the route list (e.g. a route added later). Flag."}
