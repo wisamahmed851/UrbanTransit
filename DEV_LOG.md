@@ -84,3 +84,8 @@ model errors. Newest entries at the bottom. Command-level detail lives in
 | pandas / NumPy | 2.3.3 / 2.5.3 |
 | scikit-learn / XGBoost / statsmodels | 1.9.1 / 3.4.1 / 0.15.0 |
 | Flask | 3.1.3 |
+
+### Phase 0 completion (2026-09-24)
+Checklist run in full (repo checks on Windows, WSL checks in one session from a cold distro): **12/12 PASS**.
+Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 186.3 GB free.
+**Known quirk:** WSL powers the distro off shortly after the last `wsl.exe` session closes, which stops HDFS. Keep an Ubuntu terminal open while working, or restart HDFS with `hdfs_scripts/start_hdfs.sh`.
