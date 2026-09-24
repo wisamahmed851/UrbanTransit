@@ -156,6 +156,8 @@ Do not start Phase 1.
 2. `git init -b main`; created the 26 folders with `.gitkeep` (bash loop); wrote `.gitignore`.
 3. Commit `2199067` (structure).
 4. Wrote `.gitattributes`, `README.md`, `AI_USAGE.md`, `LICENSE`, `DEV_LOG.md`; updated this log.
+5. Commit `36db8aa` (docs).
+6. **Paused** before heavy installs: proposed WSL2 (Ubuntu 24.04) for Hadoop/HDFS + Spark, asked the user for OK (Rule 2), a GitHub remote URL, and MySQL placement.
 
 **Files changed:** *(in progress)* `.gitignore`, `.gitattributes`, `*/.gitkeep`, `README.md`, `AI_USAGE.md`, `LICENSE`, `DEV_LOG.md`, `documentation/COMMAND_LOG.md`
 
