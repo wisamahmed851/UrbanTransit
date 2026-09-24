@@ -1,0 +1,50 @@
+{
+  "delays/delays_2025-10.csv": {
+    "bytes": 326321,
+    "sha256": "4ae78381b2d444f1d15451f30db5bb08a85520bd82a5aaa299595098b4ffc0a3"
+  },
+  "gps_events/gps_events_2025-10-12.jsonl": {
+    "bytes": 2845492,
+    "sha256": "c544c820d7e1c523873300b754f4fe901cfe83524b0ed8d1dbe9ed7fb308a87e"
+  },
+  "passenger_counts/passenger_counts_2025-10.csv": {
+    "bytes": 182779,
+    "sha256": "b4327e74c114c5aa41882bf5af01979cecfc76941835621f41ba9c4136609eb1"
+  },
+  "passengers/passengers.csv": {
+    "bytes": 98364,
+    "sha256": "cd974ea5ced8945c9a67e2990f826c272343f3d0dc051939f052c2bba300f859"
+  },
+  "route_stops/route_stops.csv": {
+    "bytes": 7649,
+    "sha256": "5c52e304be4695aecbdbc76cdf57004c80742d3ab7a77fe1bb759af75cad98d5"
+  },
+  "routes/routes.csv": {
+    "bytes": 848,
+    "sha256": "de8e77ea261bfba7077075e710bd3c749be985f710fb0c60b1e350ae0aa632ec"
+  },
+  "schedules/schedules.csv": {
+    "bytes": 24193,
+    "sha256": "44c612f51c15d8f8df5bc332bdd1a9ea0e2d0c8346e4919ab8c67ee77c0e6496"
+  },
+  "service_calendar/service_calendar.json": {
+    "bytes": 1124,
+    "sha256": "d7109b152cfc344781e535b2fcce5bf72eb4478c9a9d49fb8d31c7729d9d3cde"
+  },
+  "stops/stops.csv": {
+    "bytes": 7222,
+    "sha256": "780e85cfd0f0a37f199923d5274fa21e68727c50014d0f25efc4f8a8c6d1a8c3"
+  },
+  "tickets/tickets_2025-10.csv": {
+    "bytes": 1137027,
+    "sha256": "cddc45454aada38f4a4bb77c6c290303c4c03776eb656ba4d598e0feed22a823"
+  },
+  "trips/trips_2025-10.csv": {
+    "bytes": 527695,
+    "sha256": "f60fc53f171c8e9d252c70ffd92bcbc215fe9e1240f7e3a08acb5c8e1b02898c"
+  },
+  "vehicles/vehicles.csv": {
+    "bytes": 5148,
+    "sha256": "d5c669057ffa51cf04013ab80c06d2c17a143ba9d10c07758d36ea26340a2ec9"
+  }
+}

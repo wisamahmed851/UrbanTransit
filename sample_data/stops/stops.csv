@@ -1,0 +1,108 @@
+stop_id,stop_name,latitude,longitude,zone,stop_type,has_shelter,opened_date
+S0004,Anarkali,31.568,74.31,A,hub,true,2005-01-01
+S0005,Mall Road GPO,31.5655,74.317,A,hub,true,2005-01-01
+S0006,Liberty Market,31.51,74.345,A,hub,true,2005-01-01
+S0015,Airport,31.521,74.403,B,hub,true,2005-01-01
+S0017,Shahdara,31.62,74.285,B,hub,true,2005-01-01
+S0019,Wapda Town,31.435,74.265,C,hub,true,2005-01-01
+S0025,Gulberg Main Boulevard,31.52,74.35,A,hub,true,2005-01-01
+S0027,Iqbal Town,31.513,74.286,B,hub,true,2005-01-01
+S0028,Badami Bagh,31.593,74.324,B,hub,true,2005-01-01
+S0029,DHA School,31.49297,74.437749,B,terminal,true,2018-05-11
+S0030,Airport Masjid,31.49892,74.430069,B,regular,false,2018-05-11
+S0031,Airport Bazaar,31.503044,74.420585,B,regular,true,2018-05-11
+S0032,Airport Chowk,31.509079,74.412126,B,regular,false,2018-05-11
+S0033,Airport Block,31.514154,74.402621,B,regular,false,2018-05-11
+S0034,Cantt Road,31.51995,74.392026,B,regular,true,2018-05-11
+S0035,Cantt Mor,31.524074,74.382958,A,regular,false,2018-05-11
+S0036,Cantt Park,31.531201,74.373757,A,regular,false,2018-05-11
+S0037,Gulberg Park,31.5357,74.365794,A,regular,true,2018-05-11
+S0038,Gulberg Gate,31.539892,74.359425,A,regular,true,2018-05-11
+S0039,Gulberg Adda,31.54624,74.350141,A,regular,true,2018-05-11
+S0040,Mall Stop,31.5519,74.340376,A,regular,true,2018-05-11
+S0041,Mall Plaza,31.555255,74.332802,A,regular,true,2018-05-11
+S0042,Mall Road GPO Gate,31.560956,74.324697,A,regular,true,2018-05-11
+S0043,Anarkali Chowk,31.570375,74.29877,A,regular,true,2018-05-11
+S0044,Data School,31.573051,74.287618,B,regular,true,2018-05-11
+S0045,Data Bridge,31.5751,74.279272,B,regular,true,2018-05-11
+S0046,Data Stop,31.578119,74.270759,B,regular,false,2018-05-11
+S0047,Data Bazaar,31.580856,74.259423,B,regular,false,2018-05-11
+S0048,Data Hospital,31.582569,74.250434,B,regular,false,2018-05-11
+S0049,Shahdara Stop,31.585124,74.239345,B,regular,true,2018-05-11
+S0050,Shahdara Masjid,31.587709,74.232572,B,terminal,true,2018-05-11
+S0051,Shahdara Block,31.627832,74.311105,B,terminal,true,2022-02-22
+S0052,Shahdara Chowk,31.621577,74.311845,B,regular,true,2022-02-22
+S0053,Minar-e-Pakistan Chowk,31.615689,74.313319,B,regular,true,2022-02-22
+S0054,Minar-e-Pakistan School,31.610455,74.31271,B,regular,true,2022-02-22
+S0055,Minar-e-Pakistan Block,31.602444,74.312649,B,regular,false,2022-02-22
+S0056,Minar-e-Pakistan Road,31.594399,74.315422,B,regular,true,2022-02-22
+S0057,Minar-e-Pakistan Colony,31.587743,74.315669,A,regular,true,2022-02-22
+S0058,Data Darbar Market,31.580519,74.316522,A,regular,true,2022-02-22
+S0059,Mall Road GPO Masjid,31.572436,74.317248,A,terminal,true,2022-02-22
+S0060,Mall Road GPO Hospital,31.559278,74.320052,A,regular,true,2022-02-22
+S0061,Mall School,31.553868,74.323463,A,regular,false,2022-02-22
+S0062,Mall Road,31.547479,74.325088,A,regular,false,2022-02-22
+S0063,Mall Hospital,31.5417,74.329418,A,regular,false,2022-02-22
+S0064,Gulberg Bridge,31.534386,74.333219,A,regular,true,2022-02-22
+S0065,Gulberg Bazaar,31.528121,74.335912,A,regular,false,2022-02-22
+S0066,Gulberg Main Boulevard Colony,31.523619,74.33876,A,regular,false,2022-02-22
+S0067,Liberty Market Mor,31.517028,74.341252,A,regular,false,2022-02-22
+S0068,Iqbal Stop,31.504492,74.248326,B,terminal,true,2024-04-09
+S0069,Iqbal Road,31.506197,74.257631,B,regular,false,2024-04-09
+S0070,Iqbal Masjid,31.507957,74.264671,B,regular,false,2024-04-09
+S0071,Iqbal Colony,31.509928,74.272498,B,regular,true,2024-04-09
+S0072,Iqbal Town Gate,31.511483,74.278861,B,regular,true,2024-04-09
+S0073,Iqbal Town Road,31.513941,74.291916,B,regular,false,2024-04-09
+S0074,Iqbal Town Chowk,31.514634,74.297821,B,regular,false,2024-04-09
+S0075,Iqbal Bridge,31.514256,74.305121,B,regular,false,2024-04-09
+S0076,Garden Block,31.516329,74.314734,A,regular,false,2024-04-09
+S0077,Gaddafi Stadium Bazaar,31.517745,74.323436,A,regular,false,2024-04-09
+S0078,Gaddafi Stadium Plaza,31.518724,74.332743,A,regular,true,2024-04-09
+S0079,Data Darbar Chowk,31.575795,74.312928,A,regular,false,2012-03-22
+S0080,Data Darbar Mor,31.581197,74.308729,A,regular,false,2012-03-22
+S0081,Minar-e-Pakistan Gate,31.586548,74.305217,B,regular,true,2012-03-22
+S0082,Minar-e-Pakistan Plaza,31.592043,74.301526,B,regular,true,2012-03-22
+S0083,Minar-e-Pakistan Bridge,31.597285,74.299446,B,regular,true,2012-03-22
+S0084,Minar-e-Pakistan Park,31.602745,74.296351,B,regular,false,2012-03-22
+S0085,Shahdara Colony,31.607866,74.291956,B,regular,false,2012-03-22
+S0086,Shahdara Mor,31.612771,74.288473,B,regular,true,2012-03-22
+S0087,Iqbal Bazaar,31.51943,74.306635,A,terminal,true,2014-03-22
+S0088,Gaddafi Stadium Chowk,31.519979,74.329081,A,regular,true,2014-03-22
+S0089,Gulberg Main Boulevard Plaza,31.520758,74.356537,A,regular,false,2014-03-22
+S0090,Gulberg Market,31.5202,74.364148,A,regular,true,2014-03-22
+S0091,Gulberg Chowk,31.520098,74.369614,A,regular,true,2014-03-22
+S0092,Cantt Bridge,31.520132,74.37698,A,regular,true,2014-03-22
+S0093,Airport Hospital,31.520705,74.396227,B,regular,true,2014-03-22
+S0094,Badami School,31.606309,74.349987,B,terminal,true,2024-12-19
+S0095,Badami Colony,31.602017,74.349806,B,regular,false,2024-12-19
+S0096,Railway Stop,31.595887,74.351197,B,regular,false,2024-12-19
+S0097,Railway Market,31.589418,74.350127,A,regular,false,2024-12-19
+S0098,Railway Adda,31.583571,74.349534,A,regular,false,2024-12-19
+S0099,Railway Chowk,31.579175,74.350361,A,regular,true,2024-12-19
+S0100,Railway Block,31.573303,74.350191,A,regular,true,2024-12-19
+S0101,Railway Colony,31.569093,74.34909,A,regular,true,2024-12-19
+S0102,Railway Gate,31.563252,74.34974,A,regular,true,2024-12-19
+S0103,Railway Mor,31.556948,74.349514,A,regular,false,2024-12-19
+S0104,Railway Park,31.550354,74.35,A,regular,true,2024-12-19
+S0105,Gulberg School,31.540127,74.349705,A,regular,false,2024-12-19
+S0106,Gulberg Block,31.534819,74.349091,A,regular,true,2024-12-19
+S0107,Gulberg Main Boulevard Hospital,31.528579,74.350124,A,regular,true,2024-12-19
+S0108,Gulberg Main Boulevard Mor,31.523284,74.351042,A,regular,false,2024-12-19
+S0109,Badami Road,31.639143,74.353331,B,terminal,true,2014-10-09
+S0110,Badami Adda,31.635292,74.351658,B,regular,false,2014-10-09
+S0111,Badami Park,31.630701,74.348159,B,regular,true,2014-10-09
+S0112,Badami Hospital,31.625276,74.344905,B,regular,true,2014-10-09
+S0113,Badami Stop,31.622479,74.341205,B,regular,false,2014-10-09
+S0114,Badami Bridge,31.618152,74.340145,B,regular,true,2014-10-09
+S0115,Badami Block,31.614346,74.338584,B,regular,false,2014-10-09
+S0116,Badami Bazaar,31.609125,74.335046,B,regular,false,2014-10-09
+S0117,Badami Market,31.605298,74.332673,B,regular,false,2014-10-09
+S0118,Badami Bagh Block,31.600829,74.327725,B,regular,false,2014-10-09
+S0119,Badami Bagh Road,31.596742,74.325944,B,regular,false,2014-10-09
+S0120,Johar Stop,31.462753,74.287258,B,terminal,true,2016-10-10
+S0121,Johar Block,31.458742,74.283085,B,regular,false,2016-10-10
+S0122,Johar Park,31.455778,74.280405,B,regular,false,2016-10-10
+S0123,Expo Market,31.451251,74.278765,C,regular,false,2016-10-10
+S0124,Wapda Bazaar,31.448412,74.274879,C,regular,false,2016-10-10
+S0125,Wapda Adda,31.444187,74.273235,C,regular,false,2016-10-10
+S0126,Wapda Town Block,31.439983,74.268452,C,regular,false,2016-10-10

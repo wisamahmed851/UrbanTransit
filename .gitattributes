@@ -5,3 +5,7 @@
 *.xml text eol=lf
 *.parquet binary
 *.png binary
+*.csv text eol=lf
+*.jsonl text eol=lf
+*.json text eol=lf
+*.gz binary

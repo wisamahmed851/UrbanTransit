@@ -1,0 +1,43 @@
+{
+  "mode": "sample",
+  "seed": 42,
+  "network_seed": 2026,
+  "start_date": "2025-10-06",
+  "end_date": "2025-10-12",
+  "output_dir": "raw_data/sample",
+  "row_counts": {
+    "stops": 107,
+    "routes": 8,
+    "route_stops": 237,
+    "vehicles": 67,
+    "passengers": 1500,
+    "schedules": 320,
+    "service_calendar": 4,
+    "trips": 3396,
+    "passenger_counts": 2778,
+    "tickets": 8386,
+    "delays": 2160,
+    "gps_events": 12324
+  },
+  "files": 12,
+  "total_bytes": 5163862,
+  "elapsed_seconds": 2.1,
+  "defect_types_injected": [
+    "broken_stop_sequences",
+    "departure_before_arrival",
+    "duplicate_tickets",
+    "duplicate_trips",
+    "impossible_arrival_times",
+    "invalid_delay_values",
+    "invalid_route_distances",
+    "invalid_stop_ids",
+    "invalid_timestamps",
+    "missing_route_ids",
+    "missing_ticket_records",
+    "missing_trip_records",
+    "missing_vehicle_assignments",
+    "negative_passenger_counts",
+    "unknown_passengers",
+    "vehicle_capacity_violations"
+  ]
+}

@@ -1,0 +1,9 @@
+route_id,route_code,route_name,route_type,origin_stop_id,destination_stop_id,distance_km,base_fare,fare_per_km,launch_date,status
+R001,BRT1,DHA School - Shahdara Masjid,brt,S0029,S0050,26.93,30.0,2.0,2023-05-13,active
+R002,T01,Shahdara Block - Liberty Market,trunk,S0051,S0006,16.5,25.0,1.8,2016-11-08,active
+R003,T02,Iqbal Stop - Gulberg Main Boulevard,trunk,S0068,S0025,11.9,25.0,1.8,2020-10-24,active
+R004,L01,Mall Road GPO Masjid - Shahdara,local,S0059,S0017,-7.39,20.0,1.5,2018-03-24,active
+R005,L02,Iqbal Bazaar - Airport,local,S0087,S0015,11.85,20.0,1.5,2020-09-26,active
+R006,L03,Badami School - Gulberg Main Boulevard,local,S0094,S0025,11.61,20.0,1.5,2019-01-31,active
+R007,F01,Badami Road - Badami Bagh,feeder,S0109,S0028,7.11,15.0,1.2,2013-10-30,active
+R008,F02,Johar Stop - Wapda Town,feeder,S0120,S0019,4.58,15.0,1.2,2021-12-04,active

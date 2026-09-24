@@ -1,0 +1,52 @@
+[
+  {
+    "service_id": "WKDY_AUT25",
+    "service_name": "Weekday autumn 2025",
+    "day_type": "weekday",
+    "timetable_period": "autumn_2025",
+    "days_of_week": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "start_date": "2025-09-01",
+    "end_date": "2025-12-31",
+    "exceptions": []
+  },
+  {
+    "service_id": "SAT_AUT25",
+    "service_name": "Saturday autumn 2025",
+    "day_type": "saturday",
+    "timetable_period": "autumn_2025",
+    "days_of_week": [
+      "sat"
+    ],
+    "start_date": "2025-09-01",
+    "end_date": "2025-12-31",
+    "exceptions": []
+  },
+  {
+    "service_id": "SUN_AUT25",
+    "service_name": "Sunday autumn 2025",
+    "day_type": "sunday",
+    "timetable_period": "autumn_2025",
+    "days_of_week": [
+      "sun"
+    ],
+    "start_date": "2025-09-01",
+    "end_date": "2025-12-31",
+    "exceptions": []
+  },
+  {
+    "service_id": "HOL",
+    "service_name": "Public holiday service",
+    "day_type": "holiday",
+    "timetable_period": "all_year",
+    "days_of_week": [],
+    "start_date": "2025-10-06",
+    "end_date": "2025-10-12",
+    "exceptions": []
+  }
+]
