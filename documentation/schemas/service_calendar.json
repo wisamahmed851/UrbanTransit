@@ -1,0 +1,18 @@
+{
+  "table": "service_calendar",
+  "description": "Service calendars: which days a timetable runs, plus holiday exceptions. Stored as one JSON array (nested exceptions).",
+  "file_format": "json",
+  "file_layout": "service_calendar/service_calendar.json",
+  "primary_key": ["service_id"],
+  "foreign_keys": [],
+  "columns": [
+    {"name": "service_id", "type": "string", "nullable": false, "description": "Service ID, e.g. WKDY_AUT25"},
+    {"name": "service_name", "type": "string", "nullable": false, "description": "Readable name"},
+    {"name": "day_type", "type": "string", "nullable": false, "description": "weekday | saturday | sunday | holiday | ramadan_weekday"},
+    {"name": "timetable_period", "type": "string", "nullable": false, "description": "autumn_2025 | winter_spring_2026 | summer_2026 | all_year | ramadan_2026 | autumn_2026"},
+    {"name": "days_of_week", "type": "array<string>", "nullable": false, "description": "Days the service normally runs, e.g. [\"mon\",\"tue\"]"},
+    {"name": "start_date", "type": "date", "nullable": false, "description": "First valid date"},
+    {"name": "end_date", "type": "date", "nullable": false, "description": "Last valid date"},
+    {"name": "exceptions", "type": "array<struct<date:date,exception_type:string,reason:string>>", "nullable": false, "description": "Dates where the service is removed or added (public holidays, Ramadan overlay)"}
+  ]
+}

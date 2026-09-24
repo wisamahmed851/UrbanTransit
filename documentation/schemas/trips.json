@@ -1,0 +1,31 @@
+{
+  "table": "trips",
+  "description": "One row per planned vehicle journey on a date: vehicle assignment and scheduled vs actual departure/arrival at the terminals. Split by month.",
+  "file_format": "csv",
+  "file_layout": "trips/trips_YYYY-MM.csv",
+  "primary_key": ["trip_id"],
+  "foreign_keys": [
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["service_id"], "references": {"table": "service_calendar", "columns": ["service_id"]}},
+    {"columns": ["schedule_id"], "references": {"table": "schedules", "columns": ["schedule_id"]}},
+    {"columns": ["vehicle_id"], "references": {"table": "vehicles", "columns": ["vehicle_id"]}},
+    {"columns": ["original_vehicle_id"], "references": {"table": "vehicles", "columns": ["vehicle_id"]}}
+  ],
+  "columns": [
+    {"name": "trip_id", "type": "string", "nullable": false, "description": "Trip ID, e.g. T2509000123 (yymm + running number)"},
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route (empty only if corrupted)"},
+    {"name": "direction", "type": "integer", "nullable": false, "description": "0 or 1"},
+    {"name": "service_date", "type": "date", "nullable": false, "description": "Operating date"},
+    {"name": "service_id", "type": "string", "nullable": false, "description": "Service calendar in force"},
+    {"name": "schedule_id", "type": "string", "nullable": false, "description": "Timetable row that produced this trip"},
+    {"name": "vehicle_id", "type": "string", "nullable": true, "description": "Vehicle that operated (or was assigned to) the trip"},
+    {"name": "original_vehicle_id", "type": "string", "nullable": true, "description": "Set when the vehicle was changed (breakdown swap): the vehicle originally assigned"},
+    {"name": "scheduled_departure", "type": "timestamp", "nullable": false, "description": "Planned departure from the first stop"},
+    {"name": "scheduled_arrival", "type": "timestamp", "nullable": false, "description": "Planned arrival at the last stop"},
+    {"name": "actual_departure", "type": "timestamp", "nullable": true, "description": "Actual departure (null if cancelled)"},
+    {"name": "actual_arrival", "type": "timestamp", "nullable": true, "description": "Actual arrival (null if cancelled)"},
+    {"name": "trip_status", "type": "string", "nullable": false, "description": "completed | cancelled"},
+    {"name": "trip_type", "type": "string", "nullable": false, "description": "regular | event_extra"},
+    {"name": "cancellation_reason", "type": "string", "nullable": true, "description": "Reason when cancelled"}
+  ]
+}

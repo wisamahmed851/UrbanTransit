@@ -1,0 +1,25 @@
+{
+  "table": "gps_events",
+  "description": "Simulated vehicle positions (AVL pings) at stop arrivals/departures and mid-segment, for a 7-day sample window. JSON Lines, one file per day.",
+  "file_format": "jsonl",
+  "file_layout": "gps_events/gps_events_YYYY-MM-DD.jsonl",
+  "primary_key": ["event_id"],
+  "foreign_keys": [
+    {"columns": ["vehicle_id"], "references": {"table": "vehicles", "columns": ["vehicle_id"]}},
+    {"columns": ["trip_id"], "references": {"table": "trips", "columns": ["trip_id"]}},
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "event_id", "type": "string", "nullable": false, "description": "Event ID, e.g. G251110000000123"},
+    {"name": "vehicle_id", "type": "string", "nullable": false, "description": "Vehicle"},
+    {"name": "trip_id", "type": "string", "nullable": false, "description": "Trip being operated"},
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route"},
+    {"name": "stop_id", "type": "string", "nullable": true, "description": "Stop for stop_arrival/stop_departure events, null in transit"},
+    {"name": "event_time", "type": "timestamp", "nullable": false, "description": "Ping time"},
+    {"name": "event_type", "type": "string", "nullable": false, "description": "stop_arrival | stop_departure | in_transit"},
+    {"name": "latitude", "type": "double", "nullable": false, "description": "Latitude with GPS noise"},
+    {"name": "longitude", "type": "double", "nullable": false, "description": "Longitude with GPS noise"},
+    {"name": "speed_kmh", "type": "double", "nullable": false, "description": "Instantaneous speed"}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "table": "stops",
+  "description": "Physical bus stops and stations with their locations. Reference (dimension) table.",
+  "file_format": "csv",
+  "file_layout": "stops/stops.csv",
+  "primary_key": ["stop_id"],
+  "foreign_keys": [],
+  "columns": [
+    {"name": "stop_id", "type": "string", "nullable": false, "description": "Stop ID, e.g. S0001"},
+    {"name": "stop_name", "type": "string", "nullable": false, "description": "Human-readable stop name"},
+    {"name": "latitude", "type": "double", "nullable": false, "description": "WGS84 latitude (degrees)"},
+    {"name": "longitude", "type": "double", "nullable": false, "description": "WGS84 longitude (degrees)"},
+    {"name": "zone", "type": "string", "nullable": false, "description": "Fare zone A (centre), B or C (outer) by distance from the city centre"},
+    {"name": "stop_type", "type": "string", "nullable": false, "description": "hub | terminal | regular"},
+    {"name": "has_shelter", "type": "boolean", "nullable": false, "description": "Whether the stop has a passenger shelter"},
+    {"name": "opened_date", "type": "date", "nullable": false, "description": "Date the stop entered service (mid-year for new stops)"}
+  ]
+}

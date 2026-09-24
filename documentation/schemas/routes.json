@@ -1,0 +1,24 @@
+{
+  "table": "routes",
+  "description": "Bus routes with length, fare rules and launch date. Reference table.",
+  "file_format": "csv",
+  "file_layout": "routes/routes.csv",
+  "primary_key": ["route_id"],
+  "foreign_keys": [
+    {"columns": ["origin_stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}},
+    {"columns": ["destination_stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route ID, e.g. R001"},
+    {"name": "route_code", "type": "string", "nullable": false, "description": "Public route number shown on the bus, e.g. BRT1, T12, L34, F07"},
+    {"name": "route_name", "type": "string", "nullable": false, "description": "Origin - destination name"},
+    {"name": "route_type", "type": "string", "nullable": false, "description": "brt | trunk | local | feeder"},
+    {"name": "origin_stop_id", "type": "string", "nullable": false, "description": "First stop in direction 0"},
+    {"name": "destination_stop_id", "type": "string", "nullable": false, "description": "Last stop in direction 0"},
+    {"name": "distance_km", "type": "double", "nullable": false, "description": "One-way route length in km (road distance)"},
+    {"name": "base_fare", "type": "double", "nullable": false, "description": "Boarding fare in PKR"},
+    {"name": "fare_per_km", "type": "double", "nullable": false, "description": "Distance-based fare component in PKR per km"},
+    {"name": "launch_date", "type": "date", "nullable": false, "description": "Date the route started service (mid-year for new routes)"},
+    {"name": "status", "type": "string", "nullable": false, "description": "active"}
+  ]
+}

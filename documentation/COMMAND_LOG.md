@@ -365,3 +365,182 @@ Continue Phase 0 from CMD-004 where you left off.
 **Problems and fixes:** see steps 1, 8, 12, 17–21, 23 and 26 (no default user or wrong Ubuntu version → fresh 24.04 install; systemd user session → linger; sshd socket activation; `/tmp` wiped by the WSL idle power-off and cold boot → `~/spark_tmp` and pid dir; ssh cold-boot race → retries; pyspark piped stdin → `-i`; own `pkill` and log-script mistakes; pandas 3 → 2.3.3).
 
 **Git commit:** `6eccc58` feat(hdfs): add pseudo-distributed Hadoop config and one-time setup script; `ed62af9` docs(readme): add WSL2 installation and execution instructions; `7f4aca3` fix(spark): use ~/spark_tmp as spark.local.dir instead of /tmp; `84cf17d` fix(hdfs): keep pid files out of /tmp and retry ssh on cold boot; `ab64675` build: pin pandas 2.3.3 for PySpark 4.2 compatibility; `1a05822` docs: log CMD-005 installs, Spark/HDFS failures and fixes, final versions; `1bd2b99` docs: close Phase 0 logs and checklist; plus the follow-up `docs: complete Phase 0 command log entries and AI usage row`.
+
+
+---
+
+## CMD-006 | 2026-09-24 15:40 (UTC+05:00) | Phase 1 + Phase 2
+**My command (verbatim):**
+
+<details>
+<summary>Full Phase 1 + Phase 2 instruction (click to expand)</summary>
+
+```text
+Phase 0 is approved. Now do PHASE 1 and PHASE 2 together, in order, with a gate
+between them. Same rules as before still apply:
+- Log this message verbatim as the next CMD entry in documentation/COMMAND_LOG.md
+  and log every command I give from now on.
+- Small, meaningful commits, pushed to GitHub. Update DEV_LOG.md (problems,
+  failures, fixes) and AI_USAGE.md (files affected, modifications, testing).
+- Everything on D:. Before generating or downloading anything large, state the
+  expected size and location. Never put big data in Git (only sample_data/).
+- Run start_hdfs.sh and check HDFS status before any Spark or HDFS work.
+- Never invent numbers. All stats and checks must come from real runs.
+- Code must be readable: docstrings and clear comments, because evaluators
+  will ask me to explain any function. Also write short "how it works"
+  explainers in documentation/. I know Laravel and NestJS but am new to
+  Python and Spark, so where natural, explain concepts with Laravel/NestJS
+  analogies (for example an explicit Spark schema is like a migration or
+  entity definition).
+
+======================================================
+PHASE 1: DATA DESIGN AND GENERATOR
+======================================================
+Goal: our own large, realistic, interconnected public transport dataset.
+Downloading a ready-made dataset is not allowed.
+
+1. Schema design (do this first and commit it)
+   - 12 tables: Passengers, Tickets, Routes, Stops, Route_Stops, Trips,
+     Schedules, Vehicles, Passenger_Counts, Delays, GPS_Events, Service_Calendar
+   - IDs: Passenger ID, Ticket ID, Route ID, Trip ID, Vehicle ID, Stop ID, Service ID
+   - Cover everything in the SRS dataset list: ticketing transactions,
+     entries/exits, scheduled vs actual arrival/departure, vehicle assignment
+     and capacity, passenger counts (boarding, alighting, occupancy), delay
+     records with reasons, route distance, fares, service calendars, stop
+     locations (lat/lon), GPS or simulated movement
+   - Write: documentation/data_dictionary.md, documentation/erd.md (Mermaid),
+     and machine-readable schemas with primary/foreign key definitions in
+     documentation/schemas/
+   - Design principle: simulate first, derive second. Simulate trips and
+     passenger movements once, then derive Tickets, Passenger_Counts, Delays
+     and GPS_Events from that same simulation (with realistic noise), so the
+     tables agree with each other.
+
+2. Volumes (generate with a safety margin, since cleaning will remove rows)
+   - Tickets >= 2.4M (must still be >= 2M after removing duplicates)
+   - Passenger_Counts (trip-level passenger records) >= 600K
+   - Delays >= 300K
+   - Routes >= 110, Stops >= 550, Vehicles >= 270, Passengers >= 55,000
+   - At least 12 months of history, multiple service calendars and schedules
+   - GPS_Events: a manageable simulated sample, size your choice, but say why
+
+3. Realism (all required)
+   - Peak-hour demand, weekday/weekend differences, seasonal demand, holidays
+   - Route direction differences, low-demand and overcrowded services
+   - Delays that correlate with load, time of day and stops (bottleneck stops)
+   - Irregular headways, vehicle bunching, trip cancellations, early arrivals,
+     vehicle changes
+   - Special events and passenger spikes
+   - New routes, new stops and new schedules appearing mid-year
+
+4. Injected dirty data (must be deliberate and controlled)
+   Inject the SRS quality problems: missing ticket records, missing route IDs,
+   invalid stop IDs, duplicate tickets, duplicate trips, negative passenger
+   counts, invalid timestamps, impossible arrival times, departure before
+   arrival, vehicle capacity violations, invalid delay values, missing vehicle
+   assignments, broken stop sequences, invalid route distances, unknown
+   passengers, missing trip records. Use small, configurable percentages.
+   Also write an injection manifest (which issue types, how many rows, which
+   tables) to a SEPARATE file outside the dataset, so Phase 3 can check that
+   the quality checks find what was injected.
+
+5. Generator engineering
+   - Scripts in data_generator/, config-driven, deterministic (seed), chunked
+     so memory stays well under the 8 GB WSL limit, with progress logging
+   - Modes: `full` (main dataset), `sample` (small, for sample_data/, safe to
+     commit), and `hidden_like` (different seed, new routes/stops/schedules,
+     unknown vehicles, delay spikes, new defects) for hidden-data readiness later
+   - Output raw files to raw_data/ (gitignored). Use several formats: CSV for
+     most tables, JSON Lines for GPS_Events, JSON for Service_Calendar. Split
+     large tables into multiple files (for example Tickets and Delays by
+     month) so multi-file ingestion is meaningful. If writing to /mnt/d is too
+     slow, generate inside WSL and copy, and log the decision.
+
+6. Phase 1 documentation and verification
+   - documentation/dataset_generation_methodology.md
+   - documentation/dataset_statistics.md (real numbers from the generated data)
+   - data_generator/validate_dataset.py: checks volumes against the minimums,
+     primary key uniqueness, foreign key integrity (allowing for the injected
+     defects), date range >= 12 months, and that the injected issue counts
+     match the manifest
+   - Commit sample data to sample_data/
+
+PHASE 1 CHECKLIST (print PASS/FAIL with real output):
+[ ] 12 tables designed; data dictionary, ERD and schemas with PK/FK exist
+[ ] Generator runs in full, sample and hidden_like modes
+[ ] Every volume minimum met (show the actual counts)
+[ ] 12+ months of data with seasonal and weekday/weekend patterns (show evidence)
+[ ] All required realism features present (say how each is produced)
+[ ] All 16 defect types injected, with the manifest
+[ ] validate_dataset.py passes
+[ ] sample_data/ committed, no large files in Git
+[ ] Deterministic: the same seed gives the same output (show a check)
+
+GATE: If any Phase 1 item fails, fix it or stop and tell me. Only continue to
+Phase 2 when Phase 1 is fully PASS.
+
+======================================================
+PHASE 2: STORAGE AND INGESTION
+======================================================
+Goal: raw data in HDFS, ingested with PySpark, with Parquet output.
+
+1. HDFS
+   - hdfs_scripts/: create the layout (for example /urbantransit/raw/<table>/,
+     /urbantransit/parquet/, /urbantransit/quarantine/), upload the raw data,
+     list, and verify counts and sizes
+   - Use the formats: CSV, JSON and Parquet in HDFS
+
+2. PySpark ingestion (spark_jobs/)
+   - A central schemas module: an explicit StructType per table, matching
+     documentation/schemas/
+   - Multiple-file ingestion (all monthly files of a table, plus multiple tables)
+   - Explicit schema AND schema inference: a script that infers schemas,
+     compares them with the explicit ones, and documents the differences
+     (type mistakes inferred by Spark)
+   - Data-type validation: rows that fail type parsing must NOT be silently
+     dropped. Keep them (for example via PERMISSIVE mode with a corrupt-record
+     column), write them to the quarantine path, and report counts.
+     Reconcile: rows in = rows OK + rows quarantined, per table.
+   - Large dataset loading: time it and record the performance
+   - Partitioning: choose and justify a strategy per big table (for example by
+     year-month for Tickets and Delays). Configure Spark shuffle partitions
+     sensibly for local mode with 8 GB, and avoid tiny files.
+   - Read back from HDFS and from Parquet and verify the counts match
+   - Write Parquet to HDFS (Snappy). At least the large tables.
+   - Do NOT clean data in this phase. Cleaning is Phase 3. Ingestion keeps
+     the data as raw as possible.
+
+3. Phase 2 documentation
+   - documentation/partition_strategy.md
+   - reports/ingestion_report.md: row counts per table, schema comparison,
+     quarantined counts, timings, Parquet vs CSV size comparison
+   - reports/processing_logs/ with real logs of each run
+   - documentation/spark_ingestion_explained.md (short explainer with
+     Laravel/NestJS analogies)
+
+PHASE 2 CHECKLIST (PASS/FAIL with real output):
+[ ] Raw data in HDFS in CSV and JSON, with correct counts
+[ ] Explicit schemas defined for all 12 tables
+[ ] Schema inference comparison documented
+[ ] Multiple-file ingestion works (e.g. 12 monthly Ticket files read as one DataFrame)
+[ ] Type-failure rows preserved in quarantine; rows in = OK + quarantined for every table
+[ ] Partitioning implemented and justified
+[ ] Large tables written as Parquet to HDFS and read back with matching counts
+[ ] Ingestion timings and Parquet vs CSV size recorded
+[ ] Logs saved in reports/processing_logs/
+[ ] Still no secrets in Git, no large data files committed
+
+======================================================
+END OF THIS COMMAND
+======================================================
+Finish with a summary: real dataset statistics, what worked, what failed, and
+anything needing my decision. Then STOP. Do not start Phase 3 (quality checks
+and cleaning).
+```
+</details>
+
+**Understood as:** Phase 1: design 12 linked tables (docs + JSON schemas with PK/FK), build a seeded, chunked, config-driven generator (full / sample / hidden_like) that simulates trips once and derives tickets, counts, delays and GPS from the same simulation, inject 16 controlled defect types with a separate manifest, validate, gate. Phase 2: upload the raw data to HDFS, ingest with explicit PySpark schemas (plus an inference comparison), quarantine type failures with reconciliation, write partitioned Snappy Parquet, record timings and reports. Stop before Phase 3.
+
+**Actions taken:**
+1. Logged this entry before starting (a first append attempt via bash heredoc failed on shell quoting; the entry was written to a scratch file and appended instead).
+2. Wrote documentation/schemas/*.json (12 tables: columns, types, nullability, PK, FK) and data_generator/schema_registry.py; rendered documentation/data_dictionary.md and documentation/erd.md from them (12 tables, 124 columns, 28 foreign keys).

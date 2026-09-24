@@ -1,0 +1,24 @@
+{
+  "table": "schedules",
+  "description": "Timetable rules: for a route, direction, service calendar and time period, how often buses depart and how long the trip is planned to take.",
+  "file_format": "csv",
+  "file_layout": "schedules/schedules.csv",
+  "primary_key": ["schedule_id"],
+  "foreign_keys": [
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["service_id"], "references": {"table": "service_calendar", "columns": ["service_id"]}}
+  ],
+  "columns": [
+    {"name": "schedule_id", "type": "string", "nullable": false, "description": "Schedule ID, e.g. SCH000001"},
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route"},
+    {"name": "service_id", "type": "string", "nullable": false, "description": "Service calendar this timetable belongs to"},
+    {"name": "direction", "type": "integer", "nullable": false, "description": "0 or 1"},
+    {"name": "period", "type": "string", "nullable": false, "description": "early | am_peak | midday | pm_peak | evening"},
+    {"name": "start_time", "type": "string", "nullable": false, "description": "Period start, HH:MM (Spark has no time-of-day type)"},
+    {"name": "end_time", "type": "string", "nullable": false, "description": "Period end, HH:MM"},
+    {"name": "headway_min", "type": "integer", "nullable": false, "description": "Planned minutes between departures"},
+    {"name": "planned_runtime_min", "type": "double", "nullable": false, "description": "Planned end-to-end running time in minutes"},
+    {"name": "valid_from", "type": "date", "nullable": false, "description": "First date the timetable applies"},
+    {"name": "valid_to", "type": "date", "nullable": false, "description": "Last date the timetable applies"}
+  ]
+}

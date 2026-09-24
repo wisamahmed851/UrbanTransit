@@ -1,0 +1,29 @@
+{
+  "table": "tickets",
+  "description": "Smart-card ticketing transactions: one row per registered-passenger journey, with tap-in (entry) and tap-out (exit). Split by month.",
+  "file_format": "csv",
+  "file_layout": "tickets/tickets_YYYY-MM.csv",
+  "primary_key": ["ticket_id"],
+  "foreign_keys": [
+    {"columns": ["passenger_id"], "references": {"table": "passengers", "columns": ["passenger_id"]}},
+    {"columns": ["trip_id"], "references": {"table": "trips", "columns": ["trip_id"]}},
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["entry_stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}},
+    {"columns": ["exit_stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "ticket_id", "type": "string", "nullable": false, "description": "Ticket transaction ID, e.g. TK2509000000123"},
+    {"name": "passenger_id", "type": "string", "nullable": false, "description": "Card holder"},
+    {"name": "trip_id", "type": "string", "nullable": false, "description": "Trip travelled on"},
+    {"name": "route_id", "type": "string", "nullable": true, "description": "Route (empty only if corrupted)"},
+    {"name": "service_date", "type": "date", "nullable": false, "description": "Operating date of the trip"},
+    {"name": "entry_stop_id", "type": "string", "nullable": false, "description": "Tap-in stop"},
+    {"name": "exit_stop_id", "type": "string", "nullable": false, "description": "Tap-out stop"},
+    {"name": "entry_time", "type": "timestamp", "nullable": false, "description": "Tap-in time"},
+    {"name": "exit_time", "type": "timestamp", "nullable": false, "description": "Tap-out time"},
+    {"name": "ticket_type", "type": "string", "nullable": false, "description": "single | day_pass | monthly_pass"},
+    {"name": "fare_category", "type": "string", "nullable": false, "description": "standard | student | senior | disabled"},
+    {"name": "fare_amount", "type": "double", "nullable": false, "description": "Amount charged in PKR (0 when covered by a pass)"},
+    {"name": "payment_method", "type": "string", "nullable": false, "description": "smart_card | mobile_qr"}
+  ]
+}

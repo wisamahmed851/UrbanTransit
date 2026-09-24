@@ -1,0 +1,20 @@
+{
+  "table": "passengers",
+  "description": "Registered smart-card holders (anonymised; no names). Cash riders are not registered and appear only in passenger_counts.",
+  "file_format": "csv",
+  "file_layout": "passengers/passengers.csv",
+  "primary_key": ["passenger_id"],
+  "foreign_keys": [
+    {"columns": ["home_stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "passenger_id", "type": "string", "nullable": false, "description": "Passenger ID, e.g. P000001"},
+    {"name": "card_number", "type": "string", "nullable": false, "description": "Smart-card number"},
+    {"name": "passenger_type", "type": "string", "nullable": false, "description": "regular | student | senior | disabled"},
+    {"name": "age_group", "type": "string", "nullable": false, "description": "under_18 | 18_25 | 26_40 | 41_60 | 60_plus"},
+    {"name": "gender", "type": "string", "nullable": false, "description": "M | F | X (not stated)"},
+    {"name": "home_stop_id", "type": "string", "nullable": false, "description": "Stop nearest to the registered home address"},
+    {"name": "registration_date", "type": "date", "nullable": false, "description": "Card registration date (no travel before this)"},
+    {"name": "card_status", "type": "string", "nullable": false, "description": "active | blocked | expired"}
+  ]
+}

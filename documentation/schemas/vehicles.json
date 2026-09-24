@@ -1,0 +1,20 @@
+{
+  "table": "vehicles",
+  "description": "Bus fleet with capacity. Reference table.",
+  "file_format": "csv",
+  "file_layout": "vehicles/vehicles.csv",
+  "primary_key": ["vehicle_id"],
+  "foreign_keys": [],
+  "columns": [
+    {"name": "vehicle_id", "type": "string", "nullable": false, "description": "Vehicle ID, e.g. V0001"},
+    {"name": "registration_no", "type": "string", "nullable": false, "description": "Number plate"},
+    {"name": "vehicle_type", "type": "string", "nullable": false, "description": "articulated | standard | minibus"},
+    {"name": "capacity_seated", "type": "integer", "nullable": false, "description": "Seats"},
+    {"name": "capacity_total", "type": "integer", "nullable": false, "description": "Seats + standing (design capacity)"},
+    {"name": "depot", "type": "string", "nullable": false, "description": "Home depot"},
+    {"name": "fuel_type", "type": "string", "nullable": false, "description": "diesel | cng | hybrid | electric"},
+    {"name": "commission_date", "type": "date", "nullable": false, "description": "Date the vehicle entered service"},
+    {"name": "has_apc", "type": "boolean", "nullable": false, "description": "Fitted with an automatic passenger counter (produces passenger_counts)"},
+    {"name": "status", "type": "string", "nullable": false, "description": "active | spare"}
+  ]
+}

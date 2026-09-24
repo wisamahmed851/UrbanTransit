@@ -1,0 +1,26 @@
+{
+  "table": "passenger_counts",
+  "description": "Trip-level passenger counts from automatic passenger counters (APC): boardings, alightings, peak on-board load. One row per operated trip on an APC-equipped vehicle. Split by month.",
+  "file_format": "csv",
+  "file_layout": "passenger_counts/passenger_counts_YYYY-MM.csv",
+  "primary_key": ["count_id"],
+  "foreign_keys": [
+    {"columns": ["trip_id"], "references": {"table": "trips", "columns": ["trip_id"]}},
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["vehicle_id"], "references": {"table": "vehicles", "columns": ["vehicle_id"]}},
+    {"columns": ["max_load_stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "count_id", "type": "string", "nullable": false, "description": "Count record ID, e.g. PC2509000123"},
+    {"name": "trip_id", "type": "string", "nullable": false, "description": "Trip counted"},
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route"},
+    {"name": "service_date", "type": "date", "nullable": false, "description": "Operating date"},
+    {"name": "vehicle_id", "type": "string", "nullable": false, "description": "Vehicle whose APC produced the count"},
+    {"name": "boardings", "type": "integer", "nullable": false, "description": "Passengers who boarded during the trip (all fare types)"},
+    {"name": "alightings", "type": "integer", "nullable": false, "description": "Passengers who alighted (APC sensor, small counting noise)"},
+    {"name": "max_load", "type": "integer", "nullable": false, "description": "Highest number of passengers on board at once"},
+    {"name": "max_load_stop_id", "type": "string", "nullable": false, "description": "Stop where the load peaked"},
+    {"name": "denied_boardings", "type": "integer", "nullable": false, "description": "Passengers left behind because the bus was full"},
+    {"name": "card_taps", "type": "integer", "nullable": false, "description": "Smart-card validations recorded by the on-board validator (should equal ticket rows for the trip)"}
+  ]
+}

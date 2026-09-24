@@ -1,0 +1,20 @@
+{
+  "table": "route_stops",
+  "description": "Ordered list of stops served by each route in each direction (bridge table between routes and stops).",
+  "file_format": "csv",
+  "file_layout": "route_stops/route_stops.csv",
+  "primary_key": ["route_id", "direction", "stop_sequence"],
+  "foreign_keys": [
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route"},
+    {"name": "direction", "type": "integer", "nullable": false, "description": "0 = origin to destination, 1 = return"},
+    {"name": "stop_sequence", "type": "integer", "nullable": false, "description": "Position of the stop on the route, 1..n with no gaps"},
+    {"name": "stop_id", "type": "string", "nullable": false, "description": "Stop"},
+    {"name": "distance_from_start_km", "type": "double", "nullable": false, "description": "Road distance from the first stop of this direction"},
+    {"name": "scheduled_offset_min", "type": "double", "nullable": false, "description": "Planned off-peak minutes from the first stop"},
+    {"name": "is_timing_point", "type": "boolean", "nullable": false, "description": "Stop used as a timetable timing point"}
+  ]
+}

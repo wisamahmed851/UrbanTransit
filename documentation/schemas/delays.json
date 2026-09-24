@@ -1,0 +1,26 @@
+{
+  "table": "delays",
+  "description": "Delay (and early-running) records at stop level: scheduled vs actual arrival and departure at the stop where the deviation was logged, with a reason. Split by month.",
+  "file_format": "csv",
+  "file_layout": "delays/delays_YYYY-MM.csv",
+  "primary_key": ["delay_id"],
+  "foreign_keys": [
+    {"columns": ["trip_id"], "references": {"table": "trips", "columns": ["trip_id"]}},
+    {"columns": ["route_id"], "references": {"table": "routes", "columns": ["route_id"]}},
+    {"columns": ["stop_id"], "references": {"table": "stops", "columns": ["stop_id"]}}
+  ],
+  "columns": [
+    {"name": "delay_id", "type": "string", "nullable": false, "description": "Delay record ID, e.g. D2509000123"},
+    {"name": "trip_id", "type": "string", "nullable": false, "description": "Trip"},
+    {"name": "route_id", "type": "string", "nullable": false, "description": "Route"},
+    {"name": "stop_id", "type": "string", "nullable": false, "description": "Stop where the deviation was recorded"},
+    {"name": "service_date", "type": "date", "nullable": false, "description": "Operating date"},
+    {"name": "scheduled_arrival", "type": "timestamp", "nullable": false, "description": "Planned arrival at the stop"},
+    {"name": "actual_arrival", "type": "timestamp", "nullable": false, "description": "Actual arrival at the stop"},
+    {"name": "scheduled_departure", "type": "timestamp", "nullable": false, "description": "Planned departure from the stop"},
+    {"name": "actual_departure", "type": "timestamp", "nullable": false, "description": "Actual departure from the stop"},
+    {"name": "delay_minutes", "type": "double", "nullable": false, "description": "actual_arrival - scheduled_arrival in minutes (negative = early)"},
+    {"name": "delay_reason", "type": "string", "nullable": false, "description": "traffic_congestion | passenger_boarding | junction_bottleneck | late_vehicle | weather_fog | weather_rain | special_event | road_works | vehicle_breakdown | early_running | disruption"},
+    {"name": "record_source", "type": "string", "nullable": false, "description": "avl (automatic vehicle location) | driver_report | controller"}
+  ]
+}
