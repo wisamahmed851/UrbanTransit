@@ -7,9 +7,10 @@ export PATH="$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin:$PATH"
 export HDFS_DATA_DIR="${HDFS_DATA_DIR:-$HOME/hadoop_data}"
 
 ensure_sshd() {
-    # start-dfs.sh launches daemons over ssh to localhost
-    if ! pgrep -x sshd >/dev/null; then
-        echo "sshd is not running; start it with: sudo service ssh start" >&2
+    # start-dfs.sh launches daemons over ssh to localhost.
+    # Ubuntu 24.04 socket-activates sshd, so test a real connection instead of pgrep.
+    if ! ssh -o BatchMode=yes -o ConnectTimeout=5 localhost true 2>/dev/null; then
+        echo "Cannot ssh to localhost; run: sudo systemctl enable --now ssh" >&2
         return 1
     fi
 }
