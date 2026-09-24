@@ -48,7 +48,7 @@ HOLIDAY_FACTOR, EID_FACTOR = 0.45, 0.30
 DAY_TYPE_CODE = {"weekday": 0, "saturday": 1, "sunday": 2, "holiday": 3, "ramadan_weekday": 4}
 
 # Mean (actual / planned running time) per period, weekday vs weekend.
-CONG_MU_WEEKDAY = np.array([0.93, 1.06, 0.98, 1.08, 0.95])
+CONG_MU_WEEKDAY = np.array([0.93, 1.02, 0.97, 1.03, 0.95])
 CONG_MU_WEEKEND = np.array([0.90, 0.95, 0.97, 1.00, 0.94])
 
 DELAY_REASONS = ["late_vehicle", "traffic_congestion", "junction_bottleneck", "passenger_boarding",
@@ -380,7 +380,9 @@ def run_operations(ctx: Context, t: pd.DataFrame, rate: np.ndarray, comp: dict, 
     cancelled = comp["_cancelled"]; breakdown = comp["_breakdown"]
 
     # random draws made up front (vectorised) and consumed in the loop
-    dep_noise = np.where(rng.random(n) < 0.85, np.clip(rng.normal(0.4, 0.6, n), -1.0, 2.5), rng.uniform(1, 4, n))
+    ops_cfg = ctx.cfg["operations"]
+    # departure deviation at the first stop: mostly small, sometimes a clearly late start
+    dep_noise = np.where(rng.random(n) < 0.75, np.clip(rng.normal(0.3, 0.8, n), -2.0, 3.0), rng.uniform(1, 6, n))
     gmult = rng.gamma(10.0, 0.1, n)                    # over-dispersion of demand
     z = rng.normal(0, 1, n)
     rtype = ctx.net.routes["route_type"].to_numpy()[route]
@@ -429,16 +431,21 @@ def run_operations(ctx: Context, t: pd.DataFrame, rate: np.ndarray, comp: dict, 
                 sp = int(spares[spare_ptr % len(spares)]); spare_ptr += 1
             cap = veh_cap[sp if sp >= 0 else v]
             load = b * rho[i]
-            crush = cap * 1.4
+            crush = cap * ops_cfg["crush_load_factor"]
             denied = 0
             if load > crush:
                 denied = int(round((load - crush) / rho[i]))
                 b -= denied
                 load = crush
             expected = rate[i] * headway[i]
-            dwell = 0.03 * (b - expected)
-            if load / cap > 0.95:
-                dwell += (load / cap - 0.95) * 8.0         # crowded bus: slow boarding and alighting
+            # boarding-driven delay: extra dwell for every passenger above normal ...
+            dwell = ops_cfg["dwell_per_boarding_min"] * (b - expected)
+            # ... and the bunching feedback: a bus running after a long gap also meets more
+            # passengers at every later stop and keeps losing time, while the bus behind it
+            # finds empty stops and catches up (headway instability).
+            dwell += runtime[i] * ops_cfg["bunching_sensitivity"] * (min(max(gap / headway[i], 0.2), 3.0) - 1.0)
+            if load / cap > 0.85:
+                dwell += (load / cap - 0.85) * ops_cfg["crowding_penalty_min"]   # crowded: slow boarding/alighting
             E = static[i] + dwell
             E = max(E, -0.18 * runtime[i])                 # early running is limited
             a_arr = a_dep + runtime[i] + E

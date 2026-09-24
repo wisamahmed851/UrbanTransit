@@ -28,15 +28,19 @@ common:
   demand:
     scale: 1.0
     # passengers arriving per minute per direction at profile level 1.0 (median per route type)
-    base_rate: {brt: 4.0, trunk: 1.0, local: 0.5, feeder: 0.28}
+    base_rate: {brt: 7.5, trunk: 1.15, local: 0.58, feeder: 0.28}
     route_rate_sigma: 0.55             # lognormal spread between routes of the same type
     peak_direction_boost: 1.35         # extra demand in the peak direction (inbound AM, outbound PM)
-    card_share_start: 0.030            # share of boardings made with a registered smart card
-    card_share_end: 0.046              # ... grows linearly over the period (adoption)
+    card_share_start: 0.024            # share of boardings made with a registered smart card
+    card_share_end: 0.037              # ... grows linearly over the period (adoption)
   operations:
     cancel_rate: 0.009
     breakdown_rate: 0.0015
     layover_min: 6
+    crush_load_factor: 1.3             # max on board = 1.3 x design capacity; the rest are left behind
+    dwell_per_boarding_min: 0.05       # ~3 s of extra dwell per passenger above the normal load
+    bunching_sensitivity: 0.10         # share of running time lost per 100% longer gap than scheduled
+    crowding_penalty_min: 8           # extra minutes per 1.0 of occupancy above 0.85
   weather:
     fog_days: 28                       # Dec-Feb, morning delays
     rain_days: 16                      # Jul-Aug monsoon

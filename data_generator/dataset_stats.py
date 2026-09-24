@@ -32,7 +32,7 @@ def _md_table(df: pd.DataFrame, floatfmt="{:,.2f}") -> str:
     """Render a small DataFrame as a Markdown table."""
     cols = list(df.columns)
     out = ["| " + " | ".join(str(c) for c in cols) + " |", "|" + "---|" * len(cols)]
-    for _, row in df.iterrows():
+    for row in df.itertuples(index=False):        # itertuples keeps each column's own type
         cells = []
         for v in row:
             if isinstance(v, (float, np.floating)):
@@ -185,43 +185,61 @@ def build_report(mode: str, data: Path) -> str:
     d = delays.dropna(subset=["delay_minutes"])
     d = d[d.delay_minutes.between(-60, 600)]
     reasons = d.delay_reason.value_counts()
-    d_hour = d.scheduled_arrival.dt.hour
-    dj = d.merge(ok_pc[["trip_id", "occupancy"]], on="trip_id", how="inner")
-    dj["occ_band"] = pd.cut(dj.occupancy, [0, 0.4, 0.7, 0.9, 1.1, np.inf], labels=["<0.4", "0.4-0.7", "0.7-0.9", "0.9-1.1", ">1.1"])
-    by_occ = dj[dj.delay_minutes > 0].groupby("occ_band", observed=True).delay_minutes.mean()
+    # trip-level end delay (last stop): every operated trip, not only the logged delay records
+    td = op[["trip_id", "scheduled_departure", "scheduled_arrival", "actual_arrival"]].copy()
+    td["end_delay"] = (td.actual_arrival - td.scheduled_arrival).dt.total_seconds() / 60
+    td["hour"] = td.scheduled_departure.dt.hour
+    tj = td.merge(ok_pc[["trip_id", "occupancy"]], on="trip_id", how="inner")
+    tj["occ_band"] = pd.cut(tj.occupancy, [0, 0.4, 0.7, 0.9, 1.1, np.inf], labels=["<0.4", "0.4-0.7", "0.7-0.9", "0.9-1.1", ">1.1"],
+                            include_lowest=True)
+    by_occ = tj.groupby("occ_band", observed=True).end_delay.agg(["mean", lambda x: (x > 5).mean() * 100, "size"])
+    by_occ.columns = ["mean_end_delay_min", "late_over_5min_%", "trips"]
+    peak_h = td.hour.isin([7, 8, 9, 16, 17, 18])
+    corr = tj[["occupancy", "end_delay"]].corr().iloc[0, 1]
+    by_hour = td.groupby("hour").end_delay.agg(["mean", lambda x: (x > 5).mean() * 100])
+    by_hour.columns = ["mean_end_delay_min", "late_over_5min_%"]
     stop_deg = route_stops.groupby("stop_id").route_id.nunique()
     top_stops = d[d.delay_minutes > 0].groupby("stop_id").delay_minutes.agg(["size", "mean"]).sort_values("size", ascending=False).head(10)
     top_stops["routes_serving"] = stop_deg.reindex(top_stops.index).values
     top_stops = top_stops.reset_index().merge(stops[["stop_id", "stop_name"]], on="stop_id")
-    peak_mean = d[(d.delay_minutes > 0) & d_hour.isin([7, 8, 9, 16, 17, 18])].delay_minutes.mean()
-    off_mean = d[(d.delay_minutes > 0) & d_hour.isin([11, 12, 13, 14, 20, 21])].delay_minutes.mean()
     L += ["## 7. Delays", "",
           f"- Delay records: {len(delays):,} ({len(d):,} with a valid numeric value in [-60, 600]); "
           f"late records mean **{d[d.delay_minutes > 0].delay_minutes.mean():.1f} min**, "
           f"early-running records: **{(d.delay_minutes < 0).sum():,}**.",
-          f"- Time of day: mean late delay **{peak_mean:.1f} min** in peak hours vs **{off_mean:.1f} min** off-peak.",
-          "- Load: mean late delay by occupancy band - " + ", ".join(f"{k}: {v:.1f} min" for k, v in by_occ.items()) + ".",
-          "", "Delay reasons:", "",
+          f"- Trip-level end delay (actual - scheduled arrival at the last stop, all operated trips): mean "
+          f"**{td.end_delay.mean():.2f} min**, late > 5 min **{(td.end_delay > 5).mean() * 100:.1f}%**.",
+          f"- **Time of day:** peak hours (07-09, 16-18) mean **{td[peak_h].end_delay.mean():.2f} min** "
+          f"({(td[peak_h].end_delay > 5).mean() * 100:.1f}% late) vs off-peak **{td[~peak_h].end_delay.mean():.2f} min** "
+          f"({(td[~peak_h].end_delay > 5).mean() * 100:.1f}% late).",
+          f"- **Load:** correlation between occupancy and end delay r = **{corr:.2f}**; by occupancy band:", "",
+          _md_table(by_occ.reset_index().rename(columns={"occ_band": "occupancy"})), "",
+          "End delay by scheduled departure hour:", "",
+          _md_table(by_hour.reset_index()), "",
+          "Delay reasons (logged records):", "",
           _md_table(pd.DataFrame({"reason": reasons.index, "records": reasons.values})), "",
-          "Top 10 stops by number of late records (bottleneck junctions are shared by many routes):", "",
+          "Top 10 stops by number of late records - the most shared stops (bottleneck junctions) dominate:", "",
           _md_table(top_stops[["stop_id", "stop_name", "size", "mean", "routes_serving"]].rename(
               columns={"size": "late_records", "mean": "mean_delay_min"})), ""]
 
     # ---- headways, bunching, cancellations, early arrivals, vehicle changes
-    op = op.sort_values(["route_id", "direction", "service_date", "actual_departure"])
+    op = op.sort_values(["route_id", "direction", "service_date", "scheduled_departure"])
     grp = op.groupby(["route_id", "direction", "service_date"], observed=True)
-    act_hw = grp.actual_departure.diff().dt.total_seconds() / 60
     sch_hw = grp.scheduled_departure.diff().dt.total_seconds() / 60
-    ratio = (act_hw / sch_hw).replace([np.inf, -np.inf], np.nan).dropna()
-    ratio = ratio[sch_hw.reindex(ratio.index) >= 5]
+    ratios = {}
+    for col, label in (("actual_departure", "first stop (departure)"), ("actual_arrival", "last stop (arrival)")):
+        r = (grp[col].diff().dt.total_seconds() / 60 / sch_hw).replace([np.inf, -np.inf], np.nan)
+        ratios[label] = r[(sch_hw >= 5)].dropna()
     thr = thresholds["bunching"]
     cancelled = trips[trips.trip_status == "cancelled"]
     early_arr = ((op.scheduled_arrival - op.actual_arrival).dt.total_seconds() > 60).mean() * 100
     L += ["## 8. Headways, bunching, cancellations, early arrivals, vehicle changes", "",
-          f"- Actual/scheduled headway ratio (consecutive departures, same route/direction/day): "
-          f"coefficient of variation **{ratio.std() / ratio.mean():.2f}**; "
-          f"bunched (< {thr['headway_ratio_threshold']}): **{(ratio < thr['headway_ratio_threshold']).mean() * 100:.2f}%**; "
-          f"gaps (> {thr['gap_ratio_threshold']}): **{(ratio > thr['gap_ratio_threshold']).mean() * 100:.2f}%** of headways.",
+          "Headway ratio = actual / scheduled time between consecutive trips of the same route, direction and day "
+          f"(bunched < {thr['headway_ratio_threshold']}, gap > {thr['gap_ratio_threshold']}, thresholds from config/thresholds.yaml):", "",
+          _md_table(pd.DataFrame([{"measured at": k, "headways": len(v), "coefficient_of_variation": v.std() / v.mean(),
+                                   "bunched_%": (v < thr["headway_ratio_threshold"]).mean() * 100,
+                                   "gaps_%": (v > thr["gap_ratio_threshold"]).mean() * 100} for k, v in ratios.items()])), "",
+          "- Departures leave the terminal close to the timetable; irregularity grows along the route "
+          "(a late bus picks up more passengers and loses more time, the next one catches up), so bunching shows at the last stop.",
           f"- Cancelled trips: **{len(cancelled):,}** ({len(cancelled) / len(trips) * 100:.2f}%). Reasons: "
           + ", ".join(f"{k} {v:,}" for k, v in cancelled.cancellation_reason.value_counts().items() if v) + ".",
           f"- Trips arriving more than 1 minute early at the last stop: **{early_arr:.1f}%** of operated trips.",
@@ -236,15 +254,21 @@ def build_report(mode: str, data: Path) -> str:
             continue
         extra = ok_pc[(ok_pc.service_date == day) & (ok_pc.trip_type == "event_extra")]
         routes_ev = set(extra.route_id)
-        same_dow = ok_pc[(ok_pc.dow == day.dayofweek) & (ok_pc.service_date.dt.to_period("M") == day.to_period("M"))
-                         & (ok_pc.service_date != day) & ok_pc.route_id.isin(routes_ev)]
+        h0 = int(str(ev["start"])[:2]) - 2
+        h1 = int(str(ev["end"])[:2]) + 1
+        in_win = ok_pc.hour.between(h0, h1) & ok_pc.route_id.isin(routes_ev)
+        # baseline: the same weekday in the same month, same routes and same hours, excluding the event day
+        same_dow = ok_pc[in_win & (ok_pc.dow == day.dayofweek) & (ok_pc.service_date.dt.to_period("M") == day.to_period("M"))
+                         & (ok_pc.service_date != day)]
         base = same_dow.groupby("service_date").boardings.sum().mean()
-        on_day = ok_pc[(ok_pc.service_date == day) & ok_pc.route_id.isin(routes_ev)].boardings.sum()
+        on_day = ok_pc[in_win & (ok_pc.service_date == day)].boardings.sum()
         rows.append({"date": str(day.date()), "event": ev["name"], "venue": ev["venue"], "extra_trips": len(extra),
-                     "routes": len(routes_ev), "boardings_on_event_routes": int(on_day),
+                     "routes": len(routes_ev), "window": f"{h0:02d}-{h1:02d}h", "boardings_in_window": int(on_day),
                      "same_weekday_avg": float(base) if base == base else 0.0,
                      "uplift_%": (on_day / base - 1) * 100 if base and base == base else 0.0})
     L += ["## 9. Special events and passenger spikes", "",
+          "Boardings on the routes serving the venue during the event window, compared with the same weekday "
+          "(same month, same routes, same hours). Holidays depress the baseline comparison when the event is on a public holiday.", "",
           _md_table(pd.DataFrame(rows)) if rows else "No events in this period.", ""]
 
     # ---- growth: new routes, stops, schedules
