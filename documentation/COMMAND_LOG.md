@@ -605,3 +605,12 @@ continue from where i tell you to stop
 13. `spark_jobs/schemas.py` (12 explicit StructTypes, 0 differences vs docs), `common.py`, `infer_schemas.py` (8 differences in 5 tables documented in `documentation/schema_inference_comparison.md`).
 14. `ingest_raw.py` test on 3 tables: first attempt failed (`SESSION_OR_CONTEXT_NOT_EXISTS`, column expressions at import time) -> lazy partition expressions -> PASS. Full run: **INGESTION PASS, 12 tables, 811 s**; tickets quarantine 2,986 = injected invalid timestamps; delays 666 text values; Parquet 276 MB (21% of raw), 62 files, read-back counts equal.
 15. `ingestion_report.py` -> `reports/ingestion_report.md`; wrote `documentation/partition_strategy.md` (with measured partition sizes) and `documentation/spark_ingestion_explained.md`.
+16. Phase 2 checklist run: 10/10 PASS (secrets: `.env` untracked/ignored, MySQL password / SECRET_KEY / JWT key found 0 times in history; 0 raw data files tracked; largest tracked file 2.8 MB sample; no file > 5 MB). Stopped before Phase 3 as instructed.
+
+**Files changed (CMD-006 overall):** `documentation/schemas/*`, `documentation/{data_dictionary,erd,dataset_generation_methodology,data_generator_explained,dataset_statistics,dataset_statistics_sample,schema_inference_comparison,partition_strategy,spark_ingestion_explained}.md`, `data_generator/*`, `sample_data/*`, `hdfs_scripts/upload_raw.sh`, `spark_jobs/{schemas,common,infer_schemas,ingest_raw,ingestion_report}.py`, `config/settings.py`, `.env.example`, `.gitignore`, `.gitattributes`, `reports/*`, `DEV_LOG.md`, `AI_USAGE.md`
+
+**Result:** Success - Phase 1 9/9 PASS (gate passed), Phase 2 10/10 PASS.
+
+**Problems and fixes:** heredoc quoting (log append) -> scratch file; tuning after dry run (tickets/delays too high); 5 review bugs fixed before the first run; spare-vehicle capacity bug found by the validator; realism review failed (load/time-of-day/bunching) -> model + metric fixes; empty validation log from `/usr/bin/time`; pipeline exit 127 from MSYS path conversion; Spark `SESSION_OR_CONTEXT_NOT_EXISTS` (module-level column expressions); HDFS stopping on WSL idle -> keep-alive session.
+
+**Git commit:** `e8c808f` schema design; `9079b32` generator; `a8939cb` capacity fix; `10e9adc` sample data; `227a05b` realism model; docs commits; `d3c43d7` Phase 1 stats/manifests/logs; `97ea088` Spark schemas; `78a89e5` HDFS upload; `b4a238c` ingestion; `d6d02b8` Phase 2 docs/reports; plus this log update.
