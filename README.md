@@ -38,11 +38,50 @@ and to produce forecasts and recommendations for transit operators.
 
 ## Installation
 
-_To be completed at the end of Phase 0 (Java, Hadoop/HDFS, Spark, MySQL, Python venv)._
+The Big Data stack runs inside **WSL2 (Ubuntu 24.04)** on Windows. The repository stays
+on the Windows drive (`/mnt/d/Techwise_2026` inside WSL); the venv, HDFS data and MySQL
+data live inside the WSL disk for speed.
+
+| Component | Version |
+|---|---|
+| Ubuntu (WSL2) | 24.04 LTS |
+| Java | OpenJDK 17 |
+| Hadoop / HDFS | 3.4.3 (single-node, pseudo-distributed) |
+| Spark | PySpark 4.2.0 (bundled Spark) |
+| MySQL | 8.0 |
+| Python | 3.12 |
+
+1. **WSL** (Administrator PowerShell):
+   `wsl --install -d Ubuntu-24.04 --location D:\WSL\Ubuntu-24.04`
+2. **System packages** (inside WSL):
+   ```bash
+   sudo apt-get install -y openjdk-17-jdk-headless mysql-server python3-venv python3-pip python3-dev openssh-server curl rsync
+   sudo systemctl enable --now ssh mysql
+   ```
+3. **Hadoop 3.4.3**: extract `hadoop-3.4.3.tar.gz` from dlcdn.apache.org to `/opt`, symlink `/opt/hadoop`, then:
+   `bash hdfs_scripts/setup_hadoop.sh`
+4. **Python venv**:
+   ```bash
+   python3 -m venv ~/venvs/urbantransit
+   source ~/venvs/urbantransit/bin/activate
+   pip install -r requirements.txt
+   ```
+5. **MySQL**: create database `urbantransit_iq` and a dedicated user, then
+   `cp .env.example .env` and fill in the credentials (`.env` is git-ignored).
 
 ## Execution
 
-_To be completed as each phase adds runnable components._
+All commands run inside WSL from the repository root with the venv active.
+
+```bash
+bash hdfs_scripts/start_hdfs.sh        # start HDFS (formats NameNode on first run)
+bash hdfs_scripts/status_hdfs.sh       # daemon status
+bash hdfs_scripts/verify_hdfs.sh       # HDFS upload / read-back check
+python spark_jobs/verify_spark.py      # Spark SQL, Parquet, HDFS read check
+python database/verify_mysql.py        # MySQL SELECT 1
+python src/app.py                      # Flask on http://127.0.0.1:5000/health
+bash hdfs_scripts/stop_hdfs.sh         # stop HDFS
+```
 
 ## Project logs
 
