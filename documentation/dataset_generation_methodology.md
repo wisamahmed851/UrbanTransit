@@ -95,15 +95,23 @@ For each trip in time order:
 1. take the earliest-available vehicle of the route's pool; if it is still finishing its
    previous trip, this trip starts late (**delay propagation**);
 2. compute the gap since the previous departure in the same direction -> passengers
-   waiting -> boardings; a bus above 1.4x capacity leaves people behind (**denied boardings**);
+   waiting -> boardings; a bus above 1.3x capacity leaves people behind (**denied boardings**);
 3. running time = planned + traffic + junction bottlenecks + weather + events + road works
-   + disruptions + breakdown + **dwell time from boardings above normal** + crowding penalty;
-   light buses can run early (limited to 18% of planned time);
-4. breakdowns swap in a depot spare (**vehicle change**, `original_vehicle_id`) and take
-   the broken bus out for the day.
+   + disruptions + breakdown + **boarding-driven time**, where boarding-driven time =
+   `dwell_per_boarding_min x (boardings - normal boardings)`
+   + `bunching_sensitivity x planned time x (actual gap / scheduled headway - 1)`
+   + a crowding penalty above 85% occupancy. Light buses can run early (limited to 18% of
+   planned time);
+4. breakdowns swap in a depot spare (**vehicle change**, `original_vehicle_id`); the load is
+   capped at the spare's own crush capacity and the broken bus leaves the route for the day.
 
-A late bus meets more waiting passengers, gets slower, and the bus behind it catches up:
-this creates **irregular headways and bunching** without scripting them.
+The bunching term is the classic headway-instability mechanism: a bus that departs after a
+longer gap meets more waiting passengers at every stop and keeps losing time, while the
+bus behind it finds empty stops and catches up. Departures from the terminal stay close to
+the timetable, but irregular headways and **bunching appear downstream** (measured at the
+last stop in [dataset_statistics.md](dataset_statistics.md)). The knobs live under
+`operations:` in `generator_config.yaml` and were tuned with `data_generator/tune_check.py`
+(in-memory dry runs, see COMMAND_LOG CMD-008).
 
 ## 4. How each realism feature is produced
 
@@ -115,10 +123,10 @@ this creates **irregular headways and bunching** without scripting them.
 | Holidays | Holiday service calendar (exceptions) + holiday/Eid demand factors |
 | Direction differences | Inbound (towards the centre) peaks in the morning, outbound in the evening, plus `peak_direction_boost` |
 | Low-demand and overcrowded services | Lognormal route base rates by type; crush-load cap with denied boardings |
-| Delays vs load | Dwell time grows with boardings above normal; crowding penalty above 95% of capacity |
+| Delays vs load | Dwell time grows with boardings above normal; crowding penalty above 85% of capacity; crush load 1.3x capacity |
 | Delays vs time of day | Running-time ratio per period (`CONG_MU_*`), junction penalty larger in peaks, fog mornings |
 | Delays vs stops | Bottleneck junctions weigh 6x in how delay accumulates along the route; delay records are logged at the stop with the largest delay increase |
-| Irregular headways, bunching | Emerges from propagation + headway-dependent loads (section 3.4) |
+| Irregular headways, bunching | Headway-instability feedback + delay propagation + departure deviation (section 3.4) |
 | Cancellations | Base rate + fog mornings, driver-shortage days, protests; reason recorded |
 | Early arrivals | Light off-peak trips run early; logged as `early_running` |
 | Vehicle changes | Breakdowns swap in a spare (`original_vehicle_id`) |
