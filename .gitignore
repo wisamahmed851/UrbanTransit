@@ -63,3 +63,7 @@ node_modules/
 Thumbs.db
 .idea/
 .vscode/
+
+# ---- Generator manifests: commit the small JSON summaries, not the per-row key lists of big modes ----
+data_generator/manifests/full/injection_keys.jsonl.gz
+data_generator/manifests/hidden_like/injection_keys.jsonl.gz

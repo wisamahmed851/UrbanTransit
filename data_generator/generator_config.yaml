@@ -1,0 +1,202 @@
+# UrbanTransit IQ - data generator configuration
+# ------------------------------------------------------------------
+# `common` applies to every mode; each entry under `modes` overrides it.
+# All randomness is derived from `network_seed` (city layout) and the mode's
+# `seed` (simulation), so the same config + seed always gives the same files.
+# Demand/card-share values were tuned so the full dataset lands above the
+# SRS volume minimums with a safety margin (see dataset_generation_methodology.md).
+
+common:
+  city_centre: [31.5497, 74.3436]      # lat, lon (Lahore, Mall Road area)
+  network_seed: 2026
+  network:
+    # route type -> number of base routes (already running when the data starts)
+    route_mix: {brt: 4, trunk: 30, local: 52, feeder: 24}
+    new_routes:                        # routes launched mid-period: [type, launch_date]
+      - [local, 2025-12-01]
+      - [feeder, 2026-01-15]
+      - [trunk, 2026-02-01]
+      - [local, 2026-03-15]
+      - [feeder, 2026-04-01]
+      - [local, 2026-05-01]
+      - [trunk, 2026-06-15]
+      - [feeder, 2026-07-01]
+    stop_merge_radius_km: 0.35         # new stop points closer than this reuse an existing stop
+    bottleneck_share: 0.06             # share of busiest stops that are congested junctions
+    spare_vehicles: 30                 # depot spares used for breakdown swaps
+    apc_share: 0.92                    # share of vehicles fitted with passenger counters
+  demand:
+    scale: 1.0
+    # passengers arriving per minute per direction at profile level 1.0 (median per route type)
+    base_rate: {brt: 4.0, trunk: 1.0, local: 0.5, feeder: 0.28}
+    route_rate_sigma: 0.55             # lognormal spread between routes of the same type
+    peak_direction_boost: 1.35         # extra demand in the peak direction (inbound AM, outbound PM)
+    card_share_start: 0.030            # share of boardings made with a registered smart card
+    card_share_end: 0.046              # ... grows linearly over the period (adoption)
+  operations:
+    cancel_rate: 0.009
+    breakdown_rate: 0.0015
+    layover_min: 6
+  weather:
+    fog_days: 28                       # Dec-Feb, morning delays
+    rain_days: 16                      # Jul-Aug monsoon
+    heat_days: 12                      # May-Jun, midday demand drop
+  disruptions:
+    driver_shortage_days: 8
+    protest_days: 3
+    road_works: 4                      # routes with multi-week road works
+  gps:
+    window_days: 7
+  calendar:
+    # Timetable periods: each gets its own weekday/Saturday/Sunday service calendars
+    # and schedules, so timetables change mid-year ("new schedules").
+    timetable_periods:
+      - [autumn_2025, 2025-09-01, 2025-12-31]
+      - [winter_spring_2026, 2026-01-01, 2026-05-31]
+      - [summer_2026, 2026-06-01, 2026-08-31]
+      - [autumn_2026, 2026-09-01, 2026-12-31]
+    ramadan: [2026-02-18, 2026-03-19]  # approximate; weekday Ramadan timetable + demand shape
+    # Pakistani public holidays (Islamic dates approximate). Holiday service = Sunday-like.
+    holidays:
+      - [2025-09-05, Eid Milad-un-Nabi]
+      - [2025-11-09, Iqbal Day]
+      - [2025-12-25, Quaid-e-Azam Day]
+      - [2026-02-05, Kashmir Solidarity Day]
+      - [2026-03-20, Eid-ul-Fitr]
+      - [2026-03-21, Eid-ul-Fitr]
+      - [2026-03-22, Eid-ul-Fitr]
+      - [2026-03-23, Pakistan Day]
+      - [2026-05-01, Labour Day]
+      - [2026-05-27, Eid-ul-Adha]
+      - [2026-05-28, Eid-ul-Adha / Youm-e-Takbeer]
+      - [2026-05-29, Eid-ul-Adha]
+      - [2026-06-25, Ashura]
+      - [2026-06-26, Ashura]
+      - [2026-08-14, Independence Day]
+    eid_days: [2026-03-20, 2026-03-21, 2026-05-27, 2026-05-28]   # very low demand
+  events:
+    # Special events: demand multiplier on routes within 1 km of the venue, extra trips, local delays
+    - {name: Cricket Test Match, date: 2025-10-12, venue: Gaddafi Stadium, start: "10:00", end: "18:00", multiplier: 3.0}
+    - {name: Expo Trade Fair, date: 2025-11-14, venue: Expo Centre, start: "10:00", end: "19:00", multiplier: 2.5}
+    - {name: Expo Trade Fair, date: 2025-11-15, venue: Expo Centre, start: "10:00", end: "19:00", multiplier: 2.8}
+    - {name: Expo Trade Fair, date: 2025-11-16, venue: Expo Centre, start: "10:00", end: "19:00", multiplier: 2.2}
+    - {name: Winter Concert, date: 2025-12-20, venue: Gaddafi Stadium, start: "18:00", end: "23:00", multiplier: 3.0}
+    - {name: Lahore Marathon, date: 2026-01-25, venue: Mall Road GPO, start: "06:00", end: "11:00", multiplier: 1.8}
+    - {name: PSL Match, date: 2026-02-26, venue: Gaddafi Stadium, start: "19:00", end: "23:30", multiplier: 3.5}
+    - {name: PSL Match, date: 2026-03-01, venue: Gaddafi Stadium, start: "19:00", end: "23:30", multiplier: 3.5}
+    - {name: PSL Match, date: 2026-03-06, venue: Gaddafi Stadium, start: "19:00", end: "23:30", multiplier: 3.5}
+    - {name: Book Fair, date: 2026-05-09, venue: Expo Centre, start: "10:00", end: "20:00", multiplier: 2.0}
+    - {name: Independence Day Celebrations, date: 2026-08-14, venue: Minar-e-Pakistan, start: "16:00", end: "23:30", multiplier: 3.5}
+    - {name: T20 Match, date: 2026-09-20, venue: Gaddafi Stadium, start: "19:00", end: "23:30", multiplier: 4.0}
+    - {name: Food Festival, date: 2026-10-10, venue: Expo Centre, start: "12:00", end: "22:00", multiplier: 2.5}
+    - {name: Food Festival, date: 2026-10-11, venue: Expo Centre, start: "12:00", end: "22:00", multiplier: 2.5}
+  outputs:
+    # tables split into one file per month
+    monthly_tables: [trips, passenger_counts, tickets, delays]
+
+modes:
+  full:
+    seed: 42
+    start_date: 2025-09-01
+    end_date: 2026-08-31
+    n_passengers: 58000
+    gps_window_start: 2025-11-10       # Mon-Sun week, includes the Expo event
+    defects:                           # share of rows (or count where stated)
+      missing_ticket_records: 0.004
+      missing_route_ids_tickets: 0.002
+      missing_route_ids_trips: 0.001
+      invalid_stop_ids_tickets: 0.002
+      invalid_stop_ids_delays: 0.002
+      duplicate_tickets: 0.015
+      duplicate_trips: 0.003
+      negative_passenger_counts: 0.002
+      invalid_timestamps: 0.001
+      impossible_arrival_times: 0.002
+      departure_before_arrival: 0.003
+      vehicle_capacity_violations: 0.001
+      invalid_delay_values: 0.002
+      missing_vehicle_assignments: 0.003
+      broken_stop_sequences: 0.03      # share of route-direction stop lists
+      invalid_route_distances: 3       # number of routes
+      unknown_passengers: 0.002
+      missing_trip_records: 0.002
+
+  sample:
+    seed: 42
+    start_date: 2025-10-06
+    end_date: 2025-10-12               # one week, ends on the cricket-match day
+    n_passengers: 1500
+    gps_window_start: 2025-10-12
+    gps_window_days: 1
+    network:                           # small network so the files are commit-sized
+      route_mix: {brt: 1, trunk: 2, local: 3, feeder: 2}
+      new_routes: []
+      spare_vehicles: 3
+    demand:
+      card_share_start: 0.05
+      card_share_end: 0.05
+    defects:                           # higher rates so every defect type shows up
+      missing_ticket_records: 0.01
+      missing_route_ids_tickets: 0.01
+      missing_route_ids_trips: 0.01
+      invalid_stop_ids_tickets: 0.01
+      invalid_stop_ids_delays: 0.01
+      duplicate_tickets: 0.02
+      duplicate_trips: 0.01
+      negative_passenger_counts: 0.01
+      invalid_timestamps: 0.01
+      impossible_arrival_times: 0.01
+      departure_before_arrival: 0.01
+      vehicle_capacity_violations: 0.01
+      invalid_delay_values: 0.01
+      missing_vehicle_assignments: 0.01
+      broken_stop_sequences: 0.15
+      invalid_route_distances: 1
+      unknown_passengers: 0.01
+      missing_trip_records: 0.01
+
+  hidden_like:
+    # Same base city as `full` (same network_seed) but: different simulation seed,
+    # later dates, extra routes/stops, new timetables, unregistered vehicles,
+    # delay-spike days and defect types that do not appear in `full`.
+    seed: 7
+    start_date: 2026-09-01
+    end_date: 2026-10-31
+    n_passengers: 58000
+    extra_passengers: 4000             # registered after the full period
+    gps_window_start: 2026-09-14
+    gps_window_days: 3
+    network_extension:
+      new_routes:
+        - [trunk, 2026-09-01]
+        - [local, 2026-09-15]
+        - [local, 2026-10-01]
+        - [feeder, 2026-10-01]
+        - [brt, 2026-10-15]
+    disruptions:
+      protest_days: 6                  # delay spikes
+    delay_spike_days: 4                # extra city-wide congestion days
+    defects:
+      missing_ticket_records: 0.006
+      missing_route_ids_tickets: 0.003
+      missing_route_ids_trips: 0.002
+      invalid_stop_ids_tickets: 0.003
+      invalid_stop_ids_delays: 0.003
+      duplicate_tickets: 0.02
+      duplicate_trips: 0.004
+      negative_passenger_counts: 0.003
+      invalid_timestamps: 0.002
+      impossible_arrival_times: 0.003
+      departure_before_arrival: 0.004
+      vehicle_capacity_violations: 0.002
+      invalid_delay_values: 0.003
+      missing_vehicle_assignments: 0.004
+      broken_stop_sequences: 0.04
+      invalid_route_distances: 4
+      unknown_passengers: 0.003
+      missing_trip_records: 0.003
+      # new defect types only in hidden_like
+      unknown_vehicle_ids: 0.01        # trips on vehicles missing from vehicles.csv
+      future_timestamps: 0.001         # ticket tap-ins dated in 2027
+      out_of_bounds_coordinates: 5     # stops with (0,0) or swapped lat/lon
+      negative_fares: 0.001
