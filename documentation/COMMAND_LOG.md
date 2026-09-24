@@ -652,4 +652,4 @@ give me the full context of this chat each and everything
 
 **Problems and fixes:** `wsl.exe -d Ubuntu-24.04 ...` returned `WSL_E_DISTRO_NOT_FOUND`; `Ubuntu` was verified as a different, unprovisioned environment. Rebuilding or restoring it would be a large write and requires confirmation of the intended distribution/data recovery path.
 
-**Git commit:** pending
+**Git commit:** `edb5580 docs: record Phase 3 runtime preflight`. GitHub push was requested but not authorized in this session.
