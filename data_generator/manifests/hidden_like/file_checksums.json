@@ -1,35 +1,35 @@
 {
   "delays/delays_2026-09.csv": {
-    "bytes": 16382660,
-    "sha256": "05f5964869176459f3173192c7a064892beba097848c071ca7bf23273487ae0b"
+    "bytes": 16573400,
+    "sha256": "3d8da72fb9f21c094ff03d61d9a83235bbfe731ec2af27d3cb4697045564a182"
   },
   "delays/delays_2026-10.csv": {
-    "bytes": 16432642,
-    "sha256": "9be721e2ba2f8aca2e25babb2433c64dc66a56bea9bd701cec6c86ab48af0c8a"
+    "bytes": 16946807,
+    "sha256": "ce203d1ddf0e213ad616c7298638558fef946e569543ca5017d52dbfa812c041"
   },
   "gps_events/gps_events_2026-09-14.jsonl": {
-    "bytes": 48238135,
-    "sha256": "4636375c80589424f5ea96790130e8943bff2e3212c7f15b120361df91093c3d"
+    "bytes": 48238761,
+    "sha256": "4477e24c542d85bd3a8a7df986d09b248bf1b6626f60989c5c43f4823fc7d67c"
   },
   "gps_events/gps_events_2026-09-15.jsonl": {
-    "bytes": 48512006,
-    "sha256": "2e20f98853766b2025cae4963a86a71b04e15e59d39c33c1c5e9c93f34c842ac"
+    "bytes": 48512593,
+    "sha256": "a569c3a55d037230dd027da22a5b46a5f933a0edebf824f330b7d60558ecf93f"
   },
   "gps_events/gps_events_2026-09-16.jsonl": {
-    "bytes": 46212678,
-    "sha256": "f3baf237f0f513a29ea70f2539ad448f5972540152388880fd834061ccbd1f05"
+    "bytes": 46214086,
+    "sha256": "7a6710d7301107f50e16651424e1e8edd77487624439294a540f07a97281c2dd"
   },
   "passenger_counts/passenger_counts_2026-09.csv": {
-    "bytes": 12379257,
-    "sha256": "92dbb2697e226a69b523558611378b3a93d206edfd449a092e75482d921e2fd9"
+    "bytes": 12420286,
+    "sha256": "01850470567dbbc40817d5aeaa4cd9ad6bf191c513f703f26846e48748963c7d"
   },
   "passenger_counts/passenger_counts_2026-10.csv": {
-    "bytes": 13041949,
-    "sha256": "edd7d8829bc7eb054d5b0ac94b4e20fae244d436aac6272e108588e171ad04fd"
+    "bytes": 13085673,
+    "sha256": "65f5f96b5b295e957b81cdbadc212c4bf4b1f922eab4ea4c1f293cf6e59695d4"
   },
   "passengers/passengers.csv": {
     "bytes": 4059101,
-    "sha256": "3d220433b429dd1264ffacc9e7c57f7289e397d2c4c7493bd8a4b57b047bc94c"
+    "sha256": "258abf10fdbcdd8e4c79812c51568fa4a4a257370e59293001e844829e122d7f"
   },
   "route_stops/route_stops.csv": {
     "bytes": 106196,
@@ -52,20 +52,20 @@
     "sha256": "44974c0e09cc1403fccf4676ef8db1254fb11e4eeb16b84456f9176da4fe6737"
   },
   "tickets/tickets_2026-09.csv": {
-    "bytes": 36375850,
-    "sha256": "ce8b4c93c9c72b7f088d47cf7d47239c5b856a18ad575b92d3710063af39708f"
+    "bytes": 36379261,
+    "sha256": "5262cfcbdd198a82137516a2e6cdebfcd8df5397f4a2cb158ed24f65be2297af"
   },
   "tickets/tickets_2026-10.csv": {
-    "bytes": 48918696,
-    "sha256": "5fdcfacc7f05ad7ce1e3565df37baac9bc2dc811ccdfa857bf746957ed397805"
+    "bytes": 49206960,
+    "sha256": "556e2c47593b71651b309404d74deb3cd8ec8ed46636242ffd8abce2d5f2c58c"
   },
   "trips/trips_2026-09.csv": {
-    "bytes": 32173042,
-    "sha256": "0c75c32cb000d27f3a9bd64bc851674ae3f9b0792b542dd52891c06592608677"
+    "bytes": 32173044,
+    "sha256": "5aa620111b32f554987856d572c74615bc87393db541abbaa0d82ab44dec13e7"
   },
   "trips/trips_2026-10.csv": {
-    "bytes": 33990374,
-    "sha256": "236cca9fc24436753989c9d95e62aaafca5e01e776136ba38e5efb766fe80d36"
+    "bytes": 33990383,
+    "sha256": "989affef72febcb1e5c331bb36e4b8912f28096964c749766e7f606503139552"
   },
   "vehicles/vehicles.csv": {
     "bytes": 60429,

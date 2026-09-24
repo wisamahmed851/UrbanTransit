@@ -36,13 +36,13 @@
     {
       "defect": "departure_before_arrival",
       "table": "delays",
-      "rows": 855,
+      "rows": 875,
       "detection_rule": "delays.actual_departure < actual_arrival"
     },
     {
       "defect": "duplicate_tickets",
       "table": "tickets",
-      "rows": 12318,
+      "rows": 12361,
       "detection_rule": "rows minus distinct ticket_id"
     },
     {
@@ -54,19 +54,19 @@
     {
       "defect": "future_timestamps",
       "table": "tickets",
-      "rows": 616,
+      "rows": 618,
       "detection_rule": "tickets.entry_time parses but is after the dataset end date"
     },
     {
       "defect": "impossible_arrival_times",
       "table": "delays",
-      "rows": 642,
+      "rows": 657,
       "detection_rule": "|delays.actual_arrival - scheduled_arrival| > 12 hours"
     },
     {
       "defect": "invalid_delay_values",
       "table": "delays",
-      "rows": 642,
+      "rows": 657,
       "detection_rule": "delays.delay_minutes not numeric, or outside [-60, 600]"
     },
     {
@@ -78,25 +78,25 @@
     {
       "defect": "invalid_stop_ids",
       "table": "delays",
-      "rows": 642,
+      "rows": 657,
       "detection_rule": "stop id not present in stops.stop_id (tickets: entry_stop_id or exit_stop_id; delays: stop_id)"
     },
     {
       "defect": "invalid_stop_ids",
       "table": "tickets",
-      "rows": 1848,
+      "rows": 1854,
       "detection_rule": "stop id not present in stops.stop_id (tickets: entry_stop_id or exit_stop_id; delays: stop_id)"
     },
     {
       "defect": "invalid_timestamps",
       "table": "tickets",
-      "rows": 1231,
+      "rows": 1236,
       "detection_rule": "tickets.entry_time does not parse as YYYY-MM-DD HH:MM:SS"
     },
     {
       "defect": "missing_route_ids",
       "table": "tickets",
-      "rows": 1848,
+      "rows": 1854,
       "detection_rule": "route_id is empty"
     },
     {
@@ -108,7 +108,7 @@
     {
       "defect": "missing_ticket_records",
       "table": "tickets",
-      "rows": 3717,
+      "rows": 3731,
       "detection_rule": "passenger_counts.card_taps minus the number of distinct ticket_ids for that trip_id (summed over APC trips, only positive differences)"
     },
     {
@@ -126,13 +126,13 @@
     {
       "defect": "negative_fares",
       "table": "tickets",
-      "rows": 616,
+      "rows": 618,
       "detection_rule": "tickets.fare_amount < 0"
     },
     {
       "defect": "negative_passenger_counts",
       "table": "passenger_counts",
-      "rows": 1166,
+      "rows": 1165,
       "detection_rule": "boardings < 0 or alightings < 0 or max_load < 0"
     },
     {
@@ -144,7 +144,7 @@
     {
       "defect": "unknown_passengers",
       "table": "tickets",
-      "rows": 1848,
+      "rows": 1854,
       "detection_rule": "tickets.passenger_id not present in passengers.passenger_id"
     },
     {
@@ -183,10 +183,10 @@
     "vehicle_capacity_violations"
   ],
   "missing_trip_records_orphans": {
-    "delays": 650,
-    "gps_events": 1516,
+    "delays": 678,
+    "gps_events": 1556,
     "passenger_counts": 1268,
-    "tickets": 1954
+    "tickets": 1839
   },
   "details": {
     "broken_stop_sequences": {
@@ -205,9 +205,9 @@
     "schedules": 4920,
     "service_calendar": 4,
     "trips": 423099,
-    "passenger_counts": 388357,
-    "tickets": 628215,
-    "delays": 213946,
+    "passenger_counts": 388348,
+    "tickets": 630406,
+    "delays": 218724,
     "gps_events": 619166
   }
 }
