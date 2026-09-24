@@ -1,0 +1,36 @@
+# UrbanTransit IQ - analytics thresholds
+# STATUS: all values are INITIAL, TO BE TUNED once real/generated data is analysed.
+
+status: "initial, to be tuned"
+
+# Occupancy = passengers on board / vehicle capacity (ratio).
+# A vehicle falls into the first category whose max_ratio is >= its load.
+occupancy_categories:
+  - { name: Low,         max_ratio: 0.40 }
+  - { name: Moderate,    max_ratio: 0.70 }
+  - { name: High,        max_ratio: 0.90 }
+  - { name: Overcrowded, max_ratio: 1.10 }
+  - { name: Critical,    max_ratio: null }   # anything above Overcrowded
+
+# Delay = actual arrival - scheduled arrival (minutes). Early arrivals count as On Time.
+delay_severity:
+  - { name: On Time,  max_minutes: 1 }
+  - { name: Minor,    max_minutes: 5 }
+  - { name: Moderate, max_minutes: 10 }
+  - { name: Major,    max_minutes: 20 }
+  - { name: Severe,   max_minutes: null }    # anything above Major
+
+# Peak detection on hourly ridership per route/stop.
+peak_detection:
+  window_minutes: 60             # aggregation window
+  zscore_threshold: 1.5          # hour is a peak if z-score of ridership >= this
+  min_share_of_daily_ridership: 0.08
+  default_peak_hours:            # fallback when data is too sparse
+    morning: ["07:00", "09:00"]
+    evening: ["16:30", "18:30"]
+
+# Bunching: observed headway / scheduled headway.
+bunching:
+  headway_ratio_threshold: 0.5   # ratio below this = bunched
+  gap_ratio_threshold: 1.5       # ratio above this = service gap
+  min_scheduled_headway_minutes: 3
