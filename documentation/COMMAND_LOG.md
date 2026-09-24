@@ -302,3 +302,45 @@ Continue Phase 0 from where you paused:
 5. Cache purge (approved): `pip cache purge` / `npm cache clean --force` now target the new D: caches, so the old C: folders were removed directly: `Remove-Item C:\Users\AKL\AppData\Local\pip\cache` and `...\npm-cache`. C: free 11.75 GB → 12.45 GB.
 6. Queried PyPI (`pip index versions`) for current releases; wrote pinned `requirements.txt` (pyspark 4.2.0 → needs Java 17+), `.env.example`, `config/__init__.py`, `config/settings.py`, `config/thresholds.yaml`.
 7. Wrote `hdfs_scripts/{env,start_hdfs,stop_hdfs,status_hdfs,verify_hdfs}.sh`, `spark_jobs/verify_spark.py`, `database/verify_mysql.py`, `src/app.py`. **None of them has been run yet** (they need WSL).
+
+---
+
+## CMD-005 | 2026-09-24 14:28 (UTC+05:00) | Phase 0
+**My command (verbatim):**
+```text
+WSL is responding again. Note: `wsl -d Ubuntu -- whoami` returns root, not my
+normal user — the default user is not set correctly. Check /etc/wsl.conf and
+fix the default user as part of restoring it during the move to D:. I also
+commented out the swapFile= line in .wslconfig.
+
+Continue Phase 0 from CMD-004 where you left off.
+```
+**Understood as:** WSL is fixed (swapFile disabled by user); resume CMD-004 — move distro to D:, set the correct non-root default user in /etc/wsl.conf, install the stack, run all verifications, finish the checklist.
+
+**Actions taken:**
+1. `wsl -d Ubuntu -u root -e sh -c '...'` now responds (exit 0). Findings:
+   - Distro "Ubuntu" is **Ubuntu 26.04.1 LTS** with **Python 3.14.4**, not 24.04 / 3.12 as agreed in CMD-003.
+   - **No normal user exists**: no passwd entries with UID ≥ 1000, `/home` is empty (4 KB). That explains `whoami` = root. `/etc/wsl.conf` contains only `[boot] systemd=true` (no `[user] default=`). The first-run user setup apparently never completed (possibly related to the CMD-004 hang).
+   - Root filesystem uses 1.3 GB; `/root` has only default dotfiles (20 KB), so no user data would be lost.
+2. `wsl --version` → WSL 2.7.14.0, kernel 6.18.33.2-2. Supports `wsl --install --location`, `--name`, `wsl --manage --move`, `--manage --set-default-user`. `wsl --list --online` offers Ubuntu-24.04.
+3. Paused to ask the user: keep 26.04 or switch to 24.04, and which Linux username to create.
+4. User answered: **fresh Ubuntu 24.04 on D:**, username **wisam**.
+5. `wsl --install -d Ubuntu-24.04 --location D:\WSL\Ubuntu-24.04 --no-launch` → installed directly on D: (ext4.vhdx 1.2 GB). The export/import route was no longer needed.
+6. As root: `useradd -m -s /bin/bash -G sudo,adm wisam`; `passwd -l wisam` (the user sets their own password); wrote `/etc/wsl.conf` = `[boot] systemd=true`, `[user] default=wisam`, `[interop] appendWindowsPath=false` (keeps Windows Java 8/Python off the Linux PATH). `wsl --terminate`, `wsl --set-default Ubuntu-24.04`. Verified `wsl -- whoami` → `wisam`; PID 1 = systemd; Ubuntu 24.04.5 LTS, Python 3.12.3.
+7. `wsl --unregister Ubuntu` (empty 26.04 distro, approved by user). C: free 12.45 → 13.8 GB.
+8. **Problem:** "Failed to start the systemd user session for 'wisam'" / `systemctl --user` → "Failed to connect to bus". `user@1000.service` never started at boot. **Fix:** `loginctl enable-linger wisam`, after which `systemctl --user is-system-running` → `running` (1 s). Remaining quirk: on a *cold* VM start the first WSL call can still hit the race (once took 44 s, once for root). Harmless for the project; retrying works.
+9. As root: `apt-get install openjdk-17-jdk-headless mysql-server python3-venv python3-pip python3-dev openssh-server openssh-client curl rsync` → OpenJDK 17.0.20.1, MySQL 8.0.46. WSL disk 1.3 → 2.9 GB.
+10. Hadoop: latest 3.4.x on dlcdn.apache.org = 3.4.3 (515 MB, no lean build). Downloaded to /tmp inside WSL, `sha512sum -c` → OK, extracted to `/opt/hadoop-3.4.3`, symlink `/opt/hadoop`, chown wisam, tarball deleted. 1.2 GB on disk.
+11. Wrote `hdfs_scripts/conf/core-site.xml` (fs.defaultFS hdfs://localhost:9000), `hdfs-site.xml` (replication 1, name/data dirs in `~/hadoop_data`), `hdfs_scripts/setup_hadoop.sh`. `systemctl enable ssh.socket ssh.service`; ran `setup_hadoop.sh` as wisam → "SSH to localhost: OK", "Hadoop 3.4.3".
+12. **Fix:** `env.sh` `ensure_sshd` used `pgrep sshd`, but Ubuntu 24.04 socket-activates sshd (no daemon until a connection comes in). Changed it to test a real `ssh localhost true`.
+13. MySQL: `systemctl enable --now mysql`; created DB `urbantransit_iq` (utf8mb4) and user `urbantransit`@`localhost`/`127.0.0.1` with a random 24-char password; generated `.env` from `.env.example` with random SECRET_KEY/JWT_SECRET_KEY (values never printed; `.env` confirmed ignored by `git check-ignore`). Data dir `/var/lib/mysql` (inside WSL disk).
+14. `python3 -m venv ~/venvs/urbantransit`; `pip install -r requirements.txt` (running).
+15. `pip install -r requirements.txt` → **success**, venv 1.6 GB. xgboost pulled `nvidia-nccl-cu13` (305 MB GPU library, unused on this machine).
+16. Started HDFS (`start_hdfs.sh` formatted the NameNode on the first run) → `verify_hdfs.sh` **PASS**.
+17. **Failed attempt:** `pyspark` shell check via `echo ... | pyspark` → `NameError: name 'spark' is not defined` (piped stdin isn't interactive, so PYTHONSTARTUP never ran). **Fix:** `PYSPARK_DRIVER_PYTHON_OPTS=-i` → `PYSPARK_SHELL_OK 4.2.0 5`.
+18. **Failed attempt:** `verify_spark.py` → `java.nio.file.NoSuchFileException: /tmp/blockmgr-.../15`; a rerun's `/tmp/vs.log` also vanished. **Root cause** (journal + NameNode log): WSL powers the distro off when no `wsl.exe` client is attached (`systemd-logind: The system will power off now!` at 15:03:14, NameNode `RECEIVED SIGNAL 15`). The next call cold-boots it, and systemd's boot-time `/tmp` cleanup runs while Spark is already using `/tmp`. **Fixes:** `spark.local.dir` = `~/spark_tmp` (settings.py, `.env.example` `SPARK_LOCAL_DIR`); Parquet check writes there; HDFS pid files moved to `~/hadoop_data/pids`; all verification runs in a single WSL session.
+19. **Failed attempt:** HDFS did not start in the first single-session run (connection refused on :9000) because of a cold-boot race with `ssh.socket`. **Fix:** `ensure_sshd` retries 6×5 s; `stop_hdfs.sh` also calls it.
+20. **Bug found:** `HADOOP_PID_DIR` exported in env.sh never reached the daemons (start-dfs.sh launches them over ssh and they read only `hadoop-env.sh`). **Fix:** `setup_hadoop.sh` appends `HADOOP_PID_DIR` to `hadoop-env.sh`; verified pid files in `~/hadoop_data/pids`.
+21. **Own mistake:** cleanup command `pkill -f "org.apache.hadoop.hdfs"` matched its own `bash -c` command line and killed the session (exit 15). Reran with `pkill -f "[o]rg.apache.hadoop.hdfs.server"`.
+22. Rerun: `setup_hadoop.sh`, `start_hdfs.sh`, `status_hdfs.sh`, `verify_hdfs.sh` PASS, pyspark shell OK, `verify_spark.py` PASS (Spark SQL, Parquet, HDFS read), `stop_hdfs.sh` OK. Earlier session: `verify_mysql.py` PASS, Flask `/health` → HTTP 200.
+23. PySpark warned "does not yet fully support pandas >= 3.0.0". Pinned `pandas==2.3.3` (latest 2.x), reinstalled, `pip check` clean, `verify_spark.py` PASS with no warning.

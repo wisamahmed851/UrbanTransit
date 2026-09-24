@@ -46,3 +46,41 @@ model errors. Newest entries at the bottom. Command-level detail lives in
 - **Tried:** closing stdin, PowerShell `Start-Process` with redirected output, killing stale `wsl.exe` processes, repeated `wsl --shutdown`. None worked.
 - **Needed:** restart of `WSLService` from an elevated PowerShell (or a reboot). The assistant has no admin rights.
 - Meanwhile: old pip/npm caches on C: purged (+0.7 GB); pinned requirements, config and verification scripts written but **not yet run**.
+
+## 2026-09-24 — Phase 0: WSL rebuilt on D:, stack installed (CMD-005)
+- **Dataset/env change:** the distro the user installed was "Ubuntu" = **26.04.1 LTS** (Python 3.14.4) with **no user created** (first-run setup never finished; likely tied to the earlier hang). It was replaced by **Ubuntu-24.04** (24.04.5, Python 3.12.3) installed directly at `D:\WSL\Ubuntu-24.04` with `wsl --install --location`; the empty 26.04 distro was unregistered.
+- Default user `wisam` (sudo) set in `/etc/wsl.conf`; systemd enabled; `appendWindowsPath=false`.
+- **Problem:** systemd user session failed ("Failed to connect to bus"). **Fix:** `loginctl enable-linger wisam`. A cold-start race can still slow the very first WSL call after the VM boots.
+- **Problem:** sshd check via `pgrep` wrongly failed because Ubuntu 24.04 socket-activates sshd. **Fix:** test `ssh localhost true`.
+- `.wslconfig`: user commented out `swapFile=` while fixing the WSL hang; swap now uses the default location.
+
+| Component | Version | Location |
+|---|---|---|
+| Ubuntu (WSL2) | 24.04.5 LTS, kernel 6.18.33.2 (WSL 2.7.14) | `D:\WSL\Ubuntu-24.04\ext4.vhdx` |
+| Java | OpenJDK 17.0.20.1 | `/usr/lib/jvm/java-17-openjdk-amd64` |
+| Hadoop | 3.4.3 (sha512 verified) | `/opt/hadoop` → `/opt/hadoop-3.4.3`, data `~/hadoop_data` |
+| MySQL | 8.0.46 | data `/var/lib/mysql` |
+| Python | 3.12.3 | venv `~/venvs/urbantransit` |
+- `pip install -r requirements.txt` succeeded (venv 1.6 GB, including a 305 MB unused GPU library pulled by xgboost).
+
+### Spark / HDFS failures and fixes (CMD-005)
+| Problem | Cause | Fix |
+|---|---|---|
+| `NoSuchFileException: /tmp/blockmgr-...` in Spark SQL shuffle | WSL powers the distro off when no `wsl.exe` client is attached; the next cold boot's systemd `/tmp` cleanup raced with Spark | `spark.local.dir=~/spark_tmp`; Parquet check writes there |
+| HDFS daemons disappeared between commands | Same idle power-off (NameNode got SIGTERM) | Keep an Ubuntu terminal open while working, or run a workflow in one WSL session |
+| HDFS start failed ("Connection refused" :9000) on a cold boot | `ssh.socket` not listening yet | `ensure_sshd` retries 6×5 s |
+| Pid files still in `/tmp` | Daemons launched over ssh only read `hadoop-env.sh` | `HADOOP_PID_DIR` written into `hadoop-env.sh` by `setup_hadoop.sh` |
+| `echo ... \| pyspark` → `spark` undefined | Piped stdin isn't interactive, so the PySpark startup file never runs | `PYSPARK_DRIVER_PYTHON_OPTS=-i` |
+| PySpark: "does not yet fully support pandas >= 3.0.0" | pandas 3.0.6 pinned | Pinned `pandas==2.3.3` |
+
+### Versions (Phase 0 final)
+| Component | Version |
+|---|---|
+| PySpark / Spark | 4.2.0 (Scala 2.13, bundled) |
+| Hadoop | 3.4.3 |
+| Java | OpenJDK 17.0.20.1 |
+| Python | 3.12.3 |
+| MySQL | 8.0.46 |
+| pandas / NumPy | 2.3.3 / 2.5.3 |
+| scikit-learn / XGBoost / statsmodels | 1.9.1 / 3.4.1 / 0.15.0 |
+| Flask | 3.1.3 |
