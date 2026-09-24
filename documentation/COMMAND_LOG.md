@@ -245,3 +245,60 @@ Wait for that, then continue Phase 0.
 **Problems and fixes:** none so far.
 
 **Git commit:** `docs: log CMD-003 decisions (WSL2 on D:, MySQL in WSL, caches off C:)`
+
+---
+
+## CMD-004 | 2026-09-24 (UTC+05:00) | Phase 0
+**My command (verbatim):**
+```text
+WSL is installed. The distro is named "Ubuntu" (WSL version 2), not
+"Ubuntu-24.04". Use the real name from `wsl -l -v`. I have opened Ubuntu once
+and created my Linux user, but verify the default user and Ubuntu version
+yourself.
+
+Answers:
+- Yes, purge the old pip and npm caches on C: now that the new cache
+  locations on D: are set.
+
+Continue Phase 0 from where you paused:
+
+1. Move the distro to D: (wsl --shutdown first, then export to D:\WSL,
+   unregister, import to D:\WSL\Ubuntu with --version 2, delete the temporary
+   tar after verifying the import works, restore my default user in
+   /etc/wsl.conf). Confirm the distro works and my files are intact before
+   deleting anything.
+
+2. For installs inside WSL, use `wsl -d Ubuntu -u root -- ...` so no sudo
+   password is needed. Run all project work (venv, pip, Spark, HDFS) as my
+   normal user, not root.
+
+3. Inside WSL, install: JDK 17 (set JAVA_HOME), Hadoop 3.4.x
+   (pseudo-distributed single node, with the SSH-to-localhost setup it
+   needs), MySQL server (create database urbantransit_iq and a dedicated
+   user; credentials only in .env), and Python 3.12 + venv tools. Put the
+   venv at ~/venvs/urbantransit, NOT on /mnt/d. Keep the repo on D:
+   (/mnt/d/Techwise_2026) as the source of truth, but keep HDFS data and
+   MySQL data inside the WSL disk.
+
+4. Then do the rest of the Phase 0 tasks: requirements.txt (pinned),
+   config/settings + config/thresholds.yaml, hdfs_scripts (start, stop,
+   status, verify_hdfs.sh), spark_jobs/verify_spark.py,
+   database/verify_mysql.py, and the Flask /health app in src/.
+
+5. Tell me the disk space and location before each large download. Log
+   everything as new CMD entries, keep committing in small logical commits and
+   push.
+
+6. Finish with the full PASS/FAIL checklist with real output. If something
+   fails, log it in DEV_LOG.md and tell me. Then STOP. Do not start Phase 1.
+```
+**Understood as:** Move distro "Ubuntu" to D:\WSL\Ubuntu, purge old C: caches, install JDK 17 / Hadoop 3.4.x / MySQL / Python venv inside WSL (root for apt, normal user for project work), finish all remaining Phase 0 files and verification scripts, run the full checklist, then stop.
+
+**Actions taken:**
+1. `wsl -l -v`, check default user / Ubuntu version / home dir / current vhdx location (first attempt timed out at 120 s because of a slow recursive search under `%LOCALAPPDATA%\Packages`; moved to background).
+2. Retried from Git Bash with `timeout 40 wsl.exe -d Ubuntu -e whoami` (with and without `</dev/null`): **timed out (exit 124)**. `wsl --status` and `wsl -l -v` worked (`Ubuntu  Running  2`, default distro Ubuntu).
+3. Retried via PowerShell `Start-Process wsl.exe ... -RedirectStandardOutput`: **TIMEOUT** after 40 s.
+4. `wsl --shutdown` (required by step 1 anyway): **timed out** twice (60 s). Killed the leftover `wsl.exe` processes this session had started (PIDs 8476, 9212); shutdown still timed out and `vmmemWSL` stays up. Restarting `WSLService` needs admin rights, which the assistant's shell does not have. **Blocked; user action needed.**
+5. Cache purge (approved): `pip cache purge` / `npm cache clean --force` now target the new D: caches, so the old C: folders were removed directly: `Remove-Item C:\Users\AKL\AppData\Local\pip\cache` and `...\npm-cache`. C: free 11.75 GB → 12.45 GB.
+6. Queried PyPI (`pip index versions`) for current releases; wrote pinned `requirements.txt` (pyspark 4.2.0 → needs Java 17+), `.env.example`, `config/__init__.py`, `config/settings.py`, `config/thresholds.yaml`.
+7. Wrote `hdfs_scripts/{env,start_hdfs,stop_hdfs,status_hdfs,verify_hdfs}.sh`, `spark_jobs/verify_spark.py`, `database/verify_mysql.py`, `src/app.py`. **None of them has been run yet** (they need WSL).

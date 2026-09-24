@@ -40,3 +40,9 @@ model errors. Newest entries at the bottom. Command-level detail lives in
 - `.wslconfig`: memory 8 GB, 4 CPUs, 4 GB swap on D:.
 - pip cache → `D:\DevCache\pip`, npm cache → `D:\DevCache\npm`.
 - Correction: CMD-001 log said "26 folders"; the actual count is 25 (matches the SRS). Text error only.
+
+## 2026-09-24 — Phase 0: WSL service hang (CMD-004)
+- **Problem:** after the user's WSL install, every `wsl -d Ubuntu -e <cmd>` from the assistant hangs (even `whoami`), and `wsl --shutdown` also hangs; `vmmemWSL` stays running. `wsl --status` / `wsl -l -v` still answer (`Ubuntu Running 2`).
+- **Tried:** closing stdin, PowerShell `Start-Process` with redirected output, killing stale `wsl.exe` processes, repeated `wsl --shutdown`. None worked.
+- **Needed:** restart of `WSLService` from an elevated PowerShell (or a reboot). The assistant has no admin rights.
+- Meanwhile: old pip/npm caches on C: purged (+0.7 GB); pinned requirements, config and verification scripts written but **not yet run**.
