@@ -31,3 +31,12 @@ model errors. Newest entries at the bottom. Command-level detail lives in
 ### Pending (Phase 0)
 - Decision on Hadoop/HDFS host: WSL2 vs Docker (awaiting user OK).
 - Java JDK 17, Spark/PySpark, Hadoop, MySQL database/user, config, verification scripts.
+
+## 2026-09-24 — Phase 0 decisions (CMD-002, CMD-003)
+- GitHub origin set to `https://github.com/wisamahmed851/UrbanTransit.git`; first push succeeded via Git Credential Manager.
+- **Hadoop/HDFS host: WSL2 Ubuntu 24.04** (approved; Docker rejected). Distro will be moved to `D:\WSL\Ubuntu-24.04` via export/unregister/import because C: has ~18 GB free.
+- **MySQL** will run inside WSL; Laragon MySQL left untouched.
+- venv, JDK 17, Hadoop, Spark, HDFS data and MySQL data will live inside the WSL ext4 disk (on D:), not on `/mnt/d` (slow cross-filesystem I/O).
+- `.wslconfig`: memory 8 GB, 4 CPUs, 4 GB swap on D:.
+- pip cache → `D:\DevCache\pip`, npm cache → `D:\DevCache\npm`.
+- Correction: CMD-001 log said "26 folders"; the actual count is 25 (matches the SRS). Text error only.

@@ -191,3 +191,57 @@ https://github.com/wisamahmed851/UrbanTransit
 **Problems and fixes:** none. Old origin (`wisammanzoor158/UrbanTransit`) had never been pushed to.
 
 **Git commit:** `chore: point origin to wisamahmed851/UrbanTransit and log CMD-002`
+
+---
+
+## CMD-003 | 2026-09-24 12:59 (UTC+05:00) | Phase 0
+**My command (verbatim):**
+```text
+Decisions:
+1. WSL2 (Ubuntu 24.04) approved, not Docker.
+2. Install MySQL inside WSL. Leave Laragon alone.
+3. IMPORTANT: install everything on the D: drive. C: has very little free
+   space. Do this:
+   - After I install WSL, move the Ubuntu distro to D: with wsl --export /
+     --unregister / --import (e.g. D:\WSL\Ubuntu-24.04). Set the default user
+     back to my normal user in /etc/wsl.conf after the import.
+   - Keep the Python venv, Hadoop, Spark, JDK 17, HDFS data and MySQL data
+     inside the WSL disk (which will now live on D:). Do NOT put the venv or
+     HDFS data on /mnt/d, it is very slow.
+   - Any Windows-side tool you need (e.g. GitHub CLI) must also go on D:.
+   - Set pip and npm caches so they don't fill C:.
+   - Before each large install, tell me the disk space it needs and where it goes.
+4. Limit WSL memory with a .wslconfig (e.g. memory=8GB) so Windows stays usable.
+5. Log all of this as CMD-002 in COMMAND_LOG.md.
+6. Question: the SRS layout has 25 folders and you created 26. Which one is
+   the extra and why? Tell me before continuing.
+7. GitHub remote: <PASTE YOUR REPO URL HERE>. GitHub CLI is not installed, so
+   use Git Credential Manager or an HTTPS personal access token, and tell me
+   if you need me to log in.
+
+I will tell you as soon as WSL is installed and Ubuntu has been opened once.
+Wait for that, then continue Phase 0.
+```
+**Understood as:** Approve WSL2 + MySQL-in-WSL; keep all installs/data on D: (distro moved to D:\WSL\Ubuntu-24.04, venv/HDFS/MySQL inside the WSL disk, caches off C:); add a .wslconfig memory cap; answer the folder-count question; then wait until the user confirms WSL is installed.
+
+**Notes on the instruction:**
+- Item 5 asks for "CMD-002", but CMD-002 was already used for the "replace the git origin" command. Rule 1 forbids rewriting entries, so this is logged as **CMD-003**.
+- Item 6: correction to CMD-001. There are exactly **25** top-level folders (verified with `find . -mindepth 1 -maxdepth 1 -type d ! -name .git | wc -l` → 25). The "26 folders" in CMD-001 step 2 was a miscount in the log text; no extra folder exists.
+- Item 7: the URL placeholder was not filled in, but CMD-002 already set origin to `https://github.com/wisamahmed851/UrbanTransit.git` and the push succeeded through Git Credential Manager (`credential.helper=manager`), so no login is needed.
+
+**Actions taken:**
+1. Verified folder count (25), npm location, pip cache location (`C:\Users\AKL\AppData\Local\pip\cache`), no existing `.wslconfig`, credential helper = manager.
+2. Created `D:\WSL`, `D:\DevCache\pip`, `D:\DevCache\npm`, `D:\DevTools` (for any Windows-side tools).
+3. Wrote `C:\Users\AKL\.wslconfig` (outside repo; must live in %UserProfile%): `memory=8GB`, `processors=4`, `swap=4GB`, `swapFile=D:\WSL\swap.vhdx`.
+4. `[Environment]::SetEnvironmentVariable('PIP_CACHE_DIR','D:\DevCache\pip','User')`; `npm config set cache D:\DevCache\npm --location=user`. Verified both.
+5. Measured existing caches on C:: pip 551 MB, npm 124 MB (left in place; user may purge).
+6. Added CMD-003 decisions to DEV_LOG.md; committed and pushed.
+7. **Waiting** for the user to confirm WSL/Ubuntu 24.04 is installed before moving the distro to D: and doing heavy installs.
+
+**Files changed:** `documentation/COMMAND_LOG.md`, `DEV_LOG.md` (in repo); `C:\Users\AKL\.wslconfig`, user env var `PIP_CACHE_DIR`, user `.npmrc` (outside repo)
+
+**Result:** Partial (by design): config done, heavy steps waiting for WSL installation by the user.
+
+**Problems and fixes:** none so far.
+
+**Git commit:** `docs: log CMD-003 decisions (WSL2 on D:, MySQL in WSL, caches off C:)`
