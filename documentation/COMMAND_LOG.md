@@ -597,3 +597,11 @@ continue from where i tell you to stop
 
 **Git commit:** `a8939cb` fix(generator): cap trip load...; `10e9adc` data: add committed sample dataset...; `227a05b` feat(generator): headway-driven bunching...; docs commit for the pipeline; plus `docs(phase1): dataset statistics, final manifests and run logs`.
 
+
+(CMD-006 continued - Phase 2, gate passed)
+10. Phase 1 checklist printed: 9/9 PASS -> Phase 2 started. Stated before large writes: ~1.3 GB raw upload + ~0.3-0.5 GB Parquet into HDFS (`~/hadoop_data`, WSL disk on D:).
+11. `start_hdfs.sh` + `status_hdfs.sh` (NameNode/DataNode/SecondaryNameNode up); background idle `wsl.exe` keeps the distro alive during Phase 2.
+12. `hdfs_scripts/upload_raw.sh full` -> layout raw/parquet/quarantine, 83 files uploaded, per-table files/rows/bytes re-counted from HDFS: **UPLOAD_VERIFY PASS** (log `reports/processing_logs/hdfs_upload_full_*.log`).
+13. `spark_jobs/schemas.py` (12 explicit StructTypes, 0 differences vs docs), `common.py`, `infer_schemas.py` (8 differences in 5 tables documented in `documentation/schema_inference_comparison.md`).
+14. `ingest_raw.py` test on 3 tables: first attempt failed (`SESSION_OR_CONTEXT_NOT_EXISTS`, column expressions at import time) -> lazy partition expressions -> PASS. Full run: **INGESTION PASS, 12 tables, 811 s**; tickets quarantine 2,986 = injected invalid timestamps; delays 666 text values; Parquet 276 MB (21% of raw), 62 files, read-back counts equal.
+15. `ingestion_report.py` -> `reports/ingestion_report.md`; wrote `documentation/partition_strategy.md` (with measured partition sizes) and `documentation/spark_ingestion_explained.md`.

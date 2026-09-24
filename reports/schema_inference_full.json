@@ -1,0 +1,886 @@
+[
+  {
+    "table": "stops",
+    "format": "csv",
+    "inference_seconds": 14.58,
+    "columns": [
+      {
+        "column": "stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "stop_name",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "latitude",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "longitude",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "zone",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "stop_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "has_shelter",
+        "explicit": "boolean",
+        "inferred": "boolean",
+        "match": true
+      },
+      {
+        "column": "opened_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "routes",
+    "format": "csv",
+    "inference_seconds": 1.26,
+    "columns": [
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_code",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_name",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "origin_stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "destination_stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "distance_km",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "base_fare",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "fare_per_km",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "launch_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "status",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "route_stops",
+    "format": "csv",
+    "inference_seconds": 1.75,
+    "columns": [
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "direction",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "stop_sequence",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "distance_from_start_km",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "scheduled_offset_min",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "is_timing_point",
+        "explicit": "boolean",
+        "inferred": "boolean",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "service_calendar",
+    "format": "json",
+    "inference_seconds": 1.37,
+    "columns": [
+      {
+        "column": "service_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "service_name",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "day_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "timetable_period",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "days_of_week",
+        "explicit": "array<string>",
+        "inferred": "array<string>",
+        "match": true
+      },
+      {
+        "column": "start_date",
+        "explicit": "date",
+        "inferred": "string",
+        "match": false,
+        "values_failing_explicit_type": 0,
+        "examples": [],
+        "reason": "JSON has no date type (dates stay strings)"
+      },
+      {
+        "column": "end_date",
+        "explicit": "date",
+        "inferred": "string",
+        "match": false,
+        "values_failing_explicit_type": 0,
+        "examples": [],
+        "reason": "JSON has no date type (dates stay strings)"
+      },
+      {
+        "column": "exceptions",
+        "explicit": "array<struct<date:date,exception_type:string,reason:string>>",
+        "inferred": "array<struct<date:string,exception_type:string,reason:string>>",
+        "match": false,
+        "values_failing_explicit_type": 0,
+        "examples": [],
+        "reason": "nested dates inferred as strings and struct fields ordered alphabetically"
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 3
+  },
+  {
+    "table": "schedules",
+    "format": "csv",
+    "inference_seconds": 3.47,
+    "columns": [
+      {
+        "column": "schedule_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "service_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "direction",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "period",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "start_time",
+        "explicit": "string",
+        "inferred": "timestamp",
+        "match": false,
+        "values_failing_explicit_type": 0,
+        "examples": [],
+        "reason": "values look like dates but are stored as text by design"
+      },
+      {
+        "column": "end_time",
+        "explicit": "string",
+        "inferred": "timestamp",
+        "match": false,
+        "values_failing_explicit_type": 0,
+        "examples": [],
+        "reason": "values look like dates but are stored as text by design"
+      },
+      {
+        "column": "headway_min",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "planned_runtime_min",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "valid_from",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "valid_to",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 2
+  },
+  {
+    "table": "vehicles",
+    "format": "csv",
+    "inference_seconds": 1.13,
+    "columns": [
+      {
+        "column": "vehicle_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "registration_no",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "vehicle_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "capacity_seated",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "capacity_total",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "depot",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "fuel_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "commission_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "has_apc",
+        "explicit": "boolean",
+        "inferred": "boolean",
+        "match": true
+      },
+      {
+        "column": "status",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "passengers",
+    "format": "csv",
+    "inference_seconds": 1.57,
+    "columns": [
+      {
+        "column": "passenger_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "card_number",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "passenger_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "age_group",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "gender",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "home_stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "registration_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "card_status",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "trips",
+    "format": "csv",
+    "inference_seconds": 15.57,
+    "columns": [
+      {
+        "column": "trip_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "direction",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "service_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "service_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "schedule_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "vehicle_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "original_vehicle_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "scheduled_departure",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "scheduled_arrival",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "actual_departure",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "actual_arrival",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "trip_status",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "trip_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "cancellation_reason",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "passenger_counts",
+    "format": "csv",
+    "inference_seconds": 7.23,
+    "columns": [
+      {
+        "column": "count_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "trip_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "service_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "vehicle_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "boardings",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "alightings",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "max_load",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "max_load_stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "denied_boardings",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      },
+      {
+        "column": "card_taps",
+        "explicit": "int",
+        "inferred": "int",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 0
+  },
+  {
+    "table": "tickets",
+    "format": "csv",
+    "inference_seconds": 13.06,
+    "columns": [
+      {
+        "column": "ticket_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "passenger_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "trip_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "service_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "entry_stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "exit_stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "entry_time",
+        "explicit": "timestamp",
+        "inferred": "string",
+        "match": false,
+        "values_failing_explicit_type": 2986,
+        "examples": [
+          "31/02/2026 10:00",
+          "N/A",
+          "2025-09-31 08:00:00"
+        ],
+        "reason": "2,986 values are not valid timestamps (e.g. ['31/02/2026 10:00', 'N/A', '2025-09-31 08:00:00']), so Spark fell back to string"
+      },
+      {
+        "column": "exit_time",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "ticket_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "fare_category",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "fare_amount",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "payment_method",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 1
+  },
+  {
+    "table": "delays",
+    "format": "csv",
+    "inference_seconds": 5.19,
+    "columns": [
+      {
+        "column": "delay_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "trip_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "service_date",
+        "explicit": "date",
+        "inferred": "date",
+        "match": true
+      },
+      {
+        "column": "scheduled_arrival",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "actual_arrival",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "scheduled_departure",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "actual_departure",
+        "explicit": "timestamp",
+        "inferred": "timestamp",
+        "match": true
+      },
+      {
+        "column": "delay_minutes",
+        "explicit": "double",
+        "inferred": "string",
+        "match": false,
+        "values_failing_explicit_type": 666,
+        "examples": [
+          "#VALUE!",
+          "unknown",
+          "n/a"
+        ],
+        "reason": "666 non-numeric values (e.g. ['#VALUE!', 'unknown', 'n/a']) turned the whole column into string"
+      },
+      {
+        "column": "delay_reason",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "record_source",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 1
+  },
+  {
+    "table": "gps_events",
+    "format": "jsonl",
+    "inference_seconds": 9.62,
+    "columns": [
+      {
+        "column": "event_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "vehicle_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "trip_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "route_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "stop_id",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "event_time",
+        "explicit": "timestamp",
+        "inferred": "string",
+        "match": false,
+        "values_failing_explicit_type": 0,
+        "examples": [],
+        "reason": "JSON has no timestamp type: JSON inference never produces timestamps, only strings"
+      },
+      {
+        "column": "event_type",
+        "explicit": "string",
+        "inferred": "string",
+        "match": true
+      },
+      {
+        "column": "latitude",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "longitude",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      },
+      {
+        "column": "speed_kmh",
+        "explicit": "double",
+        "inferred": "double",
+        "match": true
+      }
+    ],
+    "extra_inferred_columns": [],
+    "mismatches": 1
+  }
+]

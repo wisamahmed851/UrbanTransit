@@ -102,3 +102,13 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - Final full dataset (seed 42): 62 files, 1,288 MB, generated in 454 s. tickets 3.03M rows (2.99M distinct), passenger_counts 1.94M, delays 0.99M, trips 2.10M, gps_events 1.14M, routes 118, stops 756, vehicles 775, passengers 58,000; 2025-09-01..2026-08-31.
 - Validation: full 59/59, sample 52/52, hidden_like 56/56 PASS. Determinism: full 62/62 files byte-identical on a rerun; sample identical, control seed changes 7/12 files.
 - Realism evidence in `documentation/dataset_statistics.md` (all computed): seasonal low 73% of peak month; weekend 56% of weekday; delay vs load 3.3 -> 8.4 min; peak 6.1 vs off-peak 1.6 min; 6.6% bunched headways at the last stop; event uplifts +61% to +218%.
+
+## 2026-09-24 — Phase 2: storage and ingestion (CMD-006)
+- HDFS layout `/urbantransit/{raw,parquet,quarantine}/<table>`; `upload_raw.sh full` uploaded 83 files / 1.29 GB and re-counted every table from HDFS: files, rows and bytes identical (UPLOAD_VERIFY PASS).
+- Explicit StructTypes for all 12 tables (`spark_jobs/schemas.py`), checked against `documentation/schemas/` (0 differences).
+- Schema inference comparison: 8 type differences in 5 tables (tickets.entry_time and delays.delay_minutes become strings because of injected invalid values; schedules HH:MM inferred as timestamps; JSON dates/timestamps stay strings).
+- Ingestion (`ingest_raw.py`): 12 tables in 811 s; every table rows in = OK + quarantined; quarantine tickets 2,986 (= injected invalid timestamps), delays 666 (text delay values); Parquet (Snappy) 276 MB vs 1,288 MB raw (21%), 62 files, read-back counts equal OK rows.
+- **Failure:** first ingest test crashed with `SESSION_OR_CONTEXT_NOT_EXISTS` - partition expressions (`F.date_format`) were built at import time, before a SparkSession existed. **Fix:** build them lazily (functions).
+- **Problem:** HDFS stops when WSL powers the distro off between calls. **Fix for this phase:** a background idle `wsl.exe` session keeps the distro (and HDFS) up while the jobs run.
+- Driver memory raised to 4g (`.env`/.env.example); Spark progress bars disabled for readable logs; strict time parser (`timeParserPolicy=CORRECTED`), Snappy and adaptive execution added to `config/settings.py`.
+- Note: `count raw` timings for small tables are dominated by ~5 s JVM start-up of the `hdfs dfs` CLI calls used for file counts/sizes, not by Spark.
