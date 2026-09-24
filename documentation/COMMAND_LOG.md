@@ -151,7 +151,7 @@ Do not start Phase 1.
 
 **Understood as:** Set up Phase 0 only: repo, folder layout, docs, pinned environment, Java/Spark/HDFS/MySQL, config, and verification scripts that really run; ask for OK on the WSL2-vs-Docker choice before heavy installs; no Phase 1 work.
 
-**Actions taken:** *(in progress)*
+**Actions taken:**
 1. OS/tool detection (PowerShell): Windows 11 Pro 10.0.22000, Python 3.13.7, Git 2.45.1, Java 1.8.0_401 JRE only (no JAVA_HOME), no Docker, WSL feature present but no distro installed, MySQL 8.4.3 present via Laragon (`D:\laragon`, service not running), 14.9 GB RAM, virtualization enabled in firmware, shell not elevated.
 2. `git init -b main`; created the 26 folders with `.gitkeep` (bash loop); wrote `.gitignore`.
 3. Commit `2199067` (structure).
@@ -159,14 +159,14 @@ Do not start Phase 1.
 5. Commit `36db8aa` (docs).
 6. **Paused** before heavy installs: proposed WSL2 (Ubuntu 24.04) for Hadoop/HDFS + Spark, asked the user for OK (Rule 2), a GitHub remote URL, and MySQL placement.
 
-**Files changed:** *(in progress)* `.gitignore`, `.gitattributes`, `*/.gitkeep`, `README.md`, `AI_USAGE.md`, `LICENSE`, `DEV_LOG.md`, `documentation/COMMAND_LOG.md`
+**Files changed:** `.gitignore`, `.gitattributes`, `*/.gitkeep`, `README.md`, `AI_USAGE.md`, `LICENSE`, `DEV_LOG.md`, `documentation/COMMAND_LOG.md`
 
-**Result:** *(in progress)*
+**Result:** Partial (by design): structure and docs done; paused for the WSL2 decision as Rule 2 requires. The remaining Phase 0 work continued under CMD-003 to CMD-005.
 
-**Problems and fixes:** *(in progress)*
+**Problems and fixes:**
 - Git CRLF warning on `.gitignore` → added `.gitattributes` forcing LF for `.sh/.py/.yaml/.xml`.
 
-**Git commit:** *(in progress)*
+**Git commit:** `2199067` chore: initialise repository structure and .gitignore; `36db8aa` docs: add README, AI usage declaration, dev log, command log and MIT license
 
 ---
 
@@ -305,6 +305,16 @@ Continue Phase 0 from where you paused:
 
 ---
 
+**Files changed:** `requirements.txt`, `.env.example`, `config/__init__.py`, `config/settings.py`, `config/thresholds.yaml`, `hdfs_scripts/{env,start_hdfs,stop_hdfs,status_hdfs,verify_hdfs}.sh`, `spark_jobs/verify_spark.py`, `database/verify_mysql.py`, `src/app.py`, `DEV_LOG.md`, `documentation/COMMAND_LOG.md` (outside repo: removed old pip/npm cache folders on C:)
+
+**Result:** Partial: files written and caches purged, but WSL hung, so nothing could run. Resumed in CMD-005.
+
+**Problems and fixes:** WSL service hang (steps 1–4). Not fixable without admin rights; the user restarted WSL and commented out `swapFile=` in `.wslconfig`.
+
+**Git commit:** `7abfe20` build: add pinned requirements.txt and .env.example; `a291e16` feat(config): add .env-driven settings and initial analytics thresholds; `bf7cc64` feat: add HDFS control scripts, Spark/MySQL verification and Flask /health; `d895abe` docs: log CMD-004 progress and WSL service hang
+
+---
+
 ## CMD-005 | 2026-09-24 14:28 (UTC+05:00) | Phase 0
 **My command (verbatim):**
 ```text
@@ -344,3 +354,14 @@ Continue Phase 0 from CMD-004 where you left off.
 21. **Own mistake:** cleanup command `pkill -f "org.apache.hadoop.hdfs"` matched its own `bash -c` command line and killed the session (exit 15). Reran with `pkill -f "[o]rg.apache.hadoop.hdfs.server"`.
 22. Rerun: `setup_hadoop.sh`, `start_hdfs.sh`, `status_hdfs.sh`, `verify_hdfs.sh` PASS, pyspark shell OK, `verify_spark.py` PASS (Spark SQL, Parquet, HDFS read), `stop_hdfs.sh` OK. Earlier session: `verify_mysql.py` PASS, Flask `/health` → HTTP 200.
 23. PySpark warned "does not yet fully support pandas >= 3.0.0". Pinned `pandas==2.3.3` (latest 2.x), reinstalled, `pip check` clean, `verify_spark.py` PASS with no warning.
+24. Final Phase 0 checklist run: repo checks on Windows, WSL checks in one session from a cold distro. **All 12 items PASS** (output reported to the user).
+25. Disk after Phase 0: `D:\WSL\Ubuntu-24.04\ext4.vhdx` 8.70 GB; C: 13.3 GB free; D: 186.3 GB free.
+26. **Own mistake:** the first attempt to close these log fields failed (a Python `\U` escape error in the edit script), so commit `1bd2b99` contained only the DEV_LOG part. Redone with raw strings in the follow-up commit.
+
+**Files changed:** `hdfs_scripts/conf/core-site.xml`, `hdfs_scripts/conf/hdfs-site.xml`, `hdfs_scripts/setup_hadoop.sh`, `hdfs_scripts/env.sh`, `hdfs_scripts/stop_hdfs.sh`, `config/settings.py`, `.env.example`, `spark_jobs/verify_spark.py`, `requirements.txt`, `README.md`, `AI_USAGE.md`, `DEV_LOG.md`, `documentation/COMMAND_LOG.md`; `.env` created (git-ignored). Outside the repo: new distro at `D:\WSL\Ubuntu-24.04`, `/etc/wsl.conf`, `/opt/hadoop-3.4.3`, `~/venvs/urbantransit`, MySQL DB and user, `hadoop-env.sh`.
+
+**Result:** Success. Phase 0 checklist 12/12 PASS.
+
+**Problems and fixes:** see steps 1, 8, 12, 17–21, 23 and 26 (no default user or wrong Ubuntu version → fresh 24.04 install; systemd user session → linger; sshd socket activation; `/tmp` wiped by the WSL idle power-off and cold boot → `~/spark_tmp` and pid dir; ssh cold-boot race → retries; pyspark piped stdin → `-i`; own `pkill` and log-script mistakes; pandas 3 → 2.3.3).
+
+**Git commit:** `6eccc58` feat(hdfs): add pseudo-distributed Hadoop config and one-time setup script; `ed62af9` docs(readme): add WSL2 installation and execution instructions; `7f4aca3` fix(spark): use ~/spark_tmp as spark.local.dir instead of /tmp; `84cf17d` fix(hdfs): keep pid files out of /tmp and retry ssh on cold boot; `ab64675` build: pin pandas 2.3.3 for PySpark 4.2 compatibility; `1a05822` docs: log CMD-005 installs, Spark/HDFS failures and fixes, final versions; `1bd2b99` docs: close Phase 0 logs and checklist; plus the follow-up `docs: complete Phase 0 command log entries and AI usage row`.
