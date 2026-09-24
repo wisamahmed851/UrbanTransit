@@ -422,7 +422,12 @@ def run_operations(ctx: Context, t: pd.DataFrame, rate: np.ndarray, comp: dict, 
             gap = min(max(gap, 0.5), 3.0 * headway[i])
             lam = rate[i] * gap * gmult[i]
             b = max(0, int(round(lam + math.sqrt(lam) * z[i])))
-            cap = veh_cap[v]
+            # The vehicle that finishes the trip is the one whose APC reports the counts:
+            # after a breakdown that is the depot spare, so its capacity limits the load.
+            sp = -1
+            if breakdown[i]:
+                sp = int(spares[spare_ptr % len(spares)]); spare_ptr += 1
+            cap = veh_cap[sp if sp >= 0 else v]
             load = b * rho[i]
             crush = cap * 1.4
             denied = 0
@@ -437,8 +442,7 @@ def run_operations(ctx: Context, t: pd.DataFrame, rate: np.ndarray, comp: dict, 
             E = static[i] + dwell
             E = max(E, -0.18 * runtime[i])                 # early running is limited
             a_arr = a_dep + runtime[i] + E
-            if breakdown[i]:
-                sp = int(spares[spare_ptr % len(spares)]); spare_ptr += 1
+            if sp >= 0:
                 out_orig[i] = v
                 out_vehicle[i] = sp                        # broken bus leaves the route for the day
             else:

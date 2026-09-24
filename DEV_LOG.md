@@ -89,3 +89,9 @@ model errors. Newest entries at the bottom. Command-level detail lives in
 Checklist run in full (repo checks on Windows, WSL checks in one session from a cold distro): **12/12 PASS**.
 Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 186.3 GB free.
 **Known quirk:** WSL powers the distro off shortly after the last `wsl.exe` session closes, which stops HDFS. Keep an Ubuntu terminal open while working, or restart HDFS with `hdfs_scripts/start_hdfs.sh`.
+
+## 2026-09-24 — Phase 1: data generator (CMD-006 to CMD-008)
+- Generator written (`data_generator/`), sample mode validated 52/52 on the first run.
+- **Tuning (dry run):** first settings gave ~4.0M tickets/yr and delay records on ~75% of trips (median 8 min). Reduced card share, weekday peak congestion and junction penalty; delay records now need >= 5 min late.
+- **Failure: validate_dataset (full) 58/59** - 102 more capacity violations than injected. **Cause:** breakdown swaps reported the load of the original (bigger) bus on the smaller spare. **Fix:** cap the load at the capacity of the vehicle that finishes the trip. Full dataset regenerated.
+- **Failure:** first full validation attempt produced an empty log (exit code 4) because it was wrapped in `/usr/bin/time -v`; rerun with bash `time`.

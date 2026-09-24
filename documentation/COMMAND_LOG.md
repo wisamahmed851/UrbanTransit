@@ -551,3 +551,33 @@ and cleaning).
 7. Review fixes before first run: event extra trips could be created on routes not yet launched; times before 05:30 mapped to the evening period; fragile array-identity test in delay derivation; `DefectInjector.capacity` never set; invalid-delay mix always chose the same text.
 8. `generate --mode sample`: 12.5 MB (too big for Git) -> sample reduced to 1 week + 1-day GPS window + 5% card share -> 5.0 MB. `validate_dataset --mode sample`: **52/52 PASS** on the first run.
 9. Full generation started (stated beforehand: ~1.4-1.6 GB to D:\Techwise_2026\raw_data\full, ~15 min), log in `reports/processing_logs/generate_full_*.log`.
+
+---
+
+## CMD-007 | 2026-09-24 (UTC+05:00) | Phase 1
+**My command (verbatim):**
+```text
+Check the full generation log. If it finished cleanly, continue: run
+validate_dataset.py on the full mode, generate dataset_statistics.md, run
+the determinism check, print the Phase 1 checklist with real output, and
+follow the gate rule: only start Phase 2 if Phase 1 is fully PASS. If the
+generation failed, show me the error and the log tail before doing anything else.
+```
+**Understood as:** Inspect the full-generation log; on success validate full mode, produce dataset_statistics.md, prove determinism, print the Phase 1 checklist, and continue into Phase 2 only if every item passes; on failure stop and show the error.
+
+**Actions taken:**
+
+---
+
+## CMD-008 | 2026-09-24 (UTC+05:00) | Phase 1
+**My command (verbatim):**
+```text
+continue from where i tell you to stop
+```
+**Understood as:** Resume CMD-007 from the point where the session was stopped (full-mode validation had just been attempted), then continue with statistics, determinism, the Phase 1 checklist and the gate.
+
+**Actions taken:**
+1. The first `validate_dataset --mode full` attempt (CMD-007) returned exit code 4 with only the WSL "systemd user session" message and no validator output; that output is inspected and the run repeated below.
+2. Reran `validate_dataset --mode full` with bash `time` (log `reports/processing_logs/validate_full_*.log`): **58/59 PASS, 1 FAIL** - `vehicle_capacity_violations` detected 2,043 vs manifest 1,941 (5 min 24 s).
+3. **Root cause (generator bug):** on a breakdown the trip's `vehicle_id` becomes a depot spare, but the load had already been capped with the *original* bus's capacity, so e.g. a 150-capacity articulated load was reported by a 30-seat minibus spare (102 natural rows above 1.5x). **Fix:** `run_operations` now picks the spare before computing the load and caps at the operating vehicle's crush load. Verified on September 2025 in memory: max load/capacity = 1.400, 0 rows above 1.4x, 237 swapped trips all <= 1.4x.
+4. Full dataset regenerated with the fix (same size and location as before: ~1.28 GB in raw_data/full, overwritten).
