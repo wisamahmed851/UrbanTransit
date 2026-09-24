@@ -1,0 +1,65 @@
+# ---- Secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# ---- Virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Spark / Hadoop temp files ----
+spark-warehouse/
+metastore_db/
+derby.log
+*.crc
+_SUCCESS
+checkpoint/
+spark-events/
+tmp/
+hadoop_tmp/
+*.log
+
+# ---- Large data files (keep folders, not contents) ----
+raw_data/*
+processed_data/*
+parquet_data/*
+!raw_data/.gitkeep
+!processed_data/.gitkeep
+!parquet_data/.gitkeep
+*.parquet
+*.csv.gz
+*.zip
+*.tar.gz
+
+# ---- Model binaries ----
+models/*
+!models/.gitkeep
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.ubj
+
+# ---- Node / frontend ----
+node_modules/
+.next/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
