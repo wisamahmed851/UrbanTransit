@@ -783,3 +783,15 @@ and anything needing my decision. Then STOP. Do not start Phase 5.
 **Actions taken:**
 1. Logged this entry before starting.
 2. Recorded decisions: methodology section 8 (ticket limitation, source-of-truth table per question, expansion factor); README note on regenerating injection key lists.
+
+---
+
+## CMD-011 | 2026-09-25 (UTC+05:00) | Phase 3
+**My command (verbatim):**
+```text
+what are you waiting for
+```
+**Understood as:** The earlier interruption was not a stop order; continue CMD-010 (finish Phase 3, gate, Phase 4).
+
+**Actions taken:** continued the Phase 3 pipeline (see CMD-010 steps).
+2. (CMD-010/011) Phase 3: profile_data.py, config/data_quality.yaml (25 rules), dq_rules.py, data_quality.py (first attempt stalled -> one job per rule), dq_evaluate.py, clean_data.py (stall on log union -> per-part writes; lazy array fix; lambda fix), cleaning_report.py, check_idempotency.py, hidden_readiness.py, no_manifest_guard.py, run_phase3.sh (CRLF failure -> LF). Pipeline run `reports/processing_logs/phase3_pipeline_*.log`: guard self-test BLOCKED; full DQ 111,250 violations; precision/recall 1.0 (18 pairs); cleaning PASS; idempotency 62/62; hidden_like upload/ingest/profile/DQ (38,617)/clean PASS; hidden precision/recall 1.0 (22 pairs); readiness report written.

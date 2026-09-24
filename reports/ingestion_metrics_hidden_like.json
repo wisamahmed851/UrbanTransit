@@ -1,0 +1,404 @@
+{
+  "mode": "hidden_like",
+  "spark_version": "4.2.0",
+  "total_seconds": 472.9,
+  "log_file": "reports/processing_logs/ingest_raw_hidden_like_20260925_022504.log",
+  "all_reconciled": true,
+  "tables": [
+    {
+      "table": "stops",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 20.66,
+        "read_parse": 3.49,
+        "quarantine_write": 7.18,
+        "parquet_write": 3.41,
+        "parquet_readback": 1.31
+      },
+      "rows_in": 773,
+      "raw_files": 1,
+      "rows_read": 773,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "stops.csv": 773
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 773,
+      "partition_column": null,
+      "rows_parquet": 773,
+      "raw_bytes": 52788,
+      "parquet_bytes": 25233,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 21
+    },
+    {
+      "table": "routes",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 5.39,
+        "read_parse": 1.01,
+        "quarantine_write": 2.65,
+        "parquet_write": 0.68,
+        "parquet_readback": 0.7
+      },
+      "rows_in": 123,
+      "raw_files": 1,
+      "rows_read": 123,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "routes.csv": 123
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 123,
+      "partition_column": null,
+      "rows_parquet": 123,
+      "raw_bytes": 11344,
+      "parquet_bytes": 8696,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 12
+    },
+    {
+      "table": "route_stops",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 6.4,
+        "read_parse": 0.78,
+        "quarantine_write": 2.69,
+        "parquet_write": 0.72,
+        "parquet_readback": 0.53
+      },
+      "rows_in": 3351,
+      "raw_files": 1,
+      "rows_read": 3351,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "route_stops.csv": 3351
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 3351,
+      "partition_column": null,
+      "rows_parquet": 3351,
+      "raw_bytes": 106196,
+      "parquet_bytes": 37107,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 301
+    },
+    {
+      "table": "service_calendar",
+      "format": "json",
+      "timings_s": {
+        "count_raw": 5.49,
+        "read_parse": 0.57,
+        "quarantine_write": 1.84,
+        "parquet_write": 0.51,
+        "parquet_readback": 0.41
+      },
+      "rows_in": 4,
+      "raw_files": 1,
+      "rows_read": 4,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "service_calendar.json": 4
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 4,
+      "partition_column": null,
+      "rows_parquet": 4,
+      "raw_bytes": 1124,
+      "parquet_bytes": 4315,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 0
+    },
+    {
+      "table": "schedules",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 4.71,
+        "read_parse": 0.82,
+        "quarantine_write": 2.07,
+        "parquet_write": 0.62,
+        "parquet_readback": 0.86
+      },
+      "rows_in": 4920,
+      "raw_files": 1,
+      "rows_read": 4920,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "schedules.csv": 4920
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 4920,
+      "partition_column": null,
+      "rows_parquet": 4920,
+      "raw_bytes": 370137,
+      "parquet_bytes": 39255,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 542
+    },
+    {
+      "table": "vehicles",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 5.92,
+        "read_parse": 0.55,
+        "quarantine_write": 1.95,
+        "parquet_write": 0.58,
+        "parquet_readback": 0.55
+      },
+      "rows_in": 819,
+      "raw_files": 1,
+      "rows_read": 819,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "vehicles.csv": 819
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 819,
+      "partition_column": null,
+      "rows_parquet": 819,
+      "raw_bytes": 60429,
+      "parquet_bytes": 16600,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 86
+    },
+    {
+      "table": "passengers",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 5.72,
+        "read_parse": 1.95,
+        "quarantine_write": 2.3,
+        "parquet_write": 1.51,
+        "parquet_readback": 0.49
+      },
+      "rows_in": 62000,
+      "raw_files": 1,
+      "rows_read": 62000,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "passengers.csv": 62000
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 62000,
+      "partition_column": null,
+      "rows_parquet": 62000,
+      "raw_bytes": 4059101,
+      "parquet_bytes": 1079501,
+      "parquet_files": 1,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 5180
+    },
+    {
+      "table": "trips",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 7.5,
+        "read_parse": 11.12,
+        "quarantine_write": 1.88,
+        "parquet_write": 9.45,
+        "parquet_readback": 1.29
+      },
+      "rows_in": 423099,
+      "raw_files": 2,
+      "rows_read": 423099,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "trips_2026-09.csv": 205644,
+        "trips_2026-10.csv": 217455
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 423099,
+      "partition_column": "year_month",
+      "rows_parquet": 423099,
+      "partitions": 2,
+      "raw_bytes": 66163427,
+      "parquet_bytes": 13108238,
+      "parquet_files": 2,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 13544
+    },
+    {
+      "table": "passenger_counts",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 5.7,
+        "read_parse": 4.07,
+        "quarantine_write": 1.83,
+        "parquet_write": 4.4,
+        "parquet_readback": 0.74
+      },
+      "rows_in": 388348,
+      "raw_files": 2,
+      "rows_read": 388348,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "passenger_counts_2026-09.csv": 189189,
+        "passenger_counts_2026-10.csv": 199159
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 388348,
+      "partition_column": "year_month",
+      "rows_parquet": 388348,
+      "partitions": 2,
+      "raw_bytes": 25505959,
+      "parquet_bytes": 6801134,
+      "parquet_files": 2,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 23199
+    },
+    {
+      "table": "tickets",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 4.79,
+        "read_parse": 7.89,
+        "quarantine_write": 2.03,
+        "parquet_write": 8.24,
+        "parquet_readback": 0.87
+      },
+      "rows_in": 630406,
+      "raw_files": 2,
+      "rows_read": 630406,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "tickets_2026-09.csv": 267967,
+        "tickets_2026-10.csv": 362439
+      },
+      "rows_quarantined": 1236,
+      "quarantine_by_column": {
+        "entry_time": 1236
+      },
+      "quarantine_examples": [
+        "TK260900000118,P008661,T2609000263,R074,2026-09-01,S0423,S0223,2025-09-31 08:00:00,2026-09-01 06:33:36,single,standard,20.0,smart_card",
+        "TK260900000674,P045566,T2609000762,R010,2026-09-01,S0155,S0162,1700000000,2026-09-01 07:54:51,single,standard,35.0,smart_card",
+        "TK260900000903,P050797,T2609000934,R045,2026-09-01,S0410,S0023,31/02/2026 10:00,2026-09-01 08:08:44,monthly_pass,standard,0.0,smart_card"
+      ],
+      "rows_ok": 629170,
+      "partition_column": "year_month",
+      "rows_parquet": 629170,
+      "partitions": 2,
+      "raw_bytes": 85586221,
+      "parquet_bytes": 18422524,
+      "parquet_files": 2,
+      "quarantine_bytes": 451238,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 26465
+    },
+    {
+      "table": "delays",
+      "format": "csv",
+      "timings_s": {
+        "count_raw": 5.99,
+        "read_parse": 5.07,
+        "quarantine_write": 2.98,
+        "parquet_write": 5.84,
+        "parquet_readback": 1.1
+      },
+      "rows_in": 218724,
+      "raw_files": 2,
+      "rows_read": 218724,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "delays_2026-09.csv": 108168,
+        "delays_2026-10.csv": 110556
+      },
+      "rows_quarantined": 220,
+      "quarantine_by_column": {
+        "delay_minutes": 220
+      },
+      "quarantine_examples": [
+        "D26090000095,T2609000334,R084,S0256,2026-09-01,2026-09-01 06:43:00,2026-09-01 06:49:27,2026-09-01 06:43:30,2026-09-01 06:50:28,unknown,junction_bottleneck,avl",
+        "D26090000606,T2609001315,R001,S0050,2026-09-01,2026-09-01 09:32:48,2026-09-01 09:47:53,2026-09-01 09:33:18,2026-09-01 09:49:44,n/a,junction_bottleneck,driver_re",
+        "D26090001515,T2609003410,R070,S0003,2026-09-01,2026-09-01 13:42:42,2026-09-01 13:36:55,2026-09-01 13:43:12,2026-09-01 13:38:46,#VALUE!,early_running,avl"
+      ],
+      "rows_ok": 218504,
+      "partition_column": "year_month",
+      "rows_parquet": 218504,
+      "partitions": 2,
+      "raw_bytes": 33520207,
+      "parquet_bytes": 10160518,
+      "parquet_files": 2,
+      "quarantine_bytes": 85468,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 10425
+    },
+    {
+      "table": "gps_events",
+      "format": "jsonl",
+      "timings_s": {
+        "count_raw": 6.69,
+        "read_parse": 9.17,
+        "quarantine_write": 3.58,
+        "parquet_write": 8.2,
+        "parquet_readback": 1.29
+      },
+      "rows_in": 619166,
+      "raw_files": 3,
+      "rows_read": 619166,
+      "input_files_read": 0,
+      "rows_per_file": {
+        "gps_events_2026-09-14.jsonl": 208905,
+        "gps_events_2026-09-15.jsonl": 210088,
+        "gps_events_2026-09-16.jsonl": 200173
+      },
+      "rows_quarantined": 0,
+      "quarantine_by_column": {},
+      "quarantine_examples": [],
+      "rows_ok": 619166,
+      "partition_column": "event_date",
+      "rows_parquet": 619166,
+      "partitions": 3,
+      "raw_bytes": 142965440,
+      "parquet_bytes": 18669573,
+      "parquet_files": 3,
+      "quarantine_bytes": 0,
+      "reconciled": true,
+      "parquet_matches_ok": true,
+      "rows_per_second": 21402
+    }
+  ]
+}

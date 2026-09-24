@@ -70,13 +70,23 @@ def report(mode: str) -> str:
         L.append(f"| {t['table']} | {t['rows_in']:,} | {t['rows_clean']:,} | {t['rows_removed']:,} | {t['rows_quarantined']:,} | "
                  f"{s:,} | {'PASS' if t['reconciled'] else 'FAIL'} | {t['rows_flagged']:,} | {t['rows_corrected']:,} | "
                  f"{t['recovered_from_ingestion_quarantine']:,} |")
+    # rows that were already quarantined at ingestion (e.g. unparseable timestamps, DQ07) never reach the
+    # row-level rules, so their count comes from the cleaning log
+    ingest_q = {}
+    for c in m["cleaning_log_counts"]:
+        ingest_q[(c["table"], c["rule_id"], c["action"])] = c["rows"]
     L += ["", "## Rows per rule and action", "",
-          "| table | rule | hits | corrected | flagged | removed | quarantined | recovered from ingestion quarantine |",
-          "|---|---|---|---|---|---|---|---|"]
+          "`kept in quarantine from ingestion` = rows that failed type parsing in Phase 2 and could not be repaired "
+          "(counted from the cleaning log).", "",
+          "| table | rule | hits | corrected | flagged | removed | quarantined | kept in quarantine from ingestion | recovered from ingestion quarantine |",
+          "|---|---|---|---|---|---|---|---|---|"]
     for t in m["tables"]:
         for rid, c in sorted(t["rules"].items()):
+            logged_q = ingest_q.get((t["table"], rid, "quarantine"), 0)
+            from_ingestion = max(0, logged_q - c.get("quarantine", 0))
             L.append(f"| {t['table']} | {rid} | {c.get('hits', 0):,} | {c.get('correct', 0):,} | {c.get('flag', 0):,} | "
-                     f"{c.get('remove', 0):,} | {c.get('quarantine', 0):,} | {c.get('recovered_from_ingestion_quarantine', 0):,} |")
+                     f"{c.get('remove', 0):,} | {c.get('quarantine', 0):,} | {from_ingestion:,} | "
+                     f"{c.get('recovered_from_ingestion_quarantine', 0):,} |")
     if m["minimums"]:
         L += ["", "## Minimum volumes after cleaning", "", "| table | minimum | clean rows | result |", "|---|---|---|---|"]
         L += [f"| {k} | {v['minimum']:,} | {v['clean_rows']:,} | {'PASS' if v['ok'] else 'FAIL'} |" for k, v in m["minimums"].items()]

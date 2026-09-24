@@ -112,3 +112,16 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Problem:** HDFS stops when WSL powers the distro off between calls. **Fix for this phase:** a background idle `wsl.exe` session keeps the distro (and HDFS) up while the jobs run.
 - Driver memory raised to 4g (`.env`/.env.example); Spark progress bars disabled for readable logs; strict time parser (`timeParserPolicy=CORRECTED`), Snappy and adaptive execution added to `config/settings.py`.
 - Note: `count raw` timings for small tables are dominated by ~5 s JVM start-up of the `hdfs dfs` CLI calls used for file counts/sizes, not by Spark.
+
+## 2026-09-25 — Phase 3: data quality and cleaning (CMD-010, CMD-011)
+- Decisions recorded: ticket limitation (methodology section 8), README note on regenerating injection key lists.
+- Profiling of all 12 tables (full 128-164 s, hidden_like 179 s).
+- 25 generic rules (16 SRS defect types + 5 extra) from 14 check types in `config/data_quality.yaml`; detection precision = recall = 1.0 for all 18 (defect, table) pairs in full and all 22 in hidden_like (20 types incl. unknown vehicles, future timestamps, out-of-bounds coordinates, negative fares); no findings where nothing was injected.
+- Cleaning: every table reconciles (rows in = clean + removed + quarantined) in both datasets; minimum volumes hold (tickets 2,976,868 clean); rerun idempotent (62/62 fingerprints identical); cleaning log 121,226 rows.
+- No-manifest proof: `no_manifest_guard.py` audit hook wraps profile/DQ/clean jobs (no access); negative control (guard around dq_evaluate.py) is BLOCKED.
+- **Failure:** DQ job stalled at idle CPU for 25+ min - one plan unioning 25 rules (many broadcast joins). **Fix:** one small Spark job per rule (whole run 125-163 s).
+- **Failure:** cleaning stalled the same way when writing all cleaning-log parts as one union. **Fix:** append each part as its own job (log folder cleared once per run -> still idempotent).
+- **Failure:** `SESSION_OR_CONTEXT_NOT_EXISTS` again (module-level `F.array()`); **fix:** build lazily.
+- **Failure:** `INVALID_LAMBDA_FUNCTION_CALL.NUM_ARGS_MISMATCH` - PySpark counted a default argument (`lambda x, cols=cols`) as a second lambda parameter; **fix:** `arrays_overlap`.
+- **Failure:** `run_phase3.sh` failed (`$'..\r'`, `pipefail: invalid option`) - files patched with Windows Python were saved with CRLF; Git Bash `grep` hides `\r`, so the first fix attempt did nothing. **Fix:** convert with Linux `sed` inside WSL; patch scripts now write with `newline='\n'`.
+- Reporting gap: rows already quarantined at ingestion (DQ07) showed 0 in the per-rule table; report now adds them from the cleaning log.
