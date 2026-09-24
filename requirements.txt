@@ -21,7 +21,7 @@ pyyaml==6.0.3
 pyspark==4.2.0
 
 # ---- Data science ----
-pandas==3.0.6
+pandas==2.3.3          # PySpark 4.2 warns pandas >= 3.0 is not fully supported
 numpy==2.5.3
 scikit-learn==1.9.1
 xgboost==3.4.1
