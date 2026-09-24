@@ -30,7 +30,10 @@ HDFS_BASE_DIR = _env("HDFS_BASE_DIR", "/urbantransit")
 # ---- Spark ----
 SPARK_MASTER = _env("SPARK_MASTER", "local[*]")
 SPARK_APP_NAME = _env("SPARK_APP_NAME", "UrbanTransitIQ")
+# Scratch space inside the WSL disk, not /tmp (wiped when WSL cold-boots the distro)
+SPARK_LOCAL_DIR = os.path.expanduser(_env("SPARK_LOCAL_DIR", "~/spark_tmp"))
 SPARK_CONF = {
+    "spark.local.dir": SPARK_LOCAL_DIR,
     "spark.driver.memory": _env("SPARK_DRIVER_MEMORY", "2g"),
     "spark.sql.shuffle.partitions": _env("SPARK_SHUFFLE_PARTITIONS", "8"),
     "spark.sql.session.timeZone": "UTC",
