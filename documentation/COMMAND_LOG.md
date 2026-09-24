@@ -167,3 +167,27 @@ Do not start Phase 1.
 - Git CRLF warning on `.gitignore` → added `.gitattributes` forcing LF for `.sh/.py/.yaml/.xml`.
 
 **Git commit:** *(in progress)*
+
+---
+
+## CMD-002 | 2026-09-24 12:50 (UTC+05:00) | Phase 0
+**My command (verbatim):**
+```text
+replace the git origin to this url
+https://github.com/wisamahmed851/UrbanTransit
+```
+**Understood as:** Change the `origin` remote URL to `https://github.com/wisamahmed851/UrbanTransit` (answers the GitHub-URL question from CMD-001; the WSL2/MySQL questions are still open).
+
+**Actions taken:**
+1. `git remote -v` showed an existing `origin` = `https://github.com/wisammanzoor158/UrbanTransit.git` (added by the user outside this session, along with user commit `2fae74f init`, which contains the CMD-001 log update).
+2. `git remote set-url origin https://github.com/wisamahmed851/UrbanTransit.git`
+3. `git remote -v` and `git ls-remote origin` to verify (exit 0, no refs: repo exists and is empty).
+4. Committed this log update and ran `git push -u origin main` (Phase 0 task 6).
+
+**Files changed:** `documentation/COMMAND_LOG.md`
+
+**Result:** Success: origin now points to `https://github.com/wisamahmed851/UrbanTransit.git`.
+
+**Problems and fixes:** none. Old origin (`wisammanzoor158/UrbanTransit`) had never been pushed to.
+
+**Git commit:** `chore: point origin to wisamahmed851/UrbanTransit and log CMD-002`
