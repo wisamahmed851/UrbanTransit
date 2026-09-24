@@ -201,3 +201,19 @@ python -m data_generator.generate --mode hidden_like
 python -m data_generator.validate_dataset --mode full
 python -m data_generator.dataset_stats --mode full
 ```
+
+## 8. Stated limitation: tickets cover smart-card journeys only (accepted, CMD-010)
+
+`tickets` records only journeys made with a **registered smart card** - about 3-4% of all
+boardings in the `full` dataset (the monthly card share is in
+[dataset_statistics.md](dataset_statistics.md), section 2). Cash riders are counted by the
+automatic passenger counters but leave no ticket row. Consequences for all later phases:
+
+| Question | Source table | Why |
+|---|---|---|
+| Demand, ridership, occupancy, crowding, demand forecasting | `passenger_counts` (APC) | counts **every** boarding on APC-equipped vehicles |
+| Origin-destination flows, trip lengths, fares, passenger segmentation (type, age, pass) | `tickets` (+ `passengers`) | only tickets know where a rider tapped in and out and who they are |
+| Scaling ticket-based results to all riders | `tickets` x **expansion factor** | factor = counted boardings / card tickets, derived from the data per route and period (Phase 4 feature `ticket_expansion_factor`) |
+
+Tickets must never be used as a direct measure of total demand.
+

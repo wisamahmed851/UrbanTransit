@@ -633,3 +633,153 @@ give me the full context of this chat each and everything
 **Problems and fixes:** none.
 
 **Git commit:** `docs: log CMD-009 (conversation summary request)`
+
+
+---
+
+## CMD-010 | 2026-09-24 (UTC+05:00) | Phase 3 + Phase 4
+**My command (verbatim):**
+
+<details>
+<summary>Full Phase 3 + Phase 4 instruction (click to expand)</summary>
+
+```text
+Phases 1 and 2 are approved.
+Decisions:
+- Tickets = smart-card journeys only (about 3-4% of boardings) is ACCEPTED.
+  Document it in the methodology as a stated limitation, and make later
+  analysis use Passenger_Counts for demand/occupancy, and Tickets for
+  origin-destination and segmentation, with an expansion factor derived from
+  the data (tickets vs counted boardings per route and period).
+- Keep the injection lists out of Git, but note in README how to regenerate them.
+- I will fill in AI_USAGE.md "Verifying team member" myself.
+
+Now do PHASE 3 and PHASE 4 together, in order, with a gate between them.
+Same standing rules: log this message verbatim as the next CMD entry; small
+commits pushed to GitHub; DEV_LOG and AI_USAGE updated; everything on D:;
+state expected sizes before big writes; run start_hdfs.sh and check HDFS
+before Spark work; never invent numbers; readable code with docstrings; short
+explainers with Laravel/NestJS analogies where natural; keep long jobs in
+the background with logs.
+
+======================================================
+PHASE 3: VALIDATION, DATA QUALITY AND CLEANING
+======================================================
+Input: the Phase 2 Parquet in HDFS, plus the quarantined rows.
+
+1. Profiling
+   - Per-table profile (row count, null counts, distinct counts, min/max,
+     basic distributions) -> reports/data_profile.md plus a machine-readable copy
+
+2. Data quality checks (Spark jobs, all 16 SRS defect types)
+   missing ticket records, missing route IDs, invalid stop IDs, duplicate ticket
+   transactions, duplicate trips, negative passenger counts, invalid timestamps,
+   impossible arrival times, departure before arrival, vehicle capacity
+   violations, invalid delay values, missing vehicle assignments, broken stop
+   sequences, invalid route distances, unknown passengers, missing trip records.
+   - Each check is a named rule with: rule ID, table, description, severity,
+     affected count, and sample rows
+   - Rules must be GENERIC and configurable (thresholds in config/). No
+     hard-coded IDs or values tied to our dataset, because hidden evaluation
+     data will contain new stops, unknown vehicles, new schedules and new defects.
+   - The pipeline must NOT read the injection manifest. Use the manifest only
+     in a separate evaluation script that measures detection precision and
+     recall per defect type.
+   - Output: reports/data_quality_report.md plus a machine-readable copy in HDFS
+
+3. Cleaning
+   - For each rule choose one action: correct, flag, remove or quarantine.
+     Prefer flag or quarantine when a correction would be a guess. Document
+     every rule and the reason in documentation/cleaning_rules.md.
+   - Cleaning log stored as Parquet: original record (or key plus original
+     value), data-quality issue, cleaning rule, corrected value, final status
+   - Outputs: clean Parquet in HDFS (/urbantransit/clean/...), quarantine of
+     bad rows, and the cleaning log
+   - Reconcile per table: rows in = clean + removed + quarantined
+   - Check that the minimums still hold after cleaning (tickets >= 2M, etc.)
+   - Idempotent: rerunning gives the same result
+
+4. Hidden-data readiness
+   - Ingest the hidden_like dataset into a SEPARATE HDFS namespace and run the
+     same quality and cleaning jobs on it WITHOUT code changes. Report what it
+     detected, including unseen categories such as unknown vehicles and new stops.
+
+PHASE 3 CHECKLIST (PASS/FAIL with real output):
+[ ] Profile generated for all 12 tables
+[ ] All 16 defect types have a generic rule
+[ ] Detection precision and recall per defect type vs the manifest (real numbers; explain any misses)
+[ ] Data quality report generated
+[ ] Every cleaning rule documented; cleaning log complete
+[ ] Rows in = clean + removed + quarantined for every table
+[ ] Minimum volumes still met after cleaning
+[ ] Rerun is idempotent
+[ ] hidden_like runs through the same jobs without code changes
+[ ] Pipeline does not read the manifest (show how you verified this)
+
+GATE: Only start Phase 4 if Phase 3 is fully PASS.
+
+======================================================
+PHASE 4: INTEGRATION AND FEATURE ENGINEERING
+======================================================
+Input: the cleaned Parquet only.
+
+1. Integration (Spark SQL in spark_sql/*.sql, run through spark.sql, with a
+   PySpark equivalent where useful)
+   Tickets with passengers, tickets with trips, trips with routes, trips with
+   vehicles, trips with schedules, routes with route stops, route stops with
+   stops, trips with delay records, trips with passenger counts, stops with
+   location information.
+   - For each join document: keys, join type, rows before/after, and orphan
+     counts. Write reports/join_report.md.
+
+2. Feature engineering (Spark), at these grains:
+   - trip-level (main table for delay, occupancy and crowding models)
+   - route-level, stop-level, and route x time-period (hour/day of week)
+   - daily route and stop demand series (for forecasting)
+   Features: passenger count per trip/route/stop, boarding count, alighting
+   count, vehicle occupancy %, delay duration, travel time, waiting time,
+   route utilization, stop utilization, peak-hour indicator (derived from
+   actual demand, not fixed slots), day-of-week, weekend indicator,
+   passenger-flow direction, route reliability, trip punctuality, delay
+   frequency, schedule deviation, capacity utilization, headway, demand
+   growth, historical demand average, route load factor.
+   - LEAKAGE RULE: any historical or rolling feature must use only data strictly
+     before the row's own time (window functions on past rows only). Document
+     this per feature.
+   - Write documentation/feature_catalog.md: name, definition, formula, grain,
+     source tables, leakage note.
+
+3. Targets and chronological split
+   - Targets: delay minutes and delay severity class (configurable thresholds
+     from config/thresholds.yaml), crowding flag (occupancy above a configurable
+     threshold), and daily demand
+   - Split BY DATE, never random. Config-driven, for example first 8 months
+     train, next 2 validation, last 2 test. Store a split column, and report
+     the date ranges, row counts and target distribution per split.
+   - Save to Parquet in HDFS (/urbantransit/features/...), sensibly partitioned
+
+4. Note: these feature tables are for the SPARK pipeline. The independent Python
+   pipeline (Phase 7) will build its own preprocessing and features from the
+   cleaned data. Do not create shared feature code between them.
+
+PHASE 4 CHECKLIST (PASS/FAIL with real output):
+[ ] All 10 joins implemented in Spark SQL files, with the join report
+[ ] Every listed feature exists at the right grain, with the feature catalog
+[ ] No leakage: show a check (for example recompute a rolling feature and confirm it ignores the current and future rows)
+[ ] Peak indicator derived from actual demand
+[ ] Chronological split saved; the date ranges do not overlap
+[ ] Target class balance per split reported
+[ ] Feature tables written to HDFS Parquet and read back
+[ ] No secrets or large files in Git
+
+Finish with a summary of real numbers (rows removed or corrected per rule,
+detection recall, feature table sizes, split sizes), what worked, what failed,
+and anything needing my decision. Then STOP. Do not start Phase 5.
+```
+</details>
+
+**Understood as:** Record the accepted ticket limitation (demand from passenger_counts, O-D/segmentation from tickets with a data-derived expansion factor) and the regeneration note; then Phase 3: profile, generic config-driven DQ rules for all 16 defects (pipeline never reads the manifest; separate precision/recall evaluation), cleaning with correct/flag/remove/quarantine + Parquet cleaning log + reconciliation + minimums + idempotency, and hidden_like through the same jobs in its own HDFS namespace; gate; then Phase 4: 10 Spark SQL joins with a join report, leakage-safe features at trip/route/stop/route-period/daily grains with a catalog, targets and a date-based split to HDFS Parquet. Stop before Phase 5.
+
+**Actions taken:**
+1. Logged this entry before starting.
+2. Recorded decisions: methodology section 8 (ticket limitation, source-of-truth table per question, expansion factor); README note on regenerating injection key lists.

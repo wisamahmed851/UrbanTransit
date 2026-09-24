@@ -83,6 +83,20 @@ python src/app.py                      # Flask on http://127.0.0.1:5000/health
 bash hdfs_scripts/stop_hdfs.sh         # stop HDFS
 ```
 
+### Regenerating the defect-injection lists (not in Git)
+
+`data_generator/manifests/<mode>/injection_manifest.json` (counts per defect) is committed.
+The per-row key lists `injection_keys.jsonl.gz` for `full` and `hidden_like` are **gitignored**
+(large); they are produced by the generator and are deterministic, so regenerate them with:
+
+```bash
+python -m data_generator.generate --mode full          # also rewrites raw_data/full
+python -m data_generator.generate --mode hidden_like
+```
+
+Only the separate evaluation script (`spark_jobs/dq_evaluate.py`) reads them; the data-quality
+pipeline never does.
+
 ## Project logs
 
 - [DEV_LOG.md](DEV_LOG.md) — development log (work, problems, fixes)
