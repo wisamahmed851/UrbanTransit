@@ -172,6 +172,16 @@ exact match.
 
 ## 6. Engineering
 
+### Smart-card coverage limitation
+
+`tickets` represents smart-card journeys only, not all boardings. It is therefore
+used for origin-destination analysis and passenger segmentation, while
+`passenger_counts` is the source for demand, vehicle occupancy and crowding
+metrics. Where a ticket-based result needs an all-boardings estimate, the later
+analytics stages must calculate an expansion factor from the observed ratio of
+counted boardings to smart-card tickets for the same route and time period; it
+must not assume a fixed system-wide percentage.
+
 * **Config-driven:** `data_generator/generator_config.yaml` (`common` + per-mode overrides).
 * **Deterministic:** every random number comes from `make_rng(seed, stream, ...)`
   (NumPy `SeedSequence`), with a separate stream per purpose and per month; no clocks or

@@ -633,3 +633,23 @@ give me the full context of this chat each and everything
 **Problems and fixes:** none.
 
 **Git commit:** `docs: log CMD-009 (conversation summary request)`
+
+---
+
+## CMD-010 | 2026-09-24 (UTC+05:00) | Phases 3 and 4
+**My command (verbatim):** The complete Phase 3 and Phase 4 instruction pasted in `C:\\Users\\NIXOR\\.codex\\attachments\\3e5bc8a6-69da-480e-a62e-b16792419647\\Pasted text.txt` at the start of this command. It is retained verbatim in the conversation attachment; its requirements are summarized below to avoid duplicating a large attachment in Git.
+
+**Understood as:** Implement and verify Phase 3 first, then begin Phase 4 only if its evidence-based gate passes; preserve the documented ticket-use limitation and all standing repository rules.
+
+**Actions taken:**
+1. Logged this instruction before Phase work.
+2. Read the Phase 2 implementation and attempted the required HDFS startup/check.
+3. The expected `Ubuntu-24.04` WSL distribution was absent; the remaining `Ubuntu` distribution is 24.04.4 but lacks the `wisam` user, Hadoop and the project Python environment. No Spark job was run against an unknown or replacement environment.
+
+**Files changed:** `documentation/COMMAND_LOG.md`
+
+**Result:** Partial: Phase 3 is blocked before its first Spark step because the HDFS-resident Phase 2 data and required runtime are unavailable in the installed WSL distribution. Phase 4 has not started, per the gate.
+
+**Problems and fixes:** `wsl.exe -d Ubuntu-24.04 ...` returned `WSL_E_DISTRO_NOT_FOUND`; `Ubuntu` was verified as a different, unprovisioned environment. Rebuilding or restoring it would be a large write and requires confirmation of the intended distribution/data recovery path.
+
+**Git commit:** pending

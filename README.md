@@ -83,6 +83,21 @@ python src/app.py                      # Flask on http://127.0.0.1:5000/health
 bash hdfs_scripts/stop_hdfs.sh         # stop HDFS
 ```
 
+## Regenerating local injection manifests
+
+Full and `hidden_like` injection-key lists are intentionally excluded from Git.
+They can be deterministically regenerated on the local D: workspace from the
+versioned generator configuration and seed:
+
+```bash
+python -m data_generator.generate --mode full
+python -m data_generator.generate --mode hidden_like
+```
+
+The resulting local files are under `data_generator/manifests/<mode>/`; do not
+commit them. The data-quality pipeline does not read these manifests. They are
+only input to the separate precision/recall evaluation step.
+
 ## Project logs
 
 - [DEV_LOG.md](DEV_LOG.md) — development log (work, problems, fixes)

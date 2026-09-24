@@ -112,3 +112,9 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Problem:** HDFS stops when WSL powers the distro off between calls. **Fix for this phase:** a background idle `wsl.exe` session keeps the distro (and HDFS) up while the jobs run.
 - Driver memory raised to 4g (`.env`/.env.example); Spark progress bars disabled for readable logs; strict time parser (`timeParserPolicy=CORRECTED`), Snappy and adaptive execution added to `config/settings.py`.
 - Note: `count raw` timings for small tables are dominated by ~5 s JVM start-up of the `hdfs dfs` CLI calls used for file counts/sizes, not by Spark.
+
+## 2026-09-24 â€” Phases 3 and 4: runtime recovery check (CMD-010)
+- Phase 2's expected WSL distribution (`Ubuntu-24.04`, including user `wisam`, Hadoop, HDFS data and the project venv) is not installed. `wsl -l -v` shows only `Ubuntu` and `docker-desktop`.
+- The remaining `Ubuntu` is 24.04.4 but has no `wisam` user, no `hdfs` executable and no prior project runtime. Consequently `/urbantransit/parquet` and the Phase 2 quarantine cannot be checked.
+- Required HDFS startup was attempted before any Phase 3 Spark work and failed with `WSL_E_DISTRO_NOT_FOUND`. No Spark job was run in the replacement environment; Phase 4 has not started because the Phase 3 gate cannot be evidenced.
+- Documented accepted ticket limitation and the reproducible, Git-excluded injection-key workflow in the methodology/README.
