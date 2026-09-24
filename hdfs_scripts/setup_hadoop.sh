@@ -6,7 +6,13 @@ source "$(dirname "$0")/env.sh"
 CONF_SRC="$(cd "$(dirname "$0")" && pwd)/conf"
 
 # 1) Hadoop config
-cp "$CONF_SRC/core-site.xml" "$CONF_SRC/hdfs-site.xml" "$HADOOP_CONF_DIR/"
+if [ -w "$HADOOP_CONF_DIR" ]; then
+    cp "$CONF_SRC/core-site.xml" "$CONF_SRC/hdfs-site.xml" "$CONF_SRC/mapred-site.xml" \
+       "$CONF_SRC/yarn-site.xml" "$HADOOP_CONF_DIR/"
+elif [ ! -f "$HADOOP_CONF_DIR/core-site.xml" ]; then
+    echo "Hadoop configuration must be installed by root first." >&2
+    exit 1
+fi
 grep -q '^export JAVA_HOME=' "$HADOOP_CONF_DIR/hadoop-env.sh" \
     || echo "export JAVA_HOME=$JAVA_HOME" >> "$HADOOP_CONF_DIR/hadoop-env.sh"
 # Daemons are launched over ssh and only see hadoop-env.sh, so the pid dir must be set here

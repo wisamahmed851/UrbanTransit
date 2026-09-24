@@ -653,3 +653,97 @@ give me the full context of this chat each and everything
 **Problems and fixes:** `wsl.exe -d Ubuntu-24.04 ...` returned `WSL_E_DISTRO_NOT_FOUND`; `Ubuntu` was verified as a different, unprovisioned environment. Rebuilding or restoring it would be a large write and requires confirmation of the intended distribution/data recovery path.
 
 **Git commit:** `edb5580 docs: record Phase 3 runtime preflight`. GitHub push was requested but not authorized in this session.
+
+---
+
+## CMD-011 | 2026-09-24 (UTC+05:00) | Runtime recovery and Phase 2 rebuild
+**My command (verbatim):**
+```text
+Step 1 — WSL relocation
+Check which distro exists (`wsl -l -v`) and its current location. If it's on C:, export it, unregister, import to E:\\WSL\\Ubuntu, set default user in /etc/wsl.conf, verify it boots, then delete the export tar. Before each large operation state the size and location. Memory limit: add/update .wslconfig (memory=8GB, swap on E:).
+
+Step 2 — Runtime reinstall inside WSL
+Use `wsl -d Ubuntu -u root` for installs. Install in this order:
+
+- JDK 17 (set JAVA_HOME in /etc/profile.d/)
+- Hadoop 3.4.x pseudo-distributed single-node (SSH-to-localhost, hdfs-site, core-site, mapred-site, yarn-site), HDFS data dir inside WSL disk (not /mnt/e)
+- MySQL 8: create database `urbantransit_iq` and dedicated user, credentials only in .env
+- Python 3.12 venv at ~/venvs/urbantransit, pip install -r requirements.txt
+
+State disk space before each install. Log as CMD entries.
+
+Step 3 — Verify runtime
+Run all four verification scripts: verify_hdfs.sh, verify_spark.py, verify_mysql.py, Flask /health. All must PASS before continuing.
+
+Step 4 — Regenerate data
+Run the generator in `full` mode with the same seed as before. Keep the repo on E:\\UrbanTransit (or wherever it's cloned). Output raw_data/ to E: or inside WSL, not /mnt/e if speed is a problem — state the choice. Also regenerate `hidden_like` mode. Validate with validate_dataset.py. All volume minimums must pass.
+
+Step 5 — Redo Phase 2
+Upload raw data to HDFS. Run PySpark ingestion (explicit schemas, multi-file, partitioning, quarantine for bad rows, Parquet output). All Phase 2 checklist items must pass.
+
+Step 6 — Print both checklists
+Phase 2 checklist (all items) and then immediately continue to
+```
+
+**Understood as:** Move the existing Ubuntu WSL distribution from C: to E:, rebuild and verify the runtime, regenerate full and hidden-like datasets, then rerun Phase 2. The pasted instruction ends mid-sentence after "immediately continue to"; later phase work remains subject to the separately specified Phase 3 gate.
+
+**Actions taken:** Started with preflight inventory: `Ubuntu` is the only usable distro, on C:, and E: has 48.2 GB free.
+
+**Files changed:** `documentation/COMMAND_LOG.md`
+
+**Result:** In progress.
+
+**Problems and fixes:** none yet.
+
+**Git commit:** pending
+
+---
+
+## CMD-014 | 2026-09-25 (UTC+05:00) | Commit and pull
+**My command (verbatim):** `ALso Commit current changes and take pull`
+
+**Understood as:** Commit the current tracked project changes, then pull the current branch from the configured GitHub remote without staging generated datasets, runtime logs, or secrets.
+
+**Actions taken:** Started worktree and remote-state review before staging.
+
+**Files changed:** `documentation/COMMAND_LOG.md`
+
+**Result:** In progress.
+
+**Problems and fixes:** none yet.
+
+**Git commit:** pending
+
+---
+
+## CMD-013 | 2026-09-25 (UTC+05:00) | Operational Phase 1 and 2 rebuild
+**My command (verbatim):** `Do it , do the phase 1 and 2 operational`
+
+**Understood as:** Regenerate the approved Phase 1 full and hidden-like datasets, then repeat the approved Phase 2 HDFS upload and Spark ingestion against the rebuilt runtime; do not begin Phase 3 or Phase 4.
+
+**Actions taken:** Started storage preflight and rebuild preparation. Long jobs will run in persistent WSL sessions with project logs.
+
+**Files changed:** `documentation/COMMAND_LOG.md`
+
+**Result:** In progress.
+
+**Problems and fixes:** none yet.
+
+**Git commit:** pending
+
+---
+
+## CMD-012 | 2026-09-24 (UTC+05:00) | Database placement change
+**My command (verbatim):** `Use msql in xammp`
+
+**Understood as:** Use the existing Windows XAMPP MySQL/MariaDB instance for UrbanTransit IQ instead of MySQL inside WSL; HDFS and Spark remain in WSL.
+
+**Actions taken:** Started a read-only inspection of the local XAMPP database service and configuration before creating the project database/user.
+
+**Files changed:** `documentation/COMMAND_LOG.md`
+
+**Result:** In progress.
+
+**Problems and fixes:** none yet.
+
+**Git commit:** pending
