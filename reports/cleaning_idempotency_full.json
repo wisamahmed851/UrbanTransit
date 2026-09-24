@@ -1,0 +1,378 @@
+{
+  "mode": "full",
+  "result": "PASS",
+  "comparisons": [
+    {
+      "output": "stops.rows_clean",
+      "run1": "756",
+      "run2": "756",
+      "same": true
+    },
+    {
+      "output": "stops.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "stops.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "stops.fingerprint_clean",
+      "run1": "-243949110127684640613",
+      "run2": "-243949110127684640613",
+      "same": true
+    },
+    {
+      "output": "stops.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "routes.rows_clean",
+      "run1": "118",
+      "run2": "118",
+      "same": true
+    },
+    {
+      "output": "routes.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "routes.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "routes.fingerprint_clean",
+      "run1": "46092294528806261581",
+      "run2": "46092294528806261581",
+      "same": true
+    },
+    {
+      "output": "routes.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "route_stops.rows_clean",
+      "run1": "3210",
+      "run2": "3210",
+      "same": true
+    },
+    {
+      "output": "route_stops.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "route_stops.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "route_stops.fingerprint_clean",
+      "run1": "32448852181762186081",
+      "run2": "32448852181762186081",
+      "same": true
+    },
+    {
+      "output": "route_stops.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "service_calendar.rows_clean",
+      "run1": "11",
+      "run2": "11",
+      "same": true
+    },
+    {
+      "output": "service_calendar.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "service_calendar.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "service_calendar.fingerprint_clean",
+      "run1": "-13308068823802634361",
+      "run2": "-13308068823802634361",
+      "same": true
+    },
+    {
+      "output": "service_calendar.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "schedules.rows_clean",
+      "run1": "12670",
+      "run2": "12670",
+      "same": true
+    },
+    {
+      "output": "schedules.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "schedules.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "schedules.fingerprint_clean",
+      "run1": "309368824399959856093",
+      "run2": "309368824399959856093",
+      "same": true
+    },
+    {
+      "output": "schedules.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "vehicles.rows_clean",
+      "run1": "775",
+      "run2": "775",
+      "same": true
+    },
+    {
+      "output": "vehicles.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "vehicles.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "vehicles.fingerprint_clean",
+      "run1": "29671230827882102756",
+      "run2": "29671230827882102756",
+      "same": true
+    },
+    {
+      "output": "vehicles.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "passengers.rows_clean",
+      "run1": "58000",
+      "run2": "58000",
+      "same": true
+    },
+    {
+      "output": "passengers.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "passengers.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "passengers.fingerprint_clean",
+      "run1": "2692033944386054957473",
+      "run2": "2692033944386054957473",
+      "same": true
+    },
+    {
+      "output": "passengers.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "trips.rows_clean",
+      "run1": "2097157",
+      "run2": "2097157",
+      "same": true
+    },
+    {
+      "output": "trips.rows_removed",
+      "run1": "6303",
+      "run2": "6303",
+      "same": true
+    },
+    {
+      "output": "trips.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "trips.fingerprint_clean",
+      "run1": "3237289197452298102532",
+      "run2": "3237289197452298102532",
+      "same": true
+    },
+    {
+      "output": "trips.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "passenger_counts.rows_clean",
+      "run1": "1935157",
+      "run2": "1935157",
+      "same": true
+    },
+    {
+      "output": "passenger_counts.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "passenger_counts.rows_quarantined",
+      "run1": "5822",
+      "run2": "5822",
+      "same": true
+    },
+    {
+      "output": "passenger_counts.fingerprint_clean",
+      "run1": "12557145804977759345702",
+      "run2": "12557145804977759345702",
+      "same": true
+    },
+    {
+      "output": "passenger_counts.fingerprint_quarantine",
+      "run1": "-399984175805821846800",
+      "run2": "-399984175805821846800",
+      "same": true
+    },
+    {
+      "output": "tickets.rows_clean",
+      "run1": "2976868",
+      "run2": "2976868",
+      "same": true
+    },
+    {
+      "output": "tickets.rows_removed",
+      "run1": "44788",
+      "run2": "44788",
+      "same": true
+    },
+    {
+      "output": "tickets.rows_quarantined",
+      "run1": "8959",
+      "run2": "8959",
+      "same": true
+    },
+    {
+      "output": "tickets.fingerprint_clean",
+      "run1": "6608790349979434053057",
+      "run2": "6608790349979434053057",
+      "same": true
+    },
+    {
+      "output": "tickets.fingerprint_quarantine",
+      "run1": "1047696447247014745610",
+      "run2": "1047696447247014745610",
+      "same": true
+    },
+    {
+      "output": "delays.rows_clean",
+      "run1": "988828",
+      "run2": "988828",
+      "same": true
+    },
+    {
+      "output": "delays.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "delays.rows_quarantined",
+      "run1": "1982",
+      "run2": "1982",
+      "same": true
+    },
+    {
+      "output": "delays.fingerprint_clean",
+      "run1": "4136748191662909199587",
+      "run2": "4136748191662909199587",
+      "same": true
+    },
+    {
+      "output": "delays.fingerprint_quarantine",
+      "run1": "7968138103347414370",
+      "run2": "7968138103347414370",
+      "same": true
+    },
+    {
+      "output": "gps_events.rows_clean",
+      "run1": "1139087",
+      "run2": "1139087",
+      "same": true
+    },
+    {
+      "output": "gps_events.rows_removed",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "gps_events.rows_quarantined",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "gps_events.fingerprint_clean",
+      "run1": "2922277458976204927148",
+      "run2": "2922277458976204927148",
+      "same": true
+    },
+    {
+      "output": "gps_events.fingerprint_quarantine",
+      "run1": "0",
+      "run2": "0",
+      "same": true
+    },
+    {
+      "output": "cleaning_log.rows",
+      "run1": "121226",
+      "run2": "121226",
+      "same": true
+    },
+    {
+      "output": "cleaning_log.fingerprint",
+      "run1": "332405526021962947661",
+      "run2": "332405526021962947661",
+      "same": true
+    }
+  ]
+}

@@ -1,0 +1,497 @@
+{
+  "mode": "full",
+  "seconds": 771.7,
+  "log_file": "reports/processing_logs/clean_data_full_20260925_003116.log",
+  "all_reconciled": true,
+  "minimums": {
+    "tickets": {
+      "minimum": 2000000,
+      "clean_rows": 2976868,
+      "ok": true
+    },
+    "passenger_counts": {
+      "minimum": 600000,
+      "clean_rows": 1935157,
+      "ok": true
+    },
+    "delays": {
+      "minimum": 300000,
+      "clean_rows": 988828,
+      "ok": true
+    },
+    "routes": {
+      "minimum": 110,
+      "clean_rows": 118,
+      "ok": true
+    },
+    "stops": {
+      "minimum": 550,
+      "clean_rows": 756,
+      "ok": true
+    },
+    "vehicles": {
+      "minimum": 270,
+      "clean_rows": 775,
+      "ok": true
+    },
+    "passengers": {
+      "minimum": 55000,
+      "clean_rows": 58000,
+      "ok": true
+    }
+  },
+  "cleaning_log_rows": 121226,
+  "cleaning_log_fingerprint": "332405526021962947661",
+  "cleaning_log_counts": [
+    {
+      "table": "delays",
+      "rule_id": "DQ03b",
+      "action": "flag",
+      "rows": 1982
+    },
+    {
+      "table": "delays",
+      "rule_id": "DQ08a",
+      "action": "quarantine",
+      "rows": 1982
+    },
+    {
+      "table": "delays",
+      "rule_id": "DQ09a",
+      "action": "flag",
+      "rows": 2971
+    },
+    {
+      "table": "delays",
+      "rule_id": "DQ11",
+      "action": "correct",
+      "rows": 1982
+    },
+    {
+      "table": "delays",
+      "rule_id": "DQ16",
+      "action": "flag",
+      "rows": 2038
+    },
+    {
+      "table": "gps_events",
+      "rule_id": "DQ16",
+      "action": "flag",
+      "rows": 1778
+    },
+    {
+      "table": "passenger_counts",
+      "rule_id": "DQ01",
+      "action": "flag",
+      "rows": 11896
+    },
+    {
+      "table": "passenger_counts",
+      "rule_id": "DQ06",
+      "action": "quarantine",
+      "rows": 3881
+    },
+    {
+      "table": "passenger_counts",
+      "rule_id": "DQ10",
+      "action": "quarantine",
+      "rows": 1941
+    },
+    {
+      "table": "passenger_counts",
+      "rule_id": "DQ16",
+      "action": "flag",
+      "rows": 4203
+    },
+    {
+      "table": "route_stops",
+      "rule_id": "DQ13",
+      "action": "correct",
+      "rows": 84
+    },
+    {
+      "table": "routes",
+      "rule_id": "DQ14",
+      "action": "correct",
+      "rows": 3
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ02a",
+      "action": "correct",
+      "rows": 5964
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ02a",
+      "action": "flag",
+      "rows": 9
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ03a",
+      "action": "quarantine",
+      "rows": 5973
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ04",
+      "action": "remove",
+      "rows": 44788
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ07",
+      "action": "quarantine",
+      "rows": 2986
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ15",
+      "action": "flag",
+      "rows": 5973
+    },
+    {
+      "table": "tickets",
+      "rule_id": "DQ16",
+      "action": "flag",
+      "rows": 6083
+    },
+    {
+      "table": "trips",
+      "rule_id": "DQ02b",
+      "action": "correct",
+      "rows": 2103
+    },
+    {
+      "table": "trips",
+      "rule_id": "DQ05",
+      "action": "remove",
+      "rows": 6303
+    },
+    {
+      "table": "trips",
+      "rule_id": "DQ12",
+      "action": "correct",
+      "rows": 5855
+    },
+    {
+      "table": "trips",
+      "rule_id": "DQ12",
+      "action": "flag",
+      "rows": 448
+    }
+  ],
+  "tables": [
+    {
+      "table": "stops",
+      "rules": {
+        "DQ19": {
+          "hits": 0
+        }
+      },
+      "rows_parquet": 756,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 756,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 756,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "-243949110127684640613",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "routes",
+      "rules": {
+        "DQ14": {
+          "hits": 3,
+          "correct": 3
+        }
+      },
+      "rows_parquet": 118,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 118,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 118,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 3,
+      "reconciled": true,
+      "fingerprint_clean": "46092294528806261581",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "route_stops",
+      "rules": {
+        "DQ13": {
+          "hits": 84,
+          "correct": 84
+        }
+      },
+      "rows_parquet": 3210,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 3210,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 3210,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 84,
+      "reconciled": true,
+      "fingerprint_clean": "32448852181762186081",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "service_calendar",
+      "rules": {},
+      "rows_parquet": 11,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 11,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 11,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "-13308068823802634361",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "schedules",
+      "rules": {},
+      "rows_parquet": 12670,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 12670,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 12670,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "309368824399959856093",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "vehicles",
+      "rules": {},
+      "rows_parquet": 775,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 775,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 775,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "29671230827882102756",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "passengers",
+      "rules": {},
+      "rows_parquet": 58000,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 58000,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 58000,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 0,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "2692033944386054957473",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "trips",
+      "rules": {
+        "DQ05": {
+          "hits": 6303,
+          "remove": 6303,
+          "quarantine": 0
+        },
+        "DQ02b": {
+          "hits": 2103,
+          "correct": 2103
+        },
+        "DQ08b": {
+          "hits": 0
+        },
+        "DQ09b": {
+          "hits": 0
+        },
+        "DQ12": {
+          "hits": 6303,
+          "correct": 5855,
+          "flag": 448
+        },
+        "DQ17": {
+          "hits": 0
+        },
+        "DQ21": {
+          "hits": 0
+        }
+      },
+      "rows_parquet": 2103460,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 2103460,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 2097157,
+      "rows_removed": 6303,
+      "rows_quarantined": 0,
+      "rows_flagged": 448,
+      "rows_corrected": 7958,
+      "reconciled": true,
+      "fingerprint_clean": "3237289197452298102532",
+      "fingerprint_quarantine": "0"
+    },
+    {
+      "table": "passenger_counts",
+      "rules": {
+        "DQ01": {
+          "hits": 11896,
+          "flag": 11896
+        },
+        "DQ06": {
+          "hits": 3881,
+          "quarantine": 3881
+        },
+        "DQ10": {
+          "hits": 1941,
+          "quarantine": 1941
+        },
+        "DQ16": {
+          "hits": 4203,
+          "flag": 4203
+        }
+      },
+      "rows_parquet": 1940979,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 1940979,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 1935157,
+      "rows_removed": 0,
+      "rows_quarantined": 5822,
+      "rows_flagged": 16072,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "12557145804977759345702",
+      "fingerprint_quarantine": "-399984175805821846800"
+    },
+    {
+      "table": "tickets",
+      "rules": {
+        "DQ04": {
+          "hits": 44788,
+          "remove": 44788,
+          "quarantine": 0
+        },
+        "DQ02a": {
+          "hits": 5973,
+          "correct": 5964,
+          "flag": 9,
+          "recovered_from_ingestion_quarantine": 0
+        },
+        "DQ03a": {
+          "hits": 5973,
+          "quarantine": 5973
+        },
+        "DQ07": {
+          "hits": 0
+        },
+        "DQ15": {
+          "hits": 5973,
+          "flag": 5973
+        },
+        "DQ18": {
+          "hits": 0
+        },
+        "DQ20": {
+          "hits": 0
+        },
+        "DQ16": {
+          "hits": 6083,
+          "flag": 6083
+        }
+      },
+      "rows_parquet": 3027629,
+      "rows_ingestion_quarantine": 2986,
+      "rows_in": 3030615,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 2976868,
+      "rows_removed": 44788,
+      "rows_quarantined": 8959,
+      "rows_flagged": 12065,
+      "rows_corrected": 5964,
+      "reconciled": true,
+      "fingerprint_clean": "6608790349979434053057",
+      "fingerprint_quarantine": "1047696447247014745610"
+    },
+    {
+      "table": "delays",
+      "rules": {
+        "DQ03b": {
+          "hits": 1982,
+          "flag": 1982
+        },
+        "DQ08a": {
+          "hits": 1982,
+          "quarantine": 1982
+        },
+        "DQ09a": {
+          "hits": 2971,
+          "flag": 2971
+        },
+        "DQ11": {
+          "hits": 1316,
+          "correct": 1316,
+          "recovered_from_ingestion_quarantine": 666
+        },
+        "DQ16": {
+          "hits": 2038,
+          "flag": 2038
+        }
+      },
+      "rows_parquet": 990144,
+      "rows_ingestion_quarantine": 666,
+      "rows_in": 990810,
+      "recovered_from_ingestion_quarantine": 666,
+      "rows_clean": 988828,
+      "rows_removed": 0,
+      "rows_quarantined": 1982,
+      "rows_flagged": 6991,
+      "rows_corrected": 1982,
+      "reconciled": true,
+      "fingerprint_clean": "4136748191662909199587",
+      "fingerprint_quarantine": "7968138103347414370"
+    },
+    {
+      "table": "gps_events",
+      "rules": {
+        "DQ16": {
+          "hits": 1778,
+          "flag": 1778
+        }
+      },
+      "rows_parquet": 1139087,
+      "rows_ingestion_quarantine": 0,
+      "rows_in": 1139087,
+      "recovered_from_ingestion_quarantine": 0,
+      "rows_clean": 1139087,
+      "rows_removed": 0,
+      "rows_quarantined": 0,
+      "rows_flagged": 1778,
+      "rows_corrected": 0,
+      "reconciled": true,
+      "fingerprint_clean": "2922277458976204927148",
+      "fingerprint_quarantine": "0"
+    }
+  ]
+}

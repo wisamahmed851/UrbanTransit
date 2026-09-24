@@ -1,0 +1,1147 @@
+{
+  "mode": "full",
+  "seconds": 162.9,
+  "primary_keys": {
+    "passenger_counts": [
+      "count_id"
+    ],
+    "tickets": [
+      "ticket_id"
+    ],
+    "trips": [
+      "trip_id"
+    ],
+    "delays": [
+      "delay_id"
+    ],
+    "route_stops": [
+      "route_id",
+      "direction",
+      "stop_sequence"
+    ],
+    "routes": [
+      "route_id"
+    ],
+    "stops": [
+      "stop_id"
+    ]
+  },
+  "hdfs_violations": "hdfs://localhost:9000/urbantransit/dq/violations",
+  "hdfs_summary": "hdfs://localhost:9000/urbantransit/dq/summary.json",
+  "rules": [
+    {
+      "id": "DQ01",
+      "defect_type": "missing_ticket_records",
+      "table": "passenger_counts",
+      "severity": "medium",
+      "check": "count_vs_children",
+      "action": "flag",
+      "description": "Card validations counted on the vehicle (card_taps) exceed the ticket records stored for the trip",
+      "params": {
+        "count_column": "card_taps",
+        "child_table": "tickets",
+        "child_key": "ticket_id",
+        "join_column": "trip_id"
+      },
+      "table_rows": 1940979,
+      "affected_rows": 11896,
+      "affected_units": 11991,
+      "seconds": 36.5,
+      "samples": [
+        {
+          "record_key": "PC2509000737",
+          "column": "card_taps",
+          "observed_value": "6 counted vs 5 records",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000737\",\"trip_id\":\"T2509000737\",\"route_id\":\"R002\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0041\",\"boardings\":83,\"alightings\":84,\"max_load\":57,\"max_load_stop_id\":\"S0064\",\"denied_boardings\":0,\"card_taps\":6,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000741",
+          "column": "card_taps",
+          "observed_value": "3 counted vs 2 records",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000741\",\"trip_id\":\"T2509000741\",\"route_id\":\"R052\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0472\",\"boardings\":64,\"alightings\":64,\"max_load\":45,\"max_load_stop_id\":\"S0398\",\"denied_boardings\":0,\"card_taps\":3,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000790",
+          "column": "card_taps",
+          "observed_value": "2 counted vs 1 records",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000790\",\"trip_id\":\"T2509000790\",\"route_id\":\"R070\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0556\",\"boardings\":26,\"alightings\":25,\"max_load\":19,\"max_load_stop_id\":\"S0524\",\"denied_boardings\":0,\"card_taps\":2,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000868",
+          "column": "card_taps",
+          "observed_value": "5 counted vs 4 records",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000868\",\"trip_id\":\"T2509000868\",\"route_id\":\"R074\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0577\",\"boardings\":101,\"alightings\":100,\"max_load\":62,\"max_load_stop_id\":\"S0423\",\"denied_boardings\":0,\"card_taps\":5,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509001294",
+          "column": "card_taps",
+          "observed_value": "3 counted vs 2 records",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509001294\",\"trip_id\":\"T2509001294\",\"route_id\":\"R003\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0053\",\"boardings\":39,\"alightings\":39,\"max_load\":29,\"max_load_stop_id\":\"S0032\",\"denied_boardings\":0,\"card_taps\":3,\"year_month\":\"2025-09\"}"
+        }
+      ]
+    },
+    {
+      "id": "DQ02a",
+      "defect_type": "missing_route_ids",
+      "table": "tickets",
+      "severity": "high",
+      "check": "required_value",
+      "action": "correct",
+      "description": "Ticket without a route ID",
+      "params": {
+        "column": "route_id"
+      },
+      "table_rows": 3027629,
+      "affected_rows": 5973,
+      "affected_units": 5973,
+      "seconds": 2.2,
+      "samples": [
+        {
+          "record_key": "TK250900000332",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000332\",\"passenger_id\":\"P022620\",\"trip_id\":\"T2509000517\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0102\",\"exit_stop_id\":\"S0104\",\"entry_time\":\"2025-09-01T08:18:08.000Z\",\"exit_time\":\"2025-09-01T08:22:20.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"senior\",\"fare_amount\":15.0,"
+        },
+        {
+          "record_key": "TK250900001346",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900001346\",\"passenger_id\":\"P022115\",\"trip_id\":\"T2509001112\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0661\",\"exit_stop_id\":\"S0665\",\"entry_time\":\"2025-09-01T08:13:39.000Z\",\"exit_time\":\"2025-09-01T08:27:11.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":20."
+        },
+        {
+          "record_key": "TK250900001428",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900001428\",\"passenger_id\":\"P026525\",\"trip_id\":\"T2509001153\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0069\",\"exit_stop_id\":\"S0070\",\"entry_time\":\"2025-09-01T09:42:51.000Z\",\"exit_time\":\"2025-09-01T09:43:23.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":30."
+        },
+        {
+          "record_key": "TK250900002069",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900002069\",\"passenger_id\":\"P053136\",\"trip_id\":\"T2509001501\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0329\",\"exit_stop_id\":\"S0115\",\"entry_time\":\"2025-09-01T08:58:18.000Z\",\"exit_time\":\"2025-09-01T09:42:18.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"standard\",\"fare_amoun"
+        },
+        {
+          "record_key": "TK250900002592",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900002592\",\"passenger_id\":\"P014760\",\"trip_id\":\"T2509001857\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0285\",\"exit_stop_id\":\"S0334\",\"entry_time\":\"2025-09-01T10:24:11.000Z\",\"exit_time\":\"2025-09-01T10:42:53.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"standard\",\"fare_amoun"
+        }
+      ]
+    },
+    {
+      "id": "DQ02b",
+      "defect_type": "missing_route_ids",
+      "table": "trips",
+      "severity": "high",
+      "check": "required_value",
+      "action": "correct",
+      "description": "Trip without a route ID",
+      "params": {
+        "column": "route_id"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 2103,
+      "affected_units": 2103,
+      "seconds": 1.4,
+      "samples": [
+        {
+          "record_key": "T2509000944",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000944\",\"direction\":0,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000932\",\"vehicle_id\":\"V0655\",\"scheduled_departure\":\"2025-09-01T07:51:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:07:00.000Z\",\"actual_departure\":\"2025-09-01T07:51:48.000Z\",\"actual_arrival\":\""
+        },
+        {
+          "record_key": "T2509003044",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509003044\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000468\",\"vehicle_id\":\"V0452\",\"scheduled_departure\":\"2025-09-01T13:33:00.000Z\",\"scheduled_arrival\":\"2025-09-01T14:02:36.000Z\",\"actual_departure\":\"2025-09-01T13:33:01.000Z\",\"actual_arrival\":\""
+        },
+        {
+          "record_key": "T2509003203",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509003203\",\"direction\":0,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000183\",\"vehicle_id\":\"V0239\",\"scheduled_departure\":\"2025-09-01T14:06:00.000Z\",\"scheduled_arrival\":\"2025-09-01T15:03:36.000Z\",\"actual_departure\":\"2025-09-01T14:08:13.000Z\",\"actual_arrival\":\""
+        },
+        {
+          "record_key": "T2509004866",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509004866\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000329\",\"vehicle_id\":\"V0378\",\"scheduled_departure\":\"2025-09-01T18:15:00.000Z\",\"scheduled_arrival\":\"2025-09-01T19:08:30.000Z\",\"actual_departure\":\"2025-09-01T18:15:57.000Z\",\"actual_arrival\":\""
+        },
+        {
+          "record_key": "T2509006592",
+          "column": "route_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509006592\",\"direction\":0,\"service_date\":\"2025-09-02\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000051\",\"vehicle_id\":\"V0112\",\"scheduled_departure\":\"2025-09-02T06:35:00.000Z\",\"scheduled_arrival\":\"2025-09-02T07:15:42.000Z\",\"actual_departure\":\"2025-09-02T06:38:26.000Z\",\"actual_arrival\":\""
+        }
+      ]
+    },
+    {
+      "id": "DQ03a",
+      "defect_type": "invalid_stop_ids",
+      "table": "tickets",
+      "severity": "high",
+      "check": "foreign_key",
+      "action": "quarantine",
+      "description": "Ticket tap-in or tap-out stop does not exist in stops",
+      "params": {
+        "columns": [
+          "entry_stop_id",
+          "exit_stop_id"
+        ],
+        "parent_table": "stops",
+        "parent_key": "stop_id"
+      },
+      "table_rows": 3027629,
+      "affected_rows": 5973,
+      "affected_units": 5973,
+      "seconds": 4.7,
+      "samples": [
+        {
+          "record_key": "TK250900000026",
+          "column": "exit_stop_id",
+          "observed_value": "S9238",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000026\",\"passenger_id\":\"P027831\",\"trip_id\":\"T2509000106\",\"route_id\":\"R046\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0411\",\"exit_stop_id\":\"S9238\",\"entry_time\":\"2025-09-01T05:50:18.000Z\",\"exit_time\":\"2025-09-01T06:02:50.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
+        },
+        {
+          "record_key": "TK250900000258",
+          "column": "exit_stop_id",
+          "observed_value": "S9915",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000258\",\"passenger_id\":\"P011554\",\"trip_id\":\"T2509000432\",\"route_id\":\"R055\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0285\",\"exit_stop_id\":\"S9915\",\"entry_time\":\"2025-09-01T07:01:49.000Z\",\"exit_time\":\"2025-09-01T07:03:45.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+        },
+        {
+          "record_key": "TK250900001279",
+          "column": "entry_stop_id",
+          "observed_value": "S9746",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900001279\",\"passenger_id\":\"P011523\",\"trip_id\":\"T2509001078\",\"route_id\":\"R107\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S9746\",\"exit_stop_id\":\"S0691\",\"entry_time\":\"2025-09-01T08:07:18.000Z\",\"exit_time\":\"2025-09-01T08:16:23.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        },
+        {
+          "record_key": "TK250900001367",
+          "column": "entry_stop_id",
+          "observed_value": "S9407",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900001367\",\"passenger_id\":\"P019218\",\"trip_id\":\"T2509001118\",\"route_id\":\"R044\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S9407\",\"exit_stop_id\":\"S0399\",\"entry_time\":\"2025-09-01T08:23:30.000Z\",\"exit_time\":\"2025-09-01T08:35:40.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
+        },
+        {
+          "record_key": "TK250900002095",
+          "column": "exit_stop_id",
+          "observed_value": "S9455",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900002095\",\"passenger_id\":\"P017317\",\"trip_id\":\"T2509001520\",\"route_id\":\"R001\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0049\",\"exit_stop_id\":\"S9455\",\"entry_time\":\"2025-09-01T09:09:30.000Z\",\"exit_time\":\"2025-09-01T10:17:49.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        }
+      ]
+    },
+    {
+      "id": "DQ03b",
+      "defect_type": "invalid_stop_ids",
+      "table": "delays",
+      "severity": "medium",
+      "check": "foreign_key",
+      "action": "flag",
+      "description": "Delay recorded at a stop that does not exist in stops",
+      "params": {
+        "columns": [
+          "stop_id"
+        ],
+        "parent_table": "stops",
+        "parent_key": "stop_id"
+      },
+      "table_rows": 990144,
+      "affected_rows": 1982,
+      "affected_units": 1982,
+      "seconds": 3.6,
+      "samples": [
+        {
+          "record_key": "D25090000597",
+          "column": "stop_id",
+          "observed_value": "S9053",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000597\",\"trip_id\":\"T2509001351\",\"route_id\":\"R048\",\"stop_id\":\"S9053\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T09:05:22.000Z\",\"actual_arrival\":\"2025-09-01T09:10:34.000Z\",\"scheduled_departure\":\"2025-09-01T09:05:52.000Z\",\"actual_departure\":\"2025-09-01T09:11:08.000Z\""
+        },
+        {
+          "record_key": "D25090000912",
+          "column": "stop_id",
+          "observed_value": "S9711",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000912\",\"trip_id\":\"T2509002031\",\"route_id\":\"R053\",\"stop_id\":\"S9711\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T10:47:36.000Z\",\"actual_arrival\":\"2025-09-01T10:53:30.000Z\",\"scheduled_departure\":\"2025-09-01T10:48:06.000Z\",\"actual_departure\":\"2025-09-01T10:54:00.000Z\""
+        },
+        {
+          "record_key": "D25090001091",
+          "column": "stop_id",
+          "observed_value": "S9660",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001091\",\"trip_id\":\"T2509002508\",\"route_id\":\"R050\",\"stop_id\":\"S9660\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T12:10:00.000Z\",\"actual_arrival\":\"2025-09-01T12:05:44.000Z\",\"scheduled_departure\":\"2025-09-01T12:10:30.000Z\",\"actual_departure\":\"2025-09-01T12:06:20.000Z\""
+        },
+        {
+          "record_key": "D25090001137",
+          "column": "stop_id",
+          "observed_value": "S9033",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001137\",\"trip_id\":\"T2509002672\",\"route_id\":\"R016\",\"stop_id\":\"S9033\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T12:56:12.000Z\",\"actual_arrival\":\"2025-09-01T12:50:28.000Z\",\"scheduled_departure\":\"2025-09-01T12:56:42.000Z\",\"actual_departure\":\"2025-09-01T12:51:48.000Z\""
+        },
+        {
+          "record_key": "D25090001433",
+          "column": "stop_id",
+          "observed_value": "S9482",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001433\",\"trip_id\":\"T2509003657\",\"route_id\":\"R024\",\"stop_id\":\"S9482\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T16:38:30.000Z\",\"actual_arrival\":\"2025-09-01T16:49:56.000Z\",\"scheduled_departure\":\"2025-09-01T16:39:00.000Z\",\"actual_departure\":\"2025-09-01T16:52:53.000Z\""
+        }
+      ]
+    },
+    {
+      "id": "DQ04",
+      "defect_type": "duplicate_tickets",
+      "table": "tickets",
+      "severity": "high",
+      "check": "duplicate_key",
+      "action": "remove",
+      "description": "More than one row with the same ticket_id (duplicate transaction)",
+      "params": {},
+      "table_rows": 3027629,
+      "affected_rows": 44788,
+      "affected_units": 44788,
+      "seconds": 16.2,
+      "samples": [
+        {
+          "record_key": "TK250900000199",
+          "column": "ticket_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000199\",\"passenger_id\":\"P037447\",\"trip_id\":\"T2509000362\",\"route_id\":\"R053\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0449\",\"exit_stop_id\":\"S0002\",\"entry_time\":\"2025-09-01T06:52:04.000Z\",\"exit_time\":\"2025-09-01T07:01:29.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        },
+        {
+          "record_key": "TK250900000207",
+          "column": "ticket_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000207\",\"passenger_id\":\"P002575\",\"trip_id\":\"T2509000367\",\"route_id\":\"R004\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0102\",\"exit_stop_id\":\"S0098\",\"entry_time\":\"2025-09-01T06:38:39.000Z\",\"exit_time\":\"2025-09-01T06:49:26.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        },
+        {
+          "record_key": "TK250900000276",
+          "column": "ticket_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000276\",\"passenger_id\":\"P026894\",\"trip_id\":\"T2509000445\",\"route_id\":\"R012\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0060\",\"exit_stop_id\":\"S0125\",\"entry_time\":\"2025-09-01T07:14:25.000Z\",\"exit_time\":\"2025-09-01T07:20:38.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        },
+        {
+          "record_key": "TK250900000408",
+          "column": "ticket_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000408\",\"passenger_id\":\"P022386\",\"trip_id\":\"T2509000570\",\"route_id\":\"R002\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0005\",\"exit_stop_id\":\"S0069\",\"entry_time\":\"2025-09-01T07:44:35.000Z\",\"exit_time\":\"2025-09-01T08:32:11.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        },
+        {
+          "record_key": "TK250900000457",
+          "column": "ticket_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000457\",\"passenger_id\":\"P045303\",\"trip_id\":\"T2509000600\",\"route_id\":\"R031\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0256\",\"exit_stop_id\":\"S0004\",\"entry_time\":\"2025-09-01T08:02:35.000Z\",\"exit_time\":\"2025-09-01T08:16:18.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+        }
+      ]
+    },
+    {
+      "id": "DQ05",
+      "defect_type": "duplicate_trips",
+      "table": "trips",
+      "severity": "high",
+      "check": "duplicate_key",
+      "action": "remove",
+      "description": "More than one row with the same trip_id",
+      "params": {},
+      "table_rows": 2103460,
+      "affected_rows": 6303,
+      "affected_units": 6303,
+      "seconds": 10.5,
+      "samples": [
+        {
+          "record_key": "T2509000381",
+          "column": "trip_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000381\",\"route_id\":\"R038\",\"direction\":0,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000371\",\"vehicle_id\":\"V0407\",\"scheduled_departure\":\"2025-09-01T06:34:00.000Z\",\"scheduled_arrival\":\"2025-09-01T07:04:12.000Z\",\"actual_departure\":\"2025-09-01T06:34:00.000Z\","
+        },
+        {
+          "record_key": "T2509000425",
+          "column": "trip_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000425\",\"route_id\":\"R065\",\"direction\":0,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000641\",\"vehicle_id\":\"V0533\",\"scheduled_departure\":\"2025-09-01T06:43:00.000Z\",\"scheduled_arrival\":\"2025-09-01T07:16:48.000Z\",\"actual_departure\":\"2025-09-01T06:44:14.000Z\","
+        },
+        {
+          "record_key": "T2509000722",
+          "column": "trip_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000722\",\"route_id\":\"R003\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000027\",\"vehicle_id\":\"V0065\",\"scheduled_departure\":\"2025-09-01T07:25:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:50:00.000Z\",\"actual_departure\":\"2025-09-01T07:25:52.000Z\","
+        },
+        {
+          "record_key": "T2509000828",
+          "column": "trip_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000828\",\"route_id\":\"R002\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000017\",\"vehicle_id\":\"V0044\",\"scheduled_departure\":\"2025-09-01T07:38:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:54:12.000Z\",\"actual_departure\":\"2025-09-01T07:40:42.000Z\","
+        },
+        {
+          "record_key": "T2509000889",
+          "column": "trip_id",
+          "observed_value": "2 rows, identical_copies",
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000889\",\"route_id\":\"R053\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000527\",\"vehicle_id\":\"V0477\",\"scheduled_departure\":\"2025-09-01T07:45:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:36:06.000Z\",\"actual_departure\":\"2025-09-01T07:45:00.000Z\","
+        }
+      ]
+    },
+    {
+      "id": "DQ06",
+      "defect_type": "negative_passenger_counts",
+      "table": "passenger_counts",
+      "severity": "critical",
+      "check": "non_negative",
+      "action": "quarantine",
+      "description": "Negative passenger count",
+      "params": {
+        "columns": [
+          "boardings",
+          "alightings",
+          "max_load",
+          "denied_boardings",
+          "card_taps"
+        ]
+      },
+      "table_rows": 1940979,
+      "affected_rows": 3881,
+      "affected_units": 3881,
+      "seconds": 2.2,
+      "samples": [
+        {
+          "record_key": "PC2509000582",
+          "column": "alightings",
+          "observed_value": "-15",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000582\",\"trip_id\":\"T2509000582\",\"route_id\":\"R045\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0440\",\"boardings\":38,\"alightings\":-15,\"max_load\":28,\"max_load_stop_id\":\"S0407\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000773",
+          "column": "boardings",
+          "observed_value": "-35",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000773\",\"trip_id\":\"T2509000773\",\"route_id\":\"R014\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0195\",\"boardings\":-35,\"alightings\":37,\"max_load\":22,\"max_load_stop_id\":\"S0195\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000890",
+          "column": "max_load",
+          "observed_value": "-29",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000890\",\"trip_id\":\"T2509000890\",\"route_id\":\"R076\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0583\",\"boardings\":31,\"alightings\":30,\"max_load\":-29,\"max_load_stop_id\":\"S0059\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509001579",
+          "column": "max_load",
+          "observed_value": "-38",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509001579\",\"trip_id\":\"T2509001579\",\"route_id\":\"R012\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0175\",\"boardings\":25,\"alightings\":24,\"max_load\":-38,\"max_load_stop_id\":\"S0114\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509001848",
+          "column": "max_load",
+          "observed_value": "-4",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509001848\",\"trip_id\":\"T2509001848\",\"route_id\":\"R028\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0325\",\"boardings\":13,\"alightings\":13,\"max_load\":-4,\"max_load_stop_id\":\"S0315\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        }
+      ]
+    },
+    {
+      "id": "DQ07",
+      "defect_type": "invalid_timestamps",
+      "table": "tickets",
+      "severity": "high",
+      "check": "unparseable",
+      "action": "quarantine",
+      "description": "Timestamp that cannot be parsed (row was quarantined at ingestion)",
+      "params": {
+        "columns": [
+          "entry_time",
+          "exit_time"
+        ]
+      },
+      "table_rows": 3027629,
+      "affected_rows": 2986,
+      "affected_units": 2986,
+      "seconds": 1.2,
+      "samples": [
+        {
+          "record_key": "TK250900001729",
+          "column": "entry_time",
+          "observed_value": "1700000000",
+          "units": 1,
+          "record": "TK250900001729,P009337,T2509001329,R015,2025-09-01,S0200,S0204,1700000000,2025-09-01 09:00:45,single,standard,30.0,smart_card"
+        },
+        {
+          "record_key": "TK250900002054",
+          "column": "entry_time",
+          "observed_value": "N/A",
+          "units": 1,
+          "record": "TK250900002054,P024094,T2509001495,R089,2025-09-01,S0603,S0600,N/A,2025-09-01 09:31:52,single,standard,15.0,smart_card"
+        },
+        {
+          "record_key": "TK250900002168",
+          "column": "entry_time",
+          "observed_value": "2025-13-45 25:61:00",
+          "units": 1,
+          "record": "TK250900002168,P044866,T2509001564,R056,2025-09-01,S0437,S0434,2025-13-45 25:61:00,2025-09-01 09:19:35,monthly_pass,student,0.0,smart_card"
+        },
+        {
+          "record_key": "TK250900004514",
+          "column": "entry_time",
+          "observed_value": "2025-13-45 25:61:00",
+          "units": 1,
+          "record": "TK250900004514,P001663,T2509003433,R033,2025-09-01,S0223,S0274,2025-13-45 25:61:00,2025-09-01 15:31:11,single,standard,40.0,smart_card"
+        },
+        {
+          "record_key": "TK250900004711",
+          "column": "entry_time",
+          "observed_value": "2025-09-31 08:00:00",
+          "units": 1,
+          "record": "TK250900004711,P043120,T2509003550,R002,2025-09-01,S0061,S0060,2025-09-31 08:00:00,2025-09-01 15:49:35,single,standard,30.0,smart_card"
+        }
+      ]
+    },
+    {
+      "id": "DQ08a",
+      "defect_type": "impossible_arrival_times",
+      "table": "delays",
+      "severity": "high",
+      "check": "time_gap",
+      "action": "quarantine",
+      "description": "Actual arrival more than impossible_time_gap_hours away from the scheduled arrival",
+      "params": {
+        "column": "actual_arrival",
+        "reference": "scheduled_arrival"
+      },
+      "table_rows": 990144,
+      "affected_rows": 1982,
+      "affected_units": 1982,
+      "seconds": 1.9,
+      "samples": [
+        {
+          "record_key": "D25090000388",
+          "column": "actual_arrival",
+          "observed_value": "2025-09-03 09:04:19 vs 2025-09-01 08:49:14",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000388\",\"trip_id\":\"T2509000936\",\"route_id\":\"R001\",\"stop_id\":\"S0035\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T08:49:14.000Z\",\"actual_arrival\":\"2025-09-03T09:04:19.000Z\",\"scheduled_departure\":\"2025-09-01T08:49:44.000Z\",\"actual_departure\":\"2025-09-03T09:07:37.000Z\""
+        },
+        {
+          "record_key": "D25090000620",
+          "column": "actual_arrival",
+          "observed_value": "2025-08-31 09:28:22 vs 2025-09-01 09:23:09",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000620\",\"trip_id\":\"T2509001388\",\"route_id\":\"R063\",\"stop_id\":\"S0035\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T09:23:09.000Z\",\"actual_arrival\":\"2025-08-31T09:28:22.000Z\",\"scheduled_departure\":\"2025-09-01T09:23:39.000Z\",\"actual_departure\":\"2025-08-31T09:29:24.000Z\""
+        },
+        {
+          "record_key": "D25090001304",
+          "column": "actual_arrival",
+          "observed_value": "2125-08-08 14:55:09 vs 2025-09-01 15:01:48",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001304\",\"trip_id\":\"T2509003226\",\"route_id\":\"R031\",\"stop_id\":\"S0331\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T15:01:48.000Z\",\"actual_arrival\":\"2125-08-08T14:55:09.000Z\",\"scheduled_departure\":\"2025-09-01T15:02:18.000Z\",\"actual_departure\":\"2125-08-08T14:57:51.000Z\""
+        },
+        {
+          "record_key": "D25090001865",
+          "column": "actual_arrival",
+          "observed_value": "2025-09-03 17:31:37 vs 2025-09-01 17:34:06",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001865\",\"trip_id\":\"T2509004395\",\"route_id\":\"R100\",\"stop_id\":\"S0023\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T17:34:06.000Z\",\"actual_arrival\":\"2025-09-03T17:31:37.000Z\",\"scheduled_departure\":\"2025-09-01T17:34:36.000Z\",\"actual_departure\":\"2025-09-03T17:32:19.000Z\""
+        },
+        {
+          "record_key": "D25090002131",
+          "column": "actual_arrival",
+          "observed_value": "2025-08-31 19:01:10 vs 2025-09-01 18:54:32",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090002131\",\"trip_id\":\"T2509004858\",\"route_id\":\"R063\",\"stop_id\":\"S0035\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T18:54:32.000Z\",\"actual_arrival\":\"2025-08-31T19:01:10.000Z\",\"scheduled_departure\":\"2025-09-01T18:55:02.000Z\",\"actual_departure\":\"2025-08-31T19:01:46.000Z\""
+        }
+      ]
+    },
+    {
+      "id": "DQ08b",
+      "defect_type": "impossible_arrival_times",
+      "table": "trips",
+      "severity": "high",
+      "check": "time_gap",
+      "action": "quarantine",
+      "description": "Trip actual arrival more than impossible_time_gap_hours away from the scheduled arrival",
+      "params": {
+        "column": "actual_arrival",
+        "reference": "scheduled_arrival"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 1.8,
+      "samples": []
+    },
+    {
+      "id": "DQ09a",
+      "defect_type": "departure_before_arrival",
+      "table": "delays",
+      "severity": "medium",
+      "check": "time_order",
+      "action": "flag",
+      "description": "Departure from the stop recorded before the arrival at it",
+      "params": {
+        "earlier": "actual_arrival",
+        "later": "actual_departure"
+      },
+      "table_rows": 990144,
+      "affected_rows": 2971,
+      "affected_units": 2971,
+      "seconds": 1.5,
+      "samples": [
+        {
+          "record_key": "D25090000373",
+          "column": "actual_departure",
+          "observed_value": "2025-09-01 09:28:27 -> 2025-09-01 09:23:47",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000373\",\"trip_id\":\"T2509000899\",\"route_id\":\"R002\",\"stop_id\":\"S0070\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T09:03:12.000Z\",\"actual_arrival\":\"2025-09-01T09:28:27.000Z\",\"scheduled_departure\":\"2025-09-01T09:03:42.000Z\",\"actual_departure\":\"2025-09-01T09:23:47.000Z\""
+        },
+        {
+          "record_key": "D25090001028",
+          "column": "actual_departure",
+          "observed_value": "2025-09-01 12:02:23 -> 2025-09-01 12:00:26",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001028\",\"trip_id\":\"T2509002325\",\"route_id\":\"R002\",\"stop_id\":\"S0051\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T12:09:18.000Z\",\"actual_arrival\":\"2025-09-01T12:02:23.000Z\",\"scheduled_departure\":\"2025-09-01T12:09:48.000Z\",\"actual_departure\":\"2025-09-01T12:00:26.000Z\""
+        },
+        {
+          "record_key": "D25090001164",
+          "column": "actual_departure",
+          "observed_value": "2025-09-01 12:45:31 -> 2025-09-01 12:41:12",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001164\",\"trip_id\":\"T2509002764\",\"route_id\":\"R030\",\"stop_id\":\"S0114\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T12:40:12.000Z\",\"actual_arrival\":\"2025-09-01T12:45:31.000Z\",\"scheduled_departure\":\"2025-09-01T12:40:42.000Z\",\"actual_departure\":\"2025-09-01T12:41:12.000Z\""
+        },
+        {
+          "record_key": "D25090001584",
+          "column": "actual_departure",
+          "observed_value": "2025-09-01 16:59:51 -> 2025-09-01 16:53:53",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001584\",\"trip_id\":\"T2509003914\",\"route_id\":\"R081\",\"stop_id\":\"S0289\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T16:53:34.000Z\",\"actual_arrival\":\"2025-09-01T16:59:51.000Z\",\"scheduled_departure\":\"2025-09-01T16:54:04.000Z\",\"actual_departure\":\"2025-09-01T16:53:53.000Z\""
+        },
+        {
+          "record_key": "D25090002867",
+          "column": "actual_departure",
+          "observed_value": "2025-09-02 07:34:06 -> 2025-09-02 07:28:04",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090002867\",\"trip_id\":\"T2509006776\",\"route_id\":\"R086\",\"stop_id\":\"S0041\",\"service_date\":\"2025-09-02\",\"scheduled_arrival\":\"2025-09-02T07:25:21.000Z\",\"actual_arrival\":\"2025-09-02T07:34:06.000Z\",\"scheduled_departure\":\"2025-09-02T07:25:51.000Z\",\"actual_departure\":\"2025-09-02T07:28:04.000Z\""
+        }
+      ]
+    },
+    {
+      "id": "DQ09b",
+      "defect_type": "departure_before_arrival",
+      "table": "trips",
+      "severity": "high",
+      "check": "time_order",
+      "action": "quarantine",
+      "description": "Trip arrives at the last stop before it departed from the first",
+      "params": {
+        "earlier": "actual_departure",
+        "later": "actual_arrival"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 1.6,
+      "samples": []
+    },
+    {
+      "id": "DQ10",
+      "defect_type": "vehicle_capacity_violations",
+      "table": "passenger_counts",
+      "severity": "high",
+      "check": "capacity",
+      "action": "quarantine",
+      "description": "Peak load above capacity_violation_factor x the vehicle's design capacity",
+      "params": {
+        "load_column": "max_load",
+        "vehicle_column": "vehicle_id"
+      },
+      "table_rows": 1940979,
+      "affected_rows": 1941,
+      "affected_units": 1941,
+      "seconds": 2.2,
+      "samples": [
+        {
+          "record_key": "PC2509000377",
+          "column": "max_load",
+          "observed_value": "158 / capacity 70",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000377\",\"trip_id\":\"T2509000377\",\"route_id\":\"R055\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0487\",\"boardings\":16,\"alightings\":17,\"max_load\":158,\"max_load_stop_id\":\"S0457\",\"denied_boardings\":0,\"card_taps\":2,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000915",
+          "column": "max_load",
+          "observed_value": "204 / capacity 70",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000915\",\"trip_id\":\"T2509000915\",\"route_id\":\"R032\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0362\",\"boardings\":22,\"alightings\":21,\"max_load\":204,\"max_load_stop_id\":\"S0001\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509000974",
+          "column": "max_load",
+          "observed_value": "154 / capacity 70",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509000974\",\"trip_id\":\"T2509000974\",\"route_id\":\"R013\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0177\",\"boardings\":15,\"alightings\":15,\"max_load\":154,\"max_load_stop_id\":\"S0181\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509004409",
+          "column": "max_load",
+          "observed_value": "161 / capacity 70",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509004409\",\"trip_id\":\"T2509004409\",\"route_id\":\"R051\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0469\",\"boardings\":12,\"alightings\":10,\"max_load\":161,\"max_load_stop_id\":\"S0164\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        },
+        {
+          "record_key": "PC2509004973",
+          "column": "max_load",
+          "observed_value": "76 / capacity 30",
+          "units": 1,
+          "record": "{\"count_id\":\"PC2509004973\",\"trip_id\":\"T2509004973\",\"route_id\":\"R104\",\"service_date\":\"2025-09-01\",\"vehicle_id\":\"V0682\",\"boardings\":15,\"alightings\":16,\"max_load\":76,\"max_load_stop_id\":\"S0616\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2025-09\"}"
+        }
+      ]
+    },
+    {
+      "id": "DQ11",
+      "defect_type": "invalid_delay_values",
+      "table": "delays",
+      "severity": "medium",
+      "check": "value_range",
+      "action": "correct",
+      "description": "Delay value that is not numeric or outside the valid range",
+      "params": {
+        "column": "delay_minutes",
+        "min_param": "delay_valid_min_minutes",
+        "max_param": "delay_valid_max_minutes",
+        "include_unparseable": true
+      },
+      "table_rows": 990144,
+      "affected_rows": 1982,
+      "affected_units": 1982,
+      "seconds": 1.5,
+      "samples": [
+        {
+          "record_key": "D25090000162",
+          "column": "delay_minutes",
+          "observed_value": "unknown",
+          "units": 1,
+          "record": "D25090000162,T2509000545,R003,S0074,2025-09-01,2025-09-01 07:38:31,2025-09-01 07:46:01,2025-09-01 07:39:01,2025-09-01 07:46:50,unknown,junction_bottleneck,avl"
+        },
+        {
+          "record_key": "D25090000500",
+          "column": "delay_minutes",
+          "observed_value": "9999.0",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000500\",\"trip_id\":\"T2509001162\",\"route_id\":\"R015\",\"stop_id\":\"S0024\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T09:08:36.000Z\",\"actual_arrival\":\"2025-09-01T09:16:52.000Z\",\"scheduled_departure\":\"2025-09-01T09:09:06.000Z\",\"actual_departure\":\"2025-09-01T09:18:51.000Z\""
+        },
+        {
+          "record_key": "D25090000672",
+          "column": "delay_minutes",
+          "observed_value": "1440.5",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090000672\",\"trip_id\":\"T2509001490\",\"route_id\":\"R019\",\"stop_id\":\"S0234\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T10:06:54.000Z\",\"actual_arrival\":\"2025-09-01T10:19:52.000Z\",\"scheduled_departure\":\"2025-09-01T10:07:24.000Z\",\"actual_departure\":\"2025-09-01T10:20:49.000Z\""
+        },
+        {
+          "record_key": "D25090001401",
+          "column": "delay_minutes",
+          "observed_value": "n/a",
+          "units": 1,
+          "record": "D25090001401,T2509003554,R062,S0019,2025-09-01,2025-09-01 15:17:30,2025-09-01 15:22:54,2025-09-01 15:18:00,2025-09-01 15:23:24,n/a,late_vehicle,avl"
+        },
+        {
+          "record_key": "D25090001602",
+          "column": "delay_minutes",
+          "observed_value": "-999.0",
+          "units": 1,
+          "record": "{\"delay_id\":\"D25090001602\",\"trip_id\":\"T2509003949\",\"route_id\":\"R080\",\"stop_id\":\"S0124\",\"service_date\":\"2025-09-01\",\"scheduled_arrival\":\"2025-09-01T16:37:04.000Z\",\"actual_arrival\":\"2025-09-01T16:46:44.000Z\",\"scheduled_departure\":\"2025-09-01T16:37:34.000Z\",\"actual_departure\":\"2025-09-01T16:49:17.000Z\""
+        }
+      ]
+    },
+    {
+      "id": "DQ12",
+      "defect_type": "missing_vehicle_assignments",
+      "table": "trips",
+      "severity": "medium",
+      "check": "required_value",
+      "action": "correct",
+      "description": "Trip without a vehicle",
+      "params": {
+        "column": "vehicle_id"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 6303,
+      "affected_units": 6303,
+      "seconds": 1.9,
+      "samples": [
+        {
+          "record_key": "T2509000016",
+          "column": "vehicle_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000016\",\"route_id\":\"R027\",\"direction\":0,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000261\",\"scheduled_departure\":\"2025-09-01T05:32:00.000Z\",\"scheduled_arrival\":\"2025-09-01T06:04:18.000Z\",\"actual_departure\":\"2025-09-01T05:36:59.000Z\",\"actual_arrival\":\"202"
+        },
+        {
+          "record_key": "T2509000552",
+          "column": "vehicle_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000552\",\"route_id\":\"R003\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000027\",\"scheduled_departure\":\"2025-09-01T07:05:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:30:00.000Z\",\"actual_departure\":\"2025-09-01T07:05:00.000Z\",\"actual_arrival\":\"202"
+        },
+        {
+          "record_key": "T2509000738",
+          "column": "vehicle_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000738\",\"route_id\":\"R009\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000087\",\"scheduled_departure\":\"2025-09-01T07:27:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:17:06.000Z\",\"actual_departure\":\"2025-09-01T07:27:09.000Z\",\"actual_arrival\":\"202"
+        },
+        {
+          "record_key": "T2509000830",
+          "column": "vehicle_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509000830\",\"route_id\":\"R022\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000217\",\"scheduled_departure\":\"2025-09-01T07:38:00.000Z\",\"scheduled_arrival\":\"2025-09-01T08:34:12.000Z\",\"actual_departure\":\"2025-09-01T07:42:27.000Z\",\"actual_arrival\":\"202"
+        },
+        {
+          "record_key": "T2509001526",
+          "column": "vehicle_id",
+          "observed_value": null,
+          "units": 1,
+          "record": "{\"trip_id\":\"T2509001526\",\"route_id\":\"R051\",\"direction\":1,\"service_date\":\"2025-09-01\",\"service_id\":\"WKDY_AUT25\",\"schedule_id\":\"SCH000507\",\"scheduled_departure\":\"2025-09-01T09:01:00.000Z\",\"scheduled_arrival\":\"2025-09-01T09:47:12.000Z\",\"actual_departure\":\"2025-09-01T09:06:16.000Z\",\"actual_arrival\":\"202"
+        }
+      ]
+    },
+    {
+      "id": "DQ13",
+      "defect_type": "broken_stop_sequences",
+      "table": "route_stops",
+      "severity": "high",
+      "check": "sequence_integrity",
+      "action": "correct",
+      "description": "Stop sequence of a route direction is not exactly 1..n (gap or repeated number)",
+      "params": {
+        "group_by": [
+          "route_id",
+          "direction"
+        ],
+        "sequence_column": "stop_sequence"
+      },
+      "table_rows": 3210,
+      "affected_rows": 7,
+      "affected_units": 7,
+      "seconds": 3.2,
+      "samples": [
+        {
+          "record_key": "R005|1",
+          "column": "stop_sequence",
+          "observed_value": "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "R018|0",
+          "column": "stop_sequence",
+          "observed_value": "1,2,3,4,5,6,7,8,8,10,11,12",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "R031|0",
+          "column": "stop_sequence",
+          "observed_value": "1,2,3,4,5,6,8,9,10,11,12,13,14,15,16",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "R047|1",
+          "column": "stop_sequence",
+          "observed_value": "1,2,3,4,5,5,7,8,9,10,11,12",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "R070|0",
+          "column": "stop_sequence",
+          "observed_value": "1,2,3,4,5,6,7,8,9,10,12,13,14,15",
+          "units": 1,
+          "record": ""
+        }
+      ]
+    },
+    {
+      "id": "DQ14",
+      "defect_type": "invalid_route_distances",
+      "table": "routes",
+      "severity": "medium",
+      "check": "value_range",
+      "action": "correct",
+      "description": "Route distance not positive or implausibly large",
+      "params": {
+        "column": "distance_km",
+        "min_param": "route_distance_min_km",
+        "max_param": "route_distance_max_km",
+        "min_exclusive": true
+      },
+      "table_rows": 118,
+      "affected_rows": 3,
+      "affected_units": 3,
+      "seconds": 1.6,
+      "samples": [
+        {
+          "record_key": "R003",
+          "column": "distance_km",
+          "observed_value": "-28.33",
+          "units": 1,
+          "record": "{\"route_id\":\"R003\",\"route_code\":\"BRT3\",\"route_name\":\"DHA Bazaar - Shahdara School\",\"route_type\":\"brt\",\"origin_stop_id\":\"S0071\",\"destination_stop_id\":\"S0084\",\"distance_km\":-28.33,\"base_fare\":30.0,\"fare_per_km\":2.0,\"launch_date\":\"2016-09-18\",\"status\":\"active\"}"
+        },
+        {
+          "record_key": "R055",
+          "column": "distance_km",
+          "observed_value": "0.0",
+          "units": 1,
+          "record": "{\"route_id\":\"R055\",\"route_code\":\"L21\",\"route_name\":\"Shalimar School 2 - Harbanspura\",\"route_type\":\"local\",\"origin_stop_id\":\"S0286\",\"destination_stop_id\":\"S0022\",\"distance_km\":0.0,\"base_fare\":20.0,\"fare_per_km\":1.5,\"launch_date\":\"2022-06-15\",\"status\":\"active\"}"
+        },
+        {
+          "record_key": "R096",
+          "column": "distance_km",
+          "observed_value": "9999.0",
+          "units": 1,
+          "record": "{\"route_id\":\"R096\",\"route_code\":\"F10\",\"route_name\":\"Harbanspura Plaza 6 - Harbanspura\",\"route_type\":\"feeder\",\"origin_stop_id\":\"S0644\",\"destination_stop_id\":\"S0022\",\"distance_km\":9999.0,\"base_fare\":15.0,\"fare_per_km\":1.2,\"launch_date\":\"2016-04-01\",\"status\":\"active\"}"
+        }
+      ]
+    },
+    {
+      "id": "DQ15",
+      "defect_type": "unknown_passengers",
+      "table": "tickets",
+      "severity": "medium",
+      "check": "foreign_key",
+      "action": "flag",
+      "description": "Ticket for a passenger ID that is not registered",
+      "params": {
+        "columns": [
+          "passenger_id"
+        ],
+        "parent_table": "passengers",
+        "parent_key": "passenger_id"
+      },
+      "table_rows": 3027629,
+      "affected_rows": 5973,
+      "affected_units": 5973,
+      "seconds": 4.8,
+      "samples": [
+        {
+          "record_key": "TK250900000067",
+          "column": "passenger_id",
+          "observed_value": "P992202",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000067\",\"passenger_id\":\"P992202\",\"trip_id\":\"T2509000216\",\"route_id\":\"R002\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0067\",\"exit_stop_id\":\"S0068\",\"entry_time\":\"2025-09-01T06:54:12.000Z\",\"exit_time\":\"2025-09-01T06:54:35.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
+        },
+        {
+          "record_key": "TK250900000084",
+          "column": "passenger_id",
+          "observed_value": "P940322",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000084\",\"passenger_id\":\"P940322\",\"trip_id\":\"T2509000227\",\"route_id\":\"R028\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0314\",\"exit_stop_id\":\"S0186\",\"entry_time\":\"2025-09-01T06:19:02.000Z\",\"exit_time\":\"2025-09-01T06:29:48.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
+        },
+        {
+          "record_key": "TK250900000786",
+          "column": "passenger_id",
+          "observed_value": "P993578",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900000786\",\"passenger_id\":\"P993578\",\"trip_id\":\"T2509000780\",\"route_id\":\"R004\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0099\",\"exit_stop_id\":\"S0096\",\"entry_time\":\"2025-09-01T07:55:31.000Z\",\"exit_time\":\"2025-09-01T08:02:57.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+        },
+        {
+          "record_key": "TK250900001211",
+          "column": "passenger_id",
+          "observed_value": "P950381",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900001211\",\"passenger_id\":\"P950381\",\"trip_id\":\"T2509001044\",\"route_id\":\"R047\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0399\",\"exit_stop_id\":\"S0172\",\"entry_time\":\"2025-09-01T08:19:28.000Z\",\"exit_time\":\"2025-09-01T08:41:24.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+        },
+        {
+          "record_key": "TK250900002204",
+          "column": "passenger_id",
+          "observed_value": "P901765",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK250900002204\",\"passenger_id\":\"P901765\",\"trip_id\":\"T2509001595\",\"route_id\":\"R031\",\"service_date\":\"2025-09-01\",\"entry_stop_id\":\"S0290\",\"exit_stop_id\":\"S0004\",\"entry_time\":\"2025-09-01T10:10:34.000Z\",\"exit_time\":\"2025-09-01T10:13:30.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+        }
+      ]
+    },
+    {
+      "id": "DQ16",
+      "defect_type": "missing_trip_records",
+      "table": "trips",
+      "severity": "high",
+      "check": "missing_parent",
+      "action": "flag",
+      "description": "Trip IDs referenced by counts/tickets/delays/GPS but absent from trips (child rows are flagged)",
+      "params": {
+        "parent_key": "trip_id",
+        "child_tables": [
+          "passenger_counts",
+          "tickets",
+          "delays",
+          "gps_events"
+        ],
+        "child_column": "trip_id"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 4203,
+      "affected_units": 4203,
+      "seconds": 14.9,
+      "samples": [
+        {
+          "record_key": "T2509000593",
+          "column": "trip_id",
+          "observed_value": "passenger_counts,tickets",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "T2509000727",
+          "column": "trip_id",
+          "observed_value": "delays,passenger_counts,tickets",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "T2509000907",
+          "column": "trip_id",
+          "observed_value": "passenger_counts,tickets",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "T2509001250",
+          "column": "trip_id",
+          "observed_value": "delays,passenger_counts,tickets",
+          "units": 1,
+          "record": ""
+        },
+        {
+          "record_key": "T2509001714",
+          "column": "trip_id",
+          "observed_value": "passenger_counts,tickets",
+          "units": 1,
+          "record": ""
+        }
+      ]
+    },
+    {
+      "id": "DQ17",
+      "defect_type": "unknown_vehicle_ids",
+      "table": "trips",
+      "severity": "medium",
+      "check": "foreign_key",
+      "action": "flag",
+      "description": "Trip operated by a vehicle not present in vehicles",
+      "params": {
+        "columns": [
+          "vehicle_id"
+        ],
+        "parent_table": "vehicles",
+        "parent_key": "vehicle_id"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 2.2,
+      "samples": []
+    },
+    {
+      "id": "DQ18",
+      "defect_type": "future_timestamps",
+      "table": "tickets",
+      "severity": "high",
+      "check": "timestamp_date_window",
+      "action": "quarantine",
+      "description": "Tap-in time outside the timestamp_date_window_days around the service date",
+      "params": {
+        "column": "entry_time",
+        "date_column": "service_date"
+      },
+      "table_rows": 3027629,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 2.0,
+      "samples": []
+    },
+    {
+      "id": "DQ19",
+      "defect_type": "out_of_bounds_coordinates",
+      "table": "stops",
+      "severity": "medium",
+      "check": "geo_bounds",
+      "action": "correct",
+      "description": "Stop coordinates outside the operating area",
+      "params": {
+        "lat": "latitude",
+        "lon": "longitude"
+      },
+      "table_rows": 756,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 0.4,
+      "samples": []
+    },
+    {
+      "id": "DQ20",
+      "defect_type": "negative_fares",
+      "table": "tickets",
+      "severity": "medium",
+      "check": "non_negative",
+      "action": "flag",
+      "description": "Negative fare amount",
+      "params": {
+        "columns": [
+          "fare_amount"
+        ]
+      },
+      "table_rows": 3027629,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 1.1,
+      "samples": []
+    },
+    {
+      "id": "DQ21",
+      "defect_type": "orphan_route_ids",
+      "table": "trips",
+      "severity": "medium",
+      "check": "foreign_key",
+      "action": "flag",
+      "description": "Trip for a route ID not present in routes",
+      "params": {
+        "columns": [
+          "route_id"
+        ],
+        "parent_table": "routes",
+        "parent_key": "route_id"
+      },
+      "table_rows": 2103460,
+      "affected_rows": 0,
+      "affected_units": 0,
+      "seconds": 1.8,
+      "samples": []
+    }
+  ]
+}

@@ -1,0 +1,2021 @@
+{
+  "mode": "hidden_like",
+  "seconds": 179.1,
+  "tables": [
+    {
+      "table": "stops",
+      "rows": 773,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 773,
+          "distinct_exact": true,
+          "min": "S0001",
+          "max": "S0773"
+        },
+        {
+          "column": "stop_name",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 773,
+          "distinct_exact": true,
+          "min": "Airport",
+          "max": "Wapda Town Colony"
+        },
+        {
+          "column": "latitude",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 770,
+          "distinct_exact": true,
+          "min": "0.0",
+          "max": "74.343387",
+          "mean": 31.533068102199216,
+          "std": 2.9342007152284415,
+          "p25": 31.512364,
+          "median": 31.543765,
+          "p75": 31.579755
+        },
+        {
+          "column": "longitude",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 769,
+          "distinct_exact": true,
+          "min": "0.0",
+          "max": "74.472863",
+          "mean": 73.94455695860279,
+          "std": 5.105733642310443,
+          "p25": 74.299183,
+          "median": 74.340491,
+          "p75": 74.38596
+        },
+        {
+          "column": "zone",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "A",
+          "max": "C",
+          "top_values": [
+            [
+              "B",
+              512
+            ],
+            [
+              "A",
+              243
+            ],
+            [
+              "C",
+              18
+            ]
+          ]
+        },
+        {
+          "column": "stop_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "hub",
+          "max": "terminal",
+          "top_values": [
+            [
+              "regular",
+              625
+            ],
+            [
+              "terminal",
+              120
+            ],
+            [
+              "hub",
+              28
+            ]
+          ]
+        },
+        {
+          "column": "has_shelter",
+          "type": "boolean",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "false",
+          "max": "true"
+        },
+        {
+          "column": "opened_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 119,
+          "distinct_exact": true,
+          "min": "2005-01-01",
+          "max": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "table": "routes",
+      "rows": 123,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 123,
+          "distinct_exact": true,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "route_code",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 123,
+          "distinct_exact": true,
+          "min": "BRT1",
+          "max": "T33"
+        },
+        {
+          "column": "route_name",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 123,
+          "distinct_exact": true,
+          "min": "Airport - Mall Road GPO",
+          "max": "Walton School - Anarkali"
+        },
+        {
+          "column": "route_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "brt",
+          "max": "trunk",
+          "top_values": [
+            [
+              "local",
+              57
+            ],
+            [
+              "trunk",
+              33
+            ],
+            [
+              "feeder",
+              28
+            ],
+            [
+              "brt",
+              5
+            ]
+          ]
+        },
+        {
+          "column": "origin_stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 120,
+          "distinct_exact": true,
+          "min": "S0001",
+          "max": "S0769"
+        },
+        {
+          "column": "destination_stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 34,
+          "distinct_exact": true,
+          "min": "S0001",
+          "max": "S0595"
+        },
+        {
+          "column": "distance_km",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 116,
+          "distinct_exact": true,
+          "min": "-11.48",
+          "max": "9999.0",
+          "mean": 91.44260162601634,
+          "std": 900.6729681924071,
+          "p25": 7.24,
+          "median": 10.58,
+          "p75": 12.55
+        },
+        {
+          "column": "base_fare",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "15.0",
+          "max": "30.0",
+          "mean": 20.609756097560975,
+          "std": 4.027841927851899,
+          "p25": 20.0,
+          "median": 20.0,
+          "p75": 25.0
+        },
+        {
+          "column": "fare_per_km",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "1.2",
+          "max": "2.0",
+          "mean": 1.532520325203252,
+          "std": 0.23276524970180992,
+          "p25": 1.5,
+          "median": 1.5,
+          "p75": 1.8
+        },
+        {
+          "column": "launch_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 121,
+          "distinct_exact": true,
+          "min": "2012-04-10",
+          "max": "2026-10-15"
+        },
+        {
+          "column": "status",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 1,
+          "distinct_exact": true,
+          "min": "active",
+          "max": "active",
+          "top_values": [
+            [
+              "active",
+              123
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "route_stops",
+      "rows": 3351,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 123,
+          "distinct_exact": true,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "direction",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "0",
+          "max": "1",
+          "mean": 0.5004476275738585,
+          "std": 0.5000744208969458,
+          "p25": 0,
+          "median": 1,
+          "p75": 1
+        },
+        {
+          "column": "stop_sequence",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 25,
+          "distinct_exact": true,
+          "min": "1",
+          "max": "25",
+          "mean": 7.827812593255745,
+          "std": 4.7337986975943425,
+          "p25": 4,
+          "median": 7,
+          "p75": 11
+        },
+        {
+          "column": "stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 773,
+          "distinct_exact": true,
+          "min": "S0001",
+          "max": "S0773"
+        },
+        {
+          "column": "distance_from_start_km",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2615,
+          "distinct_exact": true,
+          "min": "0.0",
+          "max": "28.334",
+          "mean": 5.916933452700689,
+          "std": 4.6659896922098865,
+          "p25": 2.356,
+          "median": 5.102,
+          "p75": 8.553
+        },
+        {
+          "column": "scheduled_offset_min",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 547,
+          "distinct_exact": true,
+          "min": "0.0",
+          "max": "73.9",
+          "mean": 19.864786630856468,
+          "std": 14.617338966257188,
+          "p25": 7.9,
+          "median": 17.4,
+          "p75": 29.6
+        },
+        {
+          "column": "is_timing_point",
+          "type": "boolean",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "false",
+          "max": "true"
+        }
+      ]
+    },
+    {
+      "table": "service_calendar",
+      "rows": 4,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "service_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "HOL",
+          "max": "WKDY_AUT26",
+          "top_values": [
+            [
+              "HOL",
+              1
+            ],
+            [
+              "SAT_AUT26",
+              1
+            ],
+            [
+              "SUN_AUT26",
+              1
+            ],
+            [
+              "WKDY_AUT26",
+              1
+            ]
+          ]
+        },
+        {
+          "column": "service_name",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "Public holiday service",
+          "max": "Weekday autumn 2026",
+          "top_values": [
+            [
+              "Public holiday service",
+              1
+            ],
+            [
+              "Saturday autumn 2026",
+              1
+            ],
+            [
+              "Sunday autumn 2026",
+              1
+            ],
+            [
+              "Weekday autumn 2026",
+              1
+            ]
+          ]
+        },
+        {
+          "column": "day_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "holiday",
+          "max": "weekday",
+          "top_values": [
+            [
+              "holiday",
+              1
+            ],
+            [
+              "saturday",
+              1
+            ],
+            [
+              "sunday",
+              1
+            ],
+            [
+              "weekday",
+              1
+            ]
+          ]
+        },
+        {
+          "column": "timetable_period",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "all_year",
+          "max": "autumn_2026",
+          "top_values": [
+            [
+              "autumn_2026",
+              3
+            ],
+            [
+              "all_year",
+              1
+            ]
+          ]
+        },
+        {
+          "column": "days_of_week",
+          "type": "array<string>",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": null,
+          "distinct_exact": true,
+          "min": null,
+          "max": null
+        },
+        {
+          "column": "start_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 1,
+          "distinct_exact": true,
+          "min": "2026-09-01",
+          "max": "2026-09-01"
+        },
+        {
+          "column": "end_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "2026-10-31",
+          "max": "2026-12-31"
+        },
+        {
+          "column": "exceptions",
+          "type": "array<struct<date:date,exception_type:string,reason:string>>",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": null,
+          "distinct_exact": true,
+          "min": null,
+          "max": null
+        }
+      ]
+    },
+    {
+      "table": "schedules",
+      "rows": 4920,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "schedule_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4920,
+          "distinct_exact": true,
+          "min": "SCH000001",
+          "max": "SCH004920"
+        },
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 123,
+          "distinct_exact": true,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "service_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "HOL",
+          "max": "WKDY_AUT26",
+          "top_values": [
+            [
+              "HOL",
+              1230
+            ],
+            [
+              "SAT_AUT26",
+              1230
+            ],
+            [
+              "SUN_AUT26",
+              1230
+            ],
+            [
+              "WKDY_AUT26",
+              1230
+            ]
+          ]
+        },
+        {
+          "column": "direction",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "0",
+          "max": "1",
+          "mean": 0.5,
+          "std": 0.5000508207553284,
+          "p25": 0,
+          "median": 0,
+          "p75": 1
+        },
+        {
+          "column": "period",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 5,
+          "distinct_exact": true,
+          "min": "am_peak",
+          "max": "pm_peak",
+          "top_values": [
+            [
+              "am_peak",
+              984
+            ],
+            [
+              "early",
+              984
+            ],
+            [
+              "evening",
+              984
+            ],
+            [
+              "midday",
+              984
+            ],
+            [
+              "pm_peak",
+              984
+            ]
+          ]
+        },
+        {
+          "column": "start_time",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 5,
+          "distinct_exact": true,
+          "min": "05:30",
+          "max": "19:30",
+          "top_values": [
+            [
+              "05:30",
+              984
+            ],
+            [
+              "07:00",
+              984
+            ],
+            [
+              "10:00",
+              984
+            ],
+            [
+              "16:00",
+              984
+            ],
+            [
+              "19:30",
+              984
+            ]
+          ]
+        },
+        {
+          "column": "end_time",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 5,
+          "distinct_exact": true,
+          "min": "07:00",
+          "max": "22:30",
+          "top_values": [
+            [
+              "07:00",
+              984
+            ],
+            [
+              "10:00",
+              984
+            ],
+            [
+              "16:00",
+              984
+            ],
+            [
+              "19:30",
+              984
+            ],
+            [
+              "22:30",
+              984
+            ]
+          ]
+        },
+        {
+          "column": "headway_min",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 25,
+          "distinct_exact": true,
+          "min": "8",
+          "max": "135",
+          "mean": 56.739430894308946,
+          "std": 29.312221558090112,
+          "p25": 34,
+          "median": 45,
+          "p75": 75
+        },
+        {
+          "column": "planned_runtime_min",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 551,
+          "distinct_exact": true,
+          "min": "8.2",
+          "max": "89.5",
+          "mean": 33.69089430894309,
+          "std": 14.405422055725627,
+          "p25": 22.8,
+          "median": 32.4,
+          "p75": 42.7
+        },
+        {
+          "column": "valid_from",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "2026-09-01",
+          "max": "2026-10-15"
+        },
+        {
+          "column": "valid_to",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "2026-10-31",
+          "max": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "table": "vehicles",
+      "rows": 819,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "vehicle_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 819,
+          "distinct_exact": true,
+          "min": "V0001",
+          "max": "V0819"
+        },
+        {
+          "column": "registration_no",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 818,
+          "distinct_exact": true,
+          "min": "LEA-1028",
+          "max": "LEZ-9763"
+        },
+        {
+          "column": "vehicle_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "articulated",
+          "max": "standard",
+          "top_values": [
+            [
+              "standard",
+              613
+            ],
+            [
+              "articulated",
+              121
+            ],
+            [
+              "minibus",
+              85
+            ]
+          ]
+        },
+        {
+          "column": "capacity_seated",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "22",
+          "max": "48",
+          "mean": 36.31990231990232,
+          "std": 6.447093846172204,
+          "p25": 36,
+          "median": 36,
+          "p75": 36
+        },
+        {
+          "column": "capacity_total",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "30",
+          "max": "150",
+          "mean": 77.66788766788767,
+          "std": 32.466753079990134,
+          "p25": 70,
+          "median": 70,
+          "p75": 70
+        },
+        {
+          "column": "depot",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 5,
+          "distinct_exact": true,
+          "min": "Airport Depot",
+          "max": "Township Depot",
+          "top_values": [
+            [
+              "Airport Depot",
+              280
+            ],
+            [
+              "Shahdara Depot",
+              249
+            ],
+            [
+              "Gulberg Depot",
+              160
+            ],
+            [
+              "Thokar Depot",
+              92
+            ],
+            [
+              "Township Depot",
+              38
+            ]
+          ]
+        },
+        {
+          "column": "fuel_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "cng",
+          "max": "hybrid",
+          "top_values": [
+            [
+              "cng",
+              367
+            ],
+            [
+              "diesel",
+              287
+            ],
+            [
+              "electric",
+              94
+            ],
+            [
+              "hybrid",
+              71
+            ]
+          ]
+        },
+        {
+          "column": "commission_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 751,
+          "distinct_exact": true,
+          "min": "2012-01-04",
+          "max": "2026-10-08"
+        },
+        {
+          "column": "has_apc",
+          "type": "boolean",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "false",
+          "max": "true"
+        },
+        {
+          "column": "status",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": true,
+          "min": "active",
+          "max": "spare",
+          "top_values": [
+            [
+              "active",
+              789
+            ],
+            [
+              "spare",
+              30
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "passengers",
+      "rows": 62000,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "passenger_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 62000,
+          "distinct_exact": true,
+          "min": "P000001",
+          "max": "P062000"
+        },
+        {
+          "column": "card_number",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 62000,
+          "distinct_exact": true,
+          "min": "UTC-1000-0002842",
+          "max": "UTC-9998-0054417"
+        },
+        {
+          "column": "passenger_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": true,
+          "min": "disabled",
+          "max": "student",
+          "top_values": [
+            [
+              "regular",
+              43411
+            ],
+            [
+              "student",
+              12464
+            ],
+            [
+              "senior",
+              4855
+            ],
+            [
+              "disabled",
+              1270
+            ]
+          ]
+        },
+        {
+          "column": "age_group",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 5,
+          "distinct_exact": true,
+          "min": "18_25",
+          "max": "under_18",
+          "top_values": [
+            [
+              "26_40",
+              18713
+            ],
+            [
+              "18_25",
+              18588
+            ],
+            [
+              "41_60",
+              12516
+            ],
+            [
+              "60_plus",
+              7163
+            ],
+            [
+              "under_18",
+              5020
+            ]
+          ]
+        },
+        {
+          "column": "gender",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "F",
+          "max": "X",
+          "top_values": [
+            [
+              "M",
+              36089
+            ],
+            [
+              "F",
+              24660
+            ],
+            [
+              "X",
+              1251
+            ]
+          ]
+        },
+        {
+          "column": "home_stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 772,
+          "distinct_exact": true,
+          "min": "S0001",
+          "max": "S0773"
+        },
+        {
+          "column": "registration_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2850,
+          "distinct_exact": true,
+          "min": "2019-01-01",
+          "max": "2026-10-26"
+        },
+        {
+          "column": "card_status",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": true,
+          "min": "active",
+          "max": "expired",
+          "top_values": [
+            [
+              "active",
+              58800
+            ],
+            [
+              "expired",
+              1857
+            ],
+            [
+              "blocked",
+              1343
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "trips",
+      "rows": 423099,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "trip_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 406417,
+          "distinct_exact": false,
+          "min": "T2609000001",
+          "max": "T2610217238"
+        },
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 845,
+          "null_pct": 0.2,
+          "distinct": 119,
+          "distinct_exact": false,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "direction",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "0",
+          "max": "1",
+          "mean": 0.5001949898250764,
+          "std": 0.5000005528582262,
+          "p25": 0,
+          "median": 1,
+          "p75": 1
+        },
+        {
+          "column": "service_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 61,
+          "distinct_exact": false,
+          "min": "2026-09-01",
+          "max": "2026-10-31"
+        },
+        {
+          "column": "service_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": false,
+          "min": "SAT_AUT26",
+          "max": "WKDY_AUT26",
+          "top_values": [
+            [
+              "WKDY_AUT26",
+              327977
+            ],
+            [
+              "SAT_AUT26",
+              54414
+            ],
+            [
+              "SUN_AUT26",
+              40708
+            ]
+          ]
+        },
+        {
+          "column": "schedule_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3687,
+          "distinct_exact": false,
+          "min": "SCH000001",
+          "max": "SCH003690"
+        },
+        {
+          "column": "vehicle_id",
+          "type": "string",
+          "nulls": 1691,
+          "null_pct": 0.4,
+          "distinct": 1804,
+          "distinct_exact": false,
+          "min": "V0001",
+          "max": "V9999"
+        },
+        {
+          "column": "original_vehicle_id",
+          "type": "string",
+          "nulls": 422486,
+          "null_pct": 99.855,
+          "distinct": 425,
+          "distinct_exact": false,
+          "min": "V0001",
+          "max": "V0812"
+        },
+        {
+          "column": "scheduled_departure",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 59770,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:30:00",
+          "max": "2026-10-31 22:29:00"
+        },
+        {
+          "column": "scheduled_arrival",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 294074,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:43:48",
+          "max": "2026-10-31 23:29:24"
+        },
+        {
+          "column": "actual_departure",
+          "type": "timestamp",
+          "nulls": 7177,
+          "null_pct": 1.696,
+          "distinct": 340934,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:30:00",
+          "max": "2026-10-31 22:32:17"
+        },
+        {
+          "column": "actual_arrival",
+          "type": "timestamp",
+          "nulls": 7177,
+          "null_pct": 1.696,
+          "distinct": 384611,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:45:21",
+          "max": "2026-10-31 23:28:57"
+        },
+        {
+          "column": "trip_status",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "cancelled",
+          "max": "completed",
+          "top_values": [
+            [
+              "completed",
+              415922
+            ],
+            [
+              "cancelled",
+              7177
+            ]
+          ]
+        },
+        {
+          "column": "trip_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "event_extra",
+          "max": "regular",
+          "top_values": [
+            [
+              "regular",
+              422763
+            ],
+            [
+              "event_extra",
+              336
+            ]
+          ]
+        },
+        {
+          "column": "cancellation_reason",
+          "type": "string",
+          "nulls": 415922,
+          "null_pct": 98.304,
+          "distinct": 3,
+          "distinct_exact": false,
+          "min": "driver_shortage",
+          "max": "vehicle_unavailable",
+          "top_values": [
+            [
+              null,
+              415922
+            ],
+            [
+              "driver_shortage",
+              5050
+            ],
+            [
+              "vehicle_unavailable",
+              1496
+            ],
+            [
+              "road_closure",
+              631
+            ]
+          ]
+        },
+        {
+          "column": "year_month",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "2026-09",
+          "max": "2026-10",
+          "top_values": [
+            [
+              "2026-10",
+              217455
+            ],
+            [
+              "2026-09",
+              205644
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "passenger_counts",
+      "rows": 388348,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "count_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 390311,
+          "distinct_exact": false,
+          "min": "PC2609000001",
+          "max": "PC2610217238"
+        },
+        {
+          "column": "trip_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 372146,
+          "distinct_exact": false,
+          "min": "T2609000001",
+          "max": "T2610217238"
+        },
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 119,
+          "distinct_exact": false,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "service_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 61,
+          "distinct_exact": false,
+          "min": "2026-09-01",
+          "max": "2026-10-31"
+        },
+        {
+          "column": "vehicle_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 775,
+          "distinct_exact": false,
+          "min": "V0001",
+          "max": "V0819"
+        },
+        {
+          "column": "boardings",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 394,
+          "distinct_exact": false,
+          "min": "-39",
+          "max": "354",
+          "mean": 41.190571343228235,
+          "std": 41.724680170723,
+          "p25": 13,
+          "median": 28,
+          "p75": 53
+        },
+        {
+          "column": "alightings",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 395,
+          "distinct_exact": false,
+          "min": "-39",
+          "max": "355",
+          "mean": 41.19819852297424,
+          "std": 41.73354767432294,
+          "p25": 14,
+          "median": 28,
+          "p75": 53
+        },
+        {
+          "column": "max_load",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 357,
+          "distinct_exact": false,
+          "min": "-39",
+          "max": "523",
+          "mean": 27.534026182702114,
+          "std": 28.398477664560147,
+          "p25": 9,
+          "median": 18,
+          "p75": 36
+        },
+        {
+          "column": "max_load_stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 714,
+          "distinct_exact": false,
+          "min": "S0001",
+          "max": "S0773"
+        },
+        {
+          "column": "denied_boardings",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 438,
+          "distinct_exact": false,
+          "min": "0",
+          "max": "1021",
+          "mean": 2.318214591036905,
+          "std": 18.010409190133675,
+          "p25": 0,
+          "median": 0,
+          "p75": 0
+        },
+        {
+          "column": "card_taps",
+          "type": "int",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 32,
+          "distinct_exact": false,
+          "min": "0",
+          "max": "32",
+          "mean": 1.4856803691534397,
+          "std": 2.1233319139405373,
+          "p25": 0,
+          "median": 1,
+          "p75": 2
+        },
+        {
+          "column": "year_month",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "2026-09",
+          "max": "2026-10",
+          "top_values": [
+            [
+              "2026-10",
+              199159
+            ],
+            [
+              "2026-09",
+              189189
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "tickets",
+      "rows": 629170,
+      "rows_quarantined_at_ingestion": 1236,
+      "columns": [
+        {
+          "column": "ticket_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 617709,
+          "distinct_exact": false,
+          "min": "TK260900000001",
+          "max": "TK261000357477"
+        },
+        {
+          "column": "passenger_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 59271,
+          "distinct_exact": false,
+          "min": "P000001",
+          "max": "P999918"
+        },
+        {
+          "column": "trip_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 244161,
+          "distinct_exact": false,
+          "min": "T2609000002",
+          "max": "T2610217238"
+        },
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 1854,
+          "null_pct": 0.295,
+          "distinct": 119,
+          "distinct_exact": false,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "service_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 61,
+          "distinct_exact": false,
+          "min": "2026-09-01",
+          "max": "2026-10-31"
+        },
+        {
+          "column": "entry_stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 1375,
+          "distinct_exact": false,
+          "min": "S0001",
+          "max": "S9999"
+        },
+        {
+          "column": "exit_stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 1369,
+          "distinct_exact": false,
+          "min": "S0001",
+          "max": "S9998"
+        },
+        {
+          "column": "entry_time",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 549732,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:34:02",
+          "max": "2027-10-31 19:29:30"
+        },
+        {
+          "column": "exit_time",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 550868,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:40:14",
+          "max": "2027-10-31 19:50:25"
+        },
+        {
+          "column": "ticket_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": false,
+          "min": "day_pass",
+          "max": "single",
+          "top_values": [
+            [
+              "single",
+              432632
+            ],
+            [
+              "monthly_pass",
+              156011
+            ],
+            [
+              "day_pass",
+              40527
+            ]
+          ]
+        },
+        {
+          "column": "fare_category",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 4,
+          "distinct_exact": false,
+          "min": "disabled",
+          "max": "student",
+          "top_values": [
+            [
+              "standard",
+              439081
+            ],
+            [
+              "student",
+              125926
+            ],
+            [
+              "senior",
+              50735
+            ],
+            [
+              "disabled",
+              13428
+            ]
+          ]
+        },
+        {
+          "column": "fare_amount",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 33,
+          "distinct_exact": false,
+          "min": "-90.0",
+          "max": "85.0",
+          "mean": 19.74460002860912,
+          "std": 17.65916299927529,
+          "p25": 0.0,
+          "median": 20.0,
+          "p75": 30.0
+        },
+        {
+          "column": "payment_method",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "mobile_qr",
+          "max": "smart_card",
+          "top_values": [
+            [
+              "smart_card",
+              538134
+            ],
+            [
+              "mobile_qr",
+              91036
+            ]
+          ]
+        },
+        {
+          "column": "year_month",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "2026-09",
+          "max": "2026-10",
+          "top_values": [
+            [
+              "2026-10",
+              361728
+            ],
+            [
+              "2026-09",
+              267442
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "delays",
+      "rows": 218504,
+      "rows_quarantined_at_ingestion": 220,
+      "columns": [
+        {
+          "column": "delay_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 223585,
+          "distinct_exact": false,
+          "min": "D26090000001",
+          "max": "D26100110556"
+        },
+        {
+          "column": "trip_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 162803,
+          "distinct_exact": false,
+          "min": "T2609000003",
+          "max": "T2610217233"
+        },
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 119,
+          "distinct_exact": false,
+          "min": "R001",
+          "max": "R123"
+        },
+        {
+          "column": "stop_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 786,
+          "distinct_exact": false,
+          "min": "S0001",
+          "max": "S9999"
+        },
+        {
+          "column": "service_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 61,
+          "distinct_exact": false,
+          "min": "2026-09-01",
+          "max": "2026-10-31"
+        },
+        {
+          "column": "scheduled_arrival",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 185253,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:33:07",
+          "max": "2026-10-31 23:29:24"
+        },
+        {
+          "column": "actual_arrival",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 206382,
+          "distinct_exact": false,
+          "min": "2026-08-31 10:37:38",
+          "max": "2126-10-07 07:36:55"
+        },
+        {
+          "column": "scheduled_departure",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 182554,
+          "distinct_exact": false,
+          "min": "2026-09-01 05:33:37",
+          "max": "2026-10-31 23:29:54"
+        },
+        {
+          "column": "actual_departure",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 210163,
+          "distinct_exact": false,
+          "min": "2026-08-31 10:38:17",
+          "max": "2126-10-07 07:39:17"
+        },
+        {
+          "column": "delay_minutes",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 5253,
+          "distinct_exact": false,
+          "min": "-999.0",
+          "max": "9999.0",
+          "mean": 14.809514288068014,
+          "std": 228.43341088881576,
+          "p25": -2.07,
+          "median": 8.18,
+          "p75": 14.27
+        },
+        {
+          "column": "delay_reason",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 9,
+          "distinct_exact": false,
+          "min": "disruption",
+          "max": "vehicle_breakdown",
+          "top_values": [
+            [
+              "early_running",
+              56211
+            ],
+            [
+              "junction_bottleneck",
+              37358
+            ],
+            [
+              "traffic_congestion",
+              36181
+            ],
+            [
+              "passenger_boarding",
+              31201
+            ],
+            [
+              "disruption",
+              31140
+            ]
+          ]
+        },
+        {
+          "column": "record_source",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": false,
+          "min": "avl",
+          "max": "driver_report",
+          "top_values": [
+            [
+              "avl",
+              202554
+            ],
+            [
+              "driver_report",
+              14764
+            ],
+            [
+              "controller",
+              1186
+            ]
+          ]
+        },
+        {
+          "column": "year_month",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 2,
+          "distinct_exact": false,
+          "min": "2026-09",
+          "max": "2026-10",
+          "top_values": [
+            [
+              "2026-10",
+              110445
+            ],
+            [
+              "2026-09",
+              108059
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "table": "gps_events",
+      "rows": 619166,
+      "rows_quarantined_at_ingestion": 0,
+      "columns": [
+        {
+          "column": "event_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 616662,
+          "distinct_exact": false,
+          "min": "G2609140000001",
+          "max": "G2609160200173"
+        },
+        {
+          "column": "vehicle_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 783,
+          "distinct_exact": false,
+          "min": "V0001",
+          "max": "V0789"
+        },
+        {
+          "column": "trip_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 21542,
+          "distinct_exact": false,
+          "min": "T2609087586",
+          "max": "T2609109630"
+        },
+        {
+          "column": "route_id",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 117,
+          "distinct_exact": false,
+          "min": "R001",
+          "max": "R120"
+        },
+        {
+          "column": "stop_id",
+          "type": "string",
+          "nulls": 298832,
+          "null_pct": 48.264,
+          "distinct": 764,
+          "distinct_exact": false,
+          "min": "S0001",
+          "max": "S0763"
+        },
+        {
+          "column": "event_time",
+          "type": "timestamp",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 175058,
+          "distinct_exact": false,
+          "min": "2026-09-14 05:30:00",
+          "max": "2026-09-16 23:35:39"
+        },
+        {
+          "column": "event_type",
+          "type": "string",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": false,
+          "min": "in_transit",
+          "max": "stop_departure",
+          "top_values": [
+            [
+              "in_transit",
+              298832
+            ],
+            [
+              "stop_arrival",
+              298832
+            ],
+            [
+              "stop_departure",
+              21502
+            ]
+          ]
+        },
+        {
+          "column": "latitude",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 147255,
+          "distinct_exact": false,
+          "min": "31.434614",
+          "max": "31.646435",
+          "mean": 31.545372776857313,
+          "std": 0.036638342263743656,
+          "p25": 31.520061,
+          "median": 31.543231,
+          "p75": 31.571896
+        },
+        {
+          "column": "longitude",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 168253,
+          "distinct_exact": false,
+          "min": "74.225811",
+          "max": "74.473101",
+          "mean": 74.33995945967825,
+          "std": 0.04436925067473617,
+          "p25": 74.310136,
+          "median": 74.336834,
+          "p75": 74.369737
+        },
+        {
+          "column": "speed_kmh",
+          "type": "double",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 670,
+          "distinct_exact": false,
+          "min": "0.0",
+          "max": "70.0",
+          "mean": 13.778571174773717,
+          "std": 18.766989222064474,
+          "p25": 0.0,
+          "median": 0.0,
+          "p75": 22.2
+        },
+        {
+          "column": "event_date",
+          "type": "date",
+          "nulls": 0,
+          "null_pct": 0.0,
+          "distinct": 3,
+          "distinct_exact": false,
+          "min": "2026-09-14",
+          "max": "2026-09-16"
+        }
+      ]
+    }
+  ]
+}
