@@ -36,8 +36,17 @@ SPARK_CONF = {
     "spark.local.dir": SPARK_LOCAL_DIR,
     "spark.driver.memory": _env("SPARK_DRIVER_MEMORY", "2g"),
     "spark.sql.shuffle.partitions": _env("SPARK_SHUFFLE_PARTITIONS", "8"),
+    # Timestamps in the raw files are local transit time without a zone; keeping the session
+    # in UTC means Spark never shifts them.
     "spark.sql.session.timeZone": "UTC",
     "spark.hadoop.fs.defaultFS": HDFS_URI,
+    # Strict date/time parsing: an impossible value like 2025-13-45 becomes a parse failure
+    # (-> quarantine) instead of being silently rolled over by the legacy parser.
+    "spark.sql.legacy.timeParserPolicy": "CORRECTED",
+    "spark.sql.parquet.compression.codec": "snappy",
+    "spark.sql.adaptive.enabled": "true",               # merge small shuffle partitions automatically
+    "spark.sql.adaptive.coalescePartitions.enabled": "true",
+    "spark.ui.showConsoleProgress": "false",            # keep job logs readable
 }
 
 # ---- MySQL ----
