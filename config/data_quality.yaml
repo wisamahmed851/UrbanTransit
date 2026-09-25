@@ -24,6 +24,7 @@ params:
   route_distance_max_km: 300
   timestamp_date_window_days: [-1, 2]   # event time must fall between service_date-1 and service_date+2
   geo_bounds: {lat_min: 31.2, lat_max: 31.8, lon_min: 74.0, lon_max: 74.6}   # operating area (set per city)
+  overlap_tolerance_seconds: 0          # DQ22: a tap-in this many seconds before the previous tap-out is still accepted
   sample_rows: 5                        # sample violating rows shown per rule in the report
   minimum_volumes:                      # SRS minimums that must still hold after cleaning
     apply_to_modes: [full]
@@ -164,3 +165,8 @@ rules:
      action: flag,
      description: "Trip for a route ID not present in routes",
      rationale: "The trip happened; the route is not in the route list (e.g. a route added later). Flag."}
+  - {id: DQ22, defect_type: overlapping_journeys, table: tickets, severity: medium,
+     check: overlapping_intervals, params: {group_by: passenger_id, start: entry_time, end: exit_time},
+     action: flag,
+     description: "Card taps in before its previous journey has ended (one card on two journeys at once)",
+     rationale: "One card cannot ride two journeys at the same time: this is card sharing (or a clock/generator fault). Each journey is still a real boarding, so it stays in stop demand and O-D; only the link to one person is doubtful, so flag and let passenger-level analyses (segmentation) decide."}

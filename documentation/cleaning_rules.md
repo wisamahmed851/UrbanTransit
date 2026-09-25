@@ -40,6 +40,7 @@ Principle: prefer **flag** or **quarantine** whenever a correction would be a gu
 | DQ19 | out_of_bounds_coordinates | stops | medium | **correct** | method=swap_coordinates | flag | Swapped latitude/longitude is a common entry error and swapping back is verifiable (the result must fall inside the operating area); anything else (e.g. 0,0) is flagged. |
 | DQ20 | negative_fares | tickets | medium | **flag** | - | - | A negative fare is an accounting error of unknown size; keep the journey for demand/O-D but flag it for revenue analysis. |
 | DQ21 | orphan_route_ids | trips | medium | **flag** | - | - | The trip happened; the route is not in the route list (e.g. a route added later). Flag. |
+| DQ22 | overlapping_journeys | tickets | medium | **flag** | - | - | One card cannot ride two journeys at the same time: this is card sharing (or a clock/generator fault). Each journey is still a real boarding, so it stays in stop demand and O-D; only the link to one person is doubtful, so flag and let passenger-level analyses (segmentation) decide. |
 
 ## Thresholds (from `params`)
 
@@ -54,6 +55,7 @@ Principle: prefer **flag** or **quarantine** whenever a correction would be a gu
 | route_distance_max_km | 300 |
 | timestamp_date_window_days | [-1, 2] |
 | geo_bounds | {'lat_min': 31.2, 'lat_max': 31.8, 'lon_min': 74.0, 'lon_max': 74.6} |
+| overlap_tolerance_seconds | 0 |
 | sample_rows | 5 |
 
 ## Rows quarantined at ingestion (Phase 2)

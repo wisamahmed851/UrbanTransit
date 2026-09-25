@@ -27,6 +27,7 @@ import yaml
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import LongType, StringType, StructField, StructType
+from pyspark.sql.window import Window
 
 from spark_jobs.common import hdfs_uri
 from spark_jobs.schemas import FORMATS, SCHEMAS
@@ -262,13 +263,30 @@ def check_count_vs_children(d: DQData, rule, P):
                                 F.col("_children").cast("string"), F.lit(" records")), F.col("_missing"))
 
 
+def check_overlapping_intervals(d: DQData, rule, P):
+    """Within one group (e.g. one smart card), an interval that starts before an earlier one has ended.
+
+    Rows are ordered by start time, then primary key. The LATER row is reported; observed_value is
+    the overlap in seconds against the latest end time of all earlier rows in the group (so a long
+    earlier journey still counts, not only the immediately previous one).
+    """
+    p, t = rule["params"], rule["table"]
+    w = (Window.partitionBy(p["group_by"]).orderBy(p["start"], *primary_key(t))
+         .rowsBetween(Window.unboundedPreceding, -1))
+    df = (d.table(t).filter(F.col(p["group_by"]).isNotNull() & F.col(p["start"]).isNotNull())
+          .withColumn("_prev_end", F.max(p["end"]).over(w)))
+    overlap = F.unix_timestamp("_prev_end") - F.unix_timestamp(p["start"])
+    bad = df.filter(overlap > P.get("overlap_tolerance_seconds", 0))
+    return _violations(bad, rule, p["start"], overlap)
+
+
 CHECKS = {
     "required_value": check_required_value, "foreign_key": check_foreign_key, "duplicate_key": check_duplicate_key,
     "non_negative": check_non_negative, "unparseable": check_unparseable, "time_gap": check_time_gap,
     "time_order": check_time_order, "capacity": check_capacity, "value_range": check_value_range,
     "sequence_integrity": check_sequence_integrity, "missing_parent": check_missing_parent,
     "timestamp_date_window": check_timestamp_date_window, "geo_bounds": check_geo_bounds,
-    "count_vs_children": check_count_vs_children,
+    "count_vs_children": check_count_vs_children, "overlapping_intervals": check_overlapping_intervals,
 }
 
 

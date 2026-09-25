@@ -1,0 +1,57 @@
+{
+  "rule": "DQ22",
+  "defect_type": "overlapping_journeys",
+  "table": "tickets",
+  "action": "flag",
+  "source": "clean",
+  "mode": "full",
+  "hdfs_violations": "hdfs://localhost:9000/urbantransit/dq/rule_checks/clean/rule_id=DQ22",
+  "table_rows": 2976868,
+  "affected_rows": 36260,
+  "affected_pct": 1.2181,
+  "affected_units": 36260,
+  "observed_value_percentiles": {
+    "p10": 126.0,
+    "p50": 772.0,
+    "p90": 2371.0,
+    "p99": 4026.0,
+    "max": 6578.0
+  },
+  "samples": [
+    {
+      "table": "tickets",
+      "record_key": "TK250900000374",
+      "column": "entry_time",
+      "observed_value": "1486",
+      "units": 1
+    },
+    {
+      "table": "tickets",
+      "record_key": "TK250900000505",
+      "column": "entry_time",
+      "observed_value": "2448",
+      "units": 1
+    },
+    {
+      "table": "tickets",
+      "record_key": "TK250900000749",
+      "column": "entry_time",
+      "observed_value": "305",
+      "units": 1
+    },
+    {
+      "table": "tickets",
+      "record_key": "TK250900000772",
+      "column": "entry_time",
+      "observed_value": "818",
+      "units": 1
+    },
+    {
+      "table": "tickets",
+      "record_key": "TK250900000870",
+      "column": "entry_time",
+      "observed_value": "173",
+      "units": 1
+    }
+  ]
+}
