@@ -1,0 +1,92 @@
+# Phase 5 analytics parameters. Occupancy categories and bunching ratios come from
+# config/thresholds.yaml; the on-time band comes from config/phase4.yaml (delay).
+# Every value here is a documented analytical choice, not a measured number.
+
+# Clock periods by scheduled-departure hour (inclusive). Peak *detection* uses the
+# leak-free peak_hour_indicator_asof; these periods only label the day.
+time_periods:
+  - { name: early_morning, from_hour: 0,  to_hour: 6 }
+  - { name: morning_peak,  from_hour: 7,  to_hour: 9 }
+  - { name: midday,        from_hour: 10, to_hour: 15 }
+  - { name: evening_peak,  from_hour: 16, to_hour: 18 }
+  - { name: evening,       from_hour: 19, to_hour: 23 }
+
+expansion:
+  # A route x month x period cell needs this many card tickets on measured trips for its
+  # own factor; otherwise route x month, then system x month is used.
+  min_tickets_per_cell: 30
+
+peak:
+  asof_peak_rate: 0.5          # hour/period is "peak" if >= 50% of its trips are flagged by peak_hour_indicator_asof
+
+overcrowding:
+  overload_categories: [Overcrowded, Critical]
+  underload_categories: [Low]
+  min_days_observed: 4         # a route/direction/day-of-week/period cell needs 4 normal days to be judged
+  persistent_min_days: 4       # overloaded on >= 4 days ...
+  persistent_min_share: 0.5    # ... and on >= 50% of the observed days
+  one_off_max_days: 2          # overloaded on 1-2 days only = one-off
+
+underutilized:
+  max_avg_occupancy: 0.25
+  max_p90_occupancy: 0.50
+  min_trips_per_hour: 2        # below this, cutting service harms coverage -> "low use, low frequency"
+  min_measured_trips: 30
+
+route_scoring:
+  min_service_days: 28         # newer routes (launched mid-year) -> "Insufficient Data"
+  min_demand_coverage: 0.5     # share of operated trips with passenger counts
+  target_occupancy: 0.70       # occupancy score peaks here (neither empty nor crowded)
+  stop_hotspot_share: 0.6      # >= 60% of overloaded trips peak at one stop -> stop-specific overcrowding
+  high_percentile: 0.6
+  low_percentile: 0.4
+  weights: { demand: 0.20, occupancy: 0.10, punctuality: 0.15, delay_frequency: 0.15,
+             travel_time: 0.10, reliability: 0.10, load: 0.10, utilization: 0.10 }
+
+delay:
+  congestion_extra_min: 1.0    # peak-period mean arrival delay this much above midday = congestion pattern
+  consistent_share_of_days: 0.75
+  min_days: 20
+  min_vehicle_trips: 100
+  bottleneck_top_share: 0.05   # top 5% of stops by delay-record rate ...
+  bottleneck_min_records: 50   # ... with at least 50 delay records
+  distance_bands_km: [5, 10, 15, 20]
+
+frequency:
+  too_little_avg_occupancy: 0.85
+  too_little_overload_share: 0.20
+  too_much_avg_occupancy: 0.30
+  too_much_p90_occupancy: 0.50
+  min_trips_per_hour: 2
+
+supply:
+  target_load: 0.85            # design load for recommended capacity
+  excess_demand_utilization: 0.90
+  excess_supply_utilization: 0.30
+  excess_demand_denied_per_trip: 1.0
+
+events:
+  baseline_days: 56            # same weekday over the previous 8 weeks (current week excluded)
+  min_baseline_days: 4
+  spike_ratio: 1.5
+  drop_ratio: 0.5
+  city_event_min_routes: 3
+
+anomalies:
+  abnormal_delay_min: 60
+  travel_time_low_ratio: 0.5
+  travel_time_high_ratio: 2.0
+  stop_spike_ratio: 3.0
+  stop_drop_ratio: 0.2
+  stop_min_baseline: 20
+  duplicate_tap_seconds: 120
+
+segmentation:
+  commuter_min_days_per_week: 3
+  commuter_min_weekday_share: 0.8
+  weekend_min_share: 0.5
+  long_distance_percentile: 0.8   # avg journey km at or above the 80th percentile of passengers
+  peak_min_share: 0.7
+
+output_partitions: 1
+large_output_partitions: 4
