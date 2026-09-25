@@ -1,0 +1,32 @@
+{
+  "task": "delay_severity",
+  "algorithm": "logistic_regression",
+  "selected_params": {
+    "regParam": 0.01
+  },
+  "metrics": {
+    "train": {
+      "accuracy": 0.792208,
+      "macro_f1": 0.723792
+    },
+    "validation": {
+      "accuracy": 0.81372,
+      "macro_f1": 0.750757
+    },
+    "test": {
+      "accuracy": 0.772877,
+      "macro_f1": 0.700389
+    }
+  },
+  "validation_tuning": {
+    "accuracy": 0.814016,
+    "macro_f1": 0.751678
+  },
+  "rows": {
+    "train": 1411526,
+    "validation": 340143,
+    "test": 321518
+  },
+  "null_handling": "Median Imputer: hour, day_of_week, weekend_indicator, peak_hour_indicator_asof, historical_delay_average, occupancy_pct, n_stops, distance_km, travel_time_min, demand_wow_growth; categorical unknowns retained as an extra index.",
+  "date": "2026-09-25"
+}

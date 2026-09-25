@@ -48,6 +48,12 @@ parquet_data/*
 # ---- Model binaries ----
 models/*
 !models/.gitkeep
+# Phase 6 keeps binary Spark model directories local.  Metrics and version manifests are
+# deliberately small, reviewable hand-off artefacts for the later MySQL/API phases.
+!models/spark/
+models/spark/*
+!models/spark/metrics/
+!models/spark/metrics/*.json
 *.pkl
 *.joblib
 *.h5

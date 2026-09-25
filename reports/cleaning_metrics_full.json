@@ -1,7 +1,7 @@
 {
   "mode": "full",
-  "seconds": 401.3,
-  "log_file": "reports/processing_logs/clean_data_full_20260925_101158.log",
+  "seconds": 449.7,
+  "log_file": "reports/processing_logs/clean_data_full_20260925_162653.log",
   "all_reconciled": true,
   "minimums": {
     "tickets": {
