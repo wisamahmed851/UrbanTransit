@@ -1,0 +1,60 @@
+{
+  "task": "delay_severity",
+  "algorithm": "decision_tree",
+  "model_scope": "stratified 10% train/validation sample; full held-out test",
+  "training_fraction": 0.1,
+  "selected_params": {
+    "maxDepth": 10
+  },
+  "validation_trials": [
+    {
+      "params": {
+        "maxDepth": 6
+      },
+      "validation": {
+        "accuracy": 0.822116,
+        "macro_f1": 0.540387
+      }
+    },
+    {
+      "params": {
+        "maxDepth": 10
+      },
+      "validation": {
+        "accuracy": 0.840841,
+        "macro_f1": 0.616688
+      }
+    }
+  ],
+  "metrics": {
+    "validation_sample": {
+      "accuracy": 0.840841,
+      "macro_f1": 0.616688
+    },
+    "test_full": {
+      "accuracy": 0.815332,
+      "macro_f1": 0.617391
+    }
+  },
+  "rows": {
+    "train_sample": 141019,
+    "validation_sample": 33966,
+    "test_full": 321518
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "macro_f1_definition": "unweighted mean of per-class F1 scores",
+  "date": "2026-09-25"
+}

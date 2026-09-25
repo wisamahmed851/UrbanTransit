@@ -1,0 +1,43 @@
+{
+  "task": "delay_severity",
+  "algorithm": "xgboost_gpu_multiclass",
+  "date": "2026-09-25",
+  "hardware": "Colab GPU",
+  "selected_params": {
+    "n_estimators": 800,
+    "max_depth": 8,
+    "learning_rate": 0.08,
+    "subsample": 0.85,
+    "colsample_bytree": 0.9
+  },
+  "validation_selection": {
+    "accuracy": 0.794439,
+    "macro_f1": 0.6883
+  },
+  "metrics": {
+    "test": {
+      "accuracy": 0.768878,
+      "macro_f1": 0.67211
+    }
+  },
+  "labels": [
+    "Minor",
+    "Moderate",
+    "On Time",
+    "Severe"
+  ],
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  }
+}

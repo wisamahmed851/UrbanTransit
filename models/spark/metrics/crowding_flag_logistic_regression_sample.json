@@ -1,0 +1,61 @@
+{
+  "task": "crowding_flag",
+  "algorithm": "logistic_regression",
+  "model_scope": "stratified 10% train/validation sample; full held-out test",
+  "training_fraction": 0.1,
+  "class_weight_positive": 9.124087030060737,
+  "selected_params": {
+    "regParam": 0.01
+  },
+  "validation_trials": [
+    {
+      "params": {
+        "regParam": 0.01
+      },
+      "validation": {
+        "accuracy": 0.831632,
+        "macro_f1": 0.6604
+      }
+    },
+    {
+      "params": {
+        "regParam": 0.1
+      },
+      "validation": {
+        "accuracy": 0.823157,
+        "macro_f1": 0.647211
+      }
+    }
+  ],
+  "metrics": {
+    "validation_sample": {
+      "accuracy": 0.831632,
+      "macro_f1": 0.6604
+    },
+    "test_full": {
+      "accuracy": 0.822269,
+      "macro_f1": 0.655276
+    }
+  },
+  "rows": {
+    "train_sample": 131684,
+    "validation_sample": 31740,
+    "test_full": 299504
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "macro_f1_definition": "unweighted mean of per-class F1 scores",
+  "date": "2026-09-25"
+}

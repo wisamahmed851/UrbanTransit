@@ -1,0 +1,17 @@
+{
+  "task": "route_clustering",
+  "algorithm": "gaussian_mixture",
+  "k": 5,
+  "silhouette": 0.257716,
+  "features": [
+    "route_load_factor",
+    "route_reliability_delay_min",
+    "trip_punctuality_rate",
+    "avg_trip_boardings",
+    "avg_daily_boardings",
+    "crowding_rate",
+    "bunching_rate",
+    "arrival_delay_std_min"
+  ],
+  "date": "2026-09-25"
+}

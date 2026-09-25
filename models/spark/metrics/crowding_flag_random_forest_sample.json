@@ -1,0 +1,64 @@
+{
+  "task": "crowding_flag",
+  "algorithm": "random_forest",
+  "model_scope": "stratified 10% train/validation sample; full held-out test",
+  "training_fraction": 0.1,
+  "class_weight_positive": 9.124087030060737,
+  "selected_params": {
+    "numTrees": 100,
+    "maxDepth": 10
+  },
+  "validation_trials": [
+    {
+      "params": {
+        "numTrees": 50,
+        "maxDepth": 8
+      },
+      "validation": {
+        "accuracy": 0.823724,
+        "macro_f1": 0.661834
+      }
+    },
+    {
+      "params": {
+        "numTrees": 100,
+        "maxDepth": 10
+      },
+      "validation": {
+        "accuracy": 0.842092,
+        "macro_f1": 0.679587
+      }
+    }
+  ],
+  "metrics": {
+    "validation_sample": {
+      "accuracy": 0.842092,
+      "macro_f1": 0.679587
+    },
+    "test_full": {
+      "accuracy": 0.834653,
+      "macro_f1": 0.676805
+    }
+  },
+  "rows": {
+    "train_sample": 131684,
+    "validation_sample": 31740,
+    "test_full": 299504
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "macro_f1_definition": "unweighted mean of per-class F1 scores",
+  "date": "2026-09-25"
+}

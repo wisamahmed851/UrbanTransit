@@ -44,6 +44,7 @@ parquet_data/*
 *.csv.gz
 *.zip
 *.tar.gz
+colab_export/
 
 # ---- Model binaries ----
 models/*

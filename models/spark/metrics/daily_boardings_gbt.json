@@ -1,0 +1,75 @@
+{
+  "task": "daily_boardings",
+  "algorithm": "gbt",
+  "selected_params": {
+    "maxIter": 40,
+    "maxDepth": 5
+  },
+  "validation_trials": [
+    {
+      "params": {
+        "maxIter": 40,
+        "maxDepth": 5
+      },
+      "validation": {
+        "mae": 690.418862,
+        "rmse": 1330.963838,
+        "r2": 0.726237,
+        "mape": 59.52216
+      }
+    },
+    {
+      "params": {
+        "maxIter": 70,
+        "maxDepth": 7
+      },
+      "validation": {
+        "mae": 807.823882,
+        "rmse": 1549.88561,
+        "r2": 0.628771,
+        "mape": 59.913357
+      }
+    }
+  ],
+  "metrics": {
+    "train": {
+      "mae": 233.480026,
+      "rmse": 465.602202,
+      "r2": 0.975853,
+      "mape": 15.957923
+    },
+    "validation": {
+      "mae": 247.22509,
+      "rmse": 533.655532,
+      "r2": 0.955989,
+      "mape": 23.262364
+    },
+    "test": {
+      "mae": 236.85026,
+      "rmse": 490.553225,
+      "r2": 0.955549,
+      "mape": 18.635796
+    }
+  },
+  "rows": {
+    "train": 27159,
+    "validation": 7094,
+    "test": 7198
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "feature_rule": "All lag/rolling demand features end at the prior row; test was untouched until final evaluation.",
+  "date": "2026-09-25"
+}
