@@ -13,187 +13,225 @@
 | 09_trips_passenger_counts | trip_id | left | 2,097,157 | 2,097,157 | 166,203 |
 | 10_stops_location | stop_id | projection | 756 | 756 | 0 |
 
+Ticket orphans (01, 02) are exactly the rows Phase 3 flagged `DQ15` (unknown passenger) and `DQ16` (missing trip); see `documentation/feature_catalog.md`.
+
 ## Chronological splits
 
 [
   {
     "split": "train",
     "min_date": "2025-09-01",
-    "max_date": "2026-05-02",
-    "rows": 1433507
+    "max_date": "2026-05-01",
+    "dates": 243,
+    "rows": 1427922
   },
   {
     "split": "validation",
-    "min_date": "2026-05-03",
-    "max_date": "2026-07-02",
-    "rows": 344428
+    "min_date": "2026-05-02",
+    "max_date": "2026-07-01",
+    "dates": 61,
+    "rows": 344248
   },
   {
     "split": "test",
-    "min_date": "2026-07-03",
+    "min_date": "2026-07-02",
     "max_date": "2026-08-31",
-    "rows": 319222
+    "dates": 61,
+    "rows": 324987
   }
 ]
+
+## Measurement coverage
+
+{
+  "delay_source": {
+    "not_evaluated": 23970,
+    "within_tolerance": 1283340,
+    "record": 789847
+  },
+  "passenger_count_measured": {
+    "True": 1930954,
+    "False": 166203
+  },
+  "negative_headway_overtaking": 146
+}
 
 ## Target distribution
 
 [
   {
     "split": "test",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": null,
-    "count": 9
+    "count": 3178
   },
   {
     "split": "test",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": false,
-    "count": 30658
+    "count": 250
   },
   {
     "split": "test",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": true,
-    "count": 6113
+    "count": 41
+  },
+  {
+    "split": "test",
+    "delay_severity": "Minor",
+    "crowding_flag": null,
+    "count": 3536
   },
   {
     "split": "test",
     "delay_severity": "Minor",
     "crowding_flag": false,
-    "count": 141
+    "count": 41027
   },
   {
     "split": "test",
     "delay_severity": "Minor",
     "crowding_flag": true,
-    "count": 11
+    "count": 5102
   },
   {
     "split": "test",
     "delay_severity": "Moderate",
     "crowding_flag": null,
-    "count": 10
+    "count": 2867
   },
   {
     "split": "test",
     "delay_severity": "Moderate",
     "crowding_flag": false,
-    "count": 43764
+    "count": 28339
   },
   {
     "split": "test",
     "delay_severity": "Moderate",
     "crowding_flag": true,
-    "count": 4996
+    "count": 6221
   },
   {
     "split": "test",
     "delay_severity": "On Time",
     "crowding_flag": null,
-    "count": 48
+    "count": 15672
   },
   {
     "split": "test",
     "delay_severity": "On Time",
     "crowding_flag": false,
-    "count": 218049
+    "count": 203033
   },
   {
     "split": "test",
     "delay_severity": "On Time",
     "crowding_flag": true,
-    "count": 12901
+    "count": 13163
+  },
+  {
+    "split": "test",
+    "delay_severity": "Severe",
+    "crowding_flag": null,
+    "count": 230
   },
   {
     "split": "test",
     "delay_severity": "Severe",
     "crowding_flag": false,
-    "count": 1710
+    "count": 1499
   },
   {
     "split": "test",
     "delay_severity": "Severe",
     "crowding_flag": true,
-    "count": 812
+    "count": 829
   },
   {
     "split": "train",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": null,
-    "count": 22
+    "count": 15127
   },
   {
     "split": "train",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": false,
-    "count": 121429
+    "count": 1076
   },
   {
     "split": "train",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": true,
-    "count": 26822
+    "count": 193
+  },
+  {
+    "split": "train",
+    "delay_severity": "Minor",
+    "crowding_flag": null,
+    "count": 13943
   },
   {
     "split": "train",
     "delay_severity": "Minor",
     "crowding_flag": false,
-    "count": 611
+    "count": 154967
   },
   {
     "split": "train",
     "delay_severity": "Minor",
     "crowding_flag": true,
-    "count": 89
+    "count": 27130
   },
   {
     "split": "train",
     "delay_severity": "Moderate",
     "crowding_flag": null,
-    "count": 37
+    "count": 11432
   },
   {
     "split": "train",
     "delay_severity": "Moderate",
     "crowding_flag": false,
-    "count": 169233
+    "count": 109988
   },
   {
     "split": "train",
     "delay_severity": "Moderate",
     "crowding_flag": true,
-    "count": 27202
+    "count": 26782
   },
   {
     "split": "train",
     "delay_severity": "On Time",
     "crowding_flag": null,
-    "count": 243
+    "count": 71437
   },
   {
     "split": "train",
     "delay_severity": "On Time",
     "crowding_flag": false,
-    "count": 997288
+    "count": 905620
   },
   {
     "split": "train",
     "delay_severity": "On Time",
     "crowding_flag": true,
-    "count": 73738
+    "count": 73470
   },
   {
     "split": "train",
     "delay_severity": "Severe",
     "crowding_flag": null,
-    "count": 3
+    "count": 1212
   },
   {
     "split": "train",
     "delay_severity": "Severe",
     "crowding_flag": false,
-    "count": 12838
+    "count": 11593
   },
   {
     "split": "train",
@@ -203,84 +241,96 @@
   },
   {
     "split": "validation",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": null,
-    "count": 14
+    "count": 3829
   },
   {
     "split": "validation",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": false,
-    "count": 22376
+    "count": 236
   },
   {
     "split": "validation",
-    "delay_severity": "Major",
+    "delay_severity": null,
     "crowding_flag": true,
-    "count": 5519
+    "count": 40
+  },
+  {
+    "split": "validation",
+    "delay_severity": "Minor",
+    "crowding_flag": null,
+    "count": 3340
   },
   {
     "split": "validation",
     "delay_severity": "Minor",
     "crowding_flag": false,
-    "count": 138
+    "count": 37283
   },
   {
     "split": "validation",
     "delay_severity": "Minor",
     "crowding_flag": true,
-    "count": 12
+    "count": 5247
   },
   {
     "split": "validation",
     "delay_severity": "Moderate",
     "crowding_flag": null,
-    "count": 12
+    "count": 2114
   },
   {
     "split": "validation",
     "delay_severity": "Moderate",
     "crowding_flag": false,
-    "count": 40904
+    "count": 19882
   },
   {
     "split": "validation",
     "delay_severity": "Moderate",
     "crowding_flag": true,
-    "count": 5303
+    "count": 5405
   },
   {
     "split": "validation",
     "delay_severity": "On Time",
     "crowding_flag": null,
-    "count": 50
+    "count": 18104
   },
   {
     "split": "validation",
     "delay_severity": "On Time",
     "crowding_flag": false,
-    "count": 253423
+    "count": 232213
   },
   {
     "split": "validation",
     "delay_severity": "On Time",
     "crowding_flag": true,
-    "count": 13943
+    "count": 13852
+  },
+  {
+    "split": "validation",
+    "delay_severity": "Severe",
+    "crowding_flag": null,
+    "count": 182
   },
   {
     "split": "validation",
     "delay_severity": "Severe",
     "crowding_flag": false,
-    "count": 1898
+    "count": 1699
   },
   {
     "split": "validation",
     "delay_severity": "Severe",
     "crowding_flag": true,
-    "count": 836
+    "count": 822
   }
 ]
 
 ## Leakage check
 
-`historical_*` windows order by `scheduled_departure, trip_id` and end at `rowsBetween(..., -1)`: the current and future trips are excluded. `spark_jobs/verify_phase4.py` recomputes this on a deterministic sample.
+`historical_*` windows order by `scheduled_departure, trip_id` and end at `rowsBetween(..., -1)`; `demand_*_growth` and `peak_hour_indicator_asof` use only days before the trip's service date. `spark_jobs/verify_phase4.py` recomputes them on data truncated at a cutoff date.

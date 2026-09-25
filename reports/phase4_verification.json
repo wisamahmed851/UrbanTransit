@@ -1,5 +1,17 @@
 {
   "split_dates_with_multiple_assignments": 0,
+  "split_chronological": true,
+  "split_dates": {
+    "test": 61,
+    "validation": 61,
+    "train": 243
+  },
+  "split_sizes_match_config": true,
+  "boardings_null": 166203,
+  "trips_without_clean_passenger_count": 166203,
+  "delay_minutes_null": 23970,
+  "delay_not_evaluated": 23970,
+  "null_semantics_ok": true,
   "sample_routes": [
     "R001",
     "R002",
@@ -7,6 +19,12 @@
     "R004",
     "R005"
   ],
-  "historical_demand_mismatches": 0,
+  "historical_mismatches": 0,
+  "leakage_cutoff_date": "2026-07-02",
+  "peak_asof_mismatch_truncated": 0,
+  "peak_asof_mismatch_same_day_x10": 0,
+  "growth_mismatch_truncated": 0,
+  "growth_mismatch_same_day_x10": 0,
+  "growth_non_null_on_cutoff": 117,
   "result": "PASS"
 }

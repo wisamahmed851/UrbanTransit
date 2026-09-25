@@ -2,7 +2,22 @@
 feature_output: features
 peak:
   min_share_of_daily_ridership: 0.08
+  # peak_hour_indicator_asof: mean hourly share over this many *previous* days
+  # (same route, hour and weekday/weekend type). The current day is never used.
+  asof_lookback_days: 28
+demand_growth:
+  # week-over-week: mean of days [d-7, d-1] vs [d-14, d-8]; month-over-month: [d-28, d-1] vs [d-56, d-29]
+  wow_window_days: 7
+  mom_window_days: 28
+delay:
+  # The generator logs a delay record only when a trip is >= 5 min late at its timing point,
+  # runs early (<= -2 min at the last stop) or breaks down, so a completed trip without a
+  # record deviated by (-2, 5) minutes. These bounds define "On Time" and trip_punctuality.
+  on_time_early_min: -2
+  on_time_late_min: 5
 splits:
+  # Read by phase4_features.split_dates(): the first round(n*train_fraction) service dates are
+  # train, the next round(n*validation_fraction) are validation, the rest (most recent) are test.
   train_fraction: 0.6667
   validation_fraction: 0.1667
   # Test receives the remaining most-recent dates; never randomize rows.

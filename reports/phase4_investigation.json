@@ -1,0 +1,170 @@
+{
+  "schemas": {
+    "trips": [
+      "trip_id",
+      "route_id",
+      "direction",
+      "service_date",
+      "service_id",
+      "schedule_id",
+      "vehicle_id",
+      "original_vehicle_id",
+      "scheduled_departure",
+      "scheduled_arrival",
+      "actual_departure",
+      "actual_arrival",
+      "trip_status",
+      "trip_type",
+      "cancellation_reason",
+      "_source_file",
+      "dq_flags",
+      "year_month"
+    ],
+    "delays": [
+      "delay_id",
+      "trip_id",
+      "route_id",
+      "stop_id",
+      "service_date",
+      "scheduled_arrival",
+      "actual_arrival",
+      "scheduled_departure",
+      "actual_departure",
+      "delay_minutes",
+      "delay_reason",
+      "record_source",
+      "_source_file",
+      "dq_flags",
+      "year_month"
+    ],
+    "tickets": [
+      "ticket_id",
+      "passenger_id",
+      "trip_id",
+      "route_id",
+      "service_date",
+      "entry_stop_id",
+      "exit_stop_id",
+      "entry_time",
+      "exit_time",
+      "ticket_type",
+      "fare_category",
+      "fare_amount",
+      "payment_method",
+      "_source_file",
+      "dq_flags",
+      "year_month"
+    ],
+    "passenger_counts": [
+      "count_id",
+      "trip_id",
+      "route_id",
+      "service_date",
+      "vehicle_id",
+      "boardings",
+      "alightings",
+      "max_load",
+      "max_load_stop_id",
+      "denied_boardings",
+      "card_taps",
+      "_source_file",
+      "dq_flags",
+      "year_month"
+    ]
+  },
+  "ticket_orphans": {
+    "no_passenger": 5973,
+    "no_passenger_flagged_DQ15": 5973,
+    "no_trip": 6083,
+    "no_trip_flagged_DQ16": 6083,
+    "tickets_flag_counts": {
+      "DQ02a": 9,
+      "DQ15": 5973,
+      "DQ16": 6083
+    },
+    "no_trip_sample_ids": [
+      "T2604003655",
+      "T2604003655",
+      "T2604003655",
+      "T2604003655",
+      "T2604005133"
+    ]
+  },
+  "headway": {
+    "rows_with_headway": 2012969,
+    "negative": 19045,
+    "negative_crossing_midnight": 18,
+    "negative_summary": [
+      {
+        "summary": "min",
+        "hw": "-7.766666666666667",
+        "sched_hw": "0.0",
+        "dep_dev": "0.0",
+        "prev_dev": "0.016666666666666666"
+      },
+      {
+        "summary": "25%",
+        "hw": "-2.283333333333333",
+        "sched_hw": "1.0",
+        "dep_dev": "0.0",
+        "prev_dev": "2.1666666666666665"
+      },
+      {
+        "summary": "50%",
+        "hw": "-1.0666666666666667",
+        "sched_hw": "1.0",
+        "dep_dev": "0.13333333333333333",
+        "prev_dev": "4.15"
+      },
+      {
+        "summary": "75%",
+        "hw": "-0.43333333333333335",
+        "sched_hw": "3.0",
+        "dep_dev": "0.7",
+        "prev_dev": "5.25"
+      },
+      {
+        "summary": "max",
+        "hw": "-0.016666666666666666",
+        "sched_hw": "11.0",
+        "dep_dev": "4.983333333333333",
+        "prev_dev": "18.766666666666666"
+      }
+    ],
+    "negative_where_prev_departed_late": 19045,
+    "zero_sched_headway": 4107,
+    "direction_column_present": true,
+    "negative_if_partitioned_by_direction": 146,
+    "rows_with_headway_by_direction": 1972415,
+    "actual_order_by_direction_min_max": [
+      0.0,
+      382.76666666666665
+    ]
+  },
+  "delay": {
+    "trips": 2097157,
+    "trips_actual_departure_null": 21990,
+    "trips_with_delay_record": 790644,
+    "delay_reason_counts": {
+      "road_works": 4500,
+      "late_vehicle": 25666,
+      "early_running": 263688,
+      "disruption": 4638,
+      "junction_bottleneck": 185863,
+      "traffic_congestion": 252410,
+      "vehicle_breakdown": 6270,
+      "weather_fog": 67633,
+      "passenger_boarding": 146748,
+      "special_event": 2509,
+      "weather_rain": 28903
+    },
+    "status_col": "trip_status",
+    "status_counts": {
+      "completed": 2075167,
+      "cancelled": 21990
+    },
+    "quarantined_delay_rows": 1982,
+    "quarantine_error": "[UNRESOLVED_COLUMN.WITH_SUGGESTION] A column, variable, or function parameter with name `trip_id` cannot be resolved. Did you mean one of the following? [`rules`, `table`, `record_key`, `original_reco"
+  },
+  "pc_quarantine_error": "[UNRESOLVED_COLUMN.WITH_SUGGESTION] A column, variable, or function parameter with name `trip_id` cannot be resolved. Did you mean one of the following? [`rules`, `table`, `record_key`, `original_reco"
+}

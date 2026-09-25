@@ -132,3 +132,11 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - Chronological split: train 2025-09-01..2026-05-02 (1,433,507 rows), validation 2026-05-03..2026-07-02 (344,428), test 2026-07-03..2026-08-31 (319,222). No date has multiple split assignments.
 - Historical windows explicitly use `scheduled_departure, trip_id` and end at the preceding row. `verify_phase4.py` recomputed historical demand for routes R001..R005: 0 mismatches.
 - **Failure:** first Phase 4 run could not import `spark_jobs` when launched by filename. **Fix:** added the repository-root import bootstrap used by other jobs. No HDFS output was written by that failed start.
+
+## 2026-09-25 — Phase 4 review fixes (CMD-015)
+- **Measurement gaps are NULL, not 0.** 166,203 trips without a clean passenger count now have NULL boardings/occupancy; before the fix they had 0, so zero-boarding rows fell from 178,599 to 12,396. Delay is NULL for 23,970 not-evaluated trips (21,990 cancelled plus 1,980 whose delay record was quarantined by DQ08a). 1,283,340 completed trips without a record are `within_tolerance` = 0.0, because the generator only logs trips that are ≥ 5 min late, run early (≤ -2 min) or break down.
+- **Headway bug:** the job compared buses across directions, which produced 19,045 negative headways. After partitioning by direction, 146 remain; these are real overtaking (bunching) and are flagged.
+- **New features:** demand week-over-week and month-over-month growth, and `peak_hour_indicator_asof`. Split sizes now come from config: train 243 dates (2025-09-01..2026-05-01), validation 61 (..2026-07-01), test 61 (..2026-08-31).
+- `route_features` is now one row per route (118 rows, train split only); `route_daily_demand` is 41,451 route-days.
+- `verify_phase4.py` PASS, including the leakage test: as-of features recomputed on data truncated at 2026-07-02, and with that day's demand ×10, gave 0 mismatches.
+- **Failure:** the first rerun crashed on a module-level `F.lit` (no SparkContext). **Fix:** moved it into the function.

@@ -855,3 +855,46 @@ DO it
 **Problems and fixes:** Initial standalone run could not import `spark_jobs`; added the repository-root import bootstrap. The failed start wrote no HDFS output.
 
 **Git commit:** pending.
+
+---
+
+## CMD-015 | 2026-09-25 (UTC+05:00) | Phase 4 review fixes
+**My command (verbatim):**
+```text
+Phase 4 is NOT yet complete. A review of spark_jobs/phase4_features.py found 7
+real problems. [...] Fix all of these before anything else: 1. Demand growth
+feature is missing [...] 2. Missing passenger counts must NOT become 0 [...]
+3. Missing delay records must NOT become delay_minutes = 0 [...] 4. dead split
+config [...] 5. route_daily_demand and route_features identical [...]
+6. leak-free peak_hour_indicator_asof [...] 7. ~6,000 ticket orphans [...]
+8. 19,045 negative headway_minutes [...] 9. Don't commit
+data_generator/manifests/sample/ [...] rerun, verify, null-count before/after,
+update feature_catalog.md, log, commit and push. Then STOP. Do not start Phase 5.
+```
+
+**Understood as:** Fix the eight Phase 4 review findings, prove each fix with data, and commit and push without starting Phase 5.
+
+**Actions taken:**
+- Captured the pre-fix null counts (`reports/phase4_null_check_before_fix.json`).
+- Investigated items 3, 7 and 8 on the clean data (`spark_jobs/investigate_phase4.py` → `reports/phase4_investigation.json`) and in the generator (`simulation.py::_derive_delays`).
+- Rewrote `phase4_features.py`:
+  1. Added `demand_wow_growth` / `demand_mom_growth` (windows end at d-1).
+  2. Unmeasured trips now get NULL boardings, loads, occupancy and crowding.
+  3. Added `delay_source`: `record` / `within_tolerance` = 0.0 / `not_evaluated` = NULL. On Time and punctuality are now aligned to the generator's (-2, 5) min no-record band. Added `arrival_delay_min`.
+  4. The split now reads `train_fraction` / `validation_fraction` via `split_dates()`.
+  5. `route_features` is now one row per route (train split only); `route_daily_demand` is route × day with `estimated_daily_boardings` and growth.
+  6. Added `peak_hour_share_asof` / `peak_hour_indicator_asof` (previous 28 days only).
+  7. Documented the ticket orphans as accepted (100% are flagged DQ15/DQ16).
+  8. Fixed headway: partitioned by direction, previous *operated* trip, `overtaking_flag`.
+- Rewrote `verify_phase4.py` to add split order/size checks, NULL-semantics checks, and a truncation/×10 same-day leakage test.
+- Added `phase4_null_check.py` and updated `feature_catalog.md`.
+
+**Files changed:** `config/phase4.yaml`, `spark_jobs/{phase4_features,verify_phase4,phase4_null_check,investigate_phase4}.py`, `documentation/feature_catalog.md`, `reports/{join_report.md,phase4_metrics.json,phase4_verification.json,phase4_investigation.json,phase4_null_check_before_fix.json,phase4_null_check_after_fix.json}`, `DEV_LOG.md`, `AI_USAGE.md`.
+
+**Result:** Success. `phase4_features.py` reported PASS (5 tables written and read back) and `verify_phase4.py` reported PASS. Null counts before → after: boardings 0 → 166,203; delay_minutes 0 → 23,970; negative headway 19,045 → 146.
+
+**Problems and fixes:**
+- The first rerun crashed at import because `F.lit` was called at module level without a SparkContext; changed it to a plain string constant. No HDFS output was written by that start.
+- Item 6 deviates from the literal request ("up to and including the trip's own hour"). A same-day cumulative share makes the first hour of every day look 100% peak and includes the trip's own boardings, so the as-of flag uses only previous days.
+
+**Git commit:** see `git log` (CMD-013/014 were committed in c165e95).
