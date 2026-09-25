@@ -1,6 +1,6 @@
 {
   "mode": "full",
-  "seconds": 162.9,
+  "seconds": 84.9,
   "primary_keys": {
     "passenger_counts": [
       "count_id"
@@ -46,7 +46,7 @@
       "table_rows": 1940979,
       "affected_rows": 11896,
       "affected_units": 11991,
-      "seconds": 36.5,
+      "seconds": 20.6,
       "samples": [
         {
           "record_key": "PC2509000737",
@@ -99,7 +99,7 @@
       "table_rows": 3027629,
       "affected_rows": 5973,
       "affected_units": 5973,
-      "seconds": 2.2,
+      "seconds": 1.1,
       "samples": [
         {
           "record_key": "TK250900000332",
@@ -152,7 +152,7 @@
       "table_rows": 2103460,
       "affected_rows": 2103,
       "affected_units": 2103,
-      "seconds": 1.4,
+      "seconds": 0.9,
       "samples": [
         {
           "record_key": "T2509000944",
@@ -210,7 +210,7 @@
       "table_rows": 3027629,
       "affected_rows": 5973,
       "affected_units": 5973,
-      "seconds": 4.7,
+      "seconds": 3.0,
       "samples": [
         {
           "record_key": "TK250900000026",
@@ -267,7 +267,7 @@
       "table_rows": 990144,
       "affected_rows": 1982,
       "affected_units": 1982,
-      "seconds": 3.6,
+      "seconds": 1.3,
       "samples": [
         {
           "record_key": "D25090000597",
@@ -318,7 +318,7 @@
       "table_rows": 3027629,
       "affected_rows": 44788,
       "affected_units": 44788,
-      "seconds": 16.2,
+      "seconds": 9.6,
       "samples": [
         {
           "record_key": "TK250900000199",
@@ -369,7 +369,7 @@
       "table_rows": 2103460,
       "affected_rows": 6303,
       "affected_units": 6303,
-      "seconds": 10.5,
+      "seconds": 5.2,
       "samples": [
         {
           "record_key": "T2509000381",
@@ -428,7 +428,7 @@
       "table_rows": 1940979,
       "affected_rows": 3881,
       "affected_units": 3881,
-      "seconds": 2.2,
+      "seconds": 1.6,
       "samples": [
         {
           "record_key": "PC2509000582",
@@ -484,7 +484,7 @@
       "table_rows": 3027629,
       "affected_rows": 2986,
       "affected_units": 2986,
-      "seconds": 1.2,
+      "seconds": 0.8,
       "samples": [
         {
           "record_key": "TK250900001729",
@@ -538,7 +538,7 @@
       "table_rows": 990144,
       "affected_rows": 1982,
       "affected_units": 1982,
-      "seconds": 1.9,
+      "seconds": 0.9,
       "samples": [
         {
           "record_key": "D25090000388",
@@ -592,7 +592,7 @@
       "table_rows": 2103460,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 1.8,
+      "seconds": 1.4,
       "samples": []
     },
     {
@@ -610,7 +610,7 @@
       "table_rows": 990144,
       "affected_rows": 2971,
       "affected_units": 2971,
-      "seconds": 1.5,
+      "seconds": 1.0,
       "samples": [
         {
           "record_key": "D25090000373",
@@ -664,7 +664,7 @@
       "table_rows": 2103460,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 1.6,
+      "seconds": 0.6,
       "samples": []
     },
     {
@@ -682,7 +682,7 @@
       "table_rows": 1940979,
       "affected_rows": 1941,
       "affected_units": 1941,
-      "seconds": 2.2,
+      "seconds": 1.8,
       "samples": [
         {
           "record_key": "PC2509000377",
@@ -738,7 +738,7 @@
       "table_rows": 990144,
       "affected_rows": 1982,
       "affected_units": 1982,
-      "seconds": 1.5,
+      "seconds": 1.2,
       "samples": [
         {
           "record_key": "D25090000162",
@@ -791,7 +791,7 @@
       "table_rows": 2103460,
       "affected_rows": 6303,
       "affected_units": 6303,
-      "seconds": 1.9,
+      "seconds": 0.8,
       "samples": [
         {
           "record_key": "T2509000016",
@@ -848,7 +848,7 @@
       "table_rows": 3210,
       "affected_rows": 7,
       "affected_units": 7,
-      "seconds": 3.2,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "R005|1",
@@ -904,7 +904,7 @@
       "table_rows": 118,
       "affected_rows": 3,
       "affected_units": 3,
-      "seconds": 1.6,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "R003",
@@ -947,7 +947,7 @@
       "table_rows": 3027629,
       "affected_rows": 5973,
       "affected_units": 5973,
-      "seconds": 4.8,
+      "seconds": 2.6,
       "samples": [
         {
           "record_key": "TK250900000067",
@@ -1007,7 +1007,7 @@
       "table_rows": 2103460,
       "affected_rows": 4203,
       "affected_units": 4203,
-      "seconds": 14.9,
+      "seconds": 7.4,
       "samples": [
         {
           "record_key": "T2509000593",
@@ -1064,7 +1064,7 @@
       "table_rows": 2103460,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 2.2,
+      "seconds": 1.6,
       "samples": []
     },
     {
@@ -1082,7 +1082,7 @@
       "table_rows": 3027629,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 2.0,
+      "seconds": 1.0,
       "samples": []
     },
     {
@@ -1100,7 +1100,7 @@
       "table_rows": 756,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 0.4,
+      "seconds": 0.7,
       "samples": []
     },
     {
@@ -1119,7 +1119,7 @@
       "table_rows": 3027629,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 1.1,
+      "seconds": 0.9,
       "samples": []
     },
     {
@@ -1140,7 +1140,7 @@
       "table_rows": 2103460,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 1.8,
+      "seconds": 0.7,
       "samples": []
     }
   ]

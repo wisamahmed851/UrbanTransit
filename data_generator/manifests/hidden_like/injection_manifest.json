@@ -42,7 +42,7 @@
     {
       "defect": "duplicate_tickets",
       "table": "tickets",
-      "rows": 12361,
+      "rows": 12360,
       "detection_rule": "rows minus distinct ticket_id"
     },
     {
@@ -108,7 +108,7 @@
     {
       "defect": "missing_ticket_records",
       "table": "tickets",
-      "rows": 3731,
+      "rows": 3730,
       "detection_rule": "passenger_counts.card_taps minus the number of distinct ticket_ids for that trip_id (summed over APC trips, only positive differences)"
     },
     {
@@ -183,10 +183,10 @@
     "vehicle_capacity_violations"
   ],
   "missing_trip_records_orphans": {
-    "delays": 678,
-    "gps_events": 1556,
+    "delays": 630,
+    "gps_events": 1608,
     "passenger_counts": 1268,
-    "tickets": 1839
+    "tickets": 1818
   },
   "details": {
     "broken_stop_sequences": {
@@ -205,9 +205,9 @@
     "schedules": 4920,
     "service_calendar": 4,
     "trips": 423099,
-    "passenger_counts": 388348,
-    "tickets": 630406,
-    "delays": 218724,
+    "passenger_counts": 388349,
+    "tickets": 630393,
+    "delays": 218699,
     "gps_events": 619166
   }
 }

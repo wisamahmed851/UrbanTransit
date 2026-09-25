@@ -1,6 +1,6 @@
 {
   "mode": "hidden_like",
-  "seconds": 146.8,
+  "seconds": 53.0,
   "primary_keys": {
     "passenger_counts": [
       "count_id"
@@ -43,45 +43,45 @@
         "child_key": "ticket_id",
         "join_column": "trip_id"
       },
-      "table_rows": 388348,
-      "affected_rows": 3695,
-      "affected_units": 3731,
-      "seconds": 35.6,
+      "table_rows": 388349,
+      "affected_rows": 3684,
+      "affected_units": 3730,
+      "seconds": 12.5,
       "samples": [
         {
           "record_key": "PC2609000644",
           "column": "card_taps",
           "observed_value": "9 counted vs 8 records",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000644\",\"trip_id\":\"T2609000644\",\"route_id\":\"R004\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0087\",\"boardings\":209,\"alightings\":208,\"max_load\":124,\"max_load_stop_id\":\"S0092\",\"denied_boardings\":0,\"card_taps\":9,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000644\",\"trip_id\":\"T2609000644\",\"route_id\":\"R004\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0087\",\"boardings\":209,\"alightings\":210,\"max_load\":124,\"max_load_stop_id\":\"S0089\",\"denied_boardings\":0,\"card_taps\":9,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000762",
           "column": "card_taps",
           "observed_value": "2 counted vs 1 records",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000762\",\"trip_id\":\"T2609000762\",\"route_id\":\"R010\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0154\",\"boardings\":35,\"alightings\":34,\"max_load\":25,\"max_load_stop_id\":\"S0165\",\"denied_boardings\":0,\"card_taps\":2,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000762\",\"trip_id\":\"T2609000762\",\"route_id\":\"R010\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0154\",\"boardings\":35,\"alightings\":34,\"max_load\":25,\"max_load_stop_id\":\"S0163\",\"denied_boardings\":0,\"card_taps\":2,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000820",
           "column": "card_taps",
           "observed_value": "7 counted vs 6 records",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000820\",\"trip_id\":\"T2609000820\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0066\",\"boardings\":139,\"alightings\":137,\"max_load\":88,\"max_load_stop_id\":\"S0030\",\"denied_boardings\":0,\"card_taps\":7,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000820\",\"trip_id\":\"T2609000820\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0066\",\"boardings\":139,\"alightings\":138,\"max_load\":88,\"max_load_stop_id\":\"S0073\",\"denied_boardings\":0,\"card_taps\":7,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000985",
           "column": "card_taps",
           "observed_value": "1 counted vs 0 records",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000985\",\"trip_id\":\"T2609000985\",\"route_id\":\"R048\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0456\",\"boardings\":6,\"alightings\":7,\"max_load\":4,\"max_load_stop_id\":\"S0423\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000985\",\"trip_id\":\"T2609000985\",\"route_id\":\"R048\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0456\",\"boardings\":6,\"alightings\":6,\"max_load\":4,\"max_load_stop_id\":\"S0186\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000992",
           "column": "card_taps",
           "observed_value": "3 counted vs 2 records",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000992\",\"trip_id\":\"T2609000992\",\"route_id\":\"R031\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0352\",\"boardings\":95,\"alightings\":94,\"max_load\":60,\"max_load_stop_id\":\"S0023\",\"denied_boardings\":0,\"card_taps\":3,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000992\",\"trip_id\":\"T2609000992\",\"route_id\":\"R031\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0352\",\"boardings\":95,\"alightings\":96,\"max_load\":60,\"max_load_stop_id\":\"S0287\",\"denied_boardings\":0,\"card_taps\":3,\"year_month\":\"2026-09\"}"
         }
       ]
     },
@@ -96,45 +96,45 @@
       "params": {
         "column": "route_id"
       },
-      "table_rows": 629170,
+      "table_rows": 629157,
       "affected_rows": 1854,
       "affected_units": 1854,
-      "seconds": 1.9,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "TK260900000281",
           "column": "route_id",
           "observed_value": null,
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000281\",\"passenger_id\":\"P016062\",\"trip_id\":\"T2609000477\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0588\",\"exit_stop_id\":\"S0644\",\"entry_time\":\"2026-09-01T06:51:55.000Z\",\"exit_time\":\"2026-09-01T06:59:02.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":20."
+          "record": "{\"ticket_id\":\"TK260900000281\",\"passenger_id\":\"P055776\",\"trip_id\":\"T2609000477\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0022\",\"exit_stop_id\":\"S0646\",\"entry_time\":\"2026-09-01T06:47:50.000Z\",\"exit_time\":\"2026-09-01T06:56:39.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":20."
         },
         {
           "record_key": "TK260900000428",
           "column": "route_id",
           "observed_value": null,
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000428\",\"passenger_id\":\"P016871\",\"trip_id\":\"T2609000607\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0466\",\"exit_stop_id\":\"S0289\",\"entry_time\":\"2026-09-01T07:11:59.000Z\",\"exit_time\":\"2026-09-01T07:21:25.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":25."
+          "record": "{\"ticket_id\":\"TK260900000428\",\"passenger_id\":\"P005875\",\"trip_id\":\"T2609000607\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0565\",\"exit_stop_id\":\"S0541\",\"entry_time\":\"2026-09-01T07:31:31.000Z\",\"exit_time\":\"2026-09-01T07:51:28.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":30."
         },
         {
           "record_key": "TK260900000789",
           "column": "route_id",
           "observed_value": null,
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000789\",\"passenger_id\":\"P024635\",\"trip_id\":\"T2609000842\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0024\",\"exit_stop_id\":\"S0006\",\"entry_time\":\"2026-09-01T07:47:22.000Z\",\"exit_time\":\"2026-09-01T08:16:02.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"standard\",\"fare_amoun"
+          "record": "{\"ticket_id\":\"TK260900000789\",\"passenger_id\":\"P057164\",\"trip_id\":\"T2609000842\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0024\",\"exit_stop_id\":\"S0198\",\"entry_time\":\"2026-09-01T07:48:13.000Z\",\"exit_time\":\"2026-09-01T08:02:38.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":30."
         },
         {
           "record_key": "TK260900000809",
           "column": "route_id",
           "observed_value": null,
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000809\",\"passenger_id\":\"P007537\",\"trip_id\":\"T2609000862\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0085\",\"exit_stop_id\":\"S0093\",\"entry_time\":\"2026-09-01T07:29:56.000Z\",\"exit_time\":\"2026-09-01T08:10:24.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":50."
+          "record": "{\"ticket_id\":\"TK260900000809\",\"passenger_id\":\"P020944\",\"trip_id\":\"T2609000862\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0103\",\"exit_stop_id\":\"S0104\",\"entry_time\":\"2026-09-01T09:05:50.000Z\",\"exit_time\":\"2026-09-01T09:06:46.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\",\"fare_amount\":30."
         },
         {
-          "record_key": "TK260900002182",
+          "record_key": "TK260900002181",
           "column": "route_id",
           "observed_value": null,
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900002182\",\"passenger_id\":\"P046091\",\"trip_id\":\"T2609001767\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0344\",\"exit_stop_id\":\"S0342\",\"entry_time\":\"2026-09-01T09:48:38.000Z\",\"exit_time\":\"2026-09-01T09:57:13.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"senior\",\"fare_amount\""
+          "record": "{\"ticket_id\":\"TK260900002181\",\"passenger_id\":\"P046091\",\"trip_id\":\"T2609001767\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0112\",\"exit_stop_id\":\"S0222\",\"entry_time\":\"2026-09-01T09:05:48.000Z\",\"exit_time\":\"2026-09-01T09:08:44.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"senior\",\"fare_amount\""
         }
       ]
     },
@@ -152,7 +152,7 @@
       "table_rows": 423099,
       "affected_rows": 845,
       "affected_units": 845,
-      "seconds": 2.1,
+      "seconds": 0.8,
       "samples": [
         {
           "record_key": "T2609000420",
@@ -207,45 +207,45 @@
         "parent_table": "stops",
         "parent_key": "stop_id"
       },
-      "table_rows": 629170,
+      "table_rows": 629157,
       "affected_rows": 1854,
       "affected_units": 1854,
-      "seconds": 6.0,
+      "seconds": 2.2,
       "samples": [
         {
-          "record_key": "TK260900001551",
+          "record_key": "TK260900001550",
+          "column": "exit_stop_id",
+          "observed_value": "S9334",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK260900001550\",\"passenger_id\":\"P022508\",\"trip_id\":\"T2609001345\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0046\",\"exit_stop_id\":\"S9334\",\"entry_time\":\"2026-09-01T08:31:51.000Z\",\"exit_time\":\"2026-09-01T09:43:29.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
+        },
+        {
+          "record_key": "TK260900001956",
+          "column": "exit_stop_id",
+          "observed_value": "S9360",
+          "units": 1,
+          "record": "{\"ticket_id\":\"TK260900001956\",\"passenger_id\":\"P041489\",\"trip_id\":\"T2609001603\",\"route_id\":\"R115\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0509\",\"exit_stop_id\":\"S9360\",\"entry_time\":\"2026-09-01T09:07:52.000Z\",\"exit_time\":\"2026-09-01T09:10:29.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"student\","
+        },
+        {
+          "record_key": "TK260900002491",
           "column": "exit_stop_id",
           "observed_value": "S9275",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900001551\",\"passenger_id\":\"P026622\",\"trip_id\":\"T2609001345\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0005\",\"exit_stop_id\":\"S9275\",\"entry_time\":\"2026-09-01T08:48:13.000Z\",\"exit_time\":\"2026-09-01T09:27:52.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"student\","
+          "record": "{\"ticket_id\":\"TK260900002491\",\"passenger_id\":\"P038537\",\"trip_id\":\"T2609002000\",\"route_id\":\"R065\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0113\",\"exit_stop_id\":\"S9275\",\"entry_time\":\"2026-09-01T10:07:51.000Z\",\"exit_time\":\"2026-09-01T10:10:25.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
         },
         {
-          "record_key": "TK260900001957",
+          "record_key": "TK260900002872",
           "column": "exit_stop_id",
           "observed_value": "S9174",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900001957\",\"passenger_id\":\"P000316\",\"trip_id\":\"T2609001604\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0035\",\"exit_stop_id\":\"S9174\",\"entry_time\":\"2026-09-01T09:33:46.000Z\",\"exit_time\":\"2026-09-01T09:54:31.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900002872\",\"passenger_id\":\"P031330\",\"trip_id\":\"T2609002285\",\"route_id\":\"R017\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0223\",\"exit_stop_id\":\"S9174\",\"entry_time\":\"2026-09-01T10:21:39.000Z\",\"exit_time\":\"2026-09-01T10:34:49.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
-          "record_key": "TK260900002492",
+          "record_key": "TK260900002997",
           "column": "exit_stop_id",
           "observed_value": "S9839",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900002492\",\"passenger_id\":\"P018060\",\"trip_id\":\"T2609002004\",\"route_id\":\"R096\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0647\",\"exit_stop_id\":\"S9839\",\"entry_time\":\"2026-09-01T09:28:20.000Z\",\"exit_time\":\"2026-09-01T09:32:46.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
-        },
-        {
-          "record_key": "TK260900002873",
-          "column": "exit_stop_id",
-          "observed_value": "S9632",
-          "units": 1,
-          "record": "{\"ticket_id\":\"TK260900002873\",\"passenger_id\":\"P052234\",\"trip_id\":\"T2609002286\",\"route_id\":\"R021\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0249\",\"exit_stop_id\":\"S9632\",\"entry_time\":\"2026-09-01T09:49:31.000Z\",\"exit_time\":\"2026-09-01T09:54:04.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
-        },
-        {
-          "record_key": "TK260900002999",
-          "column": "entry_stop_id",
-          "observed_value": "S9459",
-          "units": 1,
-          "record": "{\"ticket_id\":\"TK260900002999\",\"passenger_id\":\"P017448\",\"trip_id\":\"T2609002387\",\"route_id\":\"R020\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S9459\",\"exit_stop_id\":\"S0130\",\"entry_time\":\"2026-09-01T09:56:49.000Z\",\"exit_time\":\"2026-09-01T10:54:52.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900002997\",\"passenger_id\":\"P045819\",\"trip_id\":\"T2609002387\",\"route_id\":\"R020\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0131\",\"exit_stop_id\":\"S9839\",\"entry_time\":\"2026-09-01T10:51:55.000Z\",\"exit_time\":\"2026-09-01T10:54:44.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
         }
       ]
     },
@@ -264,45 +264,45 @@
         "parent_table": "stops",
         "parent_key": "stop_id"
       },
-      "table_rows": 218504,
+      "table_rows": 218479,
       "affected_rows": 657,
       "affected_units": 657,
-      "seconds": 3.3,
+      "seconds": 1.1,
       "samples": [
         {
           "record_key": "D26090000200",
           "column": "stop_id",
-          "observed_value": "S9634",
+          "observed_value": "S9691",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000200\",\"trip_id\":\"T2609000603\",\"route_id\":\"R042\",\"stop_id\":\"S9634\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T07:29:57.000Z\",\"actual_arrival\":\"2026-09-01T07:35:08.000Z\",\"scheduled_departure\":\"2026-09-01T07:30:27.000Z\",\"actual_departure\":\"2026-09-01T07:35:47.000Z\""
+          "record": "{\"delay_id\":\"D26090000200\",\"trip_id\":\"T2609000603\",\"route_id\":\"R042\",\"stop_id\":\"S9691\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T07:29:57.000Z\",\"actual_arrival\":\"2026-09-01T07:35:08.000Z\",\"scheduled_departure\":\"2026-09-01T07:30:27.000Z\",\"actual_departure\":\"2026-09-01T07:35:47.000Z\""
         },
         {
           "record_key": "D26090000493",
           "column": "stop_id",
-          "observed_value": "S9333",
+          "observed_value": "S9194",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000493\",\"trip_id\":\"T2609001092\",\"route_id\":\"R001\",\"stop_id\":\"S9333\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:11:48.000Z\",\"actual_arrival\":\"2026-09-01T09:28:36.000Z\",\"scheduled_departure\":\"2026-09-01T09:12:18.000Z\",\"actual_departure\":\"2026-09-01T09:31:54.000Z\""
+          "record": "{\"delay_id\":\"D26090000493\",\"trip_id\":\"T2609001092\",\"route_id\":\"R001\",\"stop_id\":\"S9194\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:11:48.000Z\",\"actual_arrival\":\"2026-09-01T09:28:36.000Z\",\"scheduled_departure\":\"2026-09-01T09:12:18.000Z\",\"actual_departure\":\"2026-09-01T09:31:54.000Z\""
         },
         {
-          "record_key": "D26090000495",
+          "record_key": "D26090000496",
           "column": "stop_id",
-          "observed_value": "S9805",
+          "observed_value": "S9149",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000495\",\"trip_id\":\"T2609001093\",\"route_id\":\"R006\",\"stop_id\":\"S9805\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T08:55:00.000Z\",\"actual_arrival\":\"2026-09-01T09:05:32.000Z\",\"scheduled_departure\":\"2026-09-01T08:55:30.000Z\",\"actual_departure\":\"2026-09-01T09:06:14.000Z\""
+          "record": "{\"delay_id\":\"D26090000496\",\"trip_id\":\"T2609001094\",\"route_id\":\"R010\",\"stop_id\":\"S9149\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T08:50:48.000Z\",\"actual_arrival\":\"2026-09-01T09:06:26.000Z\",\"scheduled_departure\":\"2026-09-01T08:51:18.000Z\",\"actual_departure\":\"2026-09-01T09:07:30.000Z\""
         },
         {
           "record_key": "D26090001664",
           "column": "stop_id",
-          "observed_value": "S9562",
+          "observed_value": "S9444",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090001664\",\"trip_id\":\"T2609003920\",\"route_id\":\"R014\",\"stop_id\":\"S9562\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T15:37:18.000Z\",\"actual_arrival\":\"2026-09-01T15:31:34.000Z\",\"scheduled_departure\":\"2026-09-01T15:37:48.000Z\",\"actual_departure\":\"2026-09-01T15:32:26.000Z\""
+          "record": "{\"delay_id\":\"D26090001664\",\"trip_id\":\"T2609003920\",\"route_id\":\"R014\",\"stop_id\":\"S9444\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T15:37:18.000Z\",\"actual_arrival\":\"2026-09-01T15:31:34.000Z\",\"scheduled_departure\":\"2026-09-01T15:37:48.000Z\",\"actual_departure\":\"2026-09-01T15:32:26.000Z\""
         },
         {
-          "record_key": "D26090001938",
+          "record_key": "D26090001939",
           "column": "stop_id",
-          "observed_value": "S9557",
+          "observed_value": "S9319",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090001938\",\"trip_id\":\"T2609004510\",\"route_id\":\"R117\",\"stop_id\":\"S9557\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T17:16:18.000Z\",\"actual_arrival\":\"2026-09-01T17:21:51.000Z\",\"scheduled_departure\":\"2026-09-01T17:16:48.000Z\",\"actual_departure\":\"2026-09-01T17:22:25.000Z\""
+          "record": "{\"delay_id\":\"D26090001939\",\"trip_id\":\"T2609004512\",\"route_id\":\"R008\",\"stop_id\":\"S9319\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T16:57:17.000Z\",\"actual_arrival\":\"2026-09-01T17:06:33.000Z\",\"scheduled_departure\":\"2026-09-01T16:57:47.000Z\",\"actual_departure\":\"2026-09-01T17:07:00.000Z\""
         }
       ]
     },
@@ -315,45 +315,45 @@
       "action": "remove",
       "description": "More than one row with the same ticket_id (duplicate transaction)",
       "params": {},
-      "table_rows": 629170,
-      "affected_rows": 12361,
-      "affected_units": 12361,
-      "seconds": 10.3,
+      "table_rows": 629157,
+      "affected_rows": 12360,
+      "affected_units": 12360,
+      "seconds": 3.6,
       "samples": [
         {
-          "record_key": "TK260900000034",
+          "record_key": "TK260900000033",
           "column": "ticket_id",
           "observed_value": "2 rows, identical_copies",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000034\",\"passenger_id\":\"P051345\",\"trip_id\":\"T2609000128\",\"route_id\":\"R002\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0060\",\"exit_stop_id\":\"S0056\",\"entry_time\":\"2026-09-01T06:18:24.000Z\",\"exit_time\":\"2026-09-01T06:32:29.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000033\",\"passenger_id\":\"P032906\",\"trip_id\":\"T2609000127\",\"route_id\":\"R079\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0446\",\"exit_stop_id\":\"S0215\",\"entry_time\":\"2026-09-01T05:58:20.000Z\",\"exit_time\":\"2026-09-01T06:03:16.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
           "record_key": "TK260900000085",
           "column": "ticket_id",
           "observed_value": "2 rows, identical_copies",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000085\",\"passenger_id\":\"P002532\",\"trip_id\":\"T2609000235\",\"route_id\":\"R032\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0001\",\"exit_stop_id\":\"S0255\",\"entry_time\":\"2026-09-01T06:25:30.000Z\",\"exit_time\":\"2026-09-01T06:41:17.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+          "record": "{\"ticket_id\":\"TK260900000085\",\"passenger_id\":\"P041680\",\"trip_id\":\"T2609000235\",\"route_id\":\"R032\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0337\",\"exit_stop_id\":\"S0229\",\"entry_time\":\"2026-09-01T06:06:45.000Z\",\"exit_time\":\"2026-09-01T06:28:29.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
         },
         {
           "record_key": "TK260900000156",
           "column": "ticket_id",
           "observed_value": "2 rows, identical_copies",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000156\",\"passenger_id\":\"P051915\",\"trip_id\":\"T2609000302\",\"route_id\":\"R070\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0523\",\"exit_stop_id\":\"S0522\",\"entry_time\":\"2026-09-01T06:41:26.000Z\",\"exit_time\":\"2026-09-01T06:42:59.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000156\",\"passenger_id\":\"P029477\",\"trip_id\":\"T2609000302\",\"route_id\":\"R070\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0383\",\"exit_stop_id\":\"S0471\",\"entry_time\":\"2026-09-01T06:17:57.000Z\",\"exit_time\":\"2026-09-01T06:46:17.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
           "record_key": "TK260900000162",
           "column": "ticket_id",
           "observed_value": "2 rows, identical_copies",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000162\",\"passenger_id\":\"P027921\",\"trip_id\":\"T2609000314\",\"route_id\":\"R036\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0283\",\"exit_stop_id\":\"S0355\",\"entry_time\":\"2026-09-01T06:26:30.000Z\",\"exit_time\":\"2026-09-01T06:27:35.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
+          "record": "{\"ticket_id\":\"TK260900000162\",\"passenger_id\":\"P009736\",\"trip_id\":\"T2609000314\",\"route_id\":\"R036\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0150\",\"exit_stop_id\":\"S0015\",\"entry_time\":\"2026-09-01T06:46:51.000Z\",\"exit_time\":\"2026-09-01T06:50:30.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"student\","
         },
         {
           "record_key": "TK260900000167",
           "column": "ticket_id",
           "observed_value": "2 rows, identical_copies",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000167\",\"passenger_id\":\"P002518\",\"trip_id\":\"T2609000322\",\"route_id\":\"R034\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0344\",\"exit_stop_id\":\"S0007\",\"entry_time\":\"2026-09-01T06:28:37.000Z\",\"exit_time\":\"2026-09-01T06:59:13.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
+          "record": "{\"ticket_id\":\"TK260900000167\",\"passenger_id\":\"P048270\",\"trip_id\":\"T2609000322\",\"route_id\":\"R034\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0222\",\"exit_stop_id\":\"S0007\",\"entry_time\":\"2026-09-01T06:52:27.000Z\",\"exit_time\":\"2026-09-01T06:59:11.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
         }
       ]
     },
@@ -369,7 +369,7 @@
       "table_rows": 423099,
       "affected_rows": 1691,
       "affected_units": 1691,
-      "seconds": 5.3,
+      "seconds": 2.0,
       "samples": [
         {
           "record_key": "T2609000208",
@@ -425,45 +425,45 @@
           "card_taps"
         ]
       },
-      "table_rows": 388348,
+      "table_rows": 388349,
       "affected_rows": 1165,
       "affected_units": 1165,
-      "seconds": 1.9,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "PC2609000317",
           "column": "max_load",
           "observed_value": "-33",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000317\",\"trip_id\":\"T2609000317\",\"route_id\":\"R058\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0501\",\"boardings\":13,\"alightings\":12,\"max_load\":-33,\"max_load_stop_id\":\"S0215\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000317\",\"trip_id\":\"T2609000317\",\"route_id\":\"R058\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0501\",\"boardings\":13,\"alightings\":14,\"max_load\":-33,\"max_load_stop_id\":\"S0002\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000608",
           "column": "max_load",
           "observed_value": "-34",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000608\",\"trip_id\":\"T2609000608\",\"route_id\":\"R093\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0653\",\"boardings\":8,\"alightings\":8,\"max_load\":-34,\"max_load_stop_id\":\"S0633\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000608\",\"trip_id\":\"T2609000608\",\"route_id\":\"R093\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0653\",\"boardings\":8,\"alightings\":7,\"max_load\":-34,\"max_load_stop_id\":\"S0632\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000619",
           "column": "alightings",
           "observed_value": "-12",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000619\",\"trip_id\":\"T2609000619\",\"route_id\":\"R078\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0596\",\"boardings\":8,\"alightings\":-12,\"max_load\":6,\"max_load_stop_id\":\"S0181\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000619\",\"trip_id\":\"T2609000619\",\"route_id\":\"R078\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0596\",\"boardings\":8,\"alightings\":-12,\"max_load\":6,\"max_load_stop_id\":\"S0387\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609000623",
           "column": "max_load",
           "observed_value": "-29",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000623\",\"trip_id\":\"T2609000623\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0061\",\"boardings\":28,\"alightings\":29,\"max_load\":-29,\"max_load_stop_id\":\"S0073\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000623\",\"trip_id\":\"T2609000623\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0061\",\"boardings\":28,\"alightings\":28,\"max_load\":-29,\"max_load_stop_id\":\"S0036\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609001345",
           "column": "max_load",
           "observed_value": "-27",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609001345\",\"trip_id\":\"T2609001345\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0008\",\"boardings\":208,\"alightings\":207,\"max_load\":-27,\"max_load_stop_id\":\"S0035\",\"denied_boardings\":0,\"card_taps\":9,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609001345\",\"trip_id\":\"T2609001345\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0008\",\"boardings\":208,\"alightings\":206,\"max_load\":-27,\"max_load_stop_id\":\"S0030\",\"denied_boardings\":0,\"card_taps\":9,\"year_month\":\"2026-09\"}"
         }
       ]
     },
@@ -481,45 +481,45 @@
           "exit_time"
         ]
       },
-      "table_rows": 629170,
+      "table_rows": 629157,
       "affected_rows": 1236,
       "affected_units": 1236,
-      "seconds": 1.4,
+      "seconds": 0.8,
       "samples": [
         {
           "record_key": "TK260900000118",
           "column": "entry_time",
-          "observed_value": "2025-09-31 08:00:00",
+          "observed_value": "0000-00-00 00:00:00",
           "units": 1,
-          "record": "TK260900000118,P008661,T2609000263,R074,2026-09-01,S0423,S0223,2025-09-31 08:00:00,2026-09-01 06:33:36,single,standard,20.0,smart_card"
+          "record": "TK260900000118,P049430,T2609000263,R074,2026-09-01,S0350,S0423,0000-00-00 00:00:00,2026-09-01 06:30:28,single,student,10.0,smart_card"
         },
         {
           "record_key": "TK260900000674",
           "column": "entry_time",
-          "observed_value": "1700000000",
-          "units": 1,
-          "record": "TK260900000674,P045566,T2609000762,R010,2026-09-01,S0155,S0162,1700000000,2026-09-01 07:54:51,single,standard,35.0,smart_card"
-        },
-        {
-          "record_key": "TK260900000903",
-          "column": "entry_time",
           "observed_value": "31/02/2026 10:00",
           "units": 1,
-          "record": "TK260900000903,P050797,T2609000934,R045,2026-09-01,S0410,S0023,31/02/2026 10:00,2026-09-01 08:08:44,monthly_pass,standard,0.0,smart_card"
+          "record": "TK260900000674,P008904,T2609000762,R010,2026-09-01,S0163,S0165,31/02/2026 10:00,2026-09-01 08:10:38,single,standard,30.0,smart_card"
+        },
+        {
+          "record_key": "TK260900000902",
+          "column": "entry_time",
+          "observed_value": "2025-09-31 08:00:00",
+          "units": 1,
+          "record": "TK260900000902,P054906,T2609000933,R034,2026-09-01,S0347,S0348,2025-09-31 08:00:00,2026-09-01 08:02:25,single,standard,25.0,mobile_qr"
         },
         {
           "record_key": "TK260900000997",
           "column": "entry_time",
-          "observed_value": "31/02/2026 10:00",
+          "observed_value": "1700000000",
           "units": 1,
-          "record": "TK260900000997,P000002,T2609000997,R104,2026-09-01,S0615,S0599,31/02/2026 10:00,2026-09-01 08:09:49,single,standard,15.0,smart_card"
+          "record": "TK260900000997,P006859,T2609000997,R104,2026-09-01,S0616,S0599,1700000000,2026-09-01 08:09:39,single,standard,15.0,smart_card"
         },
         {
           "record_key": "TK260900001411",
           "column": "entry_time",
-          "observed_value": "N/A",
+          "observed_value": "31/02/2026 10:00",
           "units": 1,
-          "record": "TK260900001411,P035763,T2609001268,R001,2026-09-01,S0049,S0039,N/A,2026-09-01 08:52:13,single,standard,60.0,smart_card"
+          "record": "TK260900001411,P048241,T2609001268,R001,2026-09-01,S0034,S0030,31/02/2026 10:00,2026-09-01 09:25:35,single,standard,40.0,smart_card"
         }
       ]
     },
@@ -535,10 +535,10 @@
         "column": "actual_arrival",
         "reference": "scheduled_arrival"
       },
-      "table_rows": 218504,
+      "table_rows": 218479,
       "affected_rows": 657,
       "affected_units": 657,
-      "seconds": 1.9,
+      "seconds": 0.6,
       "samples": [
         {
           "record_key": "D26090000030",
@@ -548,18 +548,18 @@
           "record": "{\"delay_id\":\"D26090000030\",\"trip_id\":\"T2609000100\",\"route_id\":\"R080\",\"stop_id\":\"S0003\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T06:16:42.000Z\",\"actual_arrival\":\"2026-09-03T06:11:16.000Z\",\"scheduled_departure\":\"2026-09-01T06:17:12.000Z\",\"actual_departure\":\"2026-09-03T06:11:48.000Z\""
         },
         {
-          "record_key": "D26090001072",
+          "record_key": "D26090001073",
           "column": "actual_arrival",
-          "observed_value": "2026-08-31 10:37:38 vs 2026-09-01 10:28:54",
+          "observed_value": "2026-08-31 11:00:43 vs 2026-09-01 11:03:00",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090001072\",\"trip_id\":\"T2609002217\",\"route_id\":\"R114\",\"stop_id\":\"S0721\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T10:28:54.000Z\",\"actual_arrival\":\"2026-08-31T10:37:38.000Z\",\"scheduled_departure\":\"2026-09-01T10:29:24.000Z\",\"actual_departure\":\"2026-08-31T10:38:17.000Z\""
+          "record": "{\"delay_id\":\"D26090001073\",\"trip_id\":\"T2609002218\",\"route_id\":\"R003\",\"stop_id\":\"S0084\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T11:03:00.000Z\",\"actual_arrival\":\"2026-08-31T11:00:43.000Z\",\"scheduled_departure\":\"2026-09-01T11:03:30.000Z\",\"actual_departure\":\"2026-08-31T11:01:38.000Z\""
         },
         {
-          "record_key": "D26090001772",
+          "record_key": "D26090001773",
           "column": "actual_arrival",
-          "observed_value": "2126-08-08 16:37:04 vs 2026-09-01 16:39:48",
+          "observed_value": "2126-08-08 16:10:07 vs 2026-09-01 16:05:01",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090001772\",\"trip_id\":\"T2609004298\",\"route_id\":\"R026\",\"stop_id\":\"S0005\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T16:39:48.000Z\",\"actual_arrival\":\"2126-08-08T16:37:04.000Z\",\"scheduled_departure\":\"2026-09-01T16:40:18.000Z\",\"actual_departure\":\"2126-08-08T16:38:13.000Z\""
+          "record": "{\"delay_id\":\"D26090001773\",\"trip_id\":\"T2609004305\",\"route_id\":\"R076\",\"stop_id\":\"S0060\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T16:05:01.000Z\",\"actual_arrival\":\"2126-08-08T16:10:07.000Z\",\"scheduled_departure\":\"2026-09-01T16:05:31.000Z\",\"actual_departure\":\"2126-08-08T16:12:18.000Z\""
         },
         {
           "record_key": "D26090001910",
@@ -592,7 +592,7 @@
       "table_rows": 423099,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 1.3,
+      "seconds": 0.6,
       "samples": []
     },
     {
@@ -607,45 +607,45 @@
         "earlier": "actual_arrival",
         "later": "actual_departure"
       },
-      "table_rows": 218504,
+      "table_rows": 218479,
       "affected_rows": 875,
       "affected_units": 875,
-      "seconds": 1.3,
+      "seconds": 0.4,
       "samples": [
         {
           "record_key": "D26090000227",
           "column": "actual_departure",
-          "observed_value": "2026-09-01 07:56:13 -> 2026-09-01 07:46:49",
+          "observed_value": "2026-09-01 07:56:13 -> 2026-09-01 07:48:27",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000227\",\"trip_id\":\"T2609000650\",\"route_id\":\"R052\",\"stop_id\":\"S0206\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T07:45:24.000Z\",\"actual_arrival\":\"2026-09-01T07:56:13.000Z\",\"scheduled_departure\":\"2026-09-01T07:45:54.000Z\",\"actual_departure\":\"2026-09-01T07:46:49.000Z\""
+          "record": "{\"delay_id\":\"D26090000227\",\"trip_id\":\"T2609000650\",\"route_id\":\"R052\",\"stop_id\":\"S0206\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T07:45:24.000Z\",\"actual_arrival\":\"2026-09-01T07:56:13.000Z\",\"scheduled_departure\":\"2026-09-01T07:45:54.000Z\",\"actual_departure\":\"2026-09-01T07:48:27.000Z\""
         },
         {
           "record_key": "D26090000348",
           "column": "actual_departure",
-          "observed_value": "2026-09-01 08:09:11 -> 2026-09-01 07:59:46",
+          "observed_value": "2026-09-01 08:09:11 -> 2026-09-01 08:07:31",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000348\",\"trip_id\":\"T2609000826\",\"route_id\":\"R077\",\"stop_id\":\"S0006\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T07:53:06.000Z\",\"actual_arrival\":\"2026-09-01T08:09:11.000Z\",\"scheduled_departure\":\"2026-09-01T07:53:36.000Z\",\"actual_departure\":\"2026-09-01T07:59:46.000Z\""
+          "record": "{\"delay_id\":\"D26090000348\",\"trip_id\":\"T2609000826\",\"route_id\":\"R077\",\"stop_id\":\"S0006\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T07:53:06.000Z\",\"actual_arrival\":\"2026-09-01T08:09:11.000Z\",\"scheduled_departure\":\"2026-09-01T07:53:36.000Z\",\"actual_departure\":\"2026-09-01T08:07:31.000Z\""
         },
         {
           "record_key": "D26090000763",
           "column": "actual_departure",
-          "observed_value": "2026-09-01 09:31:36 -> 2026-09-01 09:28:51",
+          "observed_value": "2026-09-01 09:31:36 -> 2026-09-01 09:23:20",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000763\",\"trip_id\":\"T2609001597\",\"route_id\":\"R034\",\"stop_id\":\"S0342\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:35:36.000Z\",\"actual_arrival\":\"2026-09-01T09:31:36.000Z\",\"scheduled_departure\":\"2026-09-01T09:36:06.000Z\",\"actual_departure\":\"2026-09-01T09:28:51.000Z\""
+          "record": "{\"delay_id\":\"D26090000763\",\"trip_id\":\"T2609001597\",\"route_id\":\"R034\",\"stop_id\":\"S0342\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:35:36.000Z\",\"actual_arrival\":\"2026-09-01T09:31:36.000Z\",\"scheduled_departure\":\"2026-09-01T09:36:06.000Z\",\"actual_departure\":\"2026-09-01T09:23:20.000Z\""
         },
         {
           "record_key": "D26090000861",
           "column": "actual_departure",
-          "observed_value": "2026-09-01 09:40:13 -> 2026-09-01 09:30:50",
+          "observed_value": "2026-09-01 09:40:13 -> 2026-09-01 09:33:56",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000861\",\"trip_id\":\"T2609001834\",\"route_id\":\"R003\",\"stop_id\":\"S0005\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:32:18.000Z\",\"actual_arrival\":\"2026-09-01T09:40:13.000Z\",\"scheduled_departure\":\"2026-09-01T09:32:48.000Z\",\"actual_departure\":\"2026-09-01T09:30:50.000Z\""
+          "record": "{\"delay_id\":\"D26090000861\",\"trip_id\":\"T2609001834\",\"route_id\":\"R003\",\"stop_id\":\"S0005\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:32:18.000Z\",\"actual_arrival\":\"2026-09-01T09:40:13.000Z\",\"scheduled_departure\":\"2026-09-01T09:32:48.000Z\",\"actual_departure\":\"2026-09-01T09:33:56.000Z\""
         },
         {
           "record_key": "D26090000869",
           "column": "actual_departure",
-          "observed_value": "2026-09-01 10:26:37 -> 2026-09-01 10:19:15",
+          "observed_value": "2026-09-01 10:26:37 -> 2026-09-01 10:25:21",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000869\",\"trip_id\":\"T2609001846\",\"route_id\":\"R011\",\"stop_id\":\"S0007\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T10:09:00.000Z\",\"actual_arrival\":\"2026-09-01T10:26:37.000Z\",\"scheduled_departure\":\"2026-09-01T10:09:30.000Z\",\"actual_departure\":\"2026-09-01T10:19:15.000Z\""
+          "record": "{\"delay_id\":\"D26090000869\",\"trip_id\":\"T2609001846\",\"route_id\":\"R011\",\"stop_id\":\"S0007\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T10:09:00.000Z\",\"actual_arrival\":\"2026-09-01T10:26:37.000Z\",\"scheduled_departure\":\"2026-09-01T10:09:30.000Z\",\"actual_departure\":\"2026-09-01T10:25:21.000Z\""
         }
       ]
     },
@@ -664,7 +664,7 @@
       "table_rows": 423099,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 1.2,
+      "seconds": 0.4,
       "samples": []
     },
     {
@@ -679,45 +679,45 @@
         "load_column": "max_load",
         "vehicle_column": "vehicle_id"
       },
-      "table_rows": 388348,
+      "table_rows": 388349,
       "affected_rows": 776,
       "affected_units": 776,
-      "seconds": 2.0,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "PC2609000005",
           "column": "max_load",
           "observed_value": "181 / capacity 70",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609000005\",\"trip_id\":\"T2609000005\",\"route_id\":\"R068\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0546\",\"boardings\":7,\"alightings\":8,\"max_load\":181,\"max_load_stop_id\":\"S0515\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609000005\",\"trip_id\":\"T2609000005\",\"route_id\":\"R068\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0546\",\"boardings\":7,\"alightings\":5,\"max_load\":181,\"max_load_stop_id\":\"S0516\",\"denied_boardings\":0,\"card_taps\":1,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609001085",
           "column": "max_load",
           "observed_value": "147 / capacity 70",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609001085\",\"trip_id\":\"T2609001085\",\"route_id\":\"R030\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0342\",\"boardings\":3,\"alightings\":3,\"max_load\":147,\"max_load_stop_id\":\"S0126\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609001085\",\"trip_id\":\"T2609001085\",\"route_id\":\"R030\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0342\",\"boardings\":3,\"alightings\":2,\"max_load\":147,\"max_load_stop_id\":\"S0330\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609001293",
           "column": "max_load",
           "observed_value": "214 / capacity 70",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609001293\",\"trip_id\":\"T2609001293\",\"route_id\":\"R074\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0575\",\"boardings\":135,\"alightings\":135,\"max_load\":214,\"max_load_stop_id\":\"S0352\",\"denied_boardings\":0,\"card_taps\":7,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609001293\",\"trip_id\":\"T2609001293\",\"route_id\":\"R074\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0575\",\"boardings\":135,\"alightings\":136,\"max_load\":214,\"max_load_stop_id\":\"S0393\",\"denied_boardings\":0,\"card_taps\":7,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609001419",
           "column": "max_load",
           "observed_value": "187 / capacity 70",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609001419\",\"trip_id\":\"T2609001419\",\"route_id\":\"R027\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0320\",\"boardings\":42,\"alightings\":43,\"max_load\":187,\"max_load_stop_id\":\"S0226\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609001419\",\"trip_id\":\"T2609001419\",\"route_id\":\"R027\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0320\",\"boardings\":42,\"alightings\":41,\"max_load\":187,\"max_load_stop_id\":\"S0224\",\"denied_boardings\":0,\"card_taps\":0,\"year_month\":\"2026-09\"}"
         },
         {
           "record_key": "PC2609001704",
           "column": "max_load",
           "observed_value": "390 / capacity 150",
           "units": 1,
-          "record": "{\"count_id\":\"PC2609001704\",\"trip_id\":\"T2609001704\",\"route_id\":\"R004\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0086\",\"boardings\":74,\"alightings\":76,\"max_load\":390,\"max_load_stop_id\":\"S0027\",\"denied_boardings\":0,\"card_taps\":2,\"year_month\":\"2026-09\"}"
+          "record": "{\"count_id\":\"PC2609001704\",\"trip_id\":\"T2609001704\",\"route_id\":\"R004\",\"service_date\":\"2026-09-01\",\"vehicle_id\":\"V0086\",\"boardings\":74,\"alightings\":73,\"max_load\":390,\"max_load_stop_id\":\"S0091\",\"denied_boardings\":0,\"card_taps\":2,\"year_month\":\"2026-09\"}"
         }
       ]
     },
@@ -735,10 +735,10 @@
         "max_param": "delay_valid_max_minutes",
         "include_unparseable": true
       },
-      "table_rows": 218504,
+      "table_rows": 218479,
       "affected_rows": 657,
       "affected_units": 657,
-      "seconds": 1.7,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "D26090000095",
@@ -766,14 +766,14 @@
           "column": "delay_minutes",
           "observed_value": "n/a",
           "units": 1,
-          "record": "D26090000606,T2609001315,R001,S0050,2026-09-01,2026-09-01 09:32:48,2026-09-01 09:47:53,2026-09-01 09:33:18,2026-09-01 09:49:44,n/a,junction_bottleneck,driver_report"
+          "record": "D26090000606,T2609001315,R001,S0050,2026-09-01,2026-09-01 09:32:48,2026-09-01 09:47:53,2026-09-01 09:33:18,2026-09-01 09:49:44,n/a,junction_bottleneck,avl"
         },
         {
-          "record_key": "D26090000821",
+          "record_key": "D26090000822",
           "column": "delay_minutes",
           "observed_value": "-999.0",
           "units": 1,
-          "record": "{\"delay_id\":\"D26090000821\",\"trip_id\":\"T2609001738\",\"route_id\":\"R004\",\"stop_id\":\"S0085\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T10:11:00.000Z\",\"actual_arrival\":\"2026-09-01T10:27:26.000Z\",\"scheduled_departure\":\"2026-09-01T10:11:30.000Z\",\"actual_departure\":\"2026-09-01T10:30:44.000Z\""
+          "record": "{\"delay_id\":\"D26090000822\",\"trip_id\":\"T2609001739\",\"route_id\":\"R008\",\"stop_id\":\"S0140\",\"service_date\":\"2026-09-01\",\"scheduled_arrival\":\"2026-09-01T09:10:54.000Z\",\"actual_arrival\":\"2026-09-01T09:17:28.000Z\",\"scheduled_departure\":\"2026-09-01T09:11:24.000Z\",\"actual_departure\":\"2026-09-01T09:17:58.000Z\""
         }
       ]
     },
@@ -791,7 +791,7 @@
       "table_rows": 423099,
       "affected_rows": 1691,
       "affected_units": 1691,
-      "seconds": 1.2,
+      "seconds": 0.3,
       "samples": [
         {
           "record_key": "T2609000096",
@@ -848,7 +848,7 @@
       "table_rows": 3351,
       "affected_rows": 10,
       "affected_units": 10,
-      "seconds": 2.2,
+      "seconds": 0.9,
       "samples": [
         {
           "record_key": "R035|0",
@@ -904,7 +904,7 @@
       "table_rows": 123,
       "affected_rows": 4,
       "affected_units": 4,
-      "seconds": 0.9,
+      "seconds": 0.6,
       "samples": [
         {
           "record_key": "R020",
@@ -951,45 +951,45 @@
         "parent_table": "passengers",
         "parent_key": "passenger_id"
       },
-      "table_rows": 629170,
+      "table_rows": 629157,
       "affected_rows": 1854,
       "affected_units": 1854,
-      "seconds": 3.6,
+      "seconds": 1.5,
       "samples": [
         {
           "record_key": "TK260900000005",
           "column": "passenger_id",
-          "observed_value": "P911798",
+          "observed_value": "P953888",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000005\",\"passenger_id\":\"P911798\",\"trip_id\":\"T2609000020\",\"route_id\":\"R049\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0274\",\"exit_stop_id\":\"S0352\",\"entry_time\":\"2026-09-01T05:42:12.000Z\",\"exit_time\":\"2026-09-01T05:58:20.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000005\",\"passenger_id\":\"P953888\",\"trip_id\":\"T2609000020\",\"route_id\":\"R049\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0429\",\"exit_stop_id\":\"S0315\",\"entry_time\":\"2026-09-01T05:36:26.000Z\",\"exit_time\":\"2026-09-01T05:47:15.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
           "record_key": "TK260900000111",
           "column": "passenger_id",
-          "observed_value": "P946689",
+          "observed_value": "P960579",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000111\",\"passenger_id\":\"P946689\",\"trip_id\":\"T2609000257\",\"route_id\":\"R031\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0335\",\"exit_stop_id\":\"S0333\",\"entry_time\":\"2026-09-01T06:41:42.000Z\",\"exit_time\":\"2026-09-01T06:47:01.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000111\",\"passenger_id\":\"P960579\",\"trip_id\":\"T2609000257\",\"route_id\":\"R031\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0285\",\"exit_stop_id\":\"S0331\",\"entry_time\":\"2026-09-01T06:33:49.000Z\",\"exit_time\":\"2026-09-01T06:51:33.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
           "record_key": "TK260900000164",
           "column": "passenger_id",
-          "observed_value": "P909066",
+          "observed_value": "P944323",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000164\",\"passenger_id\":\"P909066\",\"trip_id\":\"T2609000314\",\"route_id\":\"R036\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0354\",\"exit_stop_id\":\"S0356\",\"entry_time\":\"2026-09-01T06:21:08.000Z\",\"exit_time\":\"2026-09-01T06:30:05.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000164\",\"passenger_id\":\"P944323\",\"trip_id\":\"T2609000314\",\"route_id\":\"R036\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0354\",\"exit_stop_id\":\"S0359\",\"entry_time\":\"2026-09-01T06:21:07.000Z\",\"exit_time\":\"2026-09-01T06:47:50.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
           "record_key": "TK260900000208",
           "column": "passenger_id",
-          "observed_value": "P993137",
+          "observed_value": "P911798",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000208\",\"passenger_id\":\"P993137\",\"trip_id\":\"T2609000382\",\"route_id\":\"R070\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0471\",\"exit_stop_id\":\"S0523\",\"entry_time\":\"2026-09-01T06:35:39.000Z\",\"exit_time\":\"2026-09-01T06:40:35.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000208\",\"passenger_id\":\"P911798\",\"trip_id\":\"T2609000382\",\"route_id\":\"R070\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0125\",\"exit_stop_id\":\"S0524\",\"entry_time\":\"2026-09-01T06:47:01.000Z\",\"exit_time\":\"2026-09-01T06:58:12.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
         },
         {
           "record_key": "TK260900000348",
           "column": "passenger_id",
-          "observed_value": "P995976",
+          "observed_value": "P946689",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000348\",\"passenger_id\":\"P995976\",\"trip_id\":\"T2609000548\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0045\",\"exit_stop_id\":\"S0048\",\"entry_time\":\"2026-09-01T08:27:48.000Z\",\"exit_time\":\"2026-09-01T08:37:44.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+          "record": "{\"ticket_id\":\"TK260900000348\",\"passenger_id\":\"P946689\",\"trip_id\":\"T2609000548\",\"route_id\":\"R001\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0029\",\"exit_stop_id\":\"S0047\",\"entry_time\":\"2026-09-01T07:00:59.000Z\",\"exit_time\":\"2026-09-01T08:34:07.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
         }
       ]
     },
@@ -1014,7 +1014,7 @@
       "table_rows": 423099,
       "affected_rows": 1268,
       "affected_units": 1268,
-      "seconds": 9.3,
+      "seconds": 4.4,
       "samples": [
         {
           "record_key": "T2609000106",
@@ -1071,7 +1071,7 @@
       "table_rows": 423099,
       "affected_rows": 4226,
       "affected_units": 4226,
-      "seconds": 2.2,
+      "seconds": 0.7,
       "samples": [
         {
           "record_key": "T2609000066",
@@ -1122,45 +1122,45 @@
         "column": "entry_time",
         "date_column": "service_date"
       },
-      "table_rows": 629170,
+      "table_rows": 629157,
       "affected_rows": 618,
       "affected_units": 618,
-      "seconds": 1.6,
+      "seconds": 1.0,
       "samples": [
         {
           "record_key": "TK260900002077",
           "column": "entry_time",
-          "observed_value": "2027-09-01 09:30:20 for 2026-09-01",
+          "observed_value": "2027-09-01 09:37:30 for 2026-09-01",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900002077\",\"passenger_id\":\"P031402\",\"trip_id\":\"T2609001689\",\"route_id\":\"R029\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0321\",\"exit_stop_id\":\"S0319\",\"entry_time\":\"2027-09-01T09:30:20.000Z\",\"exit_time\":\"2027-09-01T09:37:27.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900002077\",\"passenger_id\":\"P032821\",\"trip_id\":\"T2609001689\",\"route_id\":\"R029\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0319\",\"exit_stop_id\":\"S0318\",\"entry_time\":\"2027-09-01T09:37:30.000Z\",\"exit_time\":\"2027-09-01T09:41:44.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
         },
         {
-          "record_key": "TK260900003261",
+          "record_key": "TK260900003259",
           "column": "entry_time",
-          "observed_value": "2027-09-01 10:56:54 for 2026-09-01",
+          "observed_value": "2027-09-01 10:58:47 for 2026-09-01",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900003261\",\"passenger_id\":\"P004669\",\"trip_id\":\"T2609002701\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0032\",\"exit_stop_id\":\"S0080\",\"entry_time\":\"2027-09-01T10:56:54.000Z\",\"exit_time\":\"2027-09-01T11:44:46.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900003259\",\"passenger_id\":\"P004287\",\"trip_id\":\"T2609002694\",\"route_id\":\"R074\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0350\",\"exit_stop_id\":\"S0423\",\"entry_time\":\"2027-09-01T10:58:47.000Z\",\"exit_time\":\"2027-09-01T11:02:07.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"senior\""
         },
         {
-          "record_key": "TK260900003896",
+          "record_key": "TK260900003893",
           "column": "entry_time",
-          "observed_value": "2027-09-01 13:43:26 for 2026-09-01",
+          "observed_value": "2027-09-01 13:31:57 for 2026-09-01",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900003896\",\"passenger_id\":\"P008630\",\"trip_id\":\"T2609003287\",\"route_id\":\"R002\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0067\",\"exit_stop_id\":\"S0068\",\"entry_time\":\"2027-09-01T13:43:26.000Z\",\"exit_time\":\"2027-09-01T13:44:22.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"disabled\""
+          "record": "{\"ticket_id\":\"TK260900003893\",\"passenger_id\":\"P002932\",\"trip_id\":\"T2609003287\",\"route_id\":\"R002\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0006\",\"exit_stop_id\":\"S0065\",\"entry_time\":\"2027-09-01T13:31:57.000Z\",\"exit_time\":\"2027-09-01T13:35:16.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
         },
         {
-          "record_key": "TK260900005255",
+          "record_key": "TK260900005252",
           "column": "entry_time",
-          "observed_value": "2027-09-01 16:09:22 for 2026-09-01",
+          "observed_value": "2027-09-01 15:49:49 for 2026-09-01",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900005255\",\"passenger_id\":\"P039887\",\"trip_id\":\"T2609004225\",\"route_id\":\"R005\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0025\",\"exit_stop_id\":\"S0111\",\"entry_time\":\"2027-09-01T16:09:22.000Z\",\"exit_time\":\"2027-09-01T16:13:24.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900005252\",\"passenger_id\":\"P050753\",\"trip_id\":\"T2609004221\",\"route_id\":\"R015\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0202\",\"exit_stop_id\":\"S0204\",\"entry_time\":\"2027-09-01T15:49:49.000Z\",\"exit_time\":\"2027-09-01T15:56:17.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
-          "record_key": "TK260900013375",
+          "record_key": "TK260900013366",
           "column": "entry_time",
-          "observed_value": "2027-09-02 13:30:18 for 2026-09-02",
+          "observed_value": "2027-09-02 13:22:51 for 2026-09-02",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900013375\",\"passenger_id\":\"P046564\",\"trip_id\":\"T2609010786\",\"route_id\":\"R001\",\"service_date\":\"2026-09-02\",\"entry_stop_id\":\"S0032\",\"exit_stop_id\":\"S0004\",\"entry_time\":\"2027-09-02T13:30:18.000Z\",\"exit_time\":\"2027-09-02T14:33:58.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900013366\",\"passenger_id\":\"P059826\",\"trip_id\":\"T2609010778\",\"route_id\":\"R080\",\"service_date\":\"2026-09-02\",\"entry_stop_id\":\"S0560\",\"exit_stop_id\":\"S0232\",\"entry_time\":\"2027-09-02T13:22:51.000Z\",\"exit_time\":\"2027-09-02T13:33:50.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
         }
       ]
     },
@@ -1179,7 +1179,7 @@
       "table_rows": 773,
       "affected_rows": 5,
       "affected_units": 5,
-      "seconds": 1.4,
+      "seconds": 0.5,
       "samples": [
         {
           "record_key": "S0076",
@@ -1231,45 +1231,45 @@
           "fare_amount"
         ]
       },
-      "table_rows": 629170,
+      "table_rows": 629157,
       "affected_rows": 618,
       "affected_units": 618,
-      "seconds": 1.8,
+      "seconds": 1.0,
       "samples": [
         {
           "record_key": "TK260900000145",
           "column": "fare_amount",
           "observed_value": "-5.0",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000145\",\"passenger_id\":\"P044018\",\"trip_id\":\"T2609000292\",\"route_id\":\"R004\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0090\",\"exit_stop_id\":\"S0089\",\"entry_time\":\"2026-09-01T07:12:54.000Z\",\"exit_time\":\"2026-09-01T07:12:31.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
+          "record": "{\"ticket_id\":\"TK260900000145\",\"passenger_id\":\"P003569\",\"trip_id\":\"T2609000292\",\"route_id\":\"R004\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0100\",\"exit_stop_id\":\"S0027\",\"entry_time\":\"2026-09-01T06:34:01.000Z\",\"exit_time\":\"2026-09-01T07:18:19.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
         },
         {
           "record_key": "TK260900000173",
           "column": "fare_amount",
-          "observed_value": "-5.0",
+          "observed_value": "-15.0",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000173\",\"passenger_id\":\"P054529\",\"trip_id\":\"T2609000339\",\"route_id\":\"R060\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0476\",\"exit_stop_id\":\"S0477\",\"entry_time\":\"2026-09-01T06:35:25.000Z\",\"exit_time\":\"2026-09-01T06:38:11.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"sta"
+          "record": "{\"ticket_id\":\"TK260900000173\",\"passenger_id\":\"P036073\",\"trip_id\":\"T2609000339\",\"route_id\":\"R060\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0272\",\"exit_stop_id\":\"S0429\",\"entry_time\":\"2026-09-01T06:40:12.000Z\",\"exit_time\":\"2026-09-01T06:43:13.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"student\","
         },
         {
           "record_key": "TK260900000650",
           "column": "fare_amount",
-          "observed_value": "-60.0",
+          "observed_value": "-75.0",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900000650\",\"passenger_id\":\"P051666\",\"trip_id\":\"T2609000739\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0082\",\"exit_stop_id\":\"S0040\",\"entry_time\":\"2026-09-01T07:25:49.000Z\",\"exit_time\":\"2026-09-01T08:01:54.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900000650\",\"passenger_id\":\"P022515\",\"trip_id\":\"T2609000739\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0083\",\"exit_stop_id\":\"S0072\",\"entry_time\":\"2026-09-01T07:22:09.000Z\",\"exit_time\":\"2026-09-01T08:27:09.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         },
         {
-          "record_key": "TK260900002696",
+          "record_key": "TK260900002695",
           "column": "fare_amount",
           "observed_value": "-5.0",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900002696\",\"passenger_id\":\"P038168\",\"trip_id\":\"T2609002169\",\"route_id\":\"R003\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0040\",\"exit_stop_id\":\"S0029\",\"entry_time\":\"2026-09-01T10:13:15.000Z\",\"exit_time\":\"2026-09-01T10:54:10.000Z\",\"ticket_type\":\"monthly_pass\",\"fare_category\":\"stu"
+          "record": "{\"ticket_id\":\"TK260900002695\",\"passenger_id\":\"P002429\",\"trip_id\":\"T2609002166\",\"route_id\":\"R040\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0378\",\"exit_stop_id\":\"S0299\",\"entry_time\":\"2026-09-01T09:58:58.000Z\",\"exit_time\":\"2026-09-01T10:02:05.000Z\",\"ticket_type\":\"day_pass\",\"fare_category\":\"standar"
         },
         {
-          "record_key": "TK260900003122",
+          "record_key": "TK260900003120",
           "column": "fare_amount",
-          "observed_value": "-45.0",
+          "observed_value": "-25.0",
           "units": 1,
-          "record": "{\"ticket_id\":\"TK260900003122\",\"passenger_id\":\"P039295\",\"trip_id\":\"T2609002547\",\"route_id\":\"R113\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0720\",\"exit_stop_id\":\"S0249\",\"entry_time\":\"2026-09-01T10:29:49.000Z\",\"exit_time\":\"2026-09-01T10:53:51.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
+          "record": "{\"ticket_id\":\"TK260900003120\",\"passenger_id\":\"P048233\",\"trip_id\":\"T2609002544\",\"route_id\":\"R046\",\"service_date\":\"2026-09-01\",\"entry_stop_id\":\"S0363\",\"exit_stop_id\":\"S0415\",\"entry_time\":\"2026-09-01T10:33:47.000Z\",\"exit_time\":\"2026-09-01T10:38:39.000Z\",\"ticket_type\":\"single\",\"fare_category\":\"standard\""
         }
       ]
     },
@@ -1291,7 +1291,7 @@
       "table_rows": 423099,
       "affected_rows": 0,
       "affected_units": 0,
-      "seconds": 2.0,
+      "seconds": 0.7,
       "samples": []
     }
   ]

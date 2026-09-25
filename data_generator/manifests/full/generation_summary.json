@@ -21,7 +21,7 @@
   },
   "files": 62,
   "total_bytes": 1288211685,
-  "elapsed_seconds": 454.4,
+  "elapsed_seconds": 267.2,
   "defect_types_injected": [
     "broken_stop_sequences",
     "departure_before_arrival",

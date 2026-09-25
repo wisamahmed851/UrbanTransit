@@ -4,17 +4,24 @@
 #   hidden_like  : upload to its own namespace -> ingest -> profile -> data quality -> cleaning -> evaluation -> readiness report
 # The pipeline jobs (profile_data, data_quality, clean_data) are wrapped by no_manifest_guard.py, which makes
 # any attempt to open a generator manifest fail - proof that the pipeline does not read it.
-set -uo pipefail
+# Stop immediately if a guarded Spark stage or its filtered completion check fails.
+# Without `-e`, a failed/unfinished stage can let the next phase start concurrently.
+set -euo pipefail
 cd "$(dirname "$0")/.."
 source hdfs_scripts/env.sh
 source ~/venvs/urbantransit/bin/activate
-bash hdfs_scripts/start_hdfs.sh >/dev/null 2>&1; bash hdfs_scripts/status_hdfs.sh | head -4
+# `start-dfs.sh` exits non-zero when daemons already exist; the status check below
+# is authoritative and lets the pipeline safely run with a healthy existing HDFS.
+bash hdfs_scripts/start_hdfs.sh >/dev/null 2>&1 || true
+# Display only; `head` can close early and trigger SIGPIPE in the status script.
+bash hdfs_scripts/status_hdfs.sh | head -4 || true
 G="python spark_jobs/no_manifest_guard.py"
 step() { echo "=== $1 $(date +%H:%M:%S)"; }
 
 MODE=${1:-all}
 step guard_selftest   # negative control: the evaluation script DOES read the manifest, so the guard must block it
-$G spark_jobs/dq_evaluate.py --mode full 2>&1 | grep -E "BLOCKED|no_manifest_guard" | head -3
+# Intentional negative-control preview; `head` may produce SIGPIPE after it has shown the proof.
+$G spark_jobs/dq_evaluate.py --mode full 2>&1 | grep -E "BLOCKED|no_manifest_guard" | head -3 || true
 if [ "$MODE" = all ] || [ "$MODE" = full ]; then
   step profile_full;   $G spark_jobs/profile_data.py --mode full    2>&1 | grep -E "INFO .*wrote|no_manifest_guard|BLOCKED|Error"
   step dq_full;        $G spark_jobs/data_quality.py --mode full    2>&1 | grep -E "INFO DQ done|no_manifest_guard|BLOCKED|Error"

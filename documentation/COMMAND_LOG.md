@@ -795,3 +795,23 @@ what are you waiting for
 
 **Actions taken:** continued the Phase 3 pipeline (see CMD-010 steps).
 2. (CMD-010/011) Phase 3: profile_data.py, config/data_quality.yaml (25 rules), dq_rules.py, data_quality.py (first attempt stalled -> one job per rule), dq_evaluate.py, clean_data.py (stall on log union -> per-part writes; lazy array fix; lambda fix), cleaning_report.py, check_idempotency.py, hidden_readiness.py, no_manifest_guard.py, run_phase3.sh (CRLF failure -> LF). Pipeline run `reports/processing_logs/phase3_pipeline_*.log`: guard self-test BLOCKED; full DQ 111,250 violations; precision/recall 1.0 (18 pairs); cleaning PASS; idempotency 62/62; hidden_like upload/ingest/profile/DQ (38,617)/clean PASS; hidden precision/recall 1.0 (22 pairs); readiness report written.
+
+---
+
+## CMD-012 | 2026-09-25 (UTC+05:00) | Phase 3 recovery run
+**My command (verbatim):**
+```text
+COntinue
+```
+
+**Understood as:** Continue the approved Phase 3/4 work from the restored Windows/WSL runtime, beginning with a fresh operational Phase 3 run against the regenerated Phase 1/2 HDFS data.
+
+**Actions taken:** Started Phase 3 preflight: confirmed the persistent WSL holder, located the project HDFS environment file, and verified HDFS health (1.87 GB used, 946.29 GB free). The Phase 3 runner will now generate profiles, DQ results, clean outputs, and evaluation reports for full and hidden_like.
+
+**Files changed:** `documentation/COMMAND_LOG.md` (further report/log updates pending pipeline completion).
+
+**Result:** In progress.
+
+**Problems and fixes:** Initial health check used an obsolete `/home/wisam/hdfs_scripts/env.sh` path; corrected to the repository's `hdfs_scripts/env.sh`.
+
+**Git commit:** pending successful pipeline completion.

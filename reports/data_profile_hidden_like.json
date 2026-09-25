@@ -1,6 +1,6 @@
 {
   "mode": "hidden_like",
-  "seconds": 179.1,
+  "seconds": 64.0,
   "tables": [
     {
       "table": "stops",
@@ -1093,7 +1093,7 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 406417,
+          "distinct": 406470,
           "distinct_exact": false,
           "min": "T2609000001",
           "max": "T2610217238"
@@ -1117,8 +1117,8 @@
           "distinct_exact": false,
           "min": "0",
           "max": "1",
-          "mean": 0.5001949898250764,
-          "std": 0.5000005528582262,
+          "mean": 0.5002020803641701,
+          "std": 0.5000005500427827,
           "p25": 0,
           "median": 1,
           "p75": 1
@@ -1145,11 +1145,11 @@
           "top_values": [
             [
               "WKDY_AUT26",
-              327977
+              327976
             ],
             [
               "SAT_AUT26",
-              54414
+              54415
             ],
             [
               "SUN_AUT26",
@@ -1180,9 +1180,9 @@
         {
           "column": "original_vehicle_id",
           "type": "string",
-          "nulls": 422486,
+          "nulls": 422485,
           "null_pct": 99.855,
-          "distinct": 425,
+          "distinct": 429,
           "distinct_exact": false,
           "min": "V0001",
           "max": "V0812"
@@ -1202,7 +1202,7 @@
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 294074,
+          "distinct": 294019,
           "distinct_exact": false,
           "min": "2026-09-01 05:43:48",
           "max": "2026-10-31 23:29:24"
@@ -1210,9 +1210,9 @@
         {
           "column": "actual_departure",
           "type": "timestamp",
-          "nulls": 7177,
-          "null_pct": 1.696,
-          "distinct": 340934,
+          "nulls": 7183,
+          "null_pct": 1.698,
+          "distinct": 342442,
           "distinct_exact": false,
           "min": "2026-09-01 05:30:00",
           "max": "2026-10-31 22:32:17"
@@ -1220,9 +1220,9 @@
         {
           "column": "actual_arrival",
           "type": "timestamp",
-          "nulls": 7177,
-          "null_pct": 1.696,
-          "distinct": 384611,
+          "nulls": 7183,
+          "null_pct": 1.698,
+          "distinct": 386343,
           "distinct_exact": false,
           "min": "2026-09-01 05:45:21",
           "max": "2026-10-31 23:28:57"
@@ -1239,11 +1239,11 @@
           "top_values": [
             [
               "completed",
-              415922
+              415916
             ],
             [
               "cancelled",
-              7177
+              7183
             ]
           ]
         },
@@ -1259,19 +1259,19 @@
           "top_values": [
             [
               "regular",
-              422763
+              422764
             ],
             [
               "event_extra",
-              336
+              335
             ]
           ]
         },
         {
           "column": "cancellation_reason",
           "type": "string",
-          "nulls": 415922,
-          "null_pct": 98.304,
+          "nulls": 415916,
+          "null_pct": 98.302,
           "distinct": 3,
           "distinct_exact": false,
           "min": "driver_shortage",
@@ -1279,11 +1279,11 @@
           "top_values": [
             [
               null,
-              415922
+              415916
             ],
             [
               "driver_shortage",
-              5050
+              5051
             ],
             [
               "vehicle_unavailable",
@@ -1291,7 +1291,7 @@
             ],
             [
               "road_closure",
-              631
+              636
             ]
           ]
         },
@@ -1319,7 +1319,7 @@
     },
     {
       "table": "passenger_counts",
-      "rows": 388348,
+      "rows": 388349,
       "rows_quarantined_at_ingestion": 0,
       "columns": [
         {
@@ -1327,7 +1327,7 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 390311,
+          "distinct": 390674,
           "distinct_exact": false,
           "min": "PC2609000001",
           "max": "PC2610217238"
@@ -1337,7 +1337,7 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 372146,
+          "distinct": 372449,
           "distinct_exact": false,
           "min": "T2609000001",
           "max": "T2610217238"
@@ -1381,8 +1381,8 @@
           "distinct_exact": false,
           "min": "-39",
           "max": "354",
-          "mean": 41.190571343228235,
-          "std": 41.724680170723,
+          "mean": 41.190957103018164,
+          "std": 41.70968725075007,
           "p25": 13,
           "median": 28,
           "p75": 53
@@ -1396,9 +1396,9 @@
           "distinct_exact": false,
           "min": "-39",
           "max": "355",
-          "mean": 41.19819852297424,
-          "std": 41.73354767432294,
-          "p25": 14,
+          "mean": 41.19693626094055,
+          "std": 41.725153614641556,
+          "p25": 13,
           "median": 28,
           "p75": 53
         },
@@ -1407,12 +1407,12 @@
           "type": "int",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 357,
+          "distinct": 356,
           "distinct_exact": false,
           "min": "-39",
           "max": "523",
-          "mean": 27.534026182702114,
-          "std": 28.398477664560147,
+          "mean": 27.54290341934703,
+          "std": 28.449406716237455,
           "p25": 9,
           "median": 18,
           "p75": 36
@@ -1422,7 +1422,7 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 714,
+          "distinct": 717,
           "distinct_exact": false,
           "min": "S0001",
           "max": "S0773"
@@ -1432,12 +1432,12 @@
           "type": "int",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 438,
+          "distinct": 443,
           "distinct_exact": false,
           "min": "0",
-          "max": "1021",
-          "mean": 2.318214591036905,
-          "std": 18.010409190133675,
+          "max": "981",
+          "mean": 2.3192489230048228,
+          "std": 18.022134018193604,
           "p25": 0,
           "median": 0,
           "p75": 0
@@ -1447,12 +1447,12 @@
           "type": "int",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 32,
+          "distinct": 31,
           "distinct_exact": false,
           "min": "0",
-          "max": "32",
-          "mean": 1.4856803691534397,
-          "std": 2.1233319139405373,
+          "max": "30",
+          "mean": 1.4858799687909587,
+          "std": 2.120912335996564,
           "p25": 0,
           "median": 1,
           "p75": 2
@@ -1469,11 +1469,11 @@
           "top_values": [
             [
               "2026-10",
-              199159
+              199157
             ],
             [
               "2026-09",
-              189189
+              189192
             ]
           ]
         }
@@ -1481,7 +1481,7 @@
     },
     {
       "table": "tickets",
-      "rows": 629170,
+      "rows": 629157,
       "rows_quarantined_at_ingestion": 1236,
       "columns": [
         {
@@ -1489,17 +1489,17 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 617709,
+          "distinct": 617224,
           "distinct_exact": false,
           "min": "TK260900000001",
-          "max": "TK261000357477"
+          "max": "TK261000357555"
         },
         {
           "column": "passenger_id",
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 59271,
+          "distinct": 59327,
           "distinct_exact": false,
           "min": "P000001",
           "max": "P999918"
@@ -1509,7 +1509,7 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 244161,
+          "distinct": 237214,
           "distinct_exact": false,
           "min": "T2609000002",
           "max": "T2610217238"
@@ -1549,7 +1549,7 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 1369,
+          "distinct": 1371,
           "distinct_exact": false,
           "min": "S0001",
           "max": "S9998"
@@ -1559,20 +1559,20 @@
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 549732,
+          "distinct": 539804,
           "distinct_exact": false,
-          "min": "2026-09-01 05:34:02",
-          "max": "2027-10-31 19:29:30"
+          "min": "2026-09-01 05:32:25",
+          "max": "2027-10-31 19:27:34"
         },
         {
           "column": "exit_time",
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 550868,
+          "distinct": 563345,
           "distinct_exact": false,
-          "min": "2026-09-01 05:40:14",
-          "max": "2027-10-31 19:50:25"
+          "min": "2026-09-01 05:43:41",
+          "max": "2027-10-31 20:05:22"
         },
         {
           "column": "ticket_type",
@@ -1586,15 +1586,15 @@
           "top_values": [
             [
               "single",
-              432632
+              432185
             ],
             [
               "monthly_pass",
-              156011
+              156411
             ],
             [
               "day_pass",
-              40527
+              40561
             ]
           ]
         },
@@ -1610,19 +1610,19 @@
           "top_values": [
             [
               "standard",
-              439081
+              438787
             ],
             [
               "student",
-              125926
+              126109
             ],
             [
               "senior",
-              50735
+              50765
             ],
             [
               "disabled",
-              13428
+              13496
             ]
           ]
         },
@@ -1633,10 +1633,10 @@
           "null_pct": 0.0,
           "distinct": 33,
           "distinct_exact": false,
-          "min": "-90.0",
+          "min": "-85.0",
           "max": "85.0",
-          "mean": 19.74460002860912,
-          "std": 17.65916299927529,
+          "mean": 19.743005322995693,
+          "std": 17.681305931609987,
           "p25": 0.0,
           "median": 20.0,
           "p75": 30.0
@@ -1653,11 +1653,11 @@
           "top_values": [
             [
               "smart_card",
-              538134
+              538252
             ],
             [
               "mobile_qr",
-              91036
+              90905
             ]
           ]
         },
@@ -1673,11 +1673,11 @@
           "top_values": [
             [
               "2026-10",
-              361728
+              361807
             ],
             [
               "2026-09",
-              267442
+              267350
             ]
           ]
         }
@@ -1685,7 +1685,7 @@
     },
     {
       "table": "delays",
-      "rows": 218504,
+      "rows": 218479,
       "rows_quarantined_at_ingestion": 220,
       "columns": [
         {
@@ -1693,17 +1693,17 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 223585,
+          "distinct": 223658,
           "distinct_exact": false,
           "min": "D26090000001",
-          "max": "D26100110556"
+          "max": "D26100110508"
         },
         {
           "column": "trip_id",
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 162803,
+          "distinct": 162627,
           "distinct_exact": false,
           "min": "T2609000003",
           "max": "T2610217233"
@@ -1723,10 +1723,10 @@
           "type": "string",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 786,
+          "distinct": 781,
           "distinct_exact": false,
           "min": "S0001",
-          "max": "S9999"
+          "max": "S9998"
         },
         {
           "column": "service_date",
@@ -1743,7 +1743,7 @@
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 185253,
+          "distinct": 186169,
           "distinct_exact": false,
           "min": "2026-09-01 05:33:07",
           "max": "2026-10-31 23:29:24"
@@ -1753,17 +1753,17 @@
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 206382,
+          "distinct": 210280,
           "distinct_exact": false,
-          "min": "2026-08-31 10:37:38",
-          "max": "2126-10-07 07:36:55"
+          "min": "2026-08-31 11:00:43",
+          "max": "2126-10-07 08:31:22"
         },
         {
           "column": "scheduled_departure",
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 182554,
+          "distinct": 182181,
           "distinct_exact": false,
           "min": "2026-09-01 05:33:37",
           "max": "2026-10-31 23:29:54"
@@ -1773,25 +1773,25 @@
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 210163,
+          "distinct": 207877,
           "distinct_exact": false,
-          "min": "2026-08-31 10:38:17",
-          "max": "2126-10-07 07:39:17"
+          "min": "2026-08-31 11:01:38",
+          "max": "2126-10-07 08:33:45"
         },
         {
           "column": "delay_minutes",
           "type": "double",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 5253,
+          "distinct": 5337,
           "distinct_exact": false,
           "min": "-999.0",
           "max": "9999.0",
-          "mean": 14.809514288068014,
-          "std": 228.43341088881576,
+          "mean": 14.821528247566153,
+          "std": 228.44850216854175,
           "p25": -2.07,
-          "median": 8.18,
-          "p75": 14.27
+          "median": 8.2,
+          "p75": 14.3
         },
         {
           "column": "delay_reason",
@@ -1809,19 +1809,19 @@
             ],
             [
               "junction_bottleneck",
-              37358
+              37381
             ],
             [
               "traffic_congestion",
-              36181
+              36208
             ],
             [
               "passenger_boarding",
-              31201
+              31172
             ],
             [
               "disruption",
-              31140
+              31085
             ]
           ]
         },
@@ -1837,15 +1837,15 @@
           "top_values": [
             [
               "avl",
-              202554
+              202458
             ],
             [
               "driver_report",
-              14764
+              14830
             ],
             [
               "controller",
-              1186
+              1191
             ]
           ]
         },
@@ -1861,11 +1861,11 @@
           "top_values": [
             [
               "2026-10",
-              110445
+              110397
             ],
             [
               "2026-09",
-              108059
+              108082
             ]
           ]
         }
@@ -1931,7 +1931,7 @@
           "type": "timestamp",
           "nulls": 0,
           "null_pct": 0.0,
-          "distinct": 175058,
+          "distinct": 175153,
           "distinct_exact": false,
           "min": "2026-09-14 05:30:00",
           "max": "2026-09-16 23:35:39"
@@ -1969,9 +1969,9 @@
           "distinct_exact": false,
           "min": "31.434614",
           "max": "31.646435",
-          "mean": 31.545372776857313,
-          "std": 0.036638342263743656,
-          "p25": 31.520061,
+          "mean": 31.54537277685732,
+          "std": 0.03663834226374337,
+          "p25": 31.520068,
           "median": 31.543231,
           "p75": 31.571896
         },
@@ -1984,11 +1984,11 @@
           "distinct_exact": false,
           "min": "74.225811",
           "max": "74.473101",
-          "mean": 74.33995945967825,
-          "std": 0.04436925067473617,
+          "mean": 74.3399594596783,
+          "std": 0.044369250674736994,
           "p25": 74.310136,
-          "median": 74.336834,
-          "p75": 74.369737
+          "median": 74.336837,
+          "p75": 74.369798
         },
         {
           "column": "speed_kmh",
@@ -1999,8 +1999,8 @@
           "distinct_exact": false,
           "min": "0.0",
           "max": "70.0",
-          "mean": 13.778571174773717,
-          "std": 18.766989222064474,
+          "mean": 13.77427103555422,
+          "std": 18.76851059024453,
           "p25": 0.0,
           "median": 0.0,
           "p75": 22.2
