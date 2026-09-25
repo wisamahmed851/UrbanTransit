@@ -24,7 +24,7 @@ A column is safe as a **model input** only if its leakage note says *as-of* or *
 | crowding_flag | `occupancy_pct > 0.9`; NULL when occupancy is NULL | trip | derived | same-trip outcome (target) |
 | delay_minutes | see *Delay coverage* below: mean of the trip's delay records; 0.0 for completed trips with no record; NULL when not evaluated | trip | delays, trips | same-trip outcome (target) |
 | delay_source | `record` / `within_tolerance` / `not_evaluated` | trip | delays, trips, delay quarantine | static (measurement indicator) |
-| delay_severity | `On Time` < 5 min late (early running included), `Minor` [5,10), `Moderate` [10,20), `Severe` ≥ 20; NULL when delay_minutes is NULL | trip | delays | same-trip outcome (target) |
+| delay_severity | `On Time` < 5 min late (early running included), `Minor` [5,10), `Moderate` [10,20), `Severe` ≥ 20, with bands read from `config/thresholds.yaml` (`delay_severity`); NULL when delay_minutes is NULL | trip | delays | same-trip outcome (target) |
 | trip_punctuality | `-2 < delay_minutes < 5`; NULL when delay_minutes is NULL | trip / route | delays | same-trip outcome (target) |
 | arrival_delay_min | `actual_arrival - scheduled_arrival` at the last stop, from the trips table; available for every completed trip | trip | trips | same-trip outcome (full-coverage alternative delay target) |
 | travel_time_min | actual arrival minus actual departure | trip | trips | same-trip outcome |

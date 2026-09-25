@@ -946,3 +946,42 @@ Do not start Phase 6.
 **Deviation:** clean Phase 3 tables (tickets, delays, route_stops, stops, routes, vehicles, service_calendar, passengers, and passenger_counts for `max_load_stop_id` only) are read wherever the feature tables lack the needed grain.
 
 **Git commit:** see `git log` (Phase 5 commits).
+
+---
+
+## CMD-017 | 2026-09-25 (UTC+05:00) | Phase 5 corrections
+**My command (verbatim):**
+```text
+Before Phase 6, fix these from your Phase 5 report:
+1. Route classification is broken, not just lopsided [...] compute the composite
+   score first [...] assign the class from the score, and make "Overcrowded" a
+   separate boolean tag/flag rather than a class that pre-empts scoring [...]
+2. Rename the "Average" class to something like "Mixed / Needs Review" and
+   document [...] exactly which criteria the 3 routes fail on every official class.
+3. Add a new Phase 3 DQ rule for the 35,715 overlapping tickets [...] rerun ONLY
+   that rule (not the full Phase 3 pipeline) against the existing clean data [...]
+4. Update config/thresholds.yaml's delay-severity bands to match Phase 4's actual
+   implementation [...] Confirm nothing else silently depends on the old bands.
+5. [...] run it again at 40% as a sensitivity check [...]
+Rerun verify_phase5.py [...] commit and push. Then STOP. Do not start Phase 6.
+```
+
+**Understood as:** Rework route scoring to be score-first with an independent overcrowded flag, rename Average, add and run DQ22 alone on the clean data, make `thresholds.yaml` the real source of delay severity, run a 40% hotspot sensitivity check, re-verify, and stop.
+
+**Actions taken:**
+1. `080_route_performance.sql` rewritten:
+   - The composite uses the six performance components; the class comes from the composite rank (top 30% / bottom 30%) plus a middle-band diagnosis (Overcrowded → High Demand but Unreliable → Reliable but Underutilized → Mixed / Needs Review), with `class_reason` on every route.
+   - `overcrowded_flag` (persistent overload) is independent of the class.
+   - The new settings are in `phase5.yaml` (`route_scoring`).
+2. "Average" was renamed "Mixed / Needs Review". `analytics_methodology.md` item 8 lists the criteria each of the 12 current routes misses; the original 3 (R015, R085, R114) are among them.
+3. Added the generic check type `overlapping_intervals` (`dq_rules.py`) and rule DQ22 (`data_quality.yaml`, action flag). The new `spark_jobs/run_dq_rule.py` ran only DQ22 against `/urbantransit/clean`: 36,260 of 2,976,868 tickets (1.2181%), median overlap 772 s. Result in `reports/dq_rule_DQ22_full.json`. `cleaning_rules.md` was regenerated from the config.
+4. `thresholds.yaml` `delay_severity` now holds On Time < 5, Minor < 10, Moderate < 20, Severe (the key is `below_minutes`, exclusive). `phase4_features.severity()` now reads these bands and refuses to run if the On Time bound differs from `phase4.yaml`. A search showed nothing else read the old bands (`dataset_stats.py` uses only occupancy and bunching; `settings.load_thresholds()` has no callers). New verify check 9 recomputes severity from the config on all 2,097,157 trips: 0 mismatches.
+5. Sensitivity: 0 of 78 flagged routes are stop-specific at 60%, and still 0 at 40% (highest share 0.381). The production threshold is unchanged.
+
+**Files changed:** `config/{phase5,thresholds,data_quality}.yaml`, `spark_sql/analytics/080_route_performance.sql`, `spark_jobs/{dq_rules,run_dq_rule,phase4_features,phase5_report,verify_phase5}.py`, `documentation/{analytics_methodology,feature_catalog,cleaning_rules}.md`, `reports/{phase5_analytics_report.md,phase5_facts.json,phase5_metrics.json,phase5_verification.json,transport_intelligence_summary.md,dq_rule_DQ22_full.json}`, `DEV_LOG.md`, `AI_USAGE.md`.
+
+**Result:** Success. Route classes: High Performing 35, Low Performing 35, Reliable but Underutilized 18, High Demand but Unreliable 13, Mixed / Needs Review 12, Overcrowded 4, Insufficient Data 1. The overcrowded flag is on 78 routes. `verify_phase5.py` passed 9/9.
+
+**Problems and fixes:** The first score-first version left the Overcrowded class empty, because the four high-overload middle-band routes were caught by High Demand but Unreliable first. Overcrowded is now checked first within the middle band. High Performing and Low Performing are still set only by the composite rank.
+
+**Git commit:** see `git log` (CMD-017 commits).

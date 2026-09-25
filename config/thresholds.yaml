@@ -12,13 +12,17 @@ occupancy_categories:
   - { name: Overcrowded, max_ratio: 1.10 }
   - { name: Critical,    max_ratio: null }   # anything above Overcrowded
 
-# Delay = actual arrival - scheduled arrival (minutes). Early arrivals count as On Time.
+# Delay severity of a trip's delay_minutes (Phase 4 feature). A trip falls into the first
+# class whose below_minutes is GREATER than its delay (upper bound exclusive); early running
+# counts as On Time. On Time < 5 matches the delay log's recording threshold (the generator
+# only logs trips >= 5 min late) and must equal config/phase4.yaml delay.on_time_late_min -
+# spark_jobs/phase4_features.py refuses to run if they differ.
+# Read by: spark_jobs/phase4_features.py (severity), spark_jobs/verify_phase5.py (check 9).
 delay_severity:
-  - { name: On Time,  max_minutes: 1 }
-  - { name: Minor,    max_minutes: 5 }
-  - { name: Moderate, max_minutes: 10 }
-  - { name: Major,    max_minutes: 20 }
-  - { name: Severe,   max_minutes: null }    # anything above Major
+  - { name: On Time,  below_minutes: 5 }
+  - { name: Minor,    below_minutes: 10 }
+  - { name: Moderate, below_minutes: 20 }
+  - { name: Severe,   below_minutes: null }  # 20 min or more
 
 # Peak detection on hourly ridership per route/stop.
 peak_detection:

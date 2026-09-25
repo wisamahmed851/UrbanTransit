@@ -23,9 +23,9 @@
 
 - **Overall:** 182,249 of the 1,930,954 measured trips (9.4%) were Overcrowded (62,537) or Critical (119,712). Another 1,292,258 were Low.
 - **Most overcrowded route:** R097 direction 0, with 58.1% of its measured trips Overcrowded or Critical (5,553 trips). Next are R097 direction 1 (53.0%), R107 direction 1 (52.5%) and trunk R031 in both directions (51%).
-- **Persistent vs one-off:** 1,462 route × direction × weekday × period cells are persistently overloaded (78 routes). Another 823 cells were overloaded only once or twice, and those do not flag a route.
-- **Scope:** of the 77 routes classed Overcrowded, 62 are overcrowded in both directions, 10 only in direction 1 and 5 only in direction 0.
-- **Location:** none meets the stop-specific rule (≥ 60% of overloaded trips peaking at one stop), so all 77 are route-wide.
+- **Persistent vs one-off:** 1,462 route × direction × weekday × period cells are persistently overloaded. Those give 78 routes the **overcrowded flag**. Another 823 cells were overloaded only once or twice, and those do not set the flag.
+- **Scope:** of the 78 flagged routes, 62 are overcrowded in both directions, 10 only in direction 1 and 6 only in direction 0.
+- **Location:** none meets the stop-specific rule (≥ 60% of overloaded trips peaking at one stop). None does at 40% either: the highest single-stop share is 0.381. All 78 are route-wide.
 
 ## Reliability and delay
 
@@ -58,18 +58,25 @@
   - 333 cells show excess demand. For 315 of them a larger vehicle type fits, for example standard buses instead of 30-seat minibuses on R097 and R107, or articulated buses on R024, R031 and R036. The other 18 need extra trips.
   - 2,119 cells show excess supply: 1,498 could use a smaller vehicle and 621 could run less often.
 - **Underutilized:** 134 cells on 25 routes are underutilized and frequent enough to trim. Another 1,184 cells are equally empty but already infrequent, so they are reported but not recommended for cuts.
-- **Route classes:**
+- **Route classes:** the class comes from the composite score, and overcrowding is a separate flag (CMD-017).
 
-| class | routes |
-|---|---|
-| Overcrowded | 77 |
-| Reliable but Underutilized | 19 |
-| Low Performing | 16 |
-| Average | 3 |
-| High Demand but Unreliable | 2 |
-| Insufficient Data | 1 (R091, low passenger-count coverage) |
+| class | routes | also carry the overcrowded flag |
+|---|---|---|
+| High Performing | 35 | 29 |
+| Low Performing | 35 | 16 |
+| Reliable but Underutilized | 18 | 8 |
+| High Demand but Unreliable | 13 | 13 |
+| Mixed / Needs Review | 12 | 7 |
+| Overcrowded | 4 | 4 |
+| Insufficient Data | 1 (R091, low passenger-count coverage) | 1 |
 
-- **Composite scores:** the best is R073 (67.6), which is classed Overcrowded; the worst is R030 (22.3).
+- **Overcrowded class:** the four middle-band routes are R031, R036, R011 and R020, with a median of 33–52% of trips overloaded on a normal day. All four have demand scores of 89.7–96.6 and reliability ranks of only 0.17–0.30.
+- **Every High Demand but Unreliable route is also flagged overcrowded (13 of 13).** Crowding and unreliability go together on busy routes.
+- **High Performing does not mean uncrowded:** 29 of the 35 High Performing routes carry the flag.
+  - For 16 of them, overcrowding is not confined to a few hours: a median of 20–58% of their trips are overloaded on a normal day. The worst is R097 (57.6%).
+  - They score well on punctuality, reliability and travel time, which the composite rewards. The composite does not penalise overload.
+- **Mixed / Needs Review (12 routes):** all are lightly used (69–97% of trips in the Low category) but only mid-ranked on reliability. The criteria each one misses are listed in `analytics_methodology.md`, item 8.
+- **Composite scores:** the best is R073 (75.4, High Performing, flagged overcrowded); the worst is R030 (15.5, Low Performing).
 
 ## Events and anomalies
 
@@ -85,6 +92,7 @@
   - The detector only runs after enough history: 51 of the 135 route-days with event trips were flagged as spikes, and 44 more had too little same-day-type history to judge.
 - **Anomalies:**
   - 35,719 duplicate-ticketing signals. Almost all are **overlapping journeys**: a card taps into a new journey a median of about 12 minutes before its previous journey ended.
+    - This is now a Phase 3 data-quality rule, **DQ22** (flag). On all clean tickets it finds 36,260 rows (1.22%), with a median overlap of 772 s.
   - 1,791 trips with abnormal travel time.
   - 250 trips with delays of at least 60 min.
   - 503 stop-days with irregular activity.

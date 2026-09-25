@@ -149,3 +149,15 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Failure:** the duplicate-ticketing signal also counted quick transfers. **Fix:** a repeat tap must be at the same stop. The remaining 35,715 signals are overlapping journeys (the next tap-in before the previous tap-out).
 - **Failure:** Spark 4 ANSI typing (`element_at` index BIGINT). **Fix:** CAST to INT; `try_divide` is used for all ratios.
 - `verify_phase5.py`: 8/8 PASS.
+
+## 2026-09-25 — Phase 5 corrections (CMD-017)
+- **Route scoring is now score-first.** The composite (six performance components) sets High Performing (top 30%) and Low Performing (bottom 30%); the middle band is diagnosed as Overcrowded, then High Demand but Unreliable, then Reliable but Underutilized, then Mixed / Needs Review. "Overcrowded" is also an independent flag (persistent overload).
+  - Before: 77 Overcrowded, 0 High Performing.
+  - After: High Performing 35, Low Performing 35, Reliable but Underutilized 18, High Demand but Unreliable 13, Mixed / Needs Review 12, Overcrowded 4, Insufficient Data 1. The flag is on 78 routes (29 of them High Performing).
+- **Failure:** the first score-first version had 0 Overcrowded routes; the 4 high-overload middle-band routes were caught by High Demand but Unreliable. **Fix:** Overcrowded is checked first in the middle band.
+- **DQ22 overlapping_journeys** (new generic check `overlapping_intervals`), run alone on the clean data with `spark_jobs/run_dq_rule.py`: 36,260 of 2,976,868 tickets (1.22%), median overlap 772 s, p90 2,371 s, max 6,578 s.
+  - This is more than the 35,715 Phase 5 signals because DQ22 compares with the latest end of all earlier journeys and includes the DQ16 tickets.
+  - The clean data is not rewritten; the next full Phase 3 run applies the flag through `clean_data.py`.
+- **Delay severity:** `thresholds.yaml` now holds the Phase 4 bands (< 5 / < 10 / < 20 / Severe) and `phase4_features.py` reads them. Nothing read the old bands. The stored `delay_severity` matches the config on all trips (0 mismatches), so Phase 4 did not need a rerun.
+- **Hotspot sensitivity:** 0 stop-specific routes at 60% and still 0 at 40% (highest share 0.381).
+- `verify_phase5.py` 9/9 PASS.

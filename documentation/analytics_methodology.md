@@ -19,7 +19,7 @@ The SQL files contain no hard-coded thresholds. `${placeholders}` are filled fro
 
 | file | provides |
 |---|---|
-| `config/thresholds.yaml` | occupancy categories, bunching ratios, stop-peak z-score |
+| `config/thresholds.yaml` | occupancy categories, bunching ratios, stop-peak z-score, delay-severity bands (read by Phase 4) |
 | `config/phase4.yaml` | on-time band: −2 < delay < 5 min |
 | `config/phase5.yaml` | time periods and every Phase 5 threshold |
 
@@ -157,9 +157,11 @@ This takes frequency, route length (boardings per km), time period and day into 
 
 ## 8. Route performance scoring
 
-**Output:** `route_performance`. All metrics are **medians of daily values over normal days**.
+**Output:** `route_performance`. The score comes first, then the class, and overcrowding is a separate flag (CMD-017).
 
-**Component scores (0–100):**
+All metrics are **medians of daily values over normal days**.
+
+**Step 1 – component scores (0–100):**
 
 | component | how it is scored |
 |---|---|
@@ -172,29 +174,70 @@ This takes frequency, route length (boardings per km), time period and day into 
 | load | inverse rank of p90 occupancy |
 | utilisation | absolute: 1 − underload share − overload share |
 
-The composite is a weighted mean using the weights in `phase5.yaml`. Percentile ranks are computed among eligible routes only.
+Percentile ranks are computed among eligible routes only.
 
-**Classes** (first matching rule wins):
+**Step 2 – composite score:**
+- `composite_score` is the weighted mean of the **six performance components**: demand, occupancy, punctuality, delay frequency, travel time and reliability.
+- The weights (`phase5.yaml`) are demand 0.20, occupancy 0.10, punctuality 0.15, delay frequency 0.15, travel time 0.10 and reliability 0.10, divided by their sum. These are the same relative weights as before.
+- Load and utilisation are **not** in the composite. They form the capacity profile used in step 3.
+- `composite_rank` is the percentile rank of the composite. `reliability_rank` is the rank of the mean of the punctuality, delay-frequency and reliability scores.
 
-| class | rule |
-|---|---|
-| Insufficient Data | fewer than 28 normal service days (new route) or less than 50% passenger-count coverage |
-| Overcrowded | at least one *persistent* overload cell (item 6) |
-| High Demand but Unreliable | demand score ≥ 60 and reliability index in the bottom 40% |
-| Reliable but Underutilized | reliability index in the top 40% and (demand score ≤ 40 or median underload share ≥ 50%) |
-| High Performing | composite in the top 40% |
-| Low Performing | composite in the bottom 40% |
-| Average | the remainder (not one of the SRS classes; see *Decisions needed* in the summary) |
+**Step 3 – class from the score.** The first matching rule wins:
+
+| order | class | rule |
+|---|---|---|
+| 0 | Insufficient Data | fewer than 28 normal service days, or passenger-count coverage below 50% (not scored or ranked) |
+| 1 | High Performing | `composite_rank` ≥ 0.7 (top 30%) |
+| 2 | Low Performing | `composite_rank` ≤ 0.3 (bottom 30%) |
+| 3 | Overcrowded | middle band and median daily overload share (Overcrowded or Critical trips) ≥ 0.20 |
+| 4 | High Demand but Unreliable | middle band, demand score ≥ 60 and `reliability_rank` ≤ 0.4 |
+| 5 | Reliable but Underutilized | middle band, `reliability_rank` ≥ 0.6, and (demand score ≤ 40 or median underload share ≥ 0.5) |
+| 6 | Mixed / Needs Review | middle band and none of rules 3–5; `class_reason` lists every criterion missed |
+
+Within the middle band, Overcrowded is checked first because a capacity shortfall is the most actionable diagnosis, and in this data load drives dwell time and delay. All high-overload middle-band routes also had high demand and low reliability.
+
+**Step 4 – overcrowded flag, independent of the class:**
+- `overcrowded_flag` = the route has at least one **persistent** overload cell (item 6).
+- It comes with `overcrowded_scope` (direction) and `overcrowding_location` (stop-specific or route-wide).
+- Any class can carry the flag. For example, a High Performing route can be persistently overloaded on one weekday peak in one direction.
+
+**Mixed / Needs Review routes.** This class was called "Average" before CMD-017. The three routes in "Average" then (R015, R085, R114) are all still here; the score-first rework moved nine more routes into it. Current routes and the criteria each one misses:
+
+| route | composite | High / Low Performing | Overcrowded class | High Demand but Unreliable | Reliable but Underutilized | overcrowded flag |
+|---|---|---|---|---|---|---|
+| R013 | 46.5 | composite rank 0.336 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 50.0 < 60 and reliability rank 0.431 > 0.4 | RBU: reliability rank 0.431 < 0.6 | no |
+| R015 | 49.7 | composite rank 0.431 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.483 > 0.4 | RBU: reliability rank 0.483 < 0.6 | no |
+| R018 | 48.7 | composite rank 0.379 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.422 > 0.4 | RBU: reliability rank 0.422 < 0.6 | yes |
+| R035 | 56.2 | composite rank 0.629 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.026 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.595 > 0.4 | RBU: reliability rank 0.595 < 0.6 | yes |
+| R042 | 55.2 | composite rank 0.603 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.036 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.517 > 0.4 | RBU: reliability rank 0.517 < 0.6 | yes |
+| R044 | 46.6 | composite rank 0.345 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.024 (Overcrowded needs ≥ 0.20) | HDU: demand 56.0 < 60 and reliability rank 0.405 > 0.4 | RBU: reliability rank 0.405 < 0.6 | yes |
+| R046 | 47.6 | composite rank 0.371 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.024 (Overcrowded needs ≥ 0.20) | HDU: demand 56.9 < 60 and reliability rank 0.448 > 0.4 | RBU: reliability rank 0.448 < 0.6 | yes |
+| R049 | 52.0 | composite rank 0.517 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.025 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.466 > 0.4 | RBU: reliability rank 0.466 < 0.6 | yes |
+| R052 | 52.7 | composite rank 0.534 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.021 (Overcrowded needs ≥ 0.20) | HDU: demand 51.7 < 60 and reliability rank 0.552 > 0.4 | RBU: reliability rank 0.552 < 0.6 | yes |
+| R064 | 45.9 | composite rank 0.319 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 28.4 < 60 and reliability rank 0.578 > 0.4 | RBU: reliability rank 0.578 < 0.6 | no |
+| R085 | 49.0 | composite rank 0.397 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 33.6 < 60 and reliability rank 0.586 > 0.4 | RBU: reliability rank 0.586 < 0.6 | no |
+| R114 | 47.1 | composite rank 0.353 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 22.4 < 60 and reliability rank 0.526 > 0.4 | RBU: reliability rank 0.526 < 0.6 | no |
+
+Their common pattern is clear from the table: all twelve are lightly used (a median of 69–97% of trips in the Low category) but only mid-ranked on reliability (0.405–0.595). That is not reliable enough for *Reliable but Underutilized* (≥ 0.6) and not unreliable enough for *High Demand but Unreliable* (≤ 0.4). They are candidates for manual review of frequency.
 
 **Tricky cases and how they are handled:**
 
 | case | handling |
 |---|---|
-| One abnormal day must not flag a route | Route metrics are medians over normal days (event spikes/drops and holidays removed). "Overcrowded" requires a *persistent* cell, so one-off and recurring overloads never flag a route; `tricky_case_notes` records how many such cells were ignored. |
-| Overcrowded in one direction only | Persistence is judged per direction. `overcrowded_scope` = `direction_0_only`, `direction_1_only` or `both_directions`, so a recommendation can target one direction. |
+| One abnormal day must not flag a route | Route metrics are medians over normal days (event spikes/drops and holidays removed). The overcrowded flag requires a *persistent* cell, so one-off and recurring overloads never set it; `tricky_case_notes` records how many such cells were ignored. |
+| Overcrowded in one direction only | Persistence is judged per direction. `overcrowded_scope` = `direction_0_only`, `direction_1_only` or `both_directions`. |
 | Overcrowded only at specific stops | Using `max_load_stop_id` of the overloaded trips: if ≥ 60% of them peak at one stop, `overcrowding_location = stop_specific` with `hotspot_stop_id`; otherwise `route_wide`. |
-| New routes launched mid-year / low coverage | Marked `Insufficient Data`: not scored and not ranked against mature routes. |
+| New routes launched mid-year / low coverage | `Insufficient Data`: not scored and not ranked against mature routes. |
 | Special events and holidays | Excluded from all route baselines; the count is shown in `excluded_abnormal_days`. |
+
+**Stop-specific sensitivity check.** The production threshold stays at 60%.
+
+| threshold | flagged routes that are stop-specific |
+|---|---|
+| 60% (production) | 0 of 78 |
+| 40% (sensitivity) | 0 of 78 |
+
+The highest single-stop share on any flagged route is 0.381. The "0 stop-specific routes" result is therefore stable: in this data, overcrowding is spread along routes rather than concentrated at one stop.
 
 ## 9. Delay analysis
 
@@ -329,6 +372,8 @@ Required capacity = p90 max_load ÷ 0.85 target load. The **suggested vehicle ty
 | irregular_stop_activity | stop-day card taps ≥ 3× or ≤ 0.2× the stop's same-weekday median (baseline ≥ 20) |
 
 A type with zero signals, for example impossible occupancy after Phase 3 quarantined capacity violations, is a valid result and simply does not appear in the summary.
+
+The overlapping-journey signal is now also a Phase 3 rule, **DQ22** (`overlapping_journeys`, action `flag`, CMD-017). On the clean tickets it finds 36,260 rows (`reports/dq_rule_DQ22_full.json`). That is more than the 35,715 signals here for two reasons: DQ22 compares with the latest end of *all* earlier journeys on the card, not only the previous one, and it also covers the DQ16 tickets that `v_ticket` excludes.
 
 ## 19. Passenger segmentation
 

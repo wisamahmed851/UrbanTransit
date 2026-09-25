@@ -54,11 +54,21 @@ def day_idx(col="service_date"):
     return F.datediff(F.col(col), F.lit(EPOCH))
 
 
+def severity_bands():
+    """Delay-severity bands from config/thresholds.yaml (single source of truth)."""
+    return yaml.safe_load((PROJECT_ROOT / "config" / "thresholds.yaml").read_text(encoding="utf-8"))["delay_severity"]
+
+
 def severity(delay, cfg):
-    """Lateness class. 'On Time' covers the generator's no-record band (< 5 min late, early included)."""
-    late = cfg["delay"]["on_time_late_min"]
-    return (F.when(delay.isNull(), F.lit(None)).when(delay < late, "On Time").when(delay < 10, "Minor")
-            .when(delay < 20, "Moderate").otherwise("Severe"))
+    """Lateness class from thresholds.yaml. 'On Time' must cover the generator's no-record band
+    (< on_time_late_min, early included), otherwise within_tolerance trips would be mislabelled."""
+    bands = severity_bands()
+    if bands[0]["below_minutes"] != cfg["delay"]["on_time_late_min"]:
+        raise ValueError("thresholds.yaml On Time bound must equal phase4.yaml delay.on_time_late_min")
+    expr = F.when(delay.isNull(), F.lit(None))
+    for b in bands:
+        expr = expr.when(delay < b["below_minutes"], b["name"]) if b["below_minutes"] is not None else expr.otherwise(b["name"])
+    return expr
 
 
 def split_dates(spark, dates, cfg):
