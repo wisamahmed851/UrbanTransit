@@ -173,7 +173,7 @@
     "path": "hdfs://localhost:9000/urbantransit/analytics/route_performance",
     "rows": 118,
     "files": 1,
-    "seconds": 48.2
+    "seconds": 45.8
   },
   "delay_by_dimension": {
     "item": 9,

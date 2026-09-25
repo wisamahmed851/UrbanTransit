@@ -41,21 +41,34 @@
       "pass": true,
       "class_distribution": {
         "High Demand but Unreliable": 13,
-        "Mixed / Needs Review": 12,
-        "Overcrowded": 4,
+        "Mixed / Needs Review": 13,
+        "Overcrowded": 8,
         "Insufficient Data": 1,
-        "Reliable but Underutilized": 18,
+        "Reliable but Underutilized": 13,
         "High Performing": 35,
         "Low Performing": 35
       },
+      "composite_components": [
+        "demand",
+        "occupancy",
+        "punctuality",
+        "delay_frequency",
+        "travel_time",
+        "reliability",
+        "load",
+        "underutilization",
+        "overcrowding"
+      ],
+      "composite_recompute_mismatches": 0,
+      "eligible_without_overcrowding_score": 0,
       "flag_by_class": {
-        "High Demand but Unreliable": 13,
-        "Mixed / Needs Review": 7,
-        "Overcrowded": 4,
+        "High Demand but Unreliable": 12,
+        "Mixed / Needs Review": 8,
+        "Overcrowded": 8,
         "Insufficient Data": 1,
-        "Reliable but Underutilized": 8,
-        "High Performing": 29,
-        "Low Performing": 16
+        "Reliable but Underutilized": 6,
+        "High Performing": 24,
+        "Low Performing": 19
       },
       "srs_classes_empty": [],
       "class_tier_violations": 0,
@@ -154,7 +167,7 @@
     },
     "8_no_secrets_or_large_files": {
       "pass": true,
-      "changed_files": 14,
+      "changed_files": 7,
       "large": [],
       "secret_like": []
     },

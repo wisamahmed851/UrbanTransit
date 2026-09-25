@@ -369,12 +369,12 @@ Lowest-occupancy underutilized cells:
 
 | route_class | routes | with_overcrowded_flag | min_composite | max_composite |
 |---|---|---|---|---|
-| High Performing | 35 | 29 | 58.9 | 75.4 |
-| Low Performing | 35 | 16 | 15.5 | 43.6 |
-| Reliable but Underutilized | 18 | 8 | 48.8 | 58.7 |
-| High Demand but Unreliable | 13 | 13 | 44.5 | 58.4 |
-| Mixed / Needs Review | 12 | 7 | 45.9 | 56.2 |
-| Overcrowded | 4 | 4 | 47.4 | 57.1 |
+| High Performing | 35 | 24 | 55.7 | 68.9 |
+| Low Performing | 35 | 19 | 29.4 | 46.6 |
+| High Demand but Unreliable | 13 | 12 | 46.6 | 55.3 |
+| Mixed / Needs Review | 13 | 8 | 47.4 | 55.5 |
+| Reliable but Underutilized | 13 | 6 | 47.8 | 55.6 |
+| Overcrowded | 8 | 8 | 49.1 | 55.6 |
 | Insufficient Data | 1 | 1 | None | None |
 
 Routes with overcrowded_flag = true (at least one persistent overload cell): 78.
@@ -397,58 +397,59 @@ Mixed / Needs Review routes (criteria missed are in `class_reason`):
 
 | route_id | composite_score | composite_rank | demand_score | reliability_rank | med_underload_share | med_overload_share | overcrowded_flag |
 |---|---|---|---|---|---|---|---|
-| R013 | 46.5 | 0.336 | 50 | 0.431 | 0.9667 | 0.0000 | False |
-| R015 | 49.7 | 0.431 | 72.4 | 0.483 | 0.8475 | 0.0000 | False |
-| R018 | 48.7 | 0.379 | 74.1 | 0.422 | 0.7959 | 0.0000 | True |
-| R035 | 56.2 | 0.629 | 61.2 | 0.595 | 0.7046 | 0.0256 | True |
-| R042 | 55.2 | 0.603 | 62.1 | 0.517 | 0.6889 | 0.0357 | True |
-| R044 | 46.6 | 0.345 | 56 | 0.405 | 0.7250 | 0.0238 | True |
-| R046 | 47.6 | 0.371 | 56.9 | 0.448 | 0.7292 | 0.0244 | True |
-| R049 | 52 | 0.517 | 63.8 | 0.466 | 0.6905 | 0.0250 | True |
-| R052 | 52.7 | 0.534 | 51.7 | 0.552 | 0.8049 | 0.0213 | True |
-| R064 | 45.9 | 0.319 | 28.4 | 0.578 | 0.9583 | 0.0000 | False |
-| R085 | 49 | 0.397 | 33.6 | 0.586 | 0.9375 | 0.0000 | False |
-| R114 | 47.1 | 0.353 | 22.4 | 0.526 | 0.9583 | 0.0000 | False |
+| R013 | 51 | 0.448 | 50 | 0.431 | 0.9667 | 0.0000 | False |
+| R015 | 53 | 0.543 | 72.4 | 0.483 | 0.8475 | 0.0000 | False |
+| R018 | 51.7 | 0.474 | 74.1 | 0.422 | 0.7959 | 0.0000 | True |
+| R035 | 55.5 | 0.681 | 61.2 | 0.595 | 0.7046 | 0.0256 | True |
+| R042 | 54.3 | 0.612 | 62.1 | 0.517 | 0.6889 | 0.0357 | True |
+| R044 | 48.8 | 0.362 | 56 | 0.405 | 0.7250 | 0.0238 | True |
+| R046 | 49.7 | 0.405 | 56.9 | 0.448 | 0.7292 | 0.0244 | True |
+| R049 | 52.8 | 0.526 | 63.8 | 0.466 | 0.6905 | 0.0250 | True |
+| R052 | 53.6 | 0.586 | 51.7 | 0.552 | 0.8049 | 0.0213 | True |
+| R064 | 50.7 | 0.44 | 28.4 | 0.578 | 0.9583 | 0.0000 | False |
+| R080 | 47.4 | 0.328 | 43.1 | 0.379 | 0.8571 | 0.0000 | True |
+| R085 | 52.8 | 0.517 | 33.6 | 0.586 | 0.9375 | 0.0000 | False |
+| R114 | 51.6 | 0.466 | 22.4 | 0.526 | 0.9583 | 0.0000 | False |
 
 Top composite scores:
 
-| route_id | route_class | composite_score | demand_score | punctuality_score | reliability_score | utilization_score |
-|---|---|---|---|---|---|---|
-| R073 | High Performing | 75.4 | 69 | 82.8 | 75 | 35.8 |
-| R105 | High Performing | 72.9 | 27.6 | 97.4 | 94 | 34.5 |
-| R068 | High Performing | 72 | 57.8 | 69.8 | 78.4 | 26.2 |
-| R016 | High Performing | 71.3 | 92.2 | 46.6 | 34.5 | 42.6 |
-| R040 | High Performing | 70.2 | 48.3 | 74.1 | 83.6 | 17.6 |
+| route_id | route_class | composite_score | demand_score | punctuality_score | reliability_score | load_score | underutilization_score | overcrowding_score |
+|---|---|---|---|---|---|---|---|---|
+| R073 | High Performing | 68.9 | 69 | 82.8 | 75 | 37.1 | 41.7 | 76.6 |
+| R040 | High Performing | 67.7 | 48.3 | 74.1 | 83.6 | 65.5 | 17.6 | 100 |
+| R068 | High Performing | 67.6 | 57.8 | 69.8 | 78.4 | 50 | 28.6 | 89.3 |
+| R050 | High Performing | 66.9 | 44.8 | 60.3 | 92.2 | 70.7 | 13.2 | 100 |
+| R093 | High Performing | 65.3 | 2.6 | 98.3 | 100 | 65.5 | 16.7 | 100 |
 
 Bottom composite scores:
 
-| route_id | route_class | composite_score | demand_score | punctuality_score | reliability_score | utilization_score |
-|---|---|---|---|---|---|---|
-| R030 | Low Performing | 15.5 | 16.4 | 12.9 | 8.6 | 0.0 |
-| R039 | Low Performing | 17.8 | 44 | 5.2 | 6.9 | 16.7 |
-| R069 | Low Performing | 20.6 | 36.2 | 13.8 | 21.6 | 9.8 |
-| R053 | Low Performing | 20.8 | 49.1 | 6.9 | 14.7 | 17.2 |
-| R083 | Low Performing | 23.1 | 30.2 | 33.6 | 27.6 | 4.3 |
+| route_id | route_class | composite_score | demand_score | punctuality_score | reliability_score | load_score | underutilization_score | overcrowding_score |
+|---|---|---|---|---|---|---|---|---|
+| R030 | Low Performing | 29.4 | 16.4 | 12.9 | 8.6 | 99.1 | 0.0 | 100 |
+| R039 | Low Performing | 29.6 | 44 | 5.2 | 6.9 | 67.2 | 16.7 | 100 |
+| R053 | Low Performing | 31.6 | 49.1 | 6.9 | 14.7 | 63.8 | 17.2 | 100 |
+| R069 | Low Performing | 32.4 | 36.2 | 13.8 | 21.6 | 81 | 9.8 | 100 |
+| R083 | Low Performing | 34 | 30.2 | 33.6 | 27.6 | 84.5 | 4.3 | 100 |
 
 Tricky cases handled:
 
 | route_id | route_class | overcrowded_flag | overcrowded_scope | overcrowding_location | hotspot_share | tricky_case_notes |
 |---|---|---|---|---|---|---|
+| R007 | High Demand but Unreliable | False | None | None | 0.1804 | 27 non-persistent overload cells did not set the overcrowded flag; 19 event/holiday days excluded from baseline |
+| R009 | High Demand but Unreliable | True | direction_1_only | route_wide | 0.1676 | 15 event/holiday days excluded from baseline |
 | R040 | High Performing | False | None | None | 0.252 | 21 non-persistent overload cells did not set the overcrowded flag; 15 event/holiday days excluded from baseline |
+| R043 | High Performing | True | direction_1_only | route_wide | 0.1779 | 18 event/holiday days excluded from baseline |
 | R045 | High Performing | False | None | None | 0.2963 | 10 non-persistent overload cells did not set the overcrowded flag; 15 event/holiday days excluded from baseline |
 | R047 | High Performing | True | direction_0_only | route_wide | 0.2178 | 16 event/holiday days excluded from baseline |
 | R050 | High Performing | False | None | None | 0.2215 | 20 non-persistent overload cells did not set the overcrowded flag; 15 event/holiday days excluded from baseline |
+| R051 | High Performing | False | None | None | 0.1563 | 12 non-persistent overload cells did not set the overcrowded flag; 16 event/holiday days excluded from baseline |
 | R056 | High Performing | True | direction_0_only | route_wide | 0.1886 | 16 event/holiday days excluded from baseline |
+| R066 | High Performing | False | None | None | 0.2059 | 21 non-persistent overload cells did not set the overcrowded flag; 17 event/holiday days excluded from baseline |
 | R075 | High Performing | False | None | None | 0.1582 | 24 non-persistent overload cells did not set the overcrowded flag; 18 event/holiday days excluded from baseline |
+| R088 | High Performing | True | direction_1_only | route_wide | 0.195 | 18 event/holiday days excluded from baseline |
+| R092 | High Performing | False | None | None | 0.3153 | 16 non-persistent overload cells did not set the overcrowded flag; 17 event/holiday days excluded from baseline |
 | R093 | High Performing | False | None | None | 0.3473 | 22 non-persistent overload cells did not set the overcrowded flag; 15 event/holiday days excluded from baseline |
 | R102 | High Performing | False | None | None | 0.3609 | 24 non-persistent overload cells did not set the overcrowded flag; 20 event/holiday days excluded from baseline |
-| R091 | Insufficient Data | True | direction_0_only | route_wide | 0.284 | 18 event/holiday days excluded from baseline |
-| R006 | Low Performing | False | None | None | 0.4 | 6 non-persistent overload cells did not set the overcrowded flag; 17 event/holiday days excluded from baseline |
-| R007 | Low Performing | False | None | None | 0.1804 | 27 non-persistent overload cells did not set the overcrowded flag; 19 event/holiday days excluded from baseline |
-| R009 | Low Performing | True | direction_1_only | route_wide | 0.1676 | 15 event/holiday days excluded from baseline |
-| R014 | Low Performing | True | direction_0_only | route_wide | 0.165 | 18 event/holiday days excluded from baseline |
-| R021 | Low Performing | False | None | None | 0.25 | 6 non-persistent overload cells did not set the overcrowded flag; 15 event/holiday days excluded from baseline |
-| R022 | Low Performing | False | None | None | 0.5 | 2 non-persistent overload cells did not set the overcrowded flag; 15 event/holiday days excluded from baseline |
 
 ## 9. Delay by dimension (time period, day class, distance band)
 
@@ -720,3 +721,15 @@ Validation against generator event trips (not used for detection):
 | Peak-Hour Traveller | 3,713 | 0.0654 | 12 | 0.58 | 0.8134 | 3.76 | 0.0146 | regular |
 | Daily Commuter | 2,282 | 0.0402 | 292.6 | 3.90 | 0.5302 | 5.38 | 0.2218 | regular |
 | Weekend Traveller | 732 | 0.0129 | 3.6 | 0.69 | 0.4782 | 4.77 | 0.0008 | regular |
+
+## 8. Route R097 (most overcrowded route) after the overcrowding component
+
+| route_id | route_class | overcrowded_flag | composite_score | composite_rank | med_overload_share | med_overload_severity | persistent_cell_share | overcrowding_penalty | overcrowding_score |
+|---|---|---|---|---|---|---|---|---|---|
+| R097 | Overcrowded | True | 50.7 | 0.431 | 0.5758 | 0.5172 | 0.7857 | 0.6515 | 0 |
+
+Component scores:
+
+| demand_score | occupancy_score | punctuality_score | delay_frequency_score | travel_time_score | reliability_score | load_score | underutilization_score | overcrowding_score |
+|---|---|---|---|---|---|---|---|---|
+| 38.8 | 66.5 | 44.8 | 68.1 | 88.8 | 69 | 0 | 86.2 | 0 |

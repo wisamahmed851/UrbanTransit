@@ -58,25 +58,26 @@
   - 333 cells show excess demand. For 315 of them a larger vehicle type fits, for example standard buses instead of 30-seat minibuses on R097 and R107, or articulated buses on R024, R031 and R036. The other 18 need extra trips.
   - 2,119 cells show excess supply: 1,498 could use a smaller vehicle and 621 could run less often.
 - **Underutilized:** 134 cells on 25 routes are underutilized and frequent enough to trim. Another 1,184 cells are equally empty but already infrequent, so they are reported but not recommended for cuts.
-- **Route classes:** the class comes from the composite score, and overcrowding is a separate flag (CMD-017).
+- **Route classes:** the class comes from a composite of the nine SRS Step 15 inputs, including a severity-weighted overcrowding score (CMD-018). The overcrowded flag is kept alongside.
 
 | class | routes | also carry the overcrowded flag |
 |---|---|---|
-| High Performing | 35 | 29 |
-| Low Performing | 35 | 16 |
-| Reliable but Underutilized | 18 | 8 |
-| High Demand but Unreliable | 13 | 13 |
-| Mixed / Needs Review | 12 | 7 |
-| Overcrowded | 4 | 4 |
+| High Performing | 35 | 24 |
+| Low Performing | 35 | 19 |
+| High Demand but Unreliable | 13 | 12 |
+| Reliable but Underutilized | 13 | 6 |
+| Mixed / Needs Review | 13 | 8 |
+| Overcrowded | 8 | 8 |
 | Insufficient Data | 1 (R091, low passenger-count coverage) | 1 |
 
-- **Overcrowded class:** the four middle-band routes are R031, R036, R011 and R020, with a median of 33–52% of trips overloaded on a normal day. All four have demand scores of 89.7–96.6 and reliability ranks of only 0.17–0.30.
-- **Every High Demand but Unreliable route is also flagged overcrowded (13 of 13).** Crowding and unreliability go together on busy routes.
-- **High Performing does not mean uncrowded:** 29 of the 35 High Performing routes carry the flag.
-  - For 16 of them, overcrowding is not confined to a few hours: a median of 20–58% of their trips are overloaded on a normal day. The worst is R097 (57.6%).
-  - They score well on punctuality, reliability and travel time, which the composite rewards. The composite does not penalise overload.
-- **Mixed / Needs Review (12 routes):** all are lightly used (69–97% of trips in the Low category) but only mid-ranked on reliability. The criteria each one misses are listed in `analytics_methodology.md`, item 8.
-- **Composite scores:** the best is R073 (75.4, High Performing, flagged overcrowded); the worst is R030 (15.5, Low Performing).
+- **Overcrowding now lowers the score.**
+  - **R097**, the most overcrowded route, moved from High Performing to **Overcrowded**. Its overcrowding score is 0 (penalty 0.651: a severity of 0.517, and persistent in 78.6% of its judged cells) and its load score is 0, so its composite fell to 50.7 (rank 0.431).
+  - R031, R036 and R020 moved from Overcrowded to **Low Performing** (overcrowding scores 0–12). R024 (overcrowding score 0) was already Low Performing.
+- **Overcrowded class (8 routes):** R097, R107, R011, R106, R089, R034, R109 and R103, with a median of 21.9–57.6% of trips overloaded on a normal day.
+- **9 High Performing routes still overload on 20–34.6% of trips on a normal day.** They are penalised (overcrowding scores 19.7–53.3) but strong enough on the other eight components to stay in the top 30%. All nine carry the overcrowded flag.
+- **High Demand but Unreliable:** 12 of the 13 routes are also flagged overcrowded. Crowding and unreliability go together on busy routes.
+- **Mixed / Needs Review (13 routes):** all are lightly used (69–97% of trips in the Low category) but only mid-ranked on reliability. The criteria each one misses are listed in `analytics_methodology.md`, item 8.
+- **Composite scores:** the best is R073 (68.9, High Performing, flagged overcrowded); the worst is R030 (29.4, Low Performing).
 
 ## Events and anomalies
 

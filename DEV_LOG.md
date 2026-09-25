@@ -161,3 +161,10 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Delay severity:** `thresholds.yaml` now holds the Phase 4 bands (< 5 / < 10 / < 20 / Severe) and `phase4_features.py` reads them. Nothing read the old bands. The stored `delay_severity` matches the config on all trips (0 mismatches), so Phase 4 did not need a rerun.
 - **Hotspot sensitivity:** 0 stop-specific routes at 60% and still 0 at 40% (highest share 0.381).
 - `verify_phase5.py` 9/9 PASS.
+
+## 2026-09-25 — Phase 5: overcrowding scored in the composite (CMD-018) — Phase 5 approved
+- **Composite:** now the nine SRS Step 15 inputs. The new overcrowding component is severity-weighted: penalty = 0.5 × median daily severity-weighted overload share (Overcrowded 0.5, Critical 1.0) + 0.5 × persistent-cell share, and score = 100 × max(0, 1 − penalty ÷ 0.5). Utilisation became underutilization only, so overload is not double-counted.
+- **Classes (with overcrowded flag):** High Performing 35 (24), Low Performing 35 (19), High Demand but Unreliable 13 (12), Reliable but Underutilized 13 (6), Mixed / Needs Review 13 (8), Overcrowded 8 (8), Insufficient Data 1 (1).
+- **R097:** High Performing → **Overcrowded** (overcrowding 0, load 0, composite 50.7, rank 0.431). R031, R036 and R020 moved Overcrowded → Low Performing.
+- **Still High Performing:** 9 routes overload on 20–34.6% of trips on a normal day. They are penalised (overcrowding scores 19.7–53.3) but stay in the top 30% on the other eight components, and all nine carry the flag.
+- `verify_phase5.py` 9/9 PASS; the composite recomputed from its components has 0 mismatches.

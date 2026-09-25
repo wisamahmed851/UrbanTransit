@@ -48,11 +48,21 @@ route_scoring:
   # Overcrowded FLAG (separate from the class): >= 1 persistent overload cell (item 6).
   stop_hotspot_share: 0.6      # >= 60% of overloaded trips peak at one stop -> stop-specific overcrowding
   stop_hotspot_sensitivity_share: 0.4   # reported only (sensitivity check), never used to classify
-  # Composite = weighted mean of these six performance components. Load and utilisation are
-  # reported as the capacity profile and drive the Overcrowded / Underutilized diagnosis instead.
-  # Same relative weights as before; the composite divides by their sum (0.80).
+  # Overcrowding component (SRS Step 15), severity-weighted, 0-100 (100 = never overloaded):
+  #   severity   = median over normal days of the day's mean trip weight
+  #                (Overcrowded = 0.5, Critical = 1.0, any other measured trip = 0)
+  #   persistence = persistent overload cells / judged cells (item 6)
+  #   penalty    = 0.5 * severity + 0.5 * persistence
+  #   score      = 100 * max(0, 1 - penalty / full_penalty_at)
+  overload_severity_weights: { Overcrowded: 0.5, Critical: 1.0 }
+  overcrowding_penalty_weights: { severity: 0.5, persistence: 0.5 }
+  overcrowding_full_penalty_at: 0.5       # a penalty of 0.5 or more scores 0
+  # Composite = weighted mean of the nine SRS Step 15 inputs, divided by the sum of the weights
+  # (1.10). The six performance weights and load keep their earlier values; underutilization and
+  # overcrowding replace the old combined utilisation weight (0.10) with 0.10 each.
   weights: { demand: 0.20, occupancy: 0.10, punctuality: 0.15, delay_frequency: 0.15,
-             travel_time: 0.10, reliability: 0.10 }
+             travel_time: 0.10, reliability: 0.10, load: 0.10, underutilization: 0.10,
+             overcrowding: 0.10 }
 
 delay:
   congestion_extra_min: 1.0    # peak-period mean arrival delay this much above midday = congestion pattern

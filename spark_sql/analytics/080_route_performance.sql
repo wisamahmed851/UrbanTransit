@@ -3,9 +3,11 @@
 -- item: 8
 -- Route scoring: SCORE FIRST, then class, with "overcrowded" as a separate flag.
 --  1. Eight component scores (0-100) from medians of daily values over normal days.
---  2. composite_score = weighted mean of six performance components (demand, occupancy,
---     punctuality, delay frequency, travel time, reliability); load and utilisation form the
---     capacity profile used to diagnose Overcrowded / Underutilized.
+--  2. composite_score = weighted mean of the nine SRS Step 15 inputs: demand, occupancy,
+--     punctuality, delay frequency, travel time, reliability, passenger load, underutilization
+--     and overcrowding. Overcrowding is severity-weighted: penalty = 0.5 x median daily
+--     severity-weighted overload share (Overcrowded 0.5, Critical 1.0) + 0.5 x share of the
+--     route's judged cells that are persistently overloaded; score = 100 x (1 - penalty / 0.5).
 --  3. route_class from the composite rank: top 30% High Performing, bottom 30% Low Performing;
 --     the middle band is diagnosed from component scores, in this order: Overcrowded (median
 --     daily overload share >= 0.20 - a capacity shortfall is the most actionable diagnosis and
@@ -32,6 +34,9 @@ WITH t AS (
          stddev(arrival_delay_min) AS arr_std,
          avg(CASE WHEN occupancy_category IN (${underload_list}) THEN 1.0 WHEN occupancy_category IS NOT NULL THEN 0.0 END) AS under_share,
          avg(CASE WHEN occupancy_category IN (${overload_list}) THEN 1.0 WHEN occupancy_category IS NOT NULL THEN 0.0 END) AS over_share,
+         avg(CASE WHEN occupancy_category = 'Critical' THEN ${route_scoring_overload_severity_weights_Critical}
+                  WHEN occupancy_category = 'Overcrowded' THEN ${route_scoring_overload_severity_weights_Overcrowded}
+                  WHEN occupancy_category IS NOT NULL THEN 0.0 END) AS over_severity,
          count(occupancy_pct) AS measured,
          sum(CASE WHEN trip_status = 'completed' THEN 1 ELSE 0 END) AS operated
   FROM t GROUP BY route_id, service_date
@@ -45,6 +50,7 @@ WITH t AS (
          percentile_approx(arr_std, 0.5) AS med_arrival_delay_std,
          percentile_approx(under_share, 0.5) AS med_underload_share,
          percentile_approx(over_share, 0.5) AS med_overload_share,
+         percentile_approx(over_severity, 0.5) AS med_overload_severity,
          try_divide(sum(measured), sum(operated)) AS demand_coverage
   FROM day GROUP BY route_id
 ), dem AS (
@@ -58,6 +64,8 @@ WITH t AS (
          sum(CASE WHEN overload_pattern = 'recurring' THEN 1 ELSE 0 END) AS recurring_cells,
          sum(CASE WHEN overload_pattern = 'one_off' THEN 1 ELSE 0 END) AS one_off_cells,
          sum(event_day_overloads) AS event_day_overloads,
+         try_divide(sum(CASE WHEN overload_pattern = 'persistent' THEN 1 ELSE 0 END),
+                    sum(CASE WHEN overload_pattern <> 'insufficient_data' THEN 1 ELSE 0 END)) AS persistent_cell_share,
          concat_ws(',', array_sort(collect_set(CASE WHEN overload_pattern = 'persistent' THEN CAST(direction AS STRING) END))) AS persistent_directions
   FROM persistent_overcrowding GROUP BY route_id
 ), hot AS (
@@ -73,7 +81,10 @@ WITH t AS (
   SELECT r.route_id, r.route_code, r.route_type, r.launch_date,
          a.normal_service_days, a.demand_coverage, d.med_daily_boardings,
          a.med_occupancy, a.med_p90_occupancy, a.med_punctuality, a.med_late_share, a.med_travel_time_ratio,
-         a.med_arrival_delay_std, a.med_underload_share, a.med_overload_share,
+         a.med_arrival_delay_std, a.med_underload_share, a.med_overload_share, a.med_overload_severity,
+         coalesce(p.persistent_cell_share, 0) AS persistent_cell_share,
+         ${route_scoring_overcrowding_penalty_weights_severity} * a.med_overload_severity
+           + ${route_scoring_overcrowding_penalty_weights_persistence} * coalesce(p.persistent_cell_share, 0) AS overcrowding_penalty,
          coalesce(p.persistent_cells, 0) AS persistent_cells, coalesce(p.recurring_cells, 0) AS recurring_cells,
          coalesce(p.one_off_cells, 0) AS one_off_cells, coalesce(p.event_day_overloads, 0) AS event_day_overloads,
          nullif(p.persistent_directions, '') AS persistent_directions,
@@ -96,15 +107,19 @@ WITH t AS (
          100 * percent_rank() OVER (PARTITION BY eligible ORDER BY med_travel_time_ratio DESC) AS travel_time_score,
          100 * percent_rank() OVER (PARTITION BY eligible ORDER BY med_arrival_delay_std DESC) AS reliability_score,
          100 * percent_rank() OVER (PARTITION BY eligible ORDER BY med_p90_occupancy DESC) AS load_score,
-         100 * greatest(0, 1 - med_underload_share - med_overload_share) AS utilization_score
+         100 * greatest(0, 1 - med_underload_share) AS underutilization_score,
+         100 * greatest(0, 1 - overcrowding_penalty / ${route_scoring_overcrowding_full_penalty_at}) AS overcrowding_score
   FROM base
 ), c AS (
   SELECT s.*,
          (${route_scoring_weights_demand} * demand_score + ${route_scoring_weights_occupancy} * occupancy_score
           + ${route_scoring_weights_punctuality} * punctuality_score + ${route_scoring_weights_delay_frequency} * delay_frequency_score
-          + ${route_scoring_weights_travel_time} * travel_time_score + ${route_scoring_weights_reliability} * reliability_score)
+          + ${route_scoring_weights_travel_time} * travel_time_score + ${route_scoring_weights_reliability} * reliability_score
+          + ${route_scoring_weights_load} * load_score + ${route_scoring_weights_underutilization} * underutilization_score
+          + ${route_scoring_weights_overcrowding} * overcrowding_score)
          / (${route_scoring_weights_demand} + ${route_scoring_weights_occupancy} + ${route_scoring_weights_punctuality}
-            + ${route_scoring_weights_delay_frequency} + ${route_scoring_weights_travel_time} + ${route_scoring_weights_reliability}) AS composite_score,
+            + ${route_scoring_weights_delay_frequency} + ${route_scoring_weights_travel_time} + ${route_scoring_weights_reliability}
+            + ${route_scoring_weights_load} + ${route_scoring_weights_underutilization} + ${route_scoring_weights_overcrowding}) AS composite_score,
          (punctuality_score + delay_frequency_score + reliability_score) / 3 AS reliability_index
   FROM s
 ), r AS (
@@ -140,7 +155,11 @@ SELECT route_id, route_code, route_type, launch_date, eligible, normal_service_d
        CASE WHEN NOT eligible THEN NULL ELSE round(travel_time_score, 1) END AS travel_time_score,
        CASE WHEN NOT eligible THEN NULL ELSE round(reliability_score, 1) END AS reliability_score,
        CASE WHEN NOT eligible THEN NULL ELSE round(load_score, 1) END AS load_score,
-       CASE WHEN NOT eligible THEN NULL ELSE round(utilization_score, 1) END AS utilization_score,
+       CASE WHEN NOT eligible THEN NULL ELSE round(underutilization_score, 1) END AS underutilization_score,
+       CASE WHEN NOT eligible THEN NULL ELSE round(overcrowding_score, 1) END AS overcrowding_score,
+       round(med_overload_severity, 4) AS med_overload_severity,
+       round(persistent_cell_share, 4) AS persistent_cell_share,
+       round(overcrowding_penalty, 4) AS overcrowding_penalty,
        CASE WHEN NOT eligible THEN NULL ELSE round(composite_score, 1) END AS composite_score,
        CASE WHEN NOT eligible THEN NULL ELSE round(composite_rank, 3) END AS composite_rank,
        CASE WHEN NOT eligible THEN NULL ELSE round(reliability_rank, 3) END AS reliability_rank,

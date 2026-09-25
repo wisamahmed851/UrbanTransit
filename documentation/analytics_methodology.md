@@ -157,30 +157,47 @@ This takes frequency, route length (boardings per km), time period and day into 
 
 ## 8. Route performance scoring
 
-**Output:** `route_performance`. The score comes first, then the class, and overcrowding is a separate flag (CMD-017).
+**Output:** `route_performance`. The score comes first, then the class, and the overcrowded flag is kept alongside (CMD-017, CMD-018).
 
 All metrics are **medians of daily values over normal days**.
 
-**Step 1 – component scores (0–100):**
+**Step 1 – nine component scores (0–100).** These are the SRS Step 15 scoring inputs. Percentile ranks are computed among eligible routes only.
 
-| component | how it is scored |
-|---|---|
-| demand | percentile rank of median daily boardings |
-| occupancy | absolute: 100 at the 0.70 target, falling linearly to 0 at 0 or 1.40 |
-| punctuality | percentile rank of median punctuality |
-| delay frequency | inverse rank of the late share |
-| travel time | inverse rank of actual ÷ scheduled travel time |
-| reliability | inverse rank of the arrival-delay standard deviation |
-| load | inverse rank of p90 occupancy |
-| utilisation | absolute: 1 − underload share − overload share |
+| component | how it is scored | weight | effective share |
+|---|---|---|---|
+| demand | percentile rank of median daily boardings | 0.20 | 18.2% |
+| occupancy | absolute: 100 at the 0.70 target, falling linearly to 0 at 0 or 1.40 | 0.10 | 9.1% |
+| punctuality | percentile rank of median punctuality | 0.15 | 13.6% |
+| delay frequency | inverse rank of the median late share | 0.15 | 13.6% |
+| travel time | inverse rank of median actual ÷ scheduled travel time | 0.10 | 9.1% |
+| reliability | inverse rank of the median arrival-delay standard deviation | 0.10 | 9.1% |
+| passenger load | inverse rank of the median daily p90 occupancy | 0.10 | 9.1% |
+| underutilization | absolute: 100 × (1 − median daily share of Low-occupancy trips) | 0.10 | 9.1% |
+| overcrowding | absolute, severity-weighted; see the formula below | 0.10 | 9.1% |
 
-Percentile ranks are computed among eligible routes only.
+The composite divides by the sum of the weights (1.10), so "effective share" is each component's real share of the composite.
 
-**Step 2 – composite score:**
-- `composite_score` is the weighted mean of the **six performance components**: demand, occupancy, punctuality, delay frequency, travel time and reliability.
-- The weights (`phase5.yaml`) are demand 0.20, occupancy 0.10, punctuality 0.15, delay frequency 0.15, travel time 0.10 and reliability 0.10, divided by their sum. These are the same relative weights as before.
-- Load and utilisation are **not** in the composite. They form the capacity profile used in step 3.
-- `composite_rank` is the percentile rank of the composite. `reliability_rank` is the rank of the mean of the punctuality, delay-frequency and reliability scores.
+**Overcrowding component** (severity-weighted, not a yes/no cutoff):
+
+```
+severity    = median over normal days of the day's mean trip weight,
+              where Overcrowded = 0.5, Critical = 1.0 and any other measured trip = 0
+persistence = persistent overload cells ÷ judged cells for the route
+              (cells are route × direction × weekday × period from item 6;
+               judged = every cell except insufficient_data)
+penalty     = 0.5 × severity + 0.5 × persistence
+score       = 100 × max(0, 1 − penalty ÷ 0.5)
+```
+
+- A route that never overloads scores 100.
+- The score falls in proportion to how often and how badly the route overloads, and to how regular the pattern is.
+- A penalty of 0.5 or more scores 0.
+- Among eligible routes the score ranges from 0.0 to 100.0 (median 86.5); 6 routes score 0.
+- All parameters are in `phase5.yaml` (`route_scoring`).
+
+**Underutilization component:** 100 × (1 − median daily share of Low-occupancy trips). Before CMD-018 this was a combined utilisation score, 1 − underload − overload. Overload is now scored only by the overcrowding component, so it is not counted twice.
+
+**Step 2 – composite:** `composite_score` = Σ weight × component ÷ Σ weights. `composite_rank` is its percentile rank; `reliability_rank` is the rank of the mean of the punctuality, delay-frequency and reliability scores.
 
 **Step 3 – class from the score.** The first matching rule wins:
 
@@ -194,38 +211,59 @@ Percentile ranks are computed among eligible routes only.
 | 5 | Reliable but Underutilized | middle band, `reliability_rank` ≥ 0.6, and (demand score ≤ 40 or median underload share ≥ 0.5) |
 | 6 | Mixed / Needs Review | middle band and none of rules 3–5; `class_reason` lists every criterion missed |
 
-Within the middle band, Overcrowded is checked first because a capacity shortfall is the most actionable diagnosis, and in this data load drives dwell time and delay. All high-overload middle-band routes also had high demand and low reliability.
-
-**Step 4 – overcrowded flag, independent of the class:**
+**Step 4 – overcrowded flag, kept alongside the class:**
 - `overcrowded_flag` = the route has at least one **persistent** overload cell (item 6).
 - It comes with `overcrowded_scope` (direction) and `overcrowding_location` (stop-specific or route-wide).
-- Any class can carry the flag. For example, a High Performing route can be persistently overloaded on one weekday peak in one direction.
+- It explains a route's class and feeds the recommendation engine later.
 
-**Mixed / Needs Review routes.** This class was called "Average" before CMD-017. The three routes in "Average" then (R015, R085, R114) are all still here; the score-first rework moved nine more routes into it. Current routes and the criteria each one misses:
+**Current distribution:**
+
+| class | routes | with the overcrowded flag |
+|---|---|---|
+| High Performing | 35 | 24 |
+| Low Performing | 35 | 19 |
+| High Demand but Unreliable | 13 | 12 |
+| Reliable but Underutilized | 13 | 6 |
+| Mixed / Needs Review | 13 | 8 |
+| Overcrowded | 8 | 8 |
+| Insufficient Data | 1 | 1 |
+
+**R097**, the most overcrowded route (median 57.6% of trips overloaded):
+- Before CMD-018 it was High Performing; it is now **Overcrowded**.
+- Its overcrowding penalty is 0.651 (severity 0.517, persistent in 78.6% of its judged cells), so its overcrowding score is 0.0. Its load score is also 0.0.
+- That pulled its composite down to 50.7 (rank 0.431), into the middle band, where its overload share classes it as Overcrowded.
+
+**9 High Performing routes still overload on 20% or more of trips on a normal day** (at most 34.6%).
+- Their overcrowding scores are 19.7–53.3, so they are penalised.
+- They are strong enough on the other eight components to stay in the top 30%.
+- This is the intended result of a weighted composite (overcrowding is 1 of 9 inputs, 9.1% of the weight). They all carry `overcrowded_flag`.
+
+**Mixed / Needs Review routes.** This class was called "Average" before CMD-017; the original three routes (R015, R085, R114) are still in it. Current routes and the criteria each one misses:
 
 | route | composite | High / Low Performing | Overcrowded class | High Demand but Unreliable | Reliable but Underutilized | overcrowded flag |
 |---|---|---|---|---|---|---|
-| R013 | 46.5 | composite rank 0.336 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 50.0 < 60 and reliability rank 0.431 > 0.4 | RBU: reliability rank 0.431 < 0.6 | no |
-| R015 | 49.7 | composite rank 0.431 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.483 > 0.4 | RBU: reliability rank 0.483 < 0.6 | no |
-| R018 | 48.7 | composite rank 0.379 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.422 > 0.4 | RBU: reliability rank 0.422 < 0.6 | yes |
-| R035 | 56.2 | composite rank 0.629 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.026 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.595 > 0.4 | RBU: reliability rank 0.595 < 0.6 | yes |
-| R042 | 55.2 | composite rank 0.603 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.036 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.517 > 0.4 | RBU: reliability rank 0.517 < 0.6 | yes |
-| R044 | 46.6 | composite rank 0.345 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.024 (Overcrowded needs ≥ 0.20) | HDU: demand 56.0 < 60 and reliability rank 0.405 > 0.4 | RBU: reliability rank 0.405 < 0.6 | yes |
-| R046 | 47.6 | composite rank 0.371 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.024 (Overcrowded needs ≥ 0.20) | HDU: demand 56.9 < 60 and reliability rank 0.448 > 0.4 | RBU: reliability rank 0.448 < 0.6 | yes |
-| R049 | 52.0 | composite rank 0.517 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.025 (Overcrowded needs ≥ 0.20) | HDU: reliability rank 0.466 > 0.4 | RBU: reliability rank 0.466 < 0.6 | yes |
-| R052 | 52.7 | composite rank 0.534 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.021 (Overcrowded needs ≥ 0.20) | HDU: demand 51.7 < 60 and reliability rank 0.552 > 0.4 | RBU: reliability rank 0.552 < 0.6 | yes |
-| R064 | 45.9 | composite rank 0.319 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 28.4 < 60 and reliability rank 0.578 > 0.4 | RBU: reliability rank 0.578 < 0.6 | no |
-| R085 | 49.0 | composite rank 0.397 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 33.6 < 60 and reliability rank 0.586 > 0.4 | RBU: reliability rank 0.586 < 0.6 | no |
-| R114 | 47.1 | composite rank 0.353 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (Overcrowded needs ≥ 0.20) | HDU: demand 22.4 < 60 and reliability rank 0.526 > 0.4 | RBU: reliability rank 0.526 < 0.6 | no |
+| R013 | 51.0 | rank 0.448 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | demand 50.0 < 60 and reliability rank 0.431 > 0.4 | reliability rank 0.431 < 0.6 | no |
+| R015 | 53.0 | rank 0.543 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | reliability rank 0.483 > 0.4 | reliability rank 0.483 < 0.6 | no |
+| R018 | 51.7 | rank 0.474 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | reliability rank 0.422 > 0.4 | reliability rank 0.422 < 0.6 | yes |
+| R035 | 55.5 | rank 0.681 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.026 (needs ≥ 0.20) | reliability rank 0.595 > 0.4 | reliability rank 0.595 < 0.6 | yes |
+| R042 | 54.3 | rank 0.612 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.036 (needs ≥ 0.20) | reliability rank 0.517 > 0.4 | reliability rank 0.517 < 0.6 | yes |
+| R044 | 48.8 | rank 0.362 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.024 (needs ≥ 0.20) | demand 56.0 < 60 and reliability rank 0.405 > 0.4 | reliability rank 0.405 < 0.6 | yes |
+| R046 | 49.7 | rank 0.405 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.024 (needs ≥ 0.20) | demand 56.9 < 60 and reliability rank 0.448 > 0.4 | reliability rank 0.448 < 0.6 | yes |
+| R049 | 52.8 | rank 0.526 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.025 (needs ≥ 0.20) | reliability rank 0.466 > 0.4 | reliability rank 0.466 < 0.6 | yes |
+| R052 | 53.6 | rank 0.586 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.021 (needs ≥ 0.20) | demand 51.7 < 60 and reliability rank 0.552 > 0.4 | reliability rank 0.552 < 0.6 | yes |
+| R064 | 50.7 | rank 0.440 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | demand 28.4 < 60 and reliability rank 0.578 > 0.4 | reliability rank 0.578 < 0.6 | no |
+| R080 | 47.4 | rank 0.328 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | demand 43.1 < 60 | reliability rank 0.379 < 0.6 | yes |
+| R085 | 52.8 | rank 0.517 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | demand 33.6 < 60 and reliability rank 0.586 > 0.4 | reliability rank 0.586 < 0.6 | no |
+| R114 | 51.6 | rank 0.466 (HP needs ≥ 0.7, LP ≤ 0.3) | overload 0.000 (needs ≥ 0.20) | demand 22.4 < 60 and reliability rank 0.526 > 0.4 | reliability rank 0.526 < 0.6 | no |
 
-Their common pattern is clear from the table: all twelve are lightly used (a median of 69–97% of trips in the Low category) but only mid-ranked on reliability (0.405–0.595). That is not reliable enough for *Reliable but Underutilized* (≥ 0.6) and not unreliable enough for *High Demand but Unreliable* (≤ 0.4). They are candidates for manual review of frequency.
+Common pattern: lightly used (a median of 69–97% of trips in the Low category) and mid-ranked on reliability, so they are neither reliable enough for *Reliable but Underutilized* nor unreliable enough (with enough demand) for *High Demand but Unreliable*. They are candidates for manual review of frequency.
 
 **Tricky cases and how they are handled:**
 
 | case | handling |
 |---|---|
-| One abnormal day must not flag a route | Route metrics are medians over normal days (event spikes/drops and holidays removed). The overcrowded flag requires a *persistent* cell, so one-off and recurring overloads never set it; `tricky_case_notes` records how many such cells were ignored. |
-| Overcrowded in one direction only | Persistence is judged per direction. `overcrowded_scope` = `direction_0_only`, `direction_1_only` or `both_directions`. |
+| One abnormal day must not flag a route | Route metrics are medians over normal days (event spikes/drops and holidays removed). The flag and the persistence part of the overcrowding score need *persistent* cells, so one-off and recurring overloads never set the flag. `tricky_case_notes` records how many such cells were ignored. |
+| Overcrowded in one direction only | Persistence is judged per direction. `overcrowded_scope` = `direction_0_only`, `direction_1_only` or `both_directions`. A one-direction pattern also scores a smaller persistence share. |
 | Overcrowded only at specific stops | Using `max_load_stop_id` of the overloaded trips: if ≥ 60% of them peak at one stop, `overcrowding_location = stop_specific` with `hotspot_stop_id`; otherwise `route_wide`. |
 | New routes launched mid-year / low coverage | `Insufficient Data`: not scored and not ranked against mature routes. |
 | Special events and holidays | Excluded from all route baselines; the count is shown in `excluded_abnormal_days`. |

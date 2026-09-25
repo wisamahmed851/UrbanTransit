@@ -93,8 +93,15 @@ def main():
     hi, lo = rs["high_performing_rank"], rs["low_performing_rank"]
     srs_classes = ["High Performing", "High Demand but Unreliable", "Reliable but Underutilized", "Overcrowded", "Low Performing"]
     dist = {r[0]: r[1] for r in rp.groupBy("route_class").count().collect()}
+    # composite must equal the documented weighted mean of the nine SRS Step 15 components
+    w = rs["weights"]
+    recomputed = sum(F.col(f"{k}_score") * v for k, v in w.items()) / sum(w.values())
+    composite_mismatch = rp.filter("eligible").filter(F.abs(F.col("composite_score") - recomputed) > 0.15).count()
     ev = {
         "class_distribution": dist,
+        "composite_components": list(w),
+        "composite_recompute_mismatches": composite_mismatch,
+        "eligible_without_overcrowding_score": rp.filter("eligible AND overcrowding_score IS NULL").count(),
         "flag_by_class": {r[0]: r[1] for r in rp.filter("overcrowded_flag").groupBy("route_class").count().collect()},
         "srs_classes_empty": [c for c in srs_classes if dist.get(c, 0) == 0],
         "class_tier_violations": rp.filter(f"eligible AND ((composite_rank >= {hi}) <> (route_class = 'High Performing') "
@@ -109,6 +116,8 @@ def main():
         "abnormal_days_excluded_from_baselines": a("special_event_route_days").filter("day_status IN ('spike','drop') OR is_holiday").count(),
     }
     checks["4_route_scoring_tricky_cases"] = {"pass": not ev["srs_classes_empty"] and ev["class_tier_violations"] == 0
+                                              and composite_mismatch == 0 and len(w) == 9 and "overcrowding" in w
+                                              and ev["eligible_without_overcrowding_score"] == 0
                                               and ev["flag_not_equal_persistent"] == 0 and ev["flagged_missing_scope"] == 0
                                               and ev["ineligible_not_insufficient"] == 0 and ev["mixed_without_reason"] == 0
                                               and ev["old_average_class_present"] == 0, **ev}

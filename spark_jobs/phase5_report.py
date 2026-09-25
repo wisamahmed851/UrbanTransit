@@ -136,9 +136,9 @@ def main():
         + "\n\nStop-specific sensitivity (production threshold 60%, check at 40%):\n\n" + md_table(sens)
         + "\n\nMixed / Needs Review routes (criteria missed are in `class_reason`):\n\n" + md_table(mixed)
         + "\n\nTop composite scores:\n\n"
-        + md_table(q("SELECT route_id, route_class, composite_score, demand_score, punctuality_score, reliability_score, utilization_score FROM route_performance WHERE eligible ORDER BY composite_score DESC LIMIT 5"))
+        + md_table(q("SELECT route_id, route_class, composite_score, demand_score, punctuality_score, reliability_score, load_score, underutilization_score, overcrowding_score FROM route_performance WHERE eligible ORDER BY composite_score DESC LIMIT 5"))
         + "\n\nBottom composite scores:\n\n"
-        + md_table(q("SELECT route_id, route_class, composite_score, demand_score, punctuality_score, reliability_score, utilization_score FROM route_performance WHERE eligible ORDER BY composite_score LIMIT 5"))
+        + md_table(q("SELECT route_id, route_class, composite_score, demand_score, punctuality_score, reliability_score, load_score, underutilization_score, overcrowding_score FROM route_performance WHERE eligible ORDER BY composite_score LIMIT 5"))
         + "\n\nTricky cases handled:\n\n"
         + md_table(q("SELECT route_id, route_class, overcrowded_flag, overcrowded_scope, overcrowding_location, hotspot_share, tricky_case_notes FROM route_performance WHERE overcrowded_scope LIKE 'direction%' OR route_class = 'Insufficient Data' OR tricky_case_notes LIKE '%did not set%' ORDER BY route_class, route_id LIMIT 15")))
 
@@ -214,7 +214,17 @@ def main():
     facts["best_route"] = one("SELECT route_id, composite_score, route_class, overcrowded_flag FROM route_performance WHERE eligible ORDER BY composite_score DESC LIMIT 1")
     facts["worst_route"] = one("SELECT route_id, composite_score, route_class, overcrowded_flag FROM route_performance WHERE eligible ORDER BY composite_score LIMIT 1")
     facts["overcrowded_class_routes"] = [r.asDict() for r in q("SELECT route_id, composite_score, med_overload_share, demand_score, reliability_rank FROM route_performance WHERE route_class = 'Overcrowded' ORDER BY med_overload_share DESC")]
-    facts["high_performing_heavy_overload"] = [r.asDict() for r in q("SELECT route_id, composite_score, med_overload_share FROM route_performance WHERE route_class = 'High Performing' AND med_overload_share >= 0.2 ORDER BY med_overload_share DESC")]
+    facts["high_performing_heavy_overload"] = [r.asDict() for r in q("SELECT route_id, composite_score, composite_rank, med_overload_share, overcrowding_score FROM route_performance WHERE route_class = 'High Performing' AND med_overload_share >= 0.2 ORDER BY med_overload_share DESC")]
+    # R097 was the most overcrowded route in the CMD-017 review; its outcome is reported explicitly.
+    r097 = q("SELECT route_id, route_class, overcrowded_flag, composite_score, composite_rank, med_overload_share, med_overload_severity, persistent_cell_share, overcrowding_penalty, demand_score, occupancy_score, punctuality_score, delay_frequency_score, travel_time_score, reliability_score, load_score, underutilization_score, overcrowding_score, class_reason FROM route_performance WHERE route_id = 'R097'")
+    facts["R097"] = r097[0].asDict() if r097 else None
+    add("8. Route R097 (most overcrowded route) after the overcrowding component",
+        md_table(r097, ["route_id", "route_class", "overcrowded_flag", "composite_score", "composite_rank", "med_overload_share",
+                        "med_overload_severity", "persistent_cell_share", "overcrowding_penalty", "overcrowding_score"])
+        + "\n\nComponent scores:\n\n"
+        + md_table(r097, ["demand_score", "occupancy_score", "punctuality_score", "delay_frequency_score", "travel_time_score",
+                          "reliability_score", "load_score", "underutilization_score", "overcrowding_score"]))
+    facts["overcrowding_score_distribution"] = one("SELECT round(min(overcrowding_score), 1) AS min, round(percentile_approx(overcrowding_score, 0.5), 1) AS median, round(max(overcrowding_score), 1) AS max, sum(CASE WHEN overcrowding_score = 0 THEN 1 ELSE 0 END) AS routes_at_zero FROM route_performance WHERE eligible")
     facts["weekday_peak_hour"] = one("SELECT hour, est_boardings_per_day FROM eda_peak_hours WHERE day_class = 'weekday' ORDER BY est_boardings_per_day DESC LIMIT 1")
     facts["congestion_patterns"] = {r["congestion_pattern"]: r["routes"] for r in q("SELECT congestion_pattern, count(*) AS routes FROM delay_congestion_patterns GROUP BY congestion_pattern")}
     facts["top_od_pair"] = one("SELECT origin_stop_id, destination_stop_id, est_journeys_per_day FROM flow_od_pairs ORDER BY flow_rank LIMIT 1")

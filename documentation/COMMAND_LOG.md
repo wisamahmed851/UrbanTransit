@@ -985,3 +985,45 @@ Rerun verify_phase5.py [...] commit and push. Then STOP. Do not start Phase 6.
 **Problems and fixes:** The first score-first version left the Overcrowded class empty, because the four high-overload middle-band routes were caught by High Demand but Unreliable first. Overcrowded is now checked first within the middle band. High Performing and Low Performing are still set only by the composite rank.
 
 **Git commit:** see `git log` (CMD-017 commits).
+
+---
+
+## CMD-018 | 2026-09-25 (UTC+05:00) | Phase 5: overcrowding as a scored component
+**My command (verbatim):**
+```text
+Decision: overcrowding must be a scored dimension in the composite, not just a
+tag, per SRS Step 15 which explicitly lists "Overcrowding" among the 9 scoring
+inputs (Demand, Occupancy, Punctuality, Delay frequency, Travel time,
+Reliability, Passenger load, Underutilization, Overcrowding).
+1. Add an overload penalty component to the composite score: weight it by
+   severity, not a binary cutoff [...] Document the exact formula and weight [...]
+2. Recompute the composite and reclassify all 118 routes.
+3. Keep the standalone `overcrowded` boolean flag [...]
+4. Report the new class distribution [...] and specifically confirm whether R097
+   [...] is still classified High Performing after the fix. [...]
+5. Re-run verify_phase5.py, update transport_intelligence_summary.md if the
+   findings changed, commit and push.
+Once this is done, Phase 5 is fully approved. Print the final Phase 5
+checklist and STOP. Do not start Phase 6.
+```
+
+**Understood as:** Make the composite the nine SRS Step 15 inputs, with a severity-weighted overcrowding component; reclassify; keep the flag; report R097; verify, commit, push and stop. Phase 5 is approved after this.
+
+**Actions taken:**
+- The composite now uses 9 components (weights in `phase5.yaml`, divided by their sum of 1.10).
+- New overcrowding score = 100 × max(0, 1 − penalty ÷ 0.5), where penalty = 0.5 × median daily severity-weighted overload share (Overcrowded 0.5, Critical 1.0) + 0.5 × persistent-cell share.
+- The utilisation component became underutilization (1 − underload share), so overload is not counted twice.
+- `overcrowded_flag` is unchanged.
+- `verify_phase5.py` check 4 now recomputes the composite from the 9 components (0 mismatches).
+- `analytics_methodology.md` item 8 was regenerated from `reports/phase5_facts.json`: components, exact formula, weights, distribution, R097 and the Mixed table.
+
+**Files changed:** `config/phase5.yaml`, `spark_sql/analytics/080_route_performance.sql`, `spark_jobs/{phase5_report,verify_phase5}.py`, `documentation/analytics_methodology.md`, `reports/{phase5_analytics_report.md,phase5_facts.json,phase5_metrics.json,phase5_verification.json,transport_intelligence_summary.md}`, `DEV_LOG.md`, `AI_USAGE.md`.
+
+**Result:** Success.
+- Classes: High Performing 35 (24 flagged), Low Performing 35 (19), High Demand but Unreliable 13 (12), Reliable but Underutilized 13 (6), Mixed / Needs Review 13 (8), Overcrowded 8 (8), Insufficient Data 1 (1).
+- R097 moved from High Performing to **Overcrowded**: overcrowding score 0, composite 50.7, rank 0.431.
+- `verify_phase5.py` passed 9/9. Phase 5 is approved.
+
+**Problems and fixes:** none.
+
+**Git commit:** see `git log` (CMD-018 commit).
