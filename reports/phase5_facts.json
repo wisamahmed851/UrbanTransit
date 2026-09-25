@@ -1,0 +1,311 @@
+{
+  "expansion": [
+    {
+      "factor_level": "route_month_period",
+      "cells": 6203,
+      "avg_factor": 31.19,
+      "min_factor": 17.13,
+      "max_factor": 61.86
+    },
+    {
+      "factor_level": "route_month",
+      "cells": 617,
+      "avg_factor": 30.55,
+      "min_factor": 22.49,
+      "max_factor": 42.16
+    }
+  ],
+  "overcrowding_categories": {
+    "Low": 1292258,
+    "Moderate": 349538,
+    "High": 106909,
+    "Overcrowded": 62537,
+    "Critical": 119712
+  },
+  "route_classes": {
+    "Overcrowded": 77,
+    "Reliable but Underutilized": 19,
+    "Low Performing": 16,
+    "Average": 3,
+    "High Demand but Unreliable": 2,
+    "Insufficient Data": 1
+  },
+  "overcrowded_scope": [
+    {
+      "overcrowded_scope": "both_directions",
+      "overcrowding_location": "route_wide",
+      "routes": 62
+    },
+    {
+      "overcrowded_scope": "direction_1_only",
+      "overcrowding_location": "route_wide",
+      "routes": 10
+    },
+    {
+      "overcrowded_scope": "direction_0_only",
+      "overcrowding_location": "route_wide",
+      "routes": 5
+    }
+  ],
+  "bottleneck_stops": [
+    {
+      "stop_id": "S0318",
+      "stop_name": "Shalimar Block 5",
+      "routes_serving": 1,
+      "trips_serving": 25530,
+      "congestion_records": 3709,
+      "congestion_record_rate": 0.14528,
+      "top_reason": "traffic_congestion"
+    },
+    {
+      "stop_id": "S0105",
+      "stop_name": "DHA Mor",
+      "routes_serving": 1,
+      "trips_serving": 25376,
+      "congestion_records": 3386,
+      "congestion_record_rate": 0.13343,
+      "top_reason": "junction_bottleneck"
+    },
+    {
+      "stop_id": "S0175",
+      "stop_name": "Walton School",
+      "routes_serving": 1,
+      "trips_serving": 25539,
+      "congestion_records": 3318,
+      "congestion_record_rate": 0.12992,
+      "top_reason": "junction_bottleneck"
+    },
+    {
+      "stop_id": "S0218",
+      "stop_name": "Walton Park",
+      "routes_serving": 1,
+      "trips_serving": 25578,
+      "congestion_records": 3177,
+      "congestion_record_rate": 0.12421,
+      "top_reason": "traffic_congestion"
+    },
+    {
+      "stop_id": "S0001",
+      "stop_name": "Railway Station",
+      "routes_serving": 12,
+      "trips_serving": 260042,
+      "congestion_records": 30277,
+      "congestion_record_rate": 0.11643,
+      "top_reason": "traffic_congestion"
+    },
+    {
+      "stop_id": "S0234",
+      "stop_name": "DHA Masjid",
+      "routes_serving": 1,
+      "trips_serving": 25687,
+      "congestion_records": 2857,
+      "congestion_record_rate": 0.11122,
+      "top_reason": "traffic_congestion"
+    },
+    {
+      "stop_id": "S0290",
+      "stop_name": "Mall Road GPO Adda",
+      "routes_serving": 6,
+      "trips_serving": 132094,
+      "congestion_records": 14229,
+      "congestion_record_rate": 0.10772,
+      "top_reason": "traffic_congestion"
+    },
+    {
+      "stop_id": "S0188",
+      "stop_name": "Shahdara Plaza",
+      "routes_serving": 1,
+      "trips_serving": 25337,
+      "congestion_records": 2610,
+      "congestion_record_rate": 0.10301,
+      "top_reason": "traffic_congestion"
+    },
+    {
+      "stop_id": "S0323",
+      "stop_name": "Shahdara Market",
+      "routes_serving": 1,
+      "trips_serving": 25352,
+      "congestion_records": 2593,
+      "congestion_record_rate": 0.10228,
+      "top_reason": "junction_bottleneck"
+    },
+    {
+      "stop_id": "S0022",
+      "stop_name": "Harbanspura",
+      "routes_serving": 7,
+      "trips_serving": 85209,
+      "congestion_records": 8447,
+      "congestion_record_rate": 0.09913,
+      "top_reason": "traffic_congestion"
+    }
+  ],
+  "schedule_adherence": [
+    {
+      "day_class": "holiday",
+      "scheduled": 65216,
+      "missed": 586,
+      "early_share": 0.1706,
+      "on_time_share": 0.6514,
+      "late_share": 0.178,
+      "irregular_interval_share": 0.0009
+    },
+    {
+      "day_class": "weekday",
+      "scheduled": 1553542,
+      "missed": 16891,
+      "early_share": 0.1086,
+      "on_time_share": 0.4905,
+      "late_share": 0.4009,
+      "irregular_interval_share": 0.0082
+    },
+    {
+      "day_class": "weekend",
+      "scheduled": 478399,
+      "missed": 4513,
+      "early_share": 0.1832,
+      "on_time_share": 0.6244,
+      "late_share": 0.1923,
+      "irregular_interval_share": 0.002
+    }
+  ],
+  "event_dates": {
+    "normal": 314,
+    "local_event": 41,
+    "city_wide_event": 10
+  },
+  "anomalies": {
+    "duplicate_ticketing_signal": 35719,
+    "abnormal_travel_time": 1791,
+    "irregular_stop_activity": 503,
+    "abnormal_delay": 250,
+    "demand_spike": 119
+  },
+  "segments": [
+    {
+      "segment": "Occasional Traveller",
+      "card_holders": 39545,
+      "share_of_card_holders": 0.6965,
+      "avg_journeys": 44.3,
+      "avg_active_days_per_week": "0.92",
+      "avg_peak_share": "0.5123",
+      "avg_journey_km": 4.2,
+      "share_of_est_journeys": 0.6156,
+      "most_common_passenger_type": "regular"
+    },
+    {
+      "segment": "Long-Distance Traveller",
+      "card_holders": 10507,
+      "share_of_card_holders": 0.1851,
+      "avg_journeys": 47.6,
+      "avg_active_days_per_week": "1.00",
+      "avg_peak_share": "0.5142",
+      "avg_journey_km": 8.16,
+      "share_of_est_journeys": 0.1472,
+      "most_common_passenger_type": "regular"
+    },
+    {
+      "segment": "Peak-Hour Traveller",
+      "card_holders": 3713,
+      "share_of_card_holders": 0.0654,
+      "avg_journeys": 12.0,
+      "avg_active_days_per_week": "0.58",
+      "avg_peak_share": "0.8134",
+      "avg_journey_km": 3.76,
+      "share_of_est_journeys": 0.0146,
+      "most_common_passenger_type": "regular"
+    },
+    {
+      "segment": "Daily Commuter",
+      "card_holders": 2282,
+      "share_of_card_holders": 0.0402,
+      "avg_journeys": 292.6,
+      "avg_active_days_per_week": "3.90",
+      "avg_peak_share": "0.5302",
+      "avg_journey_km": 5.38,
+      "share_of_est_journeys": 0.2218,
+      "most_common_passenger_type": "regular"
+    },
+    {
+      "segment": "Weekend Traveller",
+      "card_holders": 732,
+      "share_of_card_holders": 0.0129,
+      "avg_journeys": 3.6,
+      "avg_active_days_per_week": "0.69",
+      "avg_peak_share": "0.4782",
+      "avg_journey_km": 4.77,
+      "share_of_est_journeys": 0.0008,
+      "most_common_passenger_type": "regular"
+    }
+  ],
+  "top_demand_route": {
+    "route_id": "R004",
+    "avg_daily_boardings": 15115.3
+  },
+  "low_demand_route": {
+    "route_id": "R118",
+    "avg_daily_boardings": 222.5
+  },
+  "busiest_stop": {
+    "stop_id": "S0005",
+    "stop_name": "Mall Road GPO",
+    "est_turnover_per_day": 6834.3
+  },
+  "most_delayed_route": {
+    "route_id": "R029",
+    "avg_delay_min": 5.776,
+    "late_share": "0.5080"
+  },
+  "most_punctual_route": {
+    "route_id": "R102",
+    "punctuality_rate": 0.8458
+  },
+  "top_overcrowded_route": {
+    "route_id": "R097",
+    "direction": 0,
+    "overload_share": 0.5806,
+    "measured_trips": 5553
+  },
+  "persistent_cells": {
+    "cells": 1462,
+    "routes": 78
+  },
+  "best_route": {
+    "route_id": "R073",
+    "composite_score": 67.6,
+    "route_class": "Overcrowded"
+  },
+  "worst_route": {
+    "route_id": "R030",
+    "composite_score": 22.3,
+    "route_class": "Low Performing"
+  },
+  "weekday_peak_hour": {
+    "hour": 16,
+    "est_boardings_per_day": 29235.5
+  },
+  "congestion_patterns": {
+    "evening_congestion": 1,
+    "both_peaks": 117
+  },
+  "top_od_pair": {
+    "origin_stop_id": "S0030",
+    "destination_stop_id": "S0029",
+    "est_journeys_per_day": 359.51
+  },
+  "bunching": {
+    "bunched_share": 0.0029,
+    "overtakings": 146
+  },
+  "supply": {
+    "insufficient_data": 271,
+    "excess_supply": 2119,
+    "balanced": 817,
+    "excess_demand": 333
+  },
+  "frequency": {
+    "too_little": 306,
+    "insufficient_data": 271,
+    "too_much": 272,
+    "well_matched": 2691
+  }
+}

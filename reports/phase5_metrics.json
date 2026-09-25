@@ -1,0 +1,330 @@
+{
+  "ticket_expansion_factor": {
+    "item": 2,
+    "file": "002_ticket_expansion_factor.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/ticket_expansion_factor",
+    "rows": 6820,
+    "files": 1,
+    "seconds": 38.5
+  },
+  "special_event_route_days": {
+    "item": 17,
+    "file": "005_special_event_route_days.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/special_event_route_days",
+    "rows": 41451,
+    "files": 1,
+    "seconds": 15.2
+  },
+  "special_event_dates": {
+    "item": 17,
+    "file": "006_special_event_dates.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/special_event_dates",
+    "rows": 365,
+    "files": 1,
+    "seconds": 9.4
+  },
+  "eda_route_demand": {
+    "item": 1,
+    "file": "010_eda_route_demand.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_route_demand",
+    "rows": 118,
+    "files": 1,
+    "seconds": 9.2
+  },
+  "eda_stop_usage": {
+    "item": 1,
+    "file": "011_eda_stop_usage.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_stop_usage",
+    "rows": 756,
+    "files": 1,
+    "seconds": 28.7
+  },
+  "eda_route_delay": {
+    "item": 1,
+    "file": "012_eda_route_delay.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_route_delay",
+    "rows": 118,
+    "files": 1,
+    "seconds": 9.5
+  },
+  "eda_peak_hours": {
+    "item": 1,
+    "file": "013_eda_peak_hours.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_peak_hours",
+    "rows": 60,
+    "files": 1,
+    "seconds": 9.7
+  },
+  "eda_peak_days": {
+    "item": 1,
+    "file": "014_eda_peak_days.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_peak_days",
+    "rows": 365,
+    "files": 1,
+    "seconds": 13.1
+  },
+  "eda_travel_time_variation": {
+    "item": 1,
+    "file": "015_eda_travel_time_variation.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_travel_time_variation",
+    "rows": 236,
+    "files": 1,
+    "seconds": 17.5
+  },
+  "eda_stop_patterns": {
+    "item": 1,
+    "file": "016_eda_stop_patterns.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/eda_stop_patterns",
+    "rows": 10813,
+    "files": 1,
+    "seconds": 34.6
+  },
+  "flow_od_pairs": {
+    "item": 2,
+    "file": "020_flow_od_pairs.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/flow_od_pairs",
+    "rows": 19296,
+    "files": 1,
+    "seconds": 22.1
+  },
+  "flow_route_load_profile": {
+    "item": 2,
+    "file": "021_flow_route_load_profile.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/flow_route_load_profile",
+    "rows": 3210,
+    "files": 1,
+    "seconds": 32.6
+  },
+  "flow_direction_demand": {
+    "item": 2,
+    "file": "022_flow_direction_demand.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/flow_direction_demand",
+    "rows": 3540,
+    "files": 1,
+    "seconds": 14.3
+  },
+  "od_matrix": {
+    "item": 3,
+    "file": "030_od_matrix.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/od_matrix",
+    "rows": 316810,
+    "files": 4,
+    "seconds": 30.2
+  },
+  "peak_period_summary": {
+    "item": 4,
+    "file": "040_peak_period_summary.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/peak_period_summary",
+    "rows": 15,
+    "files": 1,
+    "seconds": 9.5
+  },
+  "peak_route_hours": {
+    "item": 4,
+    "file": "041_peak_route_hours.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/peak_route_hours",
+    "rows": 6070,
+    "files": 1,
+    "seconds": 10.2
+  },
+  "peak_stop_hours": {
+    "item": 4,
+    "file": "042_peak_stop_hours.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/peak_stop_hours",
+    "rows": 35076,
+    "files": 1,
+    "seconds": 22.1
+  },
+  "overcrowding_trips": {
+    "item": 5,
+    "file": "050_overcrowding_trips.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/overcrowding_trips",
+    "rows": 1930954,
+    "files": 4,
+    "seconds": 13.2
+  },
+  "overcrowding_summary": {
+    "item": 5,
+    "file": "051_overcrowding_summary.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/overcrowding_summary",
+    "rows": 236,
+    "files": 1,
+    "seconds": 8.4
+  },
+  "persistent_overcrowding": {
+    "item": 6,
+    "file": "060_persistent_overcrowding.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/persistent_overcrowding",
+    "rows": 8240,
+    "files": 1,
+    "seconds": 14.3
+  },
+  "underutilized_services": {
+    "item": 7,
+    "file": "070_underutilized_services.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/underutilized_services",
+    "rows": 3540,
+    "files": 1,
+    "seconds": 34.2
+  },
+  "route_performance": {
+    "item": 8,
+    "file": "080_route_performance.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/route_performance",
+    "rows": 118,
+    "files": 1,
+    "seconds": 25.8
+  },
+  "delay_by_dimension": {
+    "item": 9,
+    "file": "090_delay_by_dimension.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_by_dimension",
+    "rows": 939,
+    "files": 1,
+    "seconds": 50.9
+  },
+  "delay_by_stop": {
+    "item": 9,
+    "file": "091_delay_by_stop.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_by_stop",
+    "rows": 756,
+    "files": 1,
+    "seconds": 16.6
+  },
+  "delay_congestion_patterns": {
+    "item": 9,
+    "file": "092_delay_congestion_patterns.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_congestion_patterns",
+    "rows": 118,
+    "files": 1,
+    "seconds": 8.1
+  },
+  "delay_accumulation": {
+    "item": 9,
+    "file": "093_delay_accumulation.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_accumulation",
+    "rows": 1180,
+    "files": 1,
+    "seconds": 8.4
+  },
+  "delay_stop_position_profile": {
+    "item": 9,
+    "file": "094_delay_stop_position_profile.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_stop_position_profile",
+    "rows": 184,
+    "files": 1,
+    "seconds": 15.4
+  },
+  "delay_consistent_entities": {
+    "item": 9,
+    "file": "095_delay_consistent_entities.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_consistent_entities",
+    "rows": 893,
+    "files": 1,
+    "seconds": 16.8
+  },
+  "delay_top_trips": {
+    "item": 9,
+    "file": "096_delay_top_trips.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/delay_top_trips",
+    "rows": 500,
+    "files": 1,
+    "seconds": 9.7
+  },
+  "stop_performance": {
+    "item": 10,
+    "file": "100_stop_performance.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/stop_performance",
+    "rows": 756,
+    "files": 1,
+    "seconds": 8.4
+  },
+  "travel_time_analysis": {
+    "item": 11,
+    "file": "110_travel_time_analysis.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/travel_time_analysis",
+    "rows": 3540,
+    "files": 1,
+    "seconds": 9.9
+  },
+  "travel_time_peak_offpeak": {
+    "item": 11,
+    "file": "111_travel_time_peak_offpeak.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/travel_time_peak_offpeak",
+    "rows": 236,
+    "files": 1,
+    "seconds": 9.4
+  },
+  "route_reliability": {
+    "item": 12,
+    "file": "120_route_reliability.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/route_reliability",
+    "rows": 118,
+    "files": 1,
+    "seconds": 12.0
+  },
+  "schedule_adherence": {
+    "item": 13,
+    "file": "130_schedule_adherence.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/schedule_adherence",
+    "rows": 354,
+    "files": 1,
+    "seconds": 11.5
+  },
+  "headway_bunching": {
+    "item": 14,
+    "file": "140_headway_bunching.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/headway_bunching",
+    "rows": 1180,
+    "files": 1,
+    "seconds": 10.5
+  },
+  "service_frequency": {
+    "item": 15,
+    "file": "150_service_frequency.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/service_frequency",
+    "rows": 3540,
+    "files": 1,
+    "seconds": 35.1
+  },
+  "demand_supply_gap": {
+    "item": 16,
+    "file": "160_demand_supply_gap.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/demand_supply_gap",
+    "rows": 3540,
+    "files": 1,
+    "seconds": 36.8
+  },
+  "anomalies": {
+    "item": 18,
+    "file": "180_anomalies.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/anomalies",
+    "rows": 38382,
+    "files": 1,
+    "seconds": 56.0
+  },
+  "anomaly_summary": {
+    "item": 18,
+    "file": "181_anomaly_summary.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/anomaly_summary",
+    "rows": 5,
+    "files": 1,
+    "seconds": 7.5
+  },
+  "passenger_segments": {
+    "item": 19,
+    "file": "190_passenger_segments.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/passenger_segments",
+    "rows": 56779,
+    "files": 2,
+    "seconds": 47.0
+  },
+  "segment_summary": {
+    "item": 19,
+    "file": "191_segment_summary.sql",
+    "path": "hdfs://localhost:9000/urbantransit/analytics/segment_summary",
+    "rows": 5,
+    "files": 1,
+    "seconds": 8.5
+  }
+}
