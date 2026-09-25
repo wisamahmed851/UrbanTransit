@@ -140,3 +140,12 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - `route_features` is now one row per route (118 rows, train split only); `route_daily_demand` is 41,451 route-days.
 - `verify_phase4.py` PASS, including the leakage test: as-of features recomputed on data truncated at 2026-07-02, and with that day's demand ×10, gave 0 mismatches.
 - **Failure:** the first rerun crashed on a module-level `F.lit` (no SparkContext). **Fix:** moved it into the function.
+
+## 2026-09-25 — Phase 5: analytics with Spark SQL (CMD-016)
+- **Pipeline:** 45 parameterised Spark SQL files (`spark_sql/analytics/`) run by `phase5_analytics.py`, producing 41 Parquet outputs under `/urbantransit/analytics/`. All were read back; the largest are `overcrowding_trips` (1,930,954 rows) and `od_matrix` (316,810). A full run takes about 12 min.
+- **Expansion factor:** the CMD-010 ticket expansion factor was promised as a Phase 4 feature but never built, so it is built here. It averages 31.2 at route × month × period level (range 17.1–61.9).
+- **NULL-aware:** overcrowding categories cover exactly the 1,930,954 measured trips and the 166,203 unmeasured trips are reported separately. Delay analyses use the 2,073,187 evaluated trips.
+- **Failure:** the first special-event baseline (same weekday, previous 8 weeks) produced false spikes on post-Ramadan April days, because Ramadan-timetable weeks sat in the baseline. **Fix:** the baseline is now partitioned by calendar day type. Spike dates fell from 80 to 51, and the three generator events (2025-10-12, 2025-12-20, 2026-03-01) remain the top city-wide dates.
+- **Failure:** the duplicate-ticketing signal also counted quick transfers. **Fix:** a repeat tap must be at the same stop. The remaining 35,715 signals are overlapping journeys (the next tap-in before the previous tap-out).
+- **Failure:** Spark 4 ANSI typing (`element_at` index BIGINT). **Fix:** CAST to INT; `try_divide` is used for all ratios.
+- `verify_phase5.py`: 8/8 PASS.

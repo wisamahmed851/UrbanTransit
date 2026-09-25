@@ -898,3 +898,51 @@ update feature_catalog.md, log, commit and push. Then STOP. Do not start Phase 5
 - Item 6 deviates from the literal request ("up to and including the trip's own hour"). A same-day cumulative share makes the first hour of every day look 100% peak and includes the trip's own boardings, so the as-of flag uses only previous days.
 
 **Git commit:** see `git log` (CMD-013/014 were committed in c165e95).
+
+---
+
+## CMD-016 | 2026-09-25 (UTC+05:00) | Phase 4 approval + Phase 5
+**My command (verbatim):**
+```text
+Phase 4 is now approved (fixed and verified). Log this as the next CMD entry.
+Standing rules still apply: small commits pushed; DEV_LOG and AI_USAGE
+updated; everything on D:; start_hdfs.sh checked before Spark work; never
+invent numbers; readable code with docstrings; short explainers with
+Laravel/NestJS analogies where natural.
+
+PHASE 5: ANALYTICS WITH SPARK SQL
+Input: only the Phase 4 feature tables [...] Implement each as a Spark SQL
+query (spark_sql/*.sql) with a short PySpark wrapper [...] /urbantransit/analytics/<name>
+[19 numbered analyses: EDA, passenger flow, OD matrix, peak periods,
+overcrowding, persistent overcrowding, underutilized services, route
+performance scoring with tricky cases, delay analysis, stop performance,
+travel time, route reliability, schedule adherence, headway/bunching,
+service frequency, demand-supply gap, special events, anomalies, passenger
+segmentation] [...] documentation/analytics_methodology.md,
+reports/transport_intelligence_summary.md, PHASE 5 CHECKLIST [...] Then STOP.
+Do not start Phase 6.
+```
+
+**Understood as:** Phase 4 is approved. Build the 19 Phase 5 analyses as parameterised Spark SQL files run by one PySpark wrapper, write each result to `/urbantransit/analytics/<name>`, verify them, and document. Stop before Phase 6.
+
+**Actions taken:**
+- Checked HDFS with `status_hdfs.sh` before any Spark work (NameNode, DataNode and SecondaryNameNode running).
+- Added `config/phase5.yaml` for time periods and every Phase 5 threshold. Occupancy categories and bunching come from `thresholds.yaml`; the on-time band comes from `phase4.yaml`.
+- Added 45 parameterised Spark SQL files in `spark_sql/analytics/` (5 shared views and 41 outputs) and `spark_jobs/phase5_analytics.py`, which runs them in order, writes `/urbantransit/analytics/<name>` and reads each result back.
+- Built the CMD-010 ticket expansion factor. It was promised as a Phase 4 feature but never built.
+- Added `spark_jobs/phase5_report.py` (report plus `phase5_facts.json`) and `spark_jobs/verify_phase5.py` (8-point checklist).
+- Wrote `documentation/analytics_methodology.md` and `reports/transport_intelligence_summary.md`.
+
+**Files changed:** `config/phase5.yaml`, `spark_sql/analytics/*.sql`, `spark_jobs/{phase5_analytics,phase5_report,verify_phase5}.py`, `documentation/analytics_methodology.md`, `reports/{phase5_analytics_report.md,phase5_facts.json,phase5_metrics.json,phase5_verification.json,transport_intelligence_summary.md}`, `DEV_LOG.md`, `AI_USAGE.md`.
+
+**Result:** Success. All 41 outputs were written and read back from HDFS, and `verify_phase5.py` reported PASS on 8/8 checks.
+
+**Problems and fixes:**
+1. Spark 4 `element_at` needs INT, but `div` returns BIGINT. Fixed with a cast.
+2. The first special-event baseline mixed Ramadan-timetable and holiday days into the baseline for ordinary days, which produced false April 2026 "spikes". The baseline now matches calendar day type.
+3. The duplicate-ticketing rule counted quick transfers. A repeat tap must now be at the same stop; overlapping journeys still count.
+4. The verifier's zero-fill regex also matched card-tap counts (observed zeros). It was narrowed to the measurement columns.
+
+**Deviation:** clean Phase 3 tables (tickets, delays, route_stops, stops, routes, vehicles, service_calendar, passengers, and passenger_counts for `max_load_stop_id` only) are read wherever the feature tables lack the needed grain.
+
+**Git commit:** see `git log` (Phase 5 commits).
