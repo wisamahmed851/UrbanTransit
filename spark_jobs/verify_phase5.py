@@ -9,6 +9,7 @@ Checks (each PASS/FAIL with the evidence it is based on):
   6. ticket analyses apply the expansion factor and carry the sampling note
   7. documentation files exist and cover all 19 items
   8. no secrets or large files among the changed files
+  9. Phase 4 delay_severity matches the bands in config/thresholds.yaml
 """
 
 import json
@@ -87,18 +88,30 @@ def main():
     checks["3_peak_leak_free"] = {"pass": not leaky and all(peak_cols.values()), "files_referencing_descriptive_peak": leaky,
                                   "asof_columns": peak_cols}
 
-    # 4. route scoring tricky cases
+    # 4. route scoring: class from the composite score, overcrowded as an independent flag, tricky cases
+    rs = yaml.safe_load((PROJECT_ROOT / "config" / "phase5.yaml").read_text(encoding="utf-8"))["route_scoring"]
+    hi, lo = rs["high_performing_rank"], rs["low_performing_rank"]
+    srs_classes = ["High Performing", "High Demand but Unreliable", "Reliable but Underutilized", "Overcrowded", "Low Performing"]
+    dist = {r[0]: r[1] for r in rp.groupBy("route_class").count().collect()}
     ev = {
-        "overcrowded_without_persistent_cell": rp.filter("route_class = 'Overcrowded' AND persistent_cells = 0").count(),
-        "persistent_but_not_overcrowded_eligible": rp.filter("eligible AND persistent_cells > 0 AND route_class <> 'Overcrowded'").count(),
-        "overcrowded_missing_scope": rp.filter("route_class = 'Overcrowded' AND (overcrowded_scope IS NULL OR overcrowding_location IS NULL)").count(),
-        "routes_with_only_one_off_or_recurring_overloads_not_flagged": rp.filter("persistent_cells = 0 AND (one_off_cells > 0 OR recurring_cells > 0) AND route_class <> 'Overcrowded'").count(),
+        "class_distribution": dist,
+        "flag_by_class": {r[0]: r[1] for r in rp.filter("overcrowded_flag").groupBy("route_class").count().collect()},
+        "srs_classes_empty": [c for c in srs_classes if dist.get(c, 0) == 0],
+        "class_tier_violations": rp.filter(f"eligible AND ((composite_rank >= {hi}) <> (route_class = 'High Performing') "
+                                           f"OR (composite_rank <= {lo}) <> (route_class = 'Low Performing'))").count(),
+        "flag_not_equal_persistent": rp.filter("overcrowded_flag <> (persistent_cells > 0)").count(),
+        "flagged_missing_scope": rp.filter("overcrowded_flag AND (overcrowded_scope IS NULL OR overcrowding_location IS NULL)").count(),
+        "routes_with_only_one_off_or_recurring_overloads_not_flagged": rp.filter("persistent_cells = 0 AND (one_off_cells > 0 OR recurring_cells > 0) AND NOT overcrowded_flag").count(),
         "ineligible_not_insufficient": rp.filter("NOT eligible AND route_class <> 'Insufficient Data'").count(),
-        "scope_counts": {f"{r[0]}|{r[1]}": r[2] for r in rp.filter("route_class = 'Overcrowded'").groupBy("overcrowded_scope", "overcrowding_location").count().collect()},
-        "abnormal_days_in_persistence": a("special_event_route_days").filter("day_status IN ('spike','drop') OR is_holiday").count(),
+        "mixed_without_reason": rp.filter("route_class = 'Mixed / Needs Review' AND (class_reason IS NULL OR class_reason = '')").count(),
+        "old_average_class_present": dist.get("Average", 0),
+        "scope_counts": {f"{r[0]}|{r[1]}": r[2] for r in rp.filter("overcrowded_flag").groupBy("overcrowded_scope", "overcrowding_location").count().collect()},
+        "abnormal_days_excluded_from_baselines": a("special_event_route_days").filter("day_status IN ('spike','drop') OR is_holiday").count(),
     }
-    checks["4_route_scoring_tricky_cases"] = {"pass": ev["overcrowded_without_persistent_cell"] == 0 and ev["persistent_but_not_overcrowded_eligible"] == 0
-                                              and ev["overcrowded_missing_scope"] == 0 and ev["ineligible_not_insufficient"] == 0, **ev}
+    checks["4_route_scoring_tricky_cases"] = {"pass": not ev["srs_classes_empty"] and ev["class_tier_violations"] == 0
+                                              and ev["flag_not_equal_persistent"] == 0 and ev["flagged_missing_scope"] == 0
+                                              and ev["ineligible_not_insufficient"] == 0 and ev["mixed_without_reason"] == 0
+                                              and ev["old_average_class_present"] == 0, **ev}
 
     # 5. categories vs thresholds.yaml, recomputed independently
     cats = yaml.safe_load((PROJECT_ROOT / "config" / "thresholds.yaml").read_text(encoding="utf-8"))["occupancy_categories"]
@@ -150,6 +163,14 @@ def main():
         if p.suffix in (".py", ".sql", ".md", ".yaml", ".yml", ".json", ".sh", ".env", ".txt") and pat.search(p.read_text(encoding="utf-8", errors="ignore")):
             secret.append(f)
     checks["8_no_secrets_or_large_files"] = {"pass": not big and not secret, "changed_files": len(changed), "large": big, "secret_like": secret}
+
+    # 9. delay_severity stored by Phase 4 matches the bands now in thresholds.yaml (no silent drift)
+    from spark_jobs.phase4_features import load_cfg, severity, severity_bands
+    sev = feat.select("delay_severity", severity(F.col("delay_minutes"), load_cfg()).alias("expected"))
+    sev_mism = sev.filter(~F.col("delay_severity").eqNullSafe(F.col("expected"))).count()
+    checks["9_delay_severity_matches_thresholds"] = {
+        "pass": sev_mism == 0, "mismatches": sev_mism, "bands": severity_bands(),
+        "stored_classes": {str(r[0]): r[1] for r in feat.groupBy("delay_severity").count().collect()}}
 
     out = {"result": "PASS" if all(c["pass"] for c in checks.values()) else "FAIL", "checks": checks}
     (PROJECT_ROOT / "reports" / "phase5_verification.json").write_text(json.dumps(out, indent=2, default=str), encoding="utf-8")

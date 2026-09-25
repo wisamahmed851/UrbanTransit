@@ -37,11 +37,22 @@ route_scoring:
   min_service_days: 28         # newer routes (launched mid-year) -> "Insufficient Data"
   min_demand_coverage: 0.5     # share of operated trips with passenger counts
   target_occupancy: 0.70       # occupancy score peaks here (neither empty nor crowded)
+  # Class from the composite score first (percentile rank among eligible routes) ...
+  high_performing_rank: 0.7    # composite rank >= 0.7 (top 30%)    -> High Performing
+  low_performing_rank: 0.3     # composite rank <= 0.3 (bottom 30%) -> Low Performing
+  # ... then the middle band is diagnosed from the component scores:
+  high_percentile: 0.6         # "high" demand score / reliability rank
+  low_percentile: 0.4          # "low"  demand score / reliability rank
+  underload_share: 0.5         # median daily share of Low-occupancy trips that also means "underutilized"
+  overcrowded_class_overload_share: 0.20   # median daily share of Overcrowded/Critical trips -> Overcrowded class
+  # Overcrowded FLAG (separate from the class): >= 1 persistent overload cell (item 6).
   stop_hotspot_share: 0.6      # >= 60% of overloaded trips peak at one stop -> stop-specific overcrowding
-  high_percentile: 0.6
-  low_percentile: 0.4
+  stop_hotspot_sensitivity_share: 0.4   # reported only (sensitivity check), never used to classify
+  # Composite = weighted mean of these six performance components. Load and utilisation are
+  # reported as the capacity profile and drive the Overcrowded / Underutilized diagnosis instead.
+  # Same relative weights as before; the composite divides by their sum (0.80).
   weights: { demand: 0.20, occupancy: 0.10, punctuality: 0.15, delay_frequency: 0.15,
-             travel_time: 0.10, reliability: 0.10, load: 0.10, utilization: 0.10 }
+             travel_time: 0.10, reliability: 0.10 }
 
 delay:
   congestion_extra_min: 1.0    # peak-period mean arrival delay this much above midday = congestion pattern

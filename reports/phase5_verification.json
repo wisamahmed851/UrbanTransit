@@ -39,17 +39,38 @@
     },
     "4_route_scoring_tricky_cases": {
       "pass": true,
-      "overcrowded_without_persistent_cell": 0,
-      "persistent_but_not_overcrowded_eligible": 0,
-      "overcrowded_missing_scope": 0,
+      "class_distribution": {
+        "High Demand but Unreliable": 13,
+        "Mixed / Needs Review": 12,
+        "Overcrowded": 4,
+        "Insufficient Data": 1,
+        "Reliable but Underutilized": 18,
+        "High Performing": 35,
+        "Low Performing": 35
+      },
+      "flag_by_class": {
+        "High Demand but Unreliable": 13,
+        "Mixed / Needs Review": 7,
+        "Overcrowded": 4,
+        "Insufficient Data": 1,
+        "Reliable but Underutilized": 8,
+        "High Performing": 29,
+        "Low Performing": 16
+      },
+      "srs_classes_empty": [],
+      "class_tier_violations": 0,
+      "flag_not_equal_persistent": 0,
+      "flagged_missing_scope": 0,
       "routes_with_only_one_off_or_recurring_overloads_not_flagged": 35,
       "ineligible_not_insufficient": 0,
+      "mixed_without_reason": 0,
+      "old_average_class_present": 0,
       "scope_counts": {
-        "direction_0_only|route_wide": 5,
+        "direction_0_only|route_wide": 6,
         "direction_1_only|route_wide": 10,
         "both_directions|route_wide": 62
       },
-      "abnormal_days_in_persistence": 1835
+      "abnormal_days_excluded_from_baselines": 1835
     },
     "5_categories_match_thresholds": {
       "pass": true,
@@ -133,9 +154,38 @@
     },
     "8_no_secrets_or_large_files": {
       "pass": true,
-      "changed_files": 59,
+      "changed_files": 14,
       "large": [],
       "secret_like": []
+    },
+    "9_delay_severity_matches_thresholds": {
+      "pass": true,
+      "mismatches": 0,
+      "bands": [
+        {
+          "name": "On Time",
+          "below_minutes": 5
+        },
+        {
+          "name": "Minor",
+          "below_minutes": 10
+        },
+        {
+          "name": "Moderate",
+          "below_minutes": 20
+        },
+        {
+          "name": "Severe",
+          "below_minutes": null
+        }
+      ],
+      "stored_classes": {
+        "On Time": 1546564,
+        "Minor": 291575,
+        "None": 23970,
+        "Moderate": 213030,
+        "Severe": 22018
+      }
     }
   }
 }

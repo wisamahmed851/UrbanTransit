@@ -1,17 +1,24 @@
 -- name: route_performance
 -- kind: output
 -- item: 8
--- Composite route score and class. Tricky cases (documented in analytics_methodology.md):
---  * one abnormal day      : metrics are MEDIANS of daily values over normal days only
---                            (event spikes/drops and holidays excluded), and "Overcrowded"
---                            needs a persistent cell - one-off overloads never flag a route.
---  * one direction only    : overload judged per direction; overcrowded_scope says which.
---  * specific stops only   : if >= 60% of a route's overloaded trips peak at one stop,
---                            overcrowding_location = 'stop_specific' with that stop.
---  * new / sparse routes   : < 28 normal service days or < 50% counted trips -> 'Insufficient Data'
---                            (not scored, not ranked against mature routes).
--- Scores are 0-100 percentile ranks among eligible routes (occupancy and utilisation are
--- absolute: occupancy peaks at the 0.70 target, utilisation = 1 - under - over share).
+-- Route scoring: SCORE FIRST, then class, with "overcrowded" as a separate flag.
+--  1. Eight component scores (0-100) from medians of daily values over normal days.
+--  2. composite_score = weighted mean of six performance components (demand, occupancy,
+--     punctuality, delay frequency, travel time, reliability); load and utilisation form the
+--     capacity profile used to diagnose Overcrowded / Underutilized.
+--  3. route_class from the composite rank: top 30% High Performing, bottom 30% Low Performing;
+--     the middle band is diagnosed from component scores, in this order: Overcrowded (median
+--     daily overload share >= 0.20 - a capacity shortfall is the most actionable diagnosis and
+--     drives dwell-time delay), High Demand but Unreliable, Reliable but Underutilized; the rest
+--     is "Mixed / Needs Review" and class_reason lists every criterion it missed.
+--  4. overcrowded_flag = at least one PERSISTENT overload cell (item 6), independent of the class,
+--     with overcrowded_scope (direction) and overcrowding_location (stop-specific vs route-wide).
+-- Tricky cases (documented in analytics_methodology.md):
+--  * one abnormal day   : medians over normal days only (event spikes/drops, holidays excluded);
+--                         the flag needs a persistent cell, so one-off overloads never set it.
+--  * one direction only : persistence judged per direction -> overcrowded_scope.
+--  * specific stops only: >= 60% of overloaded trips peak at one stop -> 'stop_specific'.
+--  * new / sparse routes: < 28 normal service days or < 50% counted trips -> 'Insufficient Data'.
 WITH t AS (
   SELECT v.* FROM v_trip v
   JOIN v_normal_days n ON v.route_id = n.route_id AND v.service_date = n.service_date
@@ -95,18 +102,29 @@ WITH t AS (
   SELECT s.*,
          (${route_scoring_weights_demand} * demand_score + ${route_scoring_weights_occupancy} * occupancy_score
           + ${route_scoring_weights_punctuality} * punctuality_score + ${route_scoring_weights_delay_frequency} * delay_frequency_score
-          + ${route_scoring_weights_travel_time} * travel_time_score + ${route_scoring_weights_reliability} * reliability_score
-          + ${route_scoring_weights_load} * load_score + ${route_scoring_weights_utilization} * utilization_score)
+          + ${route_scoring_weights_travel_time} * travel_time_score + ${route_scoring_weights_reliability} * reliability_score)
          / (${route_scoring_weights_demand} + ${route_scoring_weights_occupancy} + ${route_scoring_weights_punctuality}
-            + ${route_scoring_weights_delay_frequency} + ${route_scoring_weights_travel_time} + ${route_scoring_weights_reliability}
-            + ${route_scoring_weights_load} + ${route_scoring_weights_utilization}) AS composite_score,
+            + ${route_scoring_weights_delay_frequency} + ${route_scoring_weights_travel_time} + ${route_scoring_weights_reliability}) AS composite_score,
          (punctuality_score + delay_frequency_score + reliability_score) / 3 AS reliability_index
   FROM s
 ), r AS (
   SELECT c.*,
-         percent_rank() OVER (PARTITION BY eligible ORDER BY composite_score) AS composite_pr,
-         percent_rank() OVER (PARTITION BY eligible ORDER BY reliability_index) AS reliability_pr
+         percent_rank() OVER (PARTITION BY eligible ORDER BY composite_score) AS composite_rank,
+         percent_rank() OVER (PARTITION BY eligible ORDER BY reliability_index) AS reliability_rank
   FROM c
+), k AS (
+  SELECT r.*,
+         CASE WHEN NOT eligible THEN 'Insufficient Data'
+              WHEN composite_rank >= ${route_scoring_high_performing_rank} THEN 'High Performing'
+              WHEN composite_rank <= ${route_scoring_low_performing_rank} THEN 'Low Performing'
+              WHEN med_overload_share >= ${route_scoring_overcrowded_class_overload_share} THEN 'Overcrowded'
+              WHEN demand_score >= 100 * ${route_scoring_high_percentile}
+                   AND reliability_rank <= ${route_scoring_low_percentile} THEN 'High Demand but Unreliable'
+              WHEN reliability_rank >= ${route_scoring_high_percentile}
+                   AND (demand_score <= 100 * ${route_scoring_low_percentile}
+                        OR med_underload_share >= ${route_scoring_underload_share}) THEN 'Reliable but Underutilized'
+              ELSE 'Mixed / Needs Review' END AS route_class
+  FROM r
 )
 SELECT route_id, route_code, route_type, launch_date, eligible, normal_service_days, excluded_abnormal_days,
        round(demand_coverage, 4) AS demand_coverage, round(med_daily_boardings, 1) AS med_daily_boardings,
@@ -124,16 +142,24 @@ SELECT route_id, route_code, route_type, launch_date, eligible, normal_service_d
        CASE WHEN NOT eligible THEN NULL ELSE round(load_score, 1) END AS load_score,
        CASE WHEN NOT eligible THEN NULL ELSE round(utilization_score, 1) END AS utilization_score,
        CASE WHEN NOT eligible THEN NULL ELSE round(composite_score, 1) END AS composite_score,
-       CASE WHEN NOT eligible THEN 'Insufficient Data'
-            WHEN persistent_cells > 0 THEN 'Overcrowded'
-            WHEN demand_score >= 100 * ${route_scoring_high_percentile} AND reliability_pr <= ${route_scoring_low_percentile}
-                 THEN 'High Demand but Unreliable'
-            WHEN reliability_pr >= ${route_scoring_high_percentile}
-                 AND (demand_score <= 100 * ${route_scoring_low_percentile} OR med_underload_share >= 0.5)
-                 THEN 'Reliable but Underutilized'
-            WHEN composite_pr >= ${route_scoring_high_percentile} THEN 'High Performing'
-            WHEN composite_pr <= ${route_scoring_low_percentile} THEN 'Low Performing'
-            ELSE 'Average' END AS route_class,
+       CASE WHEN NOT eligible THEN NULL ELSE round(composite_rank, 3) END AS composite_rank,
+       CASE WHEN NOT eligible THEN NULL ELSE round(reliability_rank, 3) END AS reliability_rank,
+       route_class,
+       CASE WHEN NOT eligible THEN concat_ws('; ',
+              CASE WHEN coalesce(normal_service_days, 0) < ${route_scoring_min_service_days} THEN concat('only ', coalesce(normal_service_days, 0), ' normal service days (< ${route_scoring_min_service_days})') END,
+              CASE WHEN demand_coverage < ${route_scoring_min_demand_coverage} THEN concat('passenger-count coverage ', round(demand_coverage, 3), ' (< ${route_scoring_min_demand_coverage})') END)
+            WHEN route_class = 'High Performing' THEN concat('composite rank ', round(composite_rank, 3), ' >= ${route_scoring_high_performing_rank}')
+            WHEN route_class = 'Low Performing' THEN concat('composite rank ', round(composite_rank, 3), ' <= ${route_scoring_low_performing_rank}')
+            WHEN route_class = 'High Demand but Unreliable' THEN concat('middle band; demand score ', round(demand_score, 1), ' >= ', 100 * ${route_scoring_high_percentile}, ' and reliability rank ', round(reliability_rank, 3), ' <= ${route_scoring_low_percentile}')
+            WHEN route_class = 'Reliable but Underutilized' THEN concat('middle band; reliability rank ', round(reliability_rank, 3), ' >= ${route_scoring_high_percentile}, demand score ', round(demand_score, 1), ', underload share ', round(med_underload_share, 3))
+            WHEN route_class = 'Overcrowded' THEN concat('middle band; median overload share ', round(med_overload_share, 3), ' >= ${route_scoring_overcrowded_class_overload_share}')
+            ELSE concat_ws('; ',
+              concat('composite rank ', round(composite_rank, 3), ' is between ${route_scoring_low_performing_rank} and ${route_scoring_high_performing_rank}'),
+              concat('High Demand but Unreliable needs demand >= ', 100 * ${route_scoring_high_percentile}, ' and reliability rank <= ${route_scoring_low_percentile}: has ', round(demand_score, 1), ' / ', round(reliability_rank, 3)),
+              concat('Reliable but Underutilized needs reliability rank >= ${route_scoring_high_percentile} and (demand <= ', 100 * ${route_scoring_low_percentile}, ' or underload >= ${route_scoring_underload_share}): has ', round(reliability_rank, 3), ' / ', round(demand_score, 1), ' / ', round(med_underload_share, 3)),
+              concat('Overcrowded needs median overload share >= ${route_scoring_overcrowded_class_overload_share}: has ', round(med_overload_share, 3)))
+       END AS class_reason,
+       persistent_cells > 0 AS overcrowded_flag,
        CASE WHEN persistent_cells = 0 THEN NULL
             WHEN persistent_directions LIKE '%,%' THEN 'both_directions'
             ELSE concat('direction_', persistent_directions, '_only') END AS overcrowded_scope,
@@ -143,9 +169,7 @@ SELECT route_id, route_code, route_type, launch_date, eligible, normal_service_d
        hotspot_stop_id, round(hotspot_share, 4) AS hotspot_share,
        concat_ws('; ',
          CASE WHEN persistent_cells = 0 AND (one_off_cells > 0 OR recurring_cells > 0)
-              THEN concat(one_off_cells + recurring_cells, ' non-persistent overload cells did not flag the route') END,
-         CASE WHEN excluded_abnormal_days > 0 THEN concat(excluded_abnormal_days, ' event/holiday days excluded from baseline') END,
-         CASE WHEN NOT eligible AND normal_service_days < ${route_scoring_min_service_days} THEN 'too few service days (new route)' END,
-         CASE WHEN NOT eligible AND demand_coverage < ${route_scoring_min_demand_coverage} THEN 'low passenger-count coverage' END
+              THEN concat(one_off_cells + recurring_cells, ' non-persistent overload cells did not set the overcrowded flag') END,
+         CASE WHEN excluded_abnormal_days > 0 THEN concat(excluded_abnormal_days, ' event/holiday days excluded from baseline') END
        ) AS tricky_case_notes
-FROM r
+FROM k
