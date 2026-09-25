@@ -1,0 +1,9 @@
+# Phase 4 parameters. Dates are derived from the cleaned data and split chronologically.
+feature_output: features
+peak:
+  min_share_of_daily_ridership: 0.08
+splits:
+  train_fraction: 0.6667
+  validation_fraction: 0.1667
+  # Test receives the remaining most-recent dates; never randomize rows.
+output_partitions: 8

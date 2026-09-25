@@ -1,0 +1,12 @@
+{
+  "split_dates_with_multiple_assignments": 0,
+  "sample_routes": [
+    "R001",
+    "R002",
+    "R003",
+    "R004",
+    "R005"
+  ],
+  "historical_demand_mismatches": 0,
+  "result": "PASS"
+}

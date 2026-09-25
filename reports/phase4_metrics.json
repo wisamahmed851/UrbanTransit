@@ -1,0 +1,373 @@
+{
+  "joins": [
+    {
+      "join": "01_tickets_passengers",
+      "keys": "passenger_id",
+      "type": "left",
+      "left_rows": 2976868,
+      "joined_rows": 2976868,
+      "orphans": 5973
+    },
+    {
+      "join": "02_tickets_trips",
+      "keys": "trip_id",
+      "type": "left",
+      "left_rows": 2976868,
+      "joined_rows": 2976868,
+      "orphans": 6083
+    },
+    {
+      "join": "03_trips_routes",
+      "keys": "route_id",
+      "type": "left",
+      "left_rows": 2097157,
+      "joined_rows": 2097157,
+      "orphans": 0
+    },
+    {
+      "join": "04_trips_vehicles",
+      "keys": "vehicle_id",
+      "type": "left",
+      "left_rows": 2097157,
+      "joined_rows": 2097157,
+      "orphans": 0
+    },
+    {
+      "join": "05_trips_schedules",
+      "keys": "schedule_id",
+      "type": "left",
+      "left_rows": 2097157,
+      "joined_rows": 2097157,
+      "orphans": 0
+    },
+    {
+      "join": "06_routes_route_stops",
+      "keys": "route_id",
+      "type": "left",
+      "left_rows": 118,
+      "joined_rows": 3210,
+      "orphans": 0
+    },
+    {
+      "join": "07_route_stops_stops",
+      "keys": "stop_id",
+      "type": "left",
+      "left_rows": 3210,
+      "joined_rows": 3210,
+      "orphans": 0
+    },
+    {
+      "join": "08_trips_delays",
+      "keys": "trip_id",
+      "type": "left",
+      "left_rows": 2097157,
+      "joined_rows": 2293303,
+      "orphans": 1306513
+    },
+    {
+      "join": "09_trips_passenger_counts",
+      "keys": "trip_id",
+      "type": "left",
+      "left_rows": 2097157,
+      "joined_rows": 2097157,
+      "orphans": 166203
+    },
+    {
+      "join": "10_stops_location",
+      "keys": "stop_id",
+      "type": "projection",
+      "left_rows": 756,
+      "joined_rows": 756,
+      "orphans": 0
+    }
+  ],
+  "outputs": {
+    "trip_features": {
+      "path": "hdfs://localhost:9000/urbantransit/features/trip_features",
+      "rows": 2097157,
+      "files": 8
+    },
+    "route_features": {
+      "path": "hdfs://localhost:9000/urbantransit/features/route_features",
+      "rows": 41451,
+      "files": 8
+    },
+    "route_time_features": {
+      "path": "hdfs://localhost:9000/urbantransit/features/route_time_features",
+      "rows": 40974,
+      "files": 8
+    },
+    "stop_daily_demand": {
+      "path": "hdfs://localhost:9000/urbantransit/features/stop_daily_demand",
+      "rows": 243999,
+      "files": 8
+    },
+    "route_daily_demand": {
+      "path": "hdfs://localhost:9000/urbantransit/features/route_daily_demand",
+      "rows": 41451,
+      "files": 8
+    }
+  },
+  "splits": [
+    {
+      "split": "train",
+      "min_date": "2025-09-01",
+      "max_date": "2026-05-02",
+      "rows": 1433507
+    },
+    {
+      "split": "validation",
+      "min_date": "2026-05-03",
+      "max_date": "2026-07-02",
+      "rows": 344428
+    },
+    {
+      "split": "test",
+      "min_date": "2026-07-03",
+      "max_date": "2026-08-31",
+      "rows": 319222
+    }
+  ],
+  "target_balance": [
+    {
+      "split": "test",
+      "delay_severity": "Major",
+      "crowding_flag": null,
+      "count": 9
+    },
+    {
+      "split": "test",
+      "delay_severity": "Major",
+      "crowding_flag": false,
+      "count": 30658
+    },
+    {
+      "split": "test",
+      "delay_severity": "Major",
+      "crowding_flag": true,
+      "count": 6113
+    },
+    {
+      "split": "test",
+      "delay_severity": "Minor",
+      "crowding_flag": false,
+      "count": 141
+    },
+    {
+      "split": "test",
+      "delay_severity": "Minor",
+      "crowding_flag": true,
+      "count": 11
+    },
+    {
+      "split": "test",
+      "delay_severity": "Moderate",
+      "crowding_flag": null,
+      "count": 10
+    },
+    {
+      "split": "test",
+      "delay_severity": "Moderate",
+      "crowding_flag": false,
+      "count": 43764
+    },
+    {
+      "split": "test",
+      "delay_severity": "Moderate",
+      "crowding_flag": true,
+      "count": 4996
+    },
+    {
+      "split": "test",
+      "delay_severity": "On Time",
+      "crowding_flag": null,
+      "count": 48
+    },
+    {
+      "split": "test",
+      "delay_severity": "On Time",
+      "crowding_flag": false,
+      "count": 218049
+    },
+    {
+      "split": "test",
+      "delay_severity": "On Time",
+      "crowding_flag": true,
+      "count": 12901
+    },
+    {
+      "split": "test",
+      "delay_severity": "Severe",
+      "crowding_flag": false,
+      "count": 1710
+    },
+    {
+      "split": "test",
+      "delay_severity": "Severe",
+      "crowding_flag": true,
+      "count": 812
+    },
+    {
+      "split": "train",
+      "delay_severity": "Major",
+      "crowding_flag": null,
+      "count": 22
+    },
+    {
+      "split": "train",
+      "delay_severity": "Major",
+      "crowding_flag": false,
+      "count": 121429
+    },
+    {
+      "split": "train",
+      "delay_severity": "Major",
+      "crowding_flag": true,
+      "count": 26822
+    },
+    {
+      "split": "train",
+      "delay_severity": "Minor",
+      "crowding_flag": false,
+      "count": 611
+    },
+    {
+      "split": "train",
+      "delay_severity": "Minor",
+      "crowding_flag": true,
+      "count": 89
+    },
+    {
+      "split": "train",
+      "delay_severity": "Moderate",
+      "crowding_flag": null,
+      "count": 37
+    },
+    {
+      "split": "train",
+      "delay_severity": "Moderate",
+      "crowding_flag": false,
+      "count": 169233
+    },
+    {
+      "split": "train",
+      "delay_severity": "Moderate",
+      "crowding_flag": true,
+      "count": 27202
+    },
+    {
+      "split": "train",
+      "delay_severity": "On Time",
+      "crowding_flag": null,
+      "count": 243
+    },
+    {
+      "split": "train",
+      "delay_severity": "On Time",
+      "crowding_flag": false,
+      "count": 997288
+    },
+    {
+      "split": "train",
+      "delay_severity": "On Time",
+      "crowding_flag": true,
+      "count": 73738
+    },
+    {
+      "split": "train",
+      "delay_severity": "Severe",
+      "crowding_flag": null,
+      "count": 3
+    },
+    {
+      "split": "train",
+      "delay_severity": "Severe",
+      "crowding_flag": false,
+      "count": 12838
+    },
+    {
+      "split": "train",
+      "delay_severity": "Severe",
+      "crowding_flag": true,
+      "count": 3952
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Major",
+      "crowding_flag": null,
+      "count": 14
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Major",
+      "crowding_flag": false,
+      "count": 22376
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Major",
+      "crowding_flag": true,
+      "count": 5519
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Minor",
+      "crowding_flag": false,
+      "count": 138
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Minor",
+      "crowding_flag": true,
+      "count": 12
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Moderate",
+      "crowding_flag": null,
+      "count": 12
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Moderate",
+      "crowding_flag": false,
+      "count": 40904
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Moderate",
+      "crowding_flag": true,
+      "count": 5303
+    },
+    {
+      "split": "validation",
+      "delay_severity": "On Time",
+      "crowding_flag": null,
+      "count": 50
+    },
+    {
+      "split": "validation",
+      "delay_severity": "On Time",
+      "crowding_flag": false,
+      "count": 253423
+    },
+    {
+      "split": "validation",
+      "delay_severity": "On Time",
+      "crowding_flag": true,
+      "count": 13943
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Severe",
+      "crowding_flag": false,
+      "count": 1898
+    },
+    {
+      "split": "validation",
+      "delay_severity": "Severe",
+      "crowding_flag": true,
+      "count": 836
+    }
+  ]
+}

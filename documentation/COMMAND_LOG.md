@@ -815,3 +815,43 @@ COntinue
 **Problems and fixes:** Initial health check used an obsolete `/home/wisam/hdfs_scripts/env.sh` path; corrected to the repository's `hdfs_scripts/env.sh`.
 
 **Git commit:** pending successful pipeline completion.
+
+---
+
+## CMD-013 | 2026-09-25 (UTC+05:00) | Phase 4
+**My command (verbatim):**
+```text
+Phases 1 and 2 are approved. Decisions: - Tickets = smart-card journeys only (a…
+```
+
+**Understood as:** Continue the approved Phase 3-and-4 instruction after the Phase 3 gate; implement and operationally verify Phase 4 integration, leakage-safe feature engineering, chronological splits, reports, and HDFS Parquet outputs. The complete pasted instruction is retained in the Codex attachment for this turn.
+
+**Actions taken:** Verified the fresh Phase 3 runner reached `=== done` after full and hidden_like checks. Began a Phase 4 code and report inventory; no existing Phase 4 pipeline implementation was found.
+
+**Files changed:** `documentation/COMMAND_LOG.md` (further Phase 4 files and reports pending).
+
+**Result:** In progress.
+
+**Problems and fixes:** none.
+
+**Git commit:** pending.
+
+---
+
+## CMD-014 | 2026-09-25 (UTC+05:00) | Phase 4 completion
+**My command (verbatim):**
+```text
+DO it
+```
+
+**Understood as:** Complete the remaining Phase 4 catalog, target-balance, and executable leakage-verification requirements, then rerun and verify the Phase 4 outputs.
+
+**Actions taken:** Added `documentation/feature_catalog.md`; added deterministic `scheduled_departure, trip_id` historical ordering; added target-balance reporting; rebuilt all Phase 4 HDFS feature outputs; ran `spark_jobs/verify_phase4.py`.
+
+**Files changed:** `spark_jobs/phase4_features.py`, `spark_jobs/verify_phase4.py`, `documentation/feature_catalog.md`, `reports/{join_report,phase4_metrics,phase4_verification}.json`, `DEV_LOG.md`, `AI_USAGE.md`, and Phase 4 SQL/config files.
+
+**Result:** Success: all five feature tables wrote and read back; every date has one split assignment; strict-prior historical-demand verification found 0 mismatches in routes R001-R005.
+
+**Problems and fixes:** Initial standalone run could not import `spark_jobs`; added the repository-root import bootstrap. The failed start wrote no HDFS output.
+
+**Git commit:** pending.

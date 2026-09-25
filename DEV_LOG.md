@@ -125,3 +125,10 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Failure:** `INVALID_LAMBDA_FUNCTION_CALL.NUM_ARGS_MISMATCH` - PySpark counted a default argument (`lambda x, cols=cols`) as a second lambda parameter; **fix:** `arrays_overlap`.
 - **Failure:** `run_phase3.sh` failed (`$'..\r'`, `pipefail: invalid option`) - files patched with Windows Python were saved with CRLF; Git Bash `grep` hides `\r`, so the first fix attempt did nothing. **Fix:** convert with Linux `sed` inside WSL; patch scripts now write with `newline='\n'`.
 - Reporting gap: rows already quarantined at ingestion (DQ07) showed 0 in the per-rule table; report now adds them from the cleaning log.
+
+## 2026-09-25 — Phase 4: integration and feature engineering (CMD-013, CMD-014)
+- Implemented ten documented Spark SQL relationships and measured their output/orphan counts in `reports/join_report.md`.
+- Built only from `/urbantransit/clean`: trip (2,097,157 rows), route (41,451), route-time (40,974), route daily demand (41,451), and stop daily demand (243,999) feature Parquet outputs. All five were read back from HDFS (8 files each).
+- Chronological split: train 2025-09-01..2026-05-02 (1,433,507 rows), validation 2026-05-03..2026-07-02 (344,428), test 2026-07-03..2026-08-31 (319,222). No date has multiple split assignments.
+- Historical windows explicitly use `scheduled_departure, trip_id` and end at the preceding row. `verify_phase4.py` recomputed historical demand for routes R001..R005: 0 mismatches.
+- **Failure:** first Phase 4 run could not import `spark_jobs` when launched by filename. **Fix:** added the repository-root import bootstrap used by other jobs. No HDFS output was written by that failed start.
