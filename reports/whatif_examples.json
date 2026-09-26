@@ -1,0 +1,99 @@
+[
+  {
+    "scenario": {
+      "type": "increase_frequency",
+      "route_id": "R012",
+      "time_period": "08:00-09:00",
+      "day_type": "weekday",
+      "additional_trips": 2
+    },
+    "result": {
+      "scenario_type": "increase_frequency",
+      "route_id": "R012",
+      "confidence": "estimate",
+      "warning_flags": [
+        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "type": "decrease_frequency",
+      "route_id": "R014",
+      "time_period": "14:00-15:00",
+      "day_type": "weekday",
+      "removed_trips": 1
+    },
+    "result": {
+      "scenario_type": "decrease_frequency",
+      "route_id": "R014",
+      "confidence": "estimate",
+      "warning_flags": [
+        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "type": "add_vehicle",
+      "route_id": "R012",
+      "time_period": "08:00-09:00",
+      "new_capacity": 150
+    },
+    "result": {
+      "scenario_type": "add_vehicle",
+      "route_id": "R012",
+      "confidence": "estimate",
+      "warning_flags": [
+        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "type": "change_vehicle_capacity",
+      "route_id": "R025",
+      "time_period": "09:00-10:00",
+      "new_capacity": 100
+    },
+    "result": {
+      "scenario_type": "change_vehicle_capacity",
+      "route_id": "R025",
+      "confidence": "estimate",
+      "warning_flags": [
+        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "type": "shift_trip_time",
+      "route_id": "R030",
+      "time_period": "17:00-18:00",
+      "shift_minutes": 30
+    },
+    "result": {
+      "scenario_type": "shift_trip_time",
+      "route_id": "R030",
+      "confidence": "estimate",
+      "warning_flags": [
+        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
+      ]
+    }
+  },
+  {
+    "scenario": {
+      "type": "remove_low_demand_trip",
+      "route_id": "R102",
+      "time_period": "22:00-23:00"
+    },
+    "result": {
+      "scenario_type": "remove_low_demand_trip",
+      "route_id": "R102",
+      "confidence": "estimate",
+      "warning_flags": [
+        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
+      ]
+    }
+  }
+]

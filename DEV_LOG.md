@@ -174,3 +174,12 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - Built delay severity and crowding classifiers (Logistic Regression, sklearn Random Forest, XGBoost), independent route-day demand baseline/regressors, and K-Means/DBSCAN/Agglomerative route clustering. Every supervised task uses the Phase 4/6 chronological boundaries.
 - Task A’s best Python test macro F1 is .3825 (XGBoost), below the Spark result; class balancing was applied but raw scheduled/prior-history features remain weak for four delay bands. Task B XGBoost reaches .7609 macro F1 with a validation-selected .70 threshold, exceeding Spark’s .7484.
 - Task C Random Forest test MAE/RMSE is 193.37/422.42, below its independently computed 28-day baseline 399.96/733.67. Task D selects Agglomerative k=5, silhouette .3241.
+
+ 
+ # #   P h a s e   9 :   R e c o m m e n d a t i o n   E n g i n e   a n d   W h a t - i f   S i m u l a t o r 
+ -   C r e a t e d   r e c o m m e n d a t i o n _ e n g i n e / e n g i n e . p y   t o   p r o c e s s   P h a s e   5   a n a l y t i c a l   o u t p u t s   a n d   g e n e r a t e   o p e r a t i o n a l   r e c o m m e n d a t i o n s   v i a   r u l e - b a s e d   l o g i c   ( C r i t i c a l ,   H i g h ,   M e d i u m ,   L o w ) . 
+ -   P a r s e d   a n d   q u e r i e d   H D F S   P a r q u e t   d a t a   n a t i v e l y   o n   W i n d o w s   b y   u s i n g   f s s p e c   a n d   P y A r r o w   t h r o u g h   w e b h d f s : / / l o c a l h o s t : 9 8 7 0 ,   c o u p l e d   w i t h   a   s o c k e t . g e t a d d r i n f o   m o n k e y p a t c h   t o   r e s o l v e   t h e   D a t a N o d e   i n t e r n a l l y . 
+ -   B u i l t   r e c o m m e n d a t i o n _ e n g i n e / w h a t i f _ s i m u l a t o r . p y   t o   e v a l u a t e   h y p o t h e t i c a l   m o d i f i c a t i o n s   b y   u s i n g   a c t u a l   P h a s e   6 / P h a s e   7   m o d e l s   ( X G B o o s t   p i p e l i n e s )   t o   e s t i m a t e   i m p a c t s   w i t h o u t   h a r d - c o d e d   r u l e s . 
+ -   U p d a t e d   c o n f i g / t h r e s h o l d s . y a m l   t o   i n c l u d e   r e c o m m e n d a t i o n   p a r a m e t e r s . 
+ -   G e n e r a t e d   P h a s e   9   d o c u m e n t a t i o n   i n s i d e   d o c u m e n t a t i o n / r e c o m m e n d a t i o n _ e n g i n e _ e x p l a i n e d . m d .  
+ 

@@ -38,3 +38,16 @@ bunching:
   headway_ratio_threshold: 0.5   # ratio below this = bunched
   gap_ratio_threshold: 1.5       # ratio above this = service gap
   min_scheduled_headway_minutes: 3
+
+recommendations:
+  priority_rules:
+    critical_occupancy_threshold: 0.95
+    critical_delay_trip_pct: 0.30
+    critical_bottleneck_delay_pct: 0.20
+    high_occupancy_threshold: 0.85
+    high_reliability_threshold: 0.70
+    high_demand_supply_gap: 0.25
+    medium_low_occupancy_threshold: 0.30
+    medium_low_occupancy_trip_pct: 0.60
+    medium_headway_irregularity: 0.25
+    low_schedule_deviation_min: 5
