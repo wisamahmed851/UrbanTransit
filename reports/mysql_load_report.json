@@ -1,7 +1,7 @@
 {
-  "started_utc": "2026-09-26T08:10:44+00:00",
-  "finished_utc": "2026-09-26T08:14:36+00:00",
-  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_131013.log",
+  "started_utc": "2026-09-26T13:15:27+00:00",
+  "finished_utc": "2026-09-26T13:22:08+00:00",
+  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_181449.log",
   "tables": [
     {
       "table": "route_performance",
@@ -331,6 +331,40 @@
       "inserted": 775,
       "mysql_rows": 775,
       "seconds": 0.8,
+      "status": "ok"
+    },
+    {
+      "table": "route_stops",
+      "group": "network",
+      "expected_rows": null,
+      "hdfs_rows": 3210,
+      "inserted": 3210,
+      "mysql_rows": 3210,
+      "seconds": 23.9,
+      "status": "ok"
+    },
+    {
+      "table": "gps_events",
+      "group": "network",
+      "expected_rows": null,
+      "hdfs_rows": 1139087,
+      "inserted": 1139087,
+      "mysql_rows": 1139087,
+      "time_window": {
+        "hdfs": [
+          "2025-11-10 10:30:00",
+          "2025-11-17 04:23:52"
+        ],
+        "mysql": [
+          "2025-11-10 10:30:00",
+          "2025-11-17 04:23:52"
+        ]
+      },
+      "vehicles": {
+        "hdfs": 728,
+        "mysql": 728
+      },
+      "seconds": 390.0,
       "status": "ok"
     }
   ],

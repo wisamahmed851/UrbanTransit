@@ -5,6 +5,7 @@ Run inside WSL from the repo root, with HDFS started and the venv active:
     python database/load_analytics_to_mysql.py                     # all 30 analytics tables
     python database/load_analytics_to_mysql.py --tables od_matrix  # just some
     python database/load_analytics_to_mysql.py --reference         # also routes/stops/vehicles (only if empty)
+    python database/load_analytics_to_mysql.py --network --tables none   # only route_stops + gps_events (map)
 
 For each table:
 1. Read `hdfs:///urbantransit/analytics/<table>` and compare its schema with
@@ -17,6 +18,10 @@ For each table:
 
 Results go to `reports/mysql_load_report.json` and `reports/processing_logs/`.
 Laravel analogy: an Artisan command that runs a seeder from an external source.
+
+Network tables (`--network`): `route_stops` and the 7-day `gps_events` sample from the Phase 3
+clean Parquet, for the map. Besides row counts, GPS is reconciled on its first/last ping time
+and number of vehicles, which would expose any timezone shift of the timestamps.
 
 Reference tables are a working copy that admins can edit, so they are loaded only when
 `--reference` is given, and only into empty tables unless `--force-reference` is also given.
@@ -37,6 +42,7 @@ from spark_jobs.common import PROJECT_ROOT, get_logger, get_spark, hdfs_uri  # n
 from src.app import create_app  # noqa: E402
 from src.extensions import db  # noqa: E402
 from src.models.analytics import ANALYTICS_SCHEMAS, ANALYTICS_TABLES  # noqa: E402
+from src.models.network import GpsEvent, RouteStop  # noqa: E402
 from src.models.reference import Route, Stop, Vehicle  # noqa: E402
 
 REPORT_PATH = PROJECT_ROOT / "reports" / "mysql_load_report.json"
@@ -142,15 +148,51 @@ def load_reference(spark, log, force: bool, batch_size: int) -> list[dict]:
     return results
 
 
+def load_network(spark, log, batch_size: int) -> list[dict]:
+    """Replace route_stops and gps_events with the clean Parquet (routes/stops must be loaded)."""
+    from pyspark.sql import functions as F
+
+    results = []
+    for name, model in (("route_stops", RouteStop), ("gps_events", GpsEvent)):
+        t0 = time.perf_counter()
+        table = model.__table__
+        df = spark.read.parquet(hdfs_uri("full", "clean", name))
+        cols = [c for c in df.columns if c not in REFERENCE_SKIPPED_COLUMNS]
+        if cols != [c.name for c in table.columns]:
+            raise SystemExit(f"{name}: clean Parquet columns {cols} != MySQL columns {[c.name for c in table.columns]}")
+        df = df.select(*cols)
+        entry = {"table": name, "group": "network", "expected_rows": None, "hdfs_rows": df.count()}
+        entry["inserted"] = replace_rows(table, df.toLocalIterator(), batch_size,
+                                         transform=lambda r: {**r, "dq_flags": list(r["dq_flags"] or [])})
+        entry["mysql_rows"] = mysql_count(table)
+        ok = entry["hdfs_rows"] == entry["mysql_rows"]
+        if name == "gps_events":
+            s_ = df.agg(F.min("event_time").alias("a"), F.max("event_time").alias("b"),
+                        F.countDistinct("vehicle_id").alias("v")).first()
+            with db.engine.connect() as conn:
+                m_ = conn.execute(select(func.min(table.c.event_time), func.max(table.c.event_time),
+                                         func.count(table.c.vehicle_id.distinct()))).one()
+            entry["time_window"] = {"hdfs": [str(s_["a"]), str(s_["b"])], "mysql": [str(m_[0]), str(m_[1])]}
+            entry["vehicles"] = {"hdfs": s_["v"], "mysql": m_[2]}
+            ok = ok and s_["a"] == m_[0] and s_["b"] == m_[1] and s_["v"] == m_[2]
+        entry["seconds"] = round(time.perf_counter() - t0, 1)
+        entry["status"] = "ok" if ok else "count_mismatch"
+        log.info("%-26s hdfs=%-9s mysql=%-9s %s (%.1f s) %s", name, entry["hdfs_rows"], entry["mysql_rows"],
+                 entry["status"], entry["seconds"], entry.get("time_window", ""))
+        results.append(entry)
+    return results
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--tables", help="comma-separated analytics tables (default: all 30)")
     ap.add_argument("--reference", action="store_true", help="also load routes/stops/vehicles (only into empty tables)")
     ap.add_argument("--force-reference", action="store_true", help="overwrite non-empty reference tables")
+    ap.add_argument("--network", action="store_true", help="also load route_stops + gps_events (map)")
     ap.add_argument("--batch-size", type=int, default=5000)
     args = ap.parse_args()
 
-    names = args.tables.split(",") if args.tables else list(ANALYTICS_SCHEMAS)
+    names = [] if args.tables == "none" else args.tables.split(",") if args.tables else list(ANALYTICS_SCHEMAS)
     unknown = [n for n in names if n not in ANALYTICS_SCHEMAS]
     if unknown:
         raise SystemExit(f"Unknown analytics tables: {unknown}")
@@ -163,6 +205,8 @@ def main() -> int:
         results = load_analytics(spark, log, names, expected_phase5_rows(), args.batch_size)
         if args.reference or args.force_reference:
             results += load_reference(spark, log, args.force_reference, args.batch_size)
+        if args.network:
+            results += load_network(spark, log, max(args.batch_size, 10000))
     spark.stop()
 
     failed = [r["table"] for r in results if r["status"] not in ("ok", "skipped_not_empty")]
