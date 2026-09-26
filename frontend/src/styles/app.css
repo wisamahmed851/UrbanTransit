@@ -291,7 +291,8 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
 .map-controls { top: 0.9rem; right: 0.9rem; display: grid; gap: 0.35rem; padding: 0.4rem; }
 .map-controls button { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: var(--radius-md); border: 1px solid rgba(235, 242, 255, 0.12); background: rgba(9, 13, 23, 0.5); color: #ebf2ff; cursor: pointer; transition: border-color 0.2s; }
 .map-controls button:hover { border-color: rgba(245, 179, 1, 0.6); }
-.map-legend { left: 0.9rem; bottom: 6.9rem; display: grid; gap: 0.35rem; }
+/* legend sits under the zoom controls, so nothing shares the bottom edge with the replay bar (which can wrap) */
+.map-legend { right: 0.9rem; top: 10.4rem; display: grid; gap: 0.35rem; }
 .map-h { font-size: var(--fs-sm); margin-bottom: 0.15rem; }
 .legend-row { display: flex; align-items: center; gap: 0.55rem; color: #d0d7e9; font-size: var(--fs-xs); }
 .legend-line { width: 1.8rem; height: 0; border-top: 3px solid var(--c); }
@@ -312,7 +313,7 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
 @keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.6); opacity: 0; } }
 .pulse[data-paused] { background: #848c9f; }
 .pulse[data-paused]::after { animation: none; opacity: 0; }
-.map-offline { position: absolute; z-index: 2; right: 0.9rem; bottom: 6.9rem; margin: 0; padding: 0.4rem 0.7rem; border-radius: var(--radius-md); background: rgba(26, 31, 44, 0.85); color: #ebf2ff; font-size: var(--fs-xs); border: 1px solid rgba(235, 242, 255, 0.12); }
+.map-offline { position: absolute; z-index: 2; top: 0.9rem; left: 50%; transform: translateX(-50%); margin: 0; white-space: nowrap; padding: 0.4rem 0.7rem; border-radius: var(--radius-md); background: rgba(26, 31, 44, 0.85); color: #ebf2ff; font-size: var(--fs-xs); border: 1px solid rgba(235, 242, 255, 0.12); }
 .map-popup .maplibregl-popup-content { border-radius: var(--radius-md); padding: 0.7rem 0.85rem; color: #ebf2ff; background: rgba(26, 31, 44, 0.82); border-color: rgba(235, 242, 255, 0.14); min-width: 13rem; font-family: var(--font); }
 .map-popup .maplibregl-popup-tip { display: none; }
 .map-popup .maplibregl-popup-close-button { color: #b6bdd1; font-size: 1.1rem; padding: 0 0.4rem; }
@@ -346,5 +347,5 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
   .map-shell { height: 78dvh; }
   .map-filter { width: calc(100% - 1.8rem); }
   .map-controls { top: auto; bottom: 11rem; }
-  .map-offline { bottom: 11rem; left: 0.9rem; right: auto; }
+  .map-offline { top: auto; bottom: 11rem; left: 0.9rem; transform: none; white-space: normal; }
 }
