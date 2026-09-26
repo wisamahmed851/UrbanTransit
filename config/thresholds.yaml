@@ -35,15 +35,23 @@ peak_detection:
   zscore_threshold: 1.5
 recommendations:
   priority_rules:
-    anomaly_min_count: 65
-    capacity_min_denied_boardings: 25
+    anomaly_min_count: 80
+    capacity_min_denied_boardings: 35
     critical_bottleneck_delay_pct: 0.25
-    critical_delay_trip_pct: 0.5
+    critical_delay_trip_pct: 0.60
     critical_occupancy_threshold: 0.95
     high_demand_supply_gap: 0.25
-    high_occupancy_threshold: 0.8
+    high_occupancy_threshold: 0.85
     high_reliability_threshold: 0.6
     low_schedule_deviation_min: 5
+    # Phase 9 actionability gates. Each recommendation is supported by a
+    # route/stop identifier, counts, and the 30-day evaluation window.
+    frequency_medium_overload_days_pct: 0.85
+    frequency_critical_overload_days_pct: 0.95
+    capacity_min_p90_load: 90
+    schedule_critical_late_share: 0.60
+    schedule_low_late_share: 0.45
+    schedule_low_early_share: 0.45
     medium_headway_irregularity: 0.25
     medium_low_occupancy_threshold: 0.01
     medium_low_occupancy_trip_pct: 0.6

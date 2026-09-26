@@ -1,114 +1,6 @@
 [
   {
     "recommendation_id": "REC-001",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 52 of 52 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-002",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 52 of 52 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-003",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 50 of 51 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-004",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 51 of 51 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-005",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 46 of 46 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-006",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 48 of 48 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-007",
-    "subject_id": "R107",
-    "category": "FREQUENCY",
-    "action": "Increase frequency during identified peak periods.",
-    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 49 of 50 observed days in the evaluation period. Required capacity: 46.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
-  },
-  {
-    "recommendation_id": "REC-008",
-    "subject_id": "R020",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R020 (evening_peak): p90 load is 91.0, suggested vehicle type: articulated, averaging 31.0 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 31.0 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-009",
-    "subject_id": "R061",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R061 (evening_peak): p90 load is 91.0, suggested vehicle type: articulated, averaging 27.9 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 27.9 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-010",
-    "subject_id": "R097",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R097 (morning_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 35.7 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 35.7 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-011",
-    "subject_id": "R106",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R106 (evening_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 25.3 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 25.3 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-012",
-    "subject_id": "R107",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R107 (evening_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 51.2 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 51.2 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-013",
     "subject_id": "R011",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -117,7 +9,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 57.7 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-014",
+    "recommendation_id": "REC-002",
     "subject_id": "R031",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -126,7 +18,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 83.0 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-015",
+    "recommendation_id": "REC-003",
     "subject_id": "R036",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -135,16 +27,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 71.3 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-016",
-    "subject_id": "R036",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R036 (midday): p90 load is 91.0, suggested vehicle type: articulated, averaging 26.4 denied boardings per trip over 101 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 26.4 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-017",
+    "recommendation_id": "REC-004",
     "subject_id": "R036",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -153,7 +36,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 106.9 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-018",
+    "recommendation_id": "REC-005",
     "subject_id": "R081",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -162,7 +45,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 54.2 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-019",
+    "recommendation_id": "REC-006",
     "subject_id": "R011",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -171,16 +54,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 55.2 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-020",
-    "subject_id": "R011",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R011 (midday): p90 load is 91.0, suggested vehicle type: articulated, averaging 25.3 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 25.3 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-021",
+    "recommendation_id": "REC-007",
     "subject_id": "R031",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -189,7 +63,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 38.4 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-022",
+    "recommendation_id": "REC-008",
     "subject_id": "R036",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -198,25 +72,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 45.9 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-023",
-    "subject_id": "R036",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R036 (midday): p90 load is 91.0, suggested vehicle type: articulated, averaging 33.9 denied boardings per trip over 101 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 33.9 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-024",
-    "subject_id": "R089",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R089 (evening_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 26.6 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 26.6 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-025",
+    "recommendation_id": "REC-009",
     "subject_id": "R024",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -225,7 +81,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 35.1 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-026",
+    "recommendation_id": "REC-010",
     "subject_id": "R031",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -234,25 +90,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 90.5 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-027",
-    "subject_id": "R096",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R096 (evening_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 27.4 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 27.4 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-028",
-    "subject_id": "R107",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R107 (morning_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 26.9 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 26.9 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-029",
+    "recommendation_id": "REC-011",
     "subject_id": "R034",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -261,7 +99,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 35.5 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-030",
+    "recommendation_id": "REC-012",
     "subject_id": "R020",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -270,7 +108,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 37.4 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-031",
+    "recommendation_id": "REC-013",
     "subject_id": "R024",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -279,7 +117,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 68.9 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-032",
+    "recommendation_id": "REC-014",
     "subject_id": "R024",
     "category": "CAPACITY",
     "action": "Allocate higher-capacity vehicle or add trips.",
@@ -288,25 +126,7 @@
     "estimated_impact": "(Estimate) Providing 150.0 capacity per trip will eliminate 82.9 denied boardings per trip."
   },
   {
-    "recommendation_id": "REC-033",
-    "subject_id": "R097",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R097 (evening_peak): p90 load is 39.0, suggested vehicle type: standard, averaging 69.6 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 69.6 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-034",
-    "subject_id": "R107",
-    "category": "CAPACITY",
-    "action": "Allocate higher-capacity vehicle or add trips.",
-    "evidence": "Route R107 (midday): p90 load is 39.0, suggested vehicle type: standard, averaging 27.1 denied boardings per trip over 249 days.",
-    "priority": "High",
-    "estimated_impact": "(Estimate) Providing 70.0 capacity per trip will eliminate 27.1 denied boardings per trip."
-  },
-  {
-    "recommendation_id": "REC-035",
+    "recommendation_id": "REC-015",
     "subject_id": "R029",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -315,79 +135,7 @@
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-036",
-    "subject_id": "R021",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R021: 10132 of 19018 trips (53.3%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-037",
-    "subject_id": "R071",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R071: 5965 of 11534 trips (51.7%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-038",
-    "subject_id": "R039",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R039: 7785 of 11482 trips (67.8%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-039",
-    "subject_id": "R041",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R041: 5899 of 11437 trips (51.6%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-040",
-    "subject_id": "R024",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R024: 10866 of 18984 trips (57.2%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-041",
-    "subject_id": "R009",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R009: 10024 of 19015 trips (52.7%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-042",
-    "subject_id": "R012",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R012: 11976 of 19203 trips (62.4%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-043",
-    "subject_id": "R086",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R086: 6421 of 11453 trips (56.1%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-044",
+    "recommendation_id": "REC-016",
     "subject_id": "R053",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -396,43 +144,25 @@
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-045",
-    "subject_id": "R026",
+    "recommendation_id": "REC-017",
+    "subject_id": "R012",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R026: 11445 of 19031 trips (60.1%) are late in the evaluation period.",
+    "evidence": "Route R012: 11976 of 19203 trips (62.4%) are late in the evaluation period.",
     "priority": "Critical",
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-046",
-    "subject_id": "R014",
+    "recommendation_id": "REC-018",
+    "subject_id": "R039",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R014: 11188 of 19006 trips (58.9%) are late in the evaluation period.",
+    "evidence": "Route R039: 7785 of 11482 trips (67.8%) are late in the evaluation period.",
     "priority": "Critical",
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-047",
-    "subject_id": "R027",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R027: 13167 of 19175 trips (68.7%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-048",
-    "subject_id": "R113",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R113: 5364 of 10575 trips (50.7%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-049",
+    "recommendation_id": "REC-019",
     "subject_id": "R017",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -441,79 +171,16 @@
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-050",
-    "subject_id": "R020",
+    "recommendation_id": "REC-020",
+    "subject_id": "R027",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R020: 10844 of 19102 trips (56.8%) are late in the evaluation period.",
+    "evidence": "Route R027: 13167 of 19175 trips (68.7%) are late in the evaluation period.",
     "priority": "Critical",
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-051",
-    "subject_id": "R069",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R069: 6961 of 11467 trips (60.7%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-052",
-    "subject_id": "R058",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R058: 6723 of 11435 trips (58.8%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-053",
-    "subject_id": "R006",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R006: 9581 of 19061 trips (50.3%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-054",
-    "subject_id": "R118",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R118: 22 of 36 trips (62.9%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-055",
-    "subject_id": "R032",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R032: 9631 of 19122 trips (50.4%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-056",
-    "subject_id": "R018",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R018: 9519 of 18880 trips (50.4%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-057",
-    "subject_id": "R007",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R007: 9562 of 19018 trips (50.3%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-058",
+    "recommendation_id": "REC-021",
     "subject_id": "R083",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -522,223 +189,34 @@
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-059",
-    "subject_id": "R030",
+    "recommendation_id": "REC-022",
+    "subject_id": "R026",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R030: 10254 of 19143 trips (53.6%) are late in the evaluation period.",
+    "evidence": "Route R026: 11445 of 19031 trips (60.1%) are late in the evaluation period.",
     "priority": "Critical",
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-060",
-    "subject_id": "R019",
+    "recommendation_id": "REC-023",
+    "subject_id": "R069",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R019: 11503 of 19230 trips (59.8%) are late in the evaluation period.",
+    "evidence": "Route R069: 6961 of 11467 trips (60.7%) are late in the evaluation period.",
     "priority": "Critical",
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-061",
-    "subject_id": "R005",
+    "recommendation_id": "REC-024",
+    "subject_id": "R118",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R005: 11267 of 19026 trips (59.2%) are late in the evaluation period.",
+    "evidence": "Route R118: 22 of 36 trips (62.9%) are late in the evaluation period.",
     "priority": "Critical",
     "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
   },
   {
-    "recommendation_id": "REC-062",
-    "subject_id": "R022",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R022: 10548 of 19041 trips (55.4%) are late in the evaluation period.",
-    "priority": "Critical",
-    "estimated_impact": "(Estimate) Adjusting schedule will improve on-time performance by up to 25%."
-  },
-  {
-    "recommendation_id": "REC-063",
-    "subject_id": "R117",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R117: 317 early and 1598 late out of 3548 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-064",
-    "subject_id": "R003",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R003: 8577 early and 16863 late out of 38741 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-065",
-    "subject_id": "R055",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R055: 160 early and 4954 late out of 11468 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-066",
-    "subject_id": "R038",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R038: 1034 early and 4828 late out of 11436 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-067",
-    "subject_id": "R002",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R002: 5651 early and 1449 late out of 11759 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-068",
-    "subject_id": "R059",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R059: 471 early and 5116 late out of 11428 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-069",
-    "subject_id": "R035",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R035: 843 early and 4624 late out of 11462 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-070",
-    "subject_id": "R076",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R076: 752 early and 4915 late out of 11388 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-071",
-    "subject_id": "R079",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R079: 776 early and 5239 late out of 11510 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-072",
-    "subject_id": "R080",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R080: 1444 early and 4233 late out of 11479 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-073",
-    "subject_id": "R010",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R010: 2764 early and 396 late out of 5965 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-074",
-    "subject_id": "R004",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R004: 10376 early and 14402 late out of 38676 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-075",
-    "subject_id": "R033",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R033: 2081 early and 7834 late out of 18993 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-076",
-    "subject_id": "R046",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R046: 878 early and 5113 late out of 11463 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-077",
-    "subject_id": "R044",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R044: 1257 early and 4585 late out of 11530 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-078",
-    "subject_id": "R111",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R111: 615 early and 4038 late out of 8398 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-079",
-    "subject_id": "R070",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R070: 1120 early and 5118 late out of 11554 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-080",
-    "subject_id": "R082",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R082: 307 early and 4982 late out of 11483 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-081",
-    "subject_id": "R063",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R063: 747 early and 4684 late out of 11484 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-082",
-    "subject_id": "R031",
-    "category": "SCHEDULE",
-    "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R031: 3523 early and 7207 late out of 18993 trips.",
-    "priority": "Low",
-    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
-  },
-  {
-    "recommendation_id": "REC-083",
+    "recommendation_id": "REC-025",
     "subject_id": "R015",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -747,16 +225,25 @@
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-084",
-    "subject_id": "R036",
+    "recommendation_id": "REC-026",
+    "subject_id": "R010",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R036: 1061 early and 5314 late out of 11509 trips.",
+    "evidence": "Route R010: 2764 early and 396 late out of 5965 trips.",
     "priority": "Low",
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-085",
+    "recommendation_id": "REC-027",
+    "subject_id": "R071",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R071: 824 early and 5965 late out of 11534 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-028",
     "subject_id": "R011",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -765,25 +252,178 @@
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-086",
-    "subject_id": "R084",
+    "recommendation_id": "REC-029",
+    "subject_id": "R036",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R084: 375 early and 5481 late out of 11420 trips.",
+    "evidence": "Route R036: 1061 early and 5314 late out of 11509 trips.",
     "priority": "Low",
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-087",
-    "subject_id": "R066",
+    "recommendation_id": "REC-030",
+    "subject_id": "R117",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R066: 438 early and 4923 late out of 11489 trips.",
+    "evidence": "Route R117: 317 early and 1598 late out of 3548 trips.",
     "priority": "Low",
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-088",
+    "recommendation_id": "REC-031",
+    "subject_id": "R086",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R086: 422 early and 6421 late out of 11453 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-032",
+    "subject_id": "R024",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R024: 1569 early and 10866 late out of 18984 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-033",
+    "subject_id": "R009",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R009: 676 early and 10024 late out of 19015 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-034",
+    "subject_id": "R079",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R079: 776 early and 5239 late out of 11510 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-035",
+    "subject_id": "R041",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R041: 322 early and 5899 late out of 11437 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-036",
+    "subject_id": "R020",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R020: 1035 early and 10844 late out of 19102 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-037",
+    "subject_id": "R002",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R002: 5651 early and 1449 late out of 11759 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-038",
+    "subject_id": "R113",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R113: 852 early and 5364 late out of 10575 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-039",
+    "subject_id": "R014",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R014: 923 early and 11188 late out of 19006 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-040",
+    "subject_id": "R111",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R111: 615 early and 4038 late out of 8398 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-041",
+    "subject_id": "R030",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R030: 1699 early and 10254 late out of 19143 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-042",
+    "subject_id": "R007",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R007: 977 early and 9562 late out of 19018 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-043",
+    "subject_id": "R018",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R018: 1078 early and 9519 late out of 18880 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-044",
+    "subject_id": "R021",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R021: 1007 early and 10132 late out of 19018 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-045",
+    "subject_id": "R006",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R006: 2092 early and 9581 late out of 19061 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-046",
+    "subject_id": "R058",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R058: 261 early and 6723 late out of 11435 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-047",
+    "subject_id": "R032",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R032: 1797 early and 9631 late out of 19122 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-048",
     "subject_id": "R001",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
@@ -792,34 +432,43 @@
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-089",
-    "subject_id": "R013",
+    "recommendation_id": "REC-049",
+    "subject_id": "R084",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R013: 2781 early and 7189 late out of 19141 trips.",
+    "evidence": "Route R084: 375 early and 5481 late out of 11420 trips.",
     "priority": "Low",
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-090",
-    "subject_id": "R034",
+    "recommendation_id": "REC-050",
+    "subject_id": "R005",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R034: 2801 early and 7887 late out of 19239 trips.",
+    "evidence": "Route R005: 1267 early and 11267 late out of 19026 trips.",
     "priority": "Low",
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-091",
-    "subject_id": "R023",
+    "recommendation_id": "REC-051",
+    "subject_id": "R019",
     "category": "SCHEDULE",
     "action": "Shift departure time or adjust dwell time.",
-    "evidence": "Route R023: 2337 early and 7971 late out of 19062 trips.",
+    "evidence": "Route R019: 1155 early and 11503 late out of 19230 trips.",
     "priority": "Low",
     "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
   },
   {
-    "recommendation_id": "REC-092",
+    "recommendation_id": "REC-052",
+    "subject_id": "R022",
+    "category": "SCHEDULE",
+    "action": "Shift departure time or adjust dwell time.",
+    "evidence": "Route R022: 950 early and 10548 late out of 19041 trips.",
+    "priority": "Low",
+    "estimated_impact": "(Estimate) Minor schedule adjustments will correct adherence deviations."
+  },
+  {
+    "recommendation_id": "REC-053",
     "subject_id": "S0005",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -828,7 +477,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-093",
+    "recommendation_id": "REC-054",
     "subject_id": "S0025",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -837,7 +486,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-094",
+    "recommendation_id": "REC-055",
     "subject_id": "S0004",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -846,7 +495,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-095",
+    "recommendation_id": "REC-056",
     "subject_id": "S0001",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -855,7 +504,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-096",
+    "recommendation_id": "REC-057",
     "subject_id": "S0024",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -864,7 +513,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-097",
+    "recommendation_id": "REC-058",
     "subject_id": "S0035",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -873,7 +522,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-098",
+    "recommendation_id": "REC-059",
     "subject_id": "S0006",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -882,7 +531,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-099",
+    "recommendation_id": "REC-060",
     "subject_id": "S0074",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -891,7 +540,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-100",
+    "recommendation_id": "REC-061",
     "subject_id": "S0027",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -900,7 +549,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-101",
+    "recommendation_id": "REC-062",
     "subject_id": "S0290",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -909,7 +558,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-102",
+    "recommendation_id": "REC-063",
     "subject_id": "S0002",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -918,7 +567,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-103",
+    "recommendation_id": "REC-064",
     "subject_id": "S0256",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -927,7 +576,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-104",
+    "recommendation_id": "REC-065",
     "subject_id": "S0015",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -936,7 +585,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-105",
+    "recommendation_id": "REC-066",
     "subject_id": "S0050",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -945,7 +594,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-106",
+    "recommendation_id": "REC-067",
     "subject_id": "S0084",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -954,7 +603,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-107",
+    "recommendation_id": "REC-068",
     "subject_id": "S0071",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -963,7 +612,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-108",
+    "recommendation_id": "REC-069",
     "subject_id": "S0003",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -972,7 +621,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-109",
+    "recommendation_id": "REC-070",
     "subject_id": "S0244",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -981,7 +630,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-110",
+    "recommendation_id": "REC-071",
     "subject_id": "S0197",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -990,7 +639,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-111",
+    "recommendation_id": "REC-072",
     "subject_id": "S0111",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -999,7 +648,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-112",
+    "recommendation_id": "REC-073",
     "subject_id": "S0022",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1008,7 +657,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-113",
+    "recommendation_id": "REC-074",
     "subject_id": "S0266",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1017,7 +666,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-114",
+    "recommendation_id": "REC-075",
     "subject_id": "S0292",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1026,7 +675,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-115",
+    "recommendation_id": "REC-076",
     "subject_id": "S0218",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1035,7 +684,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-116",
+    "recommendation_id": "REC-077",
     "subject_id": "S0105",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1044,7 +693,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-117",
+    "recommendation_id": "REC-078",
     "subject_id": "S0337",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1053,7 +702,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-118",
+    "recommendation_id": "REC-079",
     "subject_id": "S0475",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1062,7 +711,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-119",
+    "recommendation_id": "REC-080",
     "subject_id": "S0318",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1071,7 +720,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-120",
+    "recommendation_id": "REC-081",
     "subject_id": "S0175",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1080,7 +729,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-121",
+    "recommendation_id": "REC-082",
     "subject_id": "S0234",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1089,7 +738,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-122",
+    "recommendation_id": "REC-083",
     "subject_id": "S0144",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1098,7 +747,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-123",
+    "recommendation_id": "REC-084",
     "subject_id": "S0306",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1107,7 +756,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-124",
+    "recommendation_id": "REC-085",
     "subject_id": "S0019",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1116,7 +765,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-125",
+    "recommendation_id": "REC-086",
     "subject_id": "S0188",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1125,7 +774,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-126",
+    "recommendation_id": "REC-087",
     "subject_id": "S0716",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1134,7 +783,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-127",
+    "recommendation_id": "REC-088",
     "subject_id": "S0118",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1143,7 +792,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-128",
+    "recommendation_id": "REC-089",
     "subject_id": "S0619",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1152,7 +801,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-129",
+    "recommendation_id": "REC-090",
     "subject_id": "S0323",
     "category": "STOP",
     "action": "Investigate stop, extend dwell time, or review stop sequence.",
@@ -1161,25 +810,7 @@
     "estimated_impact": "(Estimate) Resolving bottleneck will reduce cascade delays on downstream stops by 15-20%."
   },
   {
-    "recommendation_id": "REC-130",
-    "subject_id": "P005894",
-    "category": "ANOMALY",
-    "action": "Investigate root cause of recurring anomaly.",
-    "evidence": "Entity P005894 experienced duplicate_ticketing_signal 79 times in the 30-day evaluation window.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
-  },
-  {
-    "recommendation_id": "REC-131",
-    "subject_id": "P008919",
-    "category": "ANOMALY",
-    "action": "Investigate root cause of recurring anomaly.",
-    "evidence": "Entity P008919 experienced duplicate_ticketing_signal 72 times in the 30-day evaluation window.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
-  },
-  {
-    "recommendation_id": "REC-132",
+    "recommendation_id": "REC-091",
     "subject_id": "P010124",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1188,7 +819,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-133",
+    "recommendation_id": "REC-092",
     "subject_id": "P014790",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1197,25 +828,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-134",
-    "subject_id": "P015612",
-    "category": "ANOMALY",
-    "action": "Investigate root cause of recurring anomaly.",
-    "evidence": "Entity P015612 experienced duplicate_ticketing_signal 67 times in the 30-day evaluation window.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
-  },
-  {
-    "recommendation_id": "REC-135",
-    "subject_id": "P016521",
-    "category": "ANOMALY",
-    "action": "Investigate root cause of recurring anomaly.",
-    "evidence": "Entity P016521 experienced duplicate_ticketing_signal 67 times in the 30-day evaluation window.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
-  },
-  {
-    "recommendation_id": "REC-136",
+    "recommendation_id": "REC-093",
     "subject_id": "P018852",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1224,7 +837,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-137",
+    "recommendation_id": "REC-094",
     "subject_id": "P020405",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1233,7 +846,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-138",
+    "recommendation_id": "REC-095",
     "subject_id": "P020851",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1242,7 +855,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-139",
+    "recommendation_id": "REC-096",
     "subject_id": "P022125",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1251,7 +864,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-140",
+    "recommendation_id": "REC-097",
     "subject_id": "P022756",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1260,7 +873,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-141",
+    "recommendation_id": "REC-098",
     "subject_id": "P028553",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1269,7 +882,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-142",
+    "recommendation_id": "REC-099",
     "subject_id": "P028961",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1278,7 +891,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-143",
+    "recommendation_id": "REC-100",
     "subject_id": "P042959",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1287,16 +900,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-144",
-    "subject_id": "P044018",
-    "category": "ANOMALY",
-    "action": "Investigate root cause of recurring anomaly.",
-    "evidence": "Entity P044018 experienced duplicate_ticketing_signal 75 times in the 30-day evaluation window.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
-  },
-  {
-    "recommendation_id": "REC-145",
+    "recommendation_id": "REC-101",
     "subject_id": "P046526",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1305,7 +909,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-146",
+    "recommendation_id": "REC-102",
     "subject_id": "P048142",
     "category": "ANOMALY",
     "action": "Investigate root cause of recurring anomaly.",
@@ -1314,16 +918,7 @@
     "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
   },
   {
-    "recommendation_id": "REC-147",
-    "subject_id": "P051315",
-    "category": "ANOMALY",
-    "action": "Investigate root cause of recurring anomaly.",
-    "evidence": "Entity P051315 experienced duplicate_ticketing_signal 77 times in the 30-day evaluation window.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Root cause mitigation will restore normal operation stability."
-  },
-  {
-    "recommendation_id": "REC-148",
+    "recommendation_id": "REC-103",
     "subject_id": "R026",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1332,7 +927,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-149",
+    "recommendation_id": "REC-104",
     "subject_id": "R062",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1341,7 +936,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-150",
+    "recommendation_id": "REC-105",
     "subject_id": "R008",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1350,7 +945,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-151",
+    "recommendation_id": "REC-106",
     "subject_id": "R114",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1359,7 +954,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-152",
+    "recommendation_id": "REC-107",
     "subject_id": "R065",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1368,7 +963,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-153",
+    "recommendation_id": "REC-108",
     "subject_id": "R020",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1377,7 +972,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-154",
+    "recommendation_id": "REC-109",
     "subject_id": "R032",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1386,7 +981,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-155",
+    "recommendation_id": "REC-110",
     "subject_id": "R078",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1395,7 +990,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-156",
+    "recommendation_id": "REC-111",
     "subject_id": "R079",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1404,7 +999,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-157",
+    "recommendation_id": "REC-112",
     "subject_id": "R028",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1413,7 +1008,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-158",
+    "recommendation_id": "REC-113",
     "subject_id": "R071",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1422,7 +1017,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-159",
+    "recommendation_id": "REC-114",
     "subject_id": "R041",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1431,7 +1026,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-160",
+    "recommendation_id": "REC-115",
     "subject_id": "R006",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1440,7 +1035,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-161",
+    "recommendation_id": "REC-116",
     "subject_id": "R117",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1449,7 +1044,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-162",
+    "recommendation_id": "REC-117",
     "subject_id": "R054",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1458,7 +1053,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-163",
+    "recommendation_id": "REC-118",
     "subject_id": "R014",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1467,7 +1062,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-164",
+    "recommendation_id": "REC-119",
     "subject_id": "R069",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1476,7 +1071,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-165",
+    "recommendation_id": "REC-120",
     "subject_id": "R025",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1485,7 +1080,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-166",
+    "recommendation_id": "REC-121",
     "subject_id": "R031",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1494,7 +1089,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-167",
+    "recommendation_id": "REC-122",
     "subject_id": "R021",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1503,7 +1098,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-168",
+    "recommendation_id": "REC-123",
     "subject_id": "R030",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1512,7 +1107,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-169",
+    "recommendation_id": "REC-124",
     "subject_id": "R111",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1521,7 +1116,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-170",
+    "recommendation_id": "REC-125",
     "subject_id": "R027",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1530,7 +1125,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-171",
+    "recommendation_id": "REC-126",
     "subject_id": "R003",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1539,7 +1134,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-172",
+    "recommendation_id": "REC-127",
     "subject_id": "R017",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1548,7 +1143,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-173",
+    "recommendation_id": "REC-128",
     "subject_id": "R113",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1557,7 +1152,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-174",
+    "recommendation_id": "REC-129",
     "subject_id": "R012",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1566,7 +1161,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-175",
+    "recommendation_id": "REC-130",
     "subject_id": "R024",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1575,7 +1170,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-176",
+    "recommendation_id": "REC-131",
     "subject_id": "R053",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1584,7 +1179,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-177",
+    "recommendation_id": "REC-132",
     "subject_id": "R005",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1593,7 +1188,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-178",
+    "recommendation_id": "REC-133",
     "subject_id": "R039",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1602,7 +1197,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-179",
+    "recommendation_id": "REC-134",
     "subject_id": "R010",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1611,7 +1206,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-180",
+    "recommendation_id": "REC-135",
     "subject_id": "R002",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1620,7 +1215,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-181",
+    "recommendation_id": "REC-136",
     "subject_id": "R029",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1629,7 +1224,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-182",
+    "recommendation_id": "REC-137",
     "subject_id": "R019",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1638,7 +1233,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-183",
+    "recommendation_id": "REC-138",
     "subject_id": "R001",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1647,7 +1242,7 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-184",
+    "recommendation_id": "REC-139",
     "subject_id": "R004",
     "category": "RELIABILITY",
     "action": "Review schedule or add buffer time.",
@@ -1656,39 +1251,12 @@
     "estimated_impact": "(Estimate) Adding buffer time to schedule will increase on-time rate by >10%."
   },
   {
-    "recommendation_id": "REC-185",
-    "subject_id": "R053",
+    "recommendation_id": "REC-140",
+    "subject_id": "R107",
     "category": "FREQUENCY",
-    "action": "Reduce trips or assign lower capacity vehicle.",
-    "evidence": "Route R053 (early_morning): p90 occupancy is 0.0% over 101 observed days, utilization status: insufficient_data.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Removing 1 trip/hr will save operating costs without inducing overcrowding."
-  },
-  {
-    "recommendation_id": "REC-186",
-    "subject_id": "R118",
-    "category": "FREQUENCY",
-    "action": "Reduce trips or assign lower capacity vehicle.",
-    "evidence": "Route R118 (early_morning): p90 occupancy is 0.0% over 1 observed days, utilization status: insufficient_data.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Removing 1 trip/hr will save operating costs without inducing overcrowding."
-  },
-  {
-    "recommendation_id": "REC-187",
-    "subject_id": "R053",
-    "category": "FREQUENCY",
-    "action": "Reduce trips or assign lower capacity vehicle.",
-    "evidence": "Route R053 (early_morning): p90 occupancy is 0.0% over 15 observed days, utilization status: insufficient_data.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Removing 1 trip/hr will save operating costs without inducing overcrowding."
-  },
-  {
-    "recommendation_id": "REC-188",
-    "subject_id": "R118",
-    "category": "FREQUENCY",
-    "action": "Reduce trips or assign lower capacity vehicle.",
-    "evidence": "Route R118 (early_morning): p90 occupancy is 0.0% over 1 observed days, utilization status: insufficient_data.",
-    "priority": "Medium",
-    "estimated_impact": "(Estimate) Removing 1 trip/hr will save operating costs without inducing overcrowding."
+    "action": "Increase frequency during identified peak periods.",
+    "evidence": "Route R107 (evening_peak): avg utilization 125.3%, overloaded on 52 of 52 observed days in the evaluation period. Required capacity: 46.",
+    "priority": "Critical",
+    "estimated_impact": "(Estimate) Adding 1 trips/hr will reduce occupancy below critical thresholds."
   }
 ]

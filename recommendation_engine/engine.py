@@ -65,9 +65,9 @@ def generate_recommendations():
             if obs_days < 40: continue
             
             overload_share = row['overload_day_share']
-            if overload_share >= rec_rules.get("critical_occupancy_threshold", 0.80):
+            if overload_share >= rec_rules.get("frequency_critical_overload_days_pct", rec_rules.get("critical_occupancy_threshold", 0.80)):
                 pri = "Critical"
-            elif overload_share >= rec_rules.get("high_occupancy_threshold", 0.40):
+            elif overload_share >= rec_rules.get("frequency_medium_overload_days_pct", rec_rules.get("high_occupancy_threshold", 0.40)):
                 pri = "Medium"
             else:
                 continue
@@ -84,7 +84,8 @@ def generate_recommendations():
     # CAPACITY recommendations
     cap_candidates = demand_supply_gap[
         demand_supply_gap['suggestion'].astype(str).str.contains('larger_vehicle', case=False, na=False) &
-        (demand_supply_gap['denied_per_trip'] >= rec_rules.get('capacity_min_denied_boardings', 5))
+        (demand_supply_gap['denied_per_trip'] >= rec_rules.get('capacity_min_denied_boardings', 5)) &
+        (demand_supply_gap['p90_load'] >= rec_rules.get('capacity_min_p90_load', 0))
     ]
     for _, row in cap_candidates.iterrows():
         pri = "High"
@@ -104,13 +105,14 @@ def generate_recommendations():
         early_share = row['early_share']
         obs_trips = int(row['completed_trips'] + row['missed_trips'])
         
-        if late_share > rec_rules.get("critical_delay_trip_pct", 0.35):
+        if late_share > rec_rules.get("schedule_critical_late_share", rec_rules.get("critical_delay_trip_pct", 0.35)):
             schedule_recs.append({
                 'subject_id': row['route_id'], 'category': 'SCHEDULE', 'action': 'Shift departure time or adjust dwell time.',
                 'evidence': f"Route {row['route_id']}: {int(late_share*obs_trips)} of {obs_trips} trips ({late_share:.1%}) are late in the evaluation period.",
                 'priority': 'Critical', 'impact': '(Estimate) Adjusting schedule will improve on-time performance by up to 25%.'
             })
-        elif early_share > 0.40 or late_share > 0.35:
+        elif (early_share > rec_rules.get("schedule_low_early_share", 0.40) or
+              late_share > rec_rules.get("schedule_low_late_share", 0.35)):
             schedule_recs.append({
                 'subject_id': row['route_id'], 'category': 'SCHEDULE', 'action': 'Shift departure time or adjust dwell time.',
                 'evidence': f"Route {row['route_id']}: {int(early_share*obs_trips)} early and {int(late_share*obs_trips)} late out of {obs_trips} trips.",
@@ -166,7 +168,8 @@ def generate_recommendations():
 
     # MEDIUM / LOW underutilized services
     for _, row in underutilized_services.iterrows():
-        if row.get('p90_occupancy', 1) < rec_rules.get("medium_low_occupancy_threshold", 0.05):
+        if (row.get('p90_occupancy', 1) < rec_rules.get("medium_low_occupancy_threshold", 0.05) and
+                str(row.get('utilization_status', '')).lower() == 'underutilized'):
             obs_days = int(row['days'])
             add_rec(
                 subject_id=row['route_id'],
@@ -177,9 +180,59 @@ def generate_recommendations():
                 impact="(Estimate) Removing 1 trip/hr will save operating costs without inducing overcrowding."
             )
 
+    # Source analytics can contain several daily observations for the same
+    # operational action. Keep just one highest-priority action per route and
+    # action text so an operator never receives duplicates.
+    priority_rank = {"Critical": 1, "High": 2, "Medium": 3, "Low": 4}
+    frequency = [r for r in recommendations if r['category'] == 'FREQUENCY']
+    non_frequency = [r for r in recommendations if r['category'] != 'FREQUENCY']
+    best_frequency = {}
+    for recommendation in frequency:
+        key = (recommendation['subject_id'], recommendation['action'])
+        if key not in best_frequency or priority_rank[recommendation['priority']] < priority_rank[best_frequency[key]['priority']]:
+            best_frequency[key] = recommendation
+    recommendations = non_frequency + list(best_frequency.values())
+    for index, recommendation in enumerate(recommendations, start=1):
+        recommendation['recommendation_id'] = f"REC-{index:03d}"
+
     # Save to JSON
     with open(REPORTS_DIR / "recommendations.json", "w") as f:
         json.dump(recommendations, f, indent=2)
+
+    # A compact, machine-readable audit makes the actionability gates reviewable.
+    # Percentages use the source table grain for the relevant rule.
+    frequency_gate = freq_candidates[
+        ((freq_candidates['utilization'] > 1.25) | (freq_candidates['gap_status'] == 'capacity_shortfall')) &
+        (freq_candidates['days_observed'] >= 40) &
+        (freq_candidates['overload_day_share'] >= rec_rules.get('frequency_medium_overload_days_pct', rec_rules.get('high_occupancy_threshold', 0.40)))
+    ]
+    schedule_gate = schedule_adherence[
+        (schedule_adherence['late_share'] > rec_rules.get('schedule_critical_late_share', rec_rules.get('critical_delay_trip_pct', 0.35))) |
+        (schedule_adherence['early_share'] > rec_rules.get('schedule_low_early_share', 0.40)) |
+        (schedule_adherence['late_share'] > rec_rules.get('schedule_low_late_share', 0.35))
+    ]
+    audits = [
+        ("ANOMALY", f"count >= {rec_rules.get('anomaly_min_count', 25)} per entity and anomaly type in 30 days", recurring_anomalies, anomaly_counts, "count"),
+        ("CAPACITY", f"larger vehicle suggestion, denied boardings >= {rec_rules.get('capacity_min_denied_boardings', 5)}, p90 load >= {rec_rules.get('capacity_min_p90_load', 0)}", cap_candidates, demand_supply_gap, "p90_load"),
+        ("FREQUENCY", f"persistent overload share >= {rec_rules.get('frequency_medium_overload_days_pct', rec_rules.get('high_occupancy_threshold', 0.40)):.0%}; Critical >= {rec_rules.get('frequency_critical_overload_days_pct', rec_rules.get('critical_occupancy_threshold', 0.80)):.0%}", frequency_gate, freq_candidates, "overload_day_share"),
+        ("SCHEDULE", f"late share > {rec_rules.get('schedule_critical_late_share', 0.35):.0%} or early/late share > {rec_rules.get('schedule_low_early_share', 0.40):.0%}/{rec_rules.get('schedule_low_late_share', 0.35):.0%}; one per route", schedule_gate, schedule_adherence, "late_share"),
+        ("STOP", "is_bottleneck = true", stop_performance[stop_performance['is_bottleneck'] == True], stop_performance, "late_record_rate"),
+        ("RELIABILITY", f"on-time rate < {rec_rules.get('high_reliability_threshold', 0.60):.0%}", route_reliability[route_reliability['on_time_rate'] < rec_rules.get('high_reliability_threshold', 0.60)], route_reliability, "on_time_rate"),
+    ]
+    audit_rows = []
+    for category, condition, flagged, universe, metric in audits:
+        values = flagged[metric].dropna() if metric in flagged else pd.Series(dtype=float)
+        audit_rows.append({
+            "category": category, "condition": condition,
+            "flagged_subjects": int(len(flagged)), "source_subjects": int(len(universe)),
+            "flagged_pct_of_source": round(100 * len(flagged) / len(universe), 2) if len(universe) else 0,
+            "metric": metric,
+            "metric_min": round(float(values.min()), 6) if not values.empty else None,
+            "metric_mean": round(float(values.mean()), 6) if not values.empty else None,
+            "metric_max": round(float(values.max()), 6) if not values.empty else None,
+        })
+    with open(REPORTS_DIR / "phase9_recommendation_audit.json", "w") as f:
+        json.dump(audit_rows, f, indent=2)
 
     # Generate Markdown Report
     md = ["# Operational Recommendations Report\n"]
@@ -211,6 +264,8 @@ def generate_recommendations():
     print("\nCount of recommendations by category and priority:")
     print(summary.to_string())
     print(f"\nTotal recommendations generated: {len(recommendations)}")
+    print("\nRule audit:")
+    print(pd.DataFrame(audit_rows).to_string(index=False))
     
     print("\nExample Recommendation:")
     print(json.dumps(recommendations[0], indent=2))

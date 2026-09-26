@@ -1027,3 +1027,23 @@ checklist and STOP. Do not start Phase 6.
 **Problems and fixes:** none.
 
 **Git commit:** see `git log` (CMD-018 commit).
+
+---
+
+## CMD-019 | 2026-09-26 (UTC+05:00) | Phase 9 recommendation actionability correction
+**My command (verbatim):**
+```text
+DO regeneration
+```
+
+**Understood as:** Regenerate the Phase 9 recommendations after replacing permissive thresholds with selective, evidence-backed gates; preserve a concise audit and inspect the R012 what-if model inputs.
+
+**Actions taken:**
+- Updated `config/thresholds.yaml`: recurring anomaly count >= 80 in 30 days; capacity needs both >= 35 denied boardings per trip and p90 load >= 90; persistent frequency overload needs >= 85% of observed days (>= 95% Critical); schedule gates are 60% late or 45% early/late.
+- Made the engine read the configuration-backed capacity and schedule gates, deduplicate schedule actions by route and frequency actions by route/action, and reject service-cut actions whose source says `insufficient_data`.
+- Regenerated `reports/recommendations.json`, `reports/recommendations_report.md`, and `reports/phase9_recommendation_audit.json` directly from HDFS analytics data.
+- Regenerated `reports/whatif_examples.json`. R012 now carries the exact saved-model feature vector and actual route-period context: observed occupancy 130%, boardings 133, and historical route-period crowding rate 6.129%. The saved classifier score remains 0.008 after adding two trips, but the artifact explicitly warns that its feature set excludes current occupancy and boardings, so the score is not a direct occupancy estimate.
+
+**Result:** PASS for actionability volume: 140 recommendations, within the requested 50-150 range. Counts are 12 ANOMALY, 14 CAPACITY, 1 FREQUENCY, 37 RELIABILITY, 38 SCHEDULE, and 38 STOP. Every generated entry includes its specific subject and numerical evidence.
+
+**Git commit:** pending.
