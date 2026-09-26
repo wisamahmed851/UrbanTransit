@@ -1176,3 +1176,21 @@ the INVALID flag applies to every `delay_severity` file, including the new ones.
 - Found, not changed: the enhanced delay/crowding feature lists include `travel_time_min` and `headway_minutes` (same-trip outcomes per the feature catalog). Crowding metrics are not flagged; this needs a decision.
 
 **Git commit:** see `git log` on `backend/flask-mysql` (CMD-019 commits).
+
+---
+
+## CMD-020 | 2026-09-26 (UTC+05:00) | Frontend: React dashboard (branch `frontend/react-dashboard`)
+**My command (verbatim):**
+```text
+Create the frontend for the backend and for now use dummy data if main data from pipeline not available
+```
+
+**Understood as:** Build the React frontend over the CMD-019 API. Pages whose data exists
+(Phase 5 analytics, Phase 6 model evidence, reference data, admin) read the live API.
+Features whose pipeline output does not exist yet (delay/crowding predictions, Phase 7
+recommendations) show dummy data, clearly labelled as sample data in the UI and never mixed
+with real results. The MySQL host question from the previous exchange (WSL vs Laragon) is
+still open, so the backend configuration is unchanged. Branched from `backend/flask-mysql`
+because the frontend depends on that API.
+
+**Actions taken:** _in progress_
