@@ -193,3 +193,18 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
   5. Model metrics rounded 0.695 to 0.7; they now show 3 decimals.
 - **Build:** `npm run build` passes. The main bundle is 279 kB, and charts load lazily (377 kB) instead of one 711 kB bundle.
 - **Open:** the MySQL host (WSL or Laragon) is still undecided; the frontend is unaffected either way.
+
+## 2026-09-26 — Glass theme, Motion and replay network map, branch `frontend/glass-theme-map` (CMD-022)
+- **Skills:** the three project skills are in `.agents/skills/<name>/SKILL.md` and were read in full, along with the docyrus reference docs. `docyrus-dashboard-design` could not be applied as written: `@docyrus/ui` and `@bklitui/ui` return npm E404, and `@docyrus/cli add --dry-run` needs `components.json` (shadcn + Tailwind). Its layout rules (KPI strip, then chart panels, then tables) were applied with the existing components.
+- **Palette:** from the ui-color-palette MCP (OKLCH, Tailwind steps). The darkest blue steps drift violet and the dark gold steps drift brown, so backgrounds use the navy neutral. Chart slots validated: dark mode passes with exactly two brand hues; a third series uses navy-grey with a dashed line instead of a new hue.
+- **Map:** MapLibre + CARTO Dark Matter, recoloured, with an offline fallback tested by aborting all external requests. Backend: `route_stops` (3,210 rows) and `gps_events` (1,139,087) loaded; `/api/network/geometry|replay|vehicles`; 64/64 tests.
+- **Failures found and fixed:**
+  1. The MapLibre 6 worker failed to load under Vite: pre-bundling moved it and duplicated MapLibre's shared module. Fixed by excluding MapLibre from pre-bundling and bundling the worker via `?worker&url`.
+  2. **GPS timestamps were shifted +5 h** on the first load (PySpark converts to the process timezone, and WSL is Asia/Karachi). The reconciliation missed it because both sides went through the same conversion. Fixed by pinning the loader to UTC and comparing against Spark-formatted times; reloaded to 05:30-23:23 as in the raw files, with 0 date mismatches.
+  3. Buses and the overview's route lines were missing on slow loads: react-map-gl's declarative sources wait for the whole basemap. Layers are now added on `style.load` and fed by `setData`/`setFilter`.
+  4. An Overview panel with `span-2` directly in the page grid created a phantom column.
+  5. The Crowding counter's format function was recreated each render, restarting its animation.
+  6. The replay bar overlapped the legend and offline note at 1280 px.
+- **Environment note:** during testing the machine ran at 100% CPU (`qemu-system-x86_64`, probably an Android emulator) with 1.5 GB RAM free, so frame rates in headless Edge varied from 2 to 61 fps. Visual checks therefore used reduced motion (final states); motion was verified separately (counters end on exact values, chart marks appear, replay advances).
+- **Verification:** 64/64 backend tests; production build; lint (only fast-refresh hints); palette validator in both modes; headless Edge screenshots (dark, light, phone), deep link, play, filters, zoom and popup; offline fallback. The taste §14 pre-flight and the Web Interface Guidelines audit results are in CMD-022.
+

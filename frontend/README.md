@@ -24,6 +24,7 @@ Sign in with an account made by `flask users create <name> --role admin`.
 
 | page | source |
 |---|---|
+| Network map | route lines, stops and a **replay** of the 7-day GPS sample (10-16 Nov 2025); never "live", the replay date is always on screen |
 | Overview, Routes, route detail, Delays, Crowding and capacity, Stops, Demand and journeys, Passengers | Phase 5 analytics tables, live from the API |
 | Model results | Phase 6 metric files and cluster profiles, live from the API; delay models shown as not valid |
 | Data explorer | any of the 30 analytics tables, with filters and CSV export |
@@ -45,5 +46,26 @@ delete the sample module then.
 | `src/lib/` | fetch hooks and value formatting |
 | `src/styles/` | design tokens (light and dark) and the stylesheet |
 
-Charts follow the validated dataviz palette (4 categorical slots, checked in light and dark
-mode). Every chart has a table view, and route-type colours always come with the route code.
+## Theme (CMD-022)
+
+- **Palette:** generated with the ui-color-palette MCP from blue `#2b53d9` and gold `#f5b301`
+  (`src/styles/tokens.css` lists every step and contrast). Blue is the only primary, gold the
+  only accent (CTAs, active station, focus, emphasis), warning is orange so it never reads as gold.
+- **Charts:** two validated brand hues (dark: `#5181ff` / `#bc7f00`), a third series is
+  navy-grey and dashed. Every chart has a table view.
+- **Glass:** backdrop blur with a 1px light edge and inner highlight (a web approximation of
+  frosted glass). Solid fallback when blur is unsupported or with `prefers-reduced-transparency`.
+- **Motion** (`motion/react`): scroll-reveal stagger, KPI counters, 450 ms chart transitions,
+  hover lift. All static under `prefers-reduced-motion`.
+- **Dark by default**, light and "match system" in the sidebar.
+
+## Network map
+
+MapLibre GL + CARTO Dark Matter (free, no key), recoloured to the navy palette. If the style
+cannot be fetched in 4 s (offline, blocked) a self-contained navy style is used and the whole
+network still renders; this was tested with every non-localhost request aborted. Route types
+are told apart by weight and dash (BRT thick gold, trunk blue, local thin blue, feeder dashed
+grey). The replay day, time and route are in the URL, e.g. `/map?day=2025-11-14&t=17:30&route=R001`.
+
+Vite note: MapLibre is excluded from dependency pre-bundling (`vite.config.ts`) and its worker
+is bundled via `?worker&url` (`src/components/map/basemap.ts`); otherwise the worker fails to load.

@@ -105,6 +105,23 @@ Parquet. Their columns and NOT NULL rules follow `documentation/schemas/<table>.
 MySQL copy. The analytics pipeline keeps reading HDFS, so analytics show the data as it was
 when Phase 5 ran. The loader overwrites these tables only with `--force-reference`.
 
+### Network tables (CMD-022, migration `13bbf36cd65b`)
+
+| table | rows | source | purpose |
+|---|---:|---|---|
+| `route_stops` | 3,210 | clean `route_stops` | ordered stops per route and direction; draws the map's route lines |
+| `gps_events` | 1,139,087 | clean `gps_events` | simulated GPS pings, 7-day sample (10 Nov 05:30 to 16 Nov 23:23, 2025), 728 vehicles; indexed on `(event_time, vehicle_id)` for the replay |
+
+Loaded with `python database/load_analytics_to_mysql.py --network --tables none` (about 7 min).
+The check covers rows, first/last ping, vehicles, and pings whose date differs from `event_date`
+(0 = 0).
+
+**Timezone note:** PySpark converts timestamps into the Python process timezone while Spark
+runs in UTC. WSL is `Asia/Karachi`, so the first GPS load was shifted by +5 h, and the
+reconciliation missed it because both sides went through the same conversion. The loader now
+pins its process to UTC and compares against times formatted inside Spark. Only `gps_events`
+has TIMESTAMP columns; the analytics and reference tables hold DATEs and were never affected.
+
 ## 4. Model evidence
 
 ### `model_metrics` (340 rows from 28 files)

@@ -84,6 +84,18 @@ A filter the table cannot honour returns **400 `unsupported_filter`** and lists 
 filters. It is never silently ignored. The table list and the reasons for skipping 11 tables
 are in `documentation/database_schema.md`.
 
+### Network map (real data; CMD-022)
+
+| method | path | permission | notes |
+|---|---|---|---|
+| GET | `/api/network/geometry` | analytics:read | GeoJSON: 236 route LineStrings (118 routes x 2 directions, drawn stop to stop from `route_stops`) with type, class, score; 756 stop Points with type, zone, routes, estimated passengers, bottleneck flag. Cached 10 min |
+| GET | `/api/network/replay` | analytics:read | the replay window: first/last ping, pings per day, vehicles |
+| GET | `/api/network/vehicles?at=YYYY-MM-DDTHH:MM:SS&window=180` | analytics:read | latest ping of each bus in the `window` seconds (30-900, default 180) up to `at`; 400 `outside_replay_window` outside the sample |
+
+The GPS data is the Phase 1 generator's **simulated AVL sample covering 10-16 Nov 2025
+only** (1,139,087 pings, 728 vehicles). There is no real-time feed, so every response carries
+a `source` saying it is a replay, and the UI always shows the replay date. Nothing is labelled "live".
+
 ### Reports (CSV)
 
 | method | path | permission |

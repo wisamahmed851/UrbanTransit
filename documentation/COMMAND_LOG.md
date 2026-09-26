@@ -1338,4 +1338,27 @@ layout rules are applied with the existing components instead. `design-taste-fro
 declares dashboards out of scope (§13); its applicable rules and §14 pre-flight are applied.
 `web-design-guidelines` is an audit run at the end.
 
-**Actions taken:** _in progress_
+**Actions taken:**
+1. Branch `frontend/glass-theme-map` from `frontend/react-dashboard`. The user interrupted mid-way to push `frontend/react-dashboard` (tip `5b1d05b`, no CMD-022 work), then asked to continue.
+2. Palette from the ui-color-palette MCP; chart slots checked with the dataviz validator (dark: blue `#5181ff` + gold `#bc7f00` pass; light: `#274dcf` / `#bc7f00` / `#6a9cff` pass).
+3. MapLibre + CARTO Dark Matter basemap with a navy offline fallback, **tested before building the rest** (all external requests aborted: 0/2 succeeded, fallback plus all stops rendered). That test exposed a MapLibre worker bug under Vite, which is fixed.
+4. Backend: migration `13bbf36cd65b` (route_stops, gps_events), loader `--network`, `/api/network/geometry|replay|vehicles`, 4 tests.
+5. Found and fixed a **+5 h timestamp shift** in the loaded GPS data (the loader process timezone); reloaded, now matching the raw files.
+6. Restyled the existing components: tokens, glass CSS, stat cards, charts, nav, login. Added Motion reveal, counters and transitions, the replay map page and an Overview network card.
+7. Browser checks in headless Edge (dark, light, phone; map deep link, play, filters, zoom, popup), a WIG audit with fixes, the pre-flight checklists and the docs.
+
+**Files changed:** `frontend/**` (styles, components, pages, `vite.config.ts`, `index.html`, `package.json`), `src/models/network.py`, `src/models/__init__.py`, `src/blueprints/network.py`, `src/app.py`, `database/load_analytics_to_mysql.py`, `database/migrations/versions/13bbf36cd65b_network_and_gps_replay.py`, `tests/test_network.py`, `reports/mysql_load_report.json`, `documentation/{backend_api,database_schema,COMMAND_LOG}.md`, `frontend/README.md`, `DEV_LOG.md`, `AI_USAGE.md`. Not committed: the user's `.agents/`, `.mcp.json`, `skills-lock.json`.
+
+**Result:** Success, with the documented exceptions below. pytest 64/64; build OK; offline fallback re-tested on the final code.
+
+**Pre-flight: design-taste-frontend §14** (items that apply to a dashboard; the skill's own §13 puts dashboards out of scope):
+- PASS: design read declared (analytics dashboard for transit operators and analysts; dark glass language; aesthetic, no design system); dials 6/5/7 (variance/motion/density) for a data-dense dashboard; zero em/en dashes in visible text; one theme per page (dark default, light and system as options); colour lock (blue primary, gold accent only); shape lock 16/10/6 px; button, CTA and form contrast (gold + navy text 10:1, light-mode focus ring blue because gold on white is 1.9:1); no CTA wraps; no duplicate CTA intent; motion motivated (hierarchy, feedback, state change); no scroll listeners (IntersectionObserver via Motion); reduced motion honoured; dark and light tested; `useEffect` animations clean up; empty, loading and error states; icons from Phosphor; no fake numbers (all figures are pipeline data, sample data framed as such); decorative dots only for real state (the replay pulse).
+- EXCEPTIONS: glassmorphism on a dashboard (the skill discourages it; the brief asks for it explicitly and the brief wins); the brand mark and login line art are hand-drawn SVG (simple geometric mark and an existing component, kept and recoloured); loading states are text, not skeletons; the hero/landing, images, logo-wall and bento items do not apply to a dashboard.
+
+**Pre-flight: docyrus-dashboard-design:** layout rule applied (KPI strip, then chart panels, then tables; stat cards carry icon, title, value, context line, mini chart); Intl formatting. NOT met: Bklit charts, AwesomeCard, AwesomeStats (not installable here, see above); icon order (hugeicons first) conflicts with the taste skill (Phosphor), and Phosphor was kept.
+
+**Web Interface Guidelines** (fetched fresh from vercel-labs): fixed the ellipsis characters, skip link, theme-color meta, `text-wrap: balance`, `touch-action`, compositor-only hover glow, heading levels in the map, aria-hidden on control icons, login `name`/`spellCheck`, placeholder ellipses, and replay state in the URL. Not applied: Title Case (conflicts with the sentence-case rule of the frontend-design skill used throughout); virtualisation of the 118-/756-row tables (moderate size, deferred).
+
+**Problems and fixes:** the MapLibre worker under Vite; the +5 h GPS timestamp shift; empty buses and overview routes on slow basemap loads; the phantom grid column; the counter restart; the overlay overlap (details in DEV_LOG). The machine ran at 100% CPU from `qemu-system-x86_64` during testing, so visual checks used reduced motion and motion was verified separately.
+
+**Git commit:** see `git log` on `frontend/glass-theme-map` (CMD-022 commits).
