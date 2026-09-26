@@ -1151,4 +1151,28 @@ relabelled the 4 clusters in `reports/phase6_cluster_profiles.csv`, renamed the 
 retrain (`spark_jobs/phase6_retrain_ab_wsl.py`) still uses `occupancy_pct` as a feature, so
 the INVALID flag applies to every `delay_severity` file, including the new ones.
 
-**Actions taken:** _in progress_
+**Actions taken:**
+1. `git pull --ff-only origin main` (7eb4b7d → 8852571), then `git checkout -b backend/flask-mysql`.
+2. Started HDFS and measured the live Parquet schemas and string lengths for the tables to serve. All row counts equal the audit.
+3. `src/`: app factory, config (reuses `config/settings.py`), extensions, JSON error handler, models (RBAC, audit, ops, reference, 30 analytics tables generated from the Parquet schemas, model metrics, clusters), JWT/RBAC guards, CLI (`flask rbac seed`, `flask users create`), Blueprints (health, auth, admin, analytics, models, reports, stubs).
+4. `flask db init/migrate/upgrade` → `database/migrations/versions/a7e1187bcc81_initial_backend_schema.py`: 43 tables.
+5. `database/load_analytics_to_mysql.py --reference`: 30 analytics + 3 reference tables loaded; then `database/verify_mysql_load.py` (value-level).
+6. `database/metrics_normaliser.py` + `load_model_metrics.py`: 28 metric files → 340 rows; 4 cluster profiles.
+7. `tests/` (60 tests, SQLite) and a live HTTP smoke test on MySQL with a temporary admin user, deleted afterwards. Its login and export entries remain in `audit_log` as history.
+8. Docs: `documentation/backend_api.md`, `documentation/database_schema.md`, README, DEV_LOG, AI_USAGE.
+
+**Files changed:** `.env.example`, `.flaskenv`, `pytest.ini`, `config/{settings.py,rbac.yaml}`, `src/**`, `database/{load_analytics_to_mysql,verify_mysql_load,metrics_normaliser,load_model_metrics}.py`, `database/migrations/**`, `tests/**`, `documentation/{backend_api,database_schema,COMMAND_LOG}.md`, `reports/{mysql_load_report,mysql_load_verification,model_metrics_load_report}.json`, `README.md`, `DEV_LOG.md`, `AI_USAGE.md`. Nothing under `spark_jobs/phase6_*`, `forecasting/`, `route_clustering/`, `delay_analysis/`, `occupancy_analysis/`, `recommendation_engine/`, `models/`, `reports/spark_*` or `reports/phase6_*` was changed.
+
+**Result:** Success.
+- Load: 33/33 tables with Phase 5 = HDFS = MySQL row counts (route_performance 118, od_matrix 316,810); value verification on 374/374 columns shows 0 mismatches.
+- Model metrics: 340 rows from 28 files (169 delay_severity rows INVALID); cluster profiles: 4 rows.
+- pytest: 60 passed.
+- Included 30 analytics tables: the 28 requested plus `anomalies` and `delay_top_trips` (drill-downs). The 11 skipped tables are listed with reasons in `database_schema.md`.
+- MySQL state: 4 roles and 9 permissions seeded; 0 users; `model_versions` and `job_runs` empty.
+
+**Problems and fixes:**
+- The instruction was received truncated at `GET /recommendations -`. The stub follows the same pattern with reason "unavailable - Phase 7 recommendation engine not yet built"; the missing text is flagged back.
+- One test expected 4 daily_boardings models; there are 5 (the baseline file). The test was fixed.
+- Found, not changed: the enhanced delay/crowding feature lists include `travel_time_min` and `headway_minutes` (same-trip outcomes per the feature catalog). Crowding metrics are not flagged; this needs a decision.
+
+**Git commit:** see `git log` on `backend/flask-mysql` (CMD-019 commits).
