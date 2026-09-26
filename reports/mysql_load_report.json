@@ -1,17 +1,339 @@
 {
-  "started_utc": "2026-09-26T08:10:44+00:00",
-  "finished_utc": "2026-09-26T08:14:36+00:00",
-  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_131013.log",
+  "started_utc": "2026-09-26T13:54:28+00:00",
+  "finished_utc": "2026-09-26T13:56:14+00:00",
+  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_185417.log",
   "tables": [
     {
       "table": "route_performance",
       "group": "analytics",
       "expected_rows": 118,
-      "hdfs_rows": 118,
-      "inserted": 118,
-      "mysql_rows": 118,
-      "seconds": 22.7,
-      "status": "ok"
+      "status": "schema_mismatch",
+      "detail": {
+        "parquet": [
+          [
+            "route_id",
+            "string"
+          ],
+          [
+            "route_code",
+            "string"
+          ],
+          [
+            "route_type",
+            "string"
+          ],
+          [
+            "launch_date",
+            "date"
+          ],
+          [
+            "eligible",
+            "boolean"
+          ],
+          [
+            "normal_service_days",
+            "bigint"
+          ],
+          [
+            "excluded_abnormal_days",
+            "bigint"
+          ],
+          [
+            "demand_coverage",
+            "double"
+          ],
+          [
+            "med_daily_boardings",
+            "double"
+          ],
+          [
+            "med_occupancy",
+            "double"
+          ],
+          [
+            "med_p90_occupancy",
+            "double"
+          ],
+          [
+            "med_punctuality",
+            "double"
+          ],
+          [
+            "med_late_share",
+            "decimal(6,4)"
+          ],
+          [
+            "med_travel_time_ratio",
+            "double"
+          ],
+          [
+            "med_arrival_delay_std",
+            "double"
+          ],
+          [
+            "med_underload_share",
+            "decimal(6,4)"
+          ],
+          [
+            "med_overload_share",
+            "decimal(6,4)"
+          ],
+          [
+            "persistent_cells",
+            "bigint"
+          ],
+          [
+            "recurring_cells",
+            "bigint"
+          ],
+          [
+            "one_off_cells",
+            "bigint"
+          ],
+          [
+            "event_day_overloads",
+            "bigint"
+          ],
+          [
+            "demand_score",
+            "double"
+          ],
+          [
+            "occupancy_score",
+            "double"
+          ],
+          [
+            "punctuality_score",
+            "double"
+          ],
+          [
+            "delay_frequency_score",
+            "double"
+          ],
+          [
+            "travel_time_score",
+            "double"
+          ],
+          [
+            "reliability_score",
+            "double"
+          ],
+          [
+            "load_score",
+            "double"
+          ],
+          [
+            "utilization_score",
+            "decimal(16,1)"
+          ],
+          [
+            "composite_score",
+            "double"
+          ],
+          [
+            "route_class",
+            "string"
+          ],
+          [
+            "overcrowded_scope",
+            "string"
+          ],
+          [
+            "overcrowding_location",
+            "string"
+          ],
+          [
+            "hotspot_stop_id",
+            "string"
+          ],
+          [
+            "hotspot_share",
+            "double"
+          ],
+          [
+            "tricky_case_notes",
+            "string"
+          ]
+        ],
+        "spec": [
+          [
+            "route_id",
+            "string"
+          ],
+          [
+            "route_code",
+            "string"
+          ],
+          [
+            "route_type",
+            "string"
+          ],
+          [
+            "launch_date",
+            "date"
+          ],
+          [
+            "eligible",
+            "boolean"
+          ],
+          [
+            "normal_service_days",
+            "bigint"
+          ],
+          [
+            "excluded_abnormal_days",
+            "bigint"
+          ],
+          [
+            "demand_coverage",
+            "double"
+          ],
+          [
+            "med_daily_boardings",
+            "double"
+          ],
+          [
+            "med_occupancy",
+            "double"
+          ],
+          [
+            "med_p90_occupancy",
+            "double"
+          ],
+          [
+            "med_punctuality",
+            "double"
+          ],
+          [
+            "med_late_share",
+            "decimal(6,4)"
+          ],
+          [
+            "med_travel_time_ratio",
+            "double"
+          ],
+          [
+            "med_arrival_delay_std",
+            "double"
+          ],
+          [
+            "med_underload_share",
+            "decimal(6,4)"
+          ],
+          [
+            "med_overload_share",
+            "decimal(6,4)"
+          ],
+          [
+            "persistent_cells",
+            "bigint"
+          ],
+          [
+            "recurring_cells",
+            "bigint"
+          ],
+          [
+            "one_off_cells",
+            "bigint"
+          ],
+          [
+            "event_day_overloads",
+            "bigint"
+          ],
+          [
+            "demand_score",
+            "double"
+          ],
+          [
+            "occupancy_score",
+            "double"
+          ],
+          [
+            "punctuality_score",
+            "double"
+          ],
+          [
+            "delay_frequency_score",
+            "double"
+          ],
+          [
+            "travel_time_score",
+            "double"
+          ],
+          [
+            "reliability_score",
+            "double"
+          ],
+          [
+            "load_score",
+            "double"
+          ],
+          [
+            "underutilization_score",
+            "decimal(16,1)"
+          ],
+          [
+            "overcrowding_score",
+            "double"
+          ],
+          [
+            "med_overload_severity",
+            "decimal(6,4)"
+          ],
+          [
+            "persistent_cell_share",
+            "double"
+          ],
+          [
+            "overcrowding_penalty",
+            "double"
+          ],
+          [
+            "composite_score",
+            "double"
+          ],
+          [
+            "composite_rank",
+            "double"
+          ],
+          [
+            "reliability_rank",
+            "double"
+          ],
+          [
+            "route_class",
+            "string"
+          ],
+          [
+            "class_reason",
+            "string"
+          ],
+          [
+            "overcrowded_flag",
+            "boolean"
+          ],
+          [
+            "overcrowded_scope",
+            "string"
+          ],
+          [
+            "overcrowding_location",
+            "string"
+          ],
+          [
+            "hotspot_stop_id",
+            "string"
+          ],
+          [
+            "hotspot_share",
+            "double"
+          ],
+          [
+            "tricky_case_notes",
+            "string"
+          ]
+        ]
+      }
     },
     {
       "table": "route_reliability",
@@ -20,7 +342,7 @@
       "hdfs_rows": 118,
       "inserted": 118,
       "mysql_rows": 118,
-      "seconds": 2.8,
+      "seconds": 3.1,
       "status": "ok"
     },
     {
@@ -30,7 +352,7 @@
       "hdfs_rows": 118,
       "inserted": 118,
       "mysql_rows": 118,
-      "seconds": 3.1,
+      "seconds": 0.6,
       "status": "ok"
     },
     {
@@ -40,7 +362,7 @@
       "hdfs_rows": 118,
       "inserted": 118,
       "mysql_rows": 118,
-      "seconds": 2.2,
+      "seconds": 0.7,
       "status": "ok"
     },
     {
@@ -50,7 +372,7 @@
       "hdfs_rows": 118,
       "inserted": 118,
       "mysql_rows": 118,
-      "seconds": 2.1,
+      "seconds": 0.7,
       "status": "ok"
     },
     {
@@ -60,7 +382,7 @@
       "hdfs_rows": 236,
       "inserted": 236,
       "mysql_rows": 236,
-      "seconds": 2.6,
+      "seconds": 0.7,
       "status": "ok"
     },
     {
@@ -70,7 +392,7 @@
       "hdfs_rows": 8240,
       "inserted": 8240,
       "mysql_rows": 8240,
-      "seconds": 7.2,
+      "seconds": 1.6,
       "status": "ok"
     },
     {
@@ -80,7 +402,7 @@
       "hdfs_rows": 3540,
       "inserted": 3540,
       "mysql_rows": 3540,
-      "seconds": 4.7,
+      "seconds": 1.0,
       "status": "ok"
     },
     {
@@ -90,7 +412,7 @@
       "hdfs_rows": 3540,
       "inserted": 3540,
       "mysql_rows": 3540,
-      "seconds": 3.9,
+      "seconds": 1.1,
       "status": "ok"
     },
     {
@@ -100,7 +422,7 @@
       "hdfs_rows": 3540,
       "inserted": 3540,
       "mysql_rows": 3540,
-      "seconds": 3.1,
+      "seconds": 1.1,
       "status": "ok"
     },
     {
@@ -110,7 +432,7 @@
       "hdfs_rows": 939,
       "inserted": 939,
       "mysql_rows": 939,
-      "seconds": 1.6,
+      "seconds": 0.4,
       "status": "ok"
     },
     {
@@ -120,7 +442,7 @@
       "hdfs_rows": 756,
       "inserted": 756,
       "mysql_rows": 756,
-      "seconds": 2.6,
+      "seconds": 0.6,
       "status": "ok"
     },
     {
@@ -130,7 +452,7 @@
       "hdfs_rows": 500,
       "inserted": 500,
       "mysql_rows": 500,
-      "seconds": 2.0,
+      "seconds": 0.5,
       "status": "ok"
     },
     {
@@ -140,7 +462,7 @@
       "hdfs_rows": 756,
       "inserted": 756,
       "mysql_rows": 756,
-      "seconds": 2.1,
+      "seconds": 0.5,
       "status": "ok"
     },
     {
@@ -150,7 +472,7 @@
       "hdfs_rows": 756,
       "inserted": 756,
       "mysql_rows": 756,
-      "seconds": 2.0,
+      "seconds": 0.3,
       "status": "ok"
     },
     {
@@ -160,7 +482,7 @@
       "hdfs_rows": 60,
       "inserted": 60,
       "mysql_rows": 60,
-      "seconds": 1.6,
+      "seconds": 0.3,
       "status": "ok"
     },
     {
@@ -170,7 +492,7 @@
       "hdfs_rows": 365,
       "inserted": 365,
       "mysql_rows": 365,
-      "seconds": 2.0,
+      "seconds": 0.4,
       "status": "ok"
     },
     {
@@ -180,7 +502,7 @@
       "hdfs_rows": 15,
       "inserted": 15,
       "mysql_rows": 15,
-      "seconds": 2.3,
+      "seconds": 0.4,
       "status": "ok"
     },
     {
@@ -190,7 +512,7 @@
       "hdfs_rows": 19296,
       "inserted": 19296,
       "mysql_rows": 19296,
-      "seconds": 8.8,
+      "seconds": 1.9,
       "status": "ok"
     },
     {
@@ -200,7 +522,7 @@
       "hdfs_rows": 3540,
       "inserted": 3540,
       "mysql_rows": 3540,
-      "seconds": 3.3,
+      "seconds": 0.8,
       "status": "ok"
     },
     {
@@ -210,7 +532,7 @@
       "hdfs_rows": 316810,
       "inserted": 316810,
       "mysql_rows": 316810,
-      "seconds": 107.2,
+      "seconds": 70.7,
       "status": "ok"
     },
     {
@@ -220,7 +542,7 @@
       "hdfs_rows": 3540,
       "inserted": 3540,
       "mysql_rows": 3540,
-      "seconds": 2.5,
+      "seconds": 1.5,
       "status": "ok"
     },
     {
@@ -230,7 +552,7 @@
       "hdfs_rows": 236,
       "inserted": 236,
       "mysql_rows": 236,
-      "seconds": 0.9,
+      "seconds": 0.4,
       "status": "ok"
     },
     {
@@ -240,7 +562,7 @@
       "hdfs_rows": 354,
       "inserted": 354,
       "mysql_rows": 354,
-      "seconds": 1.5,
+      "seconds": 0.5,
       "status": "ok"
     },
     {
@@ -250,7 +572,7 @@
       "hdfs_rows": 1180,
       "inserted": 1180,
       "mysql_rows": 1180,
-      "seconds": 1.6,
+      "seconds": 0.4,
       "status": "ok"
     },
     {
@@ -260,7 +582,7 @@
       "hdfs_rows": 365,
       "inserted": 365,
       "mysql_rows": 365,
-      "seconds": 1.2,
+      "seconds": 0.3,
       "status": "ok"
     },
     {
@@ -270,7 +592,7 @@
       "hdfs_rows": 38382,
       "inserted": 38382,
       "mysql_rows": 38382,
-      "seconds": 8.3,
+      "seconds": 2.4,
       "status": "ok"
     },
     {
@@ -280,7 +602,7 @@
       "hdfs_rows": 5,
       "inserted": 5,
       "mysql_rows": 5,
-      "seconds": 0.9,
+      "seconds": 0.3,
       "status": "ok"
     },
     {
@@ -290,7 +612,7 @@
       "hdfs_rows": 56779,
       "inserted": 56779,
       "mysql_rows": 56779,
-      "seconds": 18.3,
+      "seconds": 5.2,
       "status": "ok"
     },
     {
@@ -300,40 +622,12 @@
       "hdfs_rows": 5,
       "inserted": 5,
       "mysql_rows": 5,
-      "seconds": 1.1,
-      "status": "ok"
-    },
-    {
-      "table": "stops",
-      "group": "reference",
-      "expected_rows": null,
-      "hdfs_rows": 756,
-      "inserted": 756,
-      "mysql_rows": 756,
-      "seconds": 1.5,
-      "status": "ok"
-    },
-    {
-      "table": "routes",
-      "group": "reference",
-      "expected_rows": null,
-      "hdfs_rows": 118,
-      "inserted": 118,
-      "mysql_rows": 118,
-      "seconds": 0.6,
-      "status": "ok"
-    },
-    {
-      "table": "vehicles",
-      "group": "reference",
-      "expected_rows": null,
-      "hdfs_rows": 775,
-      "inserted": 775,
-      "mysql_rows": 775,
-      "seconds": 0.8,
+      "seconds": 0.3,
       "status": "ok"
     }
   ],
-  "failed": [],
-  "result": "PASS"
+  "failed": [
+    "route_performance"
+  ],
+  "result": "FAIL"
 }

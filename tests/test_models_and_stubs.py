@@ -81,7 +81,6 @@ def test_clusters_api(client, auth, loaded):
 @pytest.mark.parametrize("method,url,feature", [
     ("post", "/api/predictions/delay", "predictions.delay"),
     ("post", "/api/predictions/crowding", "predictions.crowding"),
-    ("get", "/api/recommendations", "recommendations"),
 ])
 def test_stubs_are_explicit(client, auth, method, url, feature):
     res = getattr(client, method)(url, json={}, headers=auth("operator"))
@@ -89,3 +88,11 @@ def test_stubs_are_explicit(client, auth, method, url, feature):
     assert res.status_code == 503
     assert body["stub"] is True and body["status"] == "unavailable" and body["feature"] == feature
     assert body["reason"].startswith("unavailable - ")
+
+
+def test_recommendations_are_generated_pipeline_artifacts(client, auth):
+    res = client.get("/api/recommendations", headers=auth("operator"))
+    body = res.get_json()
+    assert res.status_code == 200
+    assert body["total"] == 140
+    assert body["rows"][0]["evidence"]

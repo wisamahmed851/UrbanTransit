@@ -2,7 +2,6 @@
 
 POST /api/predictions/delay      503: the delay models are flagged INVALID (occupancy_pct leakage)
 POST /api/predictions/crowding   503: no Phase 7 pipeline or full prediction set yet
-GET  /api/recommendations        503: no Phase 7 recommendation engine yet
 
 Each returns HTTP 503 with `"stub": true`, so a frontend can show "not available yet"
 without treating it as an outage. Replace a stub only when its data or model is real.
@@ -17,7 +16,6 @@ bp = Blueprint("stubs", __name__, url_prefix="/api")
 REASONS = {
     "predictions.delay": "unavailable - underlying models flagged invalid (occupancy_pct leakage), pending retrain",
     "predictions.crowding": "unavailable - Phase 7 pipeline and full prediction set not yet produced",
-    "recommendations": "unavailable - Phase 7 recommendation engine not yet built",
 }
 
 
@@ -36,8 +34,3 @@ def predict_delay():
 def predict_crowding():
     return _unavailable("predictions.crowding")
 
-
-@bp.get("/recommendations")
-@permission_required("recommendations:read")
-def recommendations():
-    return _unavailable("recommendations")

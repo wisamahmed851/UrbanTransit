@@ -26,6 +26,7 @@ export function ModelsPage() {
   const [task, setTask] = useState<Task>('delay_severity')
   const metrics = useApi<MetricsResponse>('/models/metrics', { task })
   const clusters = useApi<ClustersResponse>('/models/clusters')
+  const comparison = useApi<{ tables: Record<string, Row[]> }>('/models/comparison')
   const spec = TASKS.find((t) => t.value === task)!
 
   const table = useMemo(() => {
@@ -94,6 +95,13 @@ export function ModelsPage() {
             ]} />
             <p className="panel-note">Which routes belong to each group has not been exported yet, so routes cannot be listed per group.</p>
           </>
+        )}
+      </Panel>
+
+      <Panel title="Spark and Python comparison" note="Independent pipeline comparison on the same evaluation scope.">
+        {comparison.error ? <ErrorNotice error={comparison.error} /> : !comparison.data ? <Loading what="comparison evidence" /> : (
+          <DataTable rows={Object.entries(comparison.data.tables).map(([taskName, rows]) => ({ task: taskName.replace('task_', '').replaceAll('_', ' '), rows: rows.length }))}
+            columns={[{ key: 'task', label: 'Task' }, { key: 'rows', label: 'Comparison rows', num: true }]} />
         )}
       </Panel>
     </div>
