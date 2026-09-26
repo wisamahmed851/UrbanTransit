@@ -14,7 +14,7 @@ and to produce forecasts and recommendations for transit operators.
 | Data science | pandas, NumPy, scikit-learn, XGBoost, statsmodels |
 | App database | MySQL |
 | Backend API | Flask |
-| Frontend | React / Next.js (Phase 11) |
+| Frontend | React + Vite + TypeScript (`frontend/`) |
 
 ## Repository layout
 
@@ -82,6 +82,30 @@ python database/verify_mysql.py        # MySQL SELECT 1
 python src/app.py                      # Flask on http://127.0.0.1:5000/health
 bash hdfs_scripts/stop_hdfs.sh         # stop HDFS
 ```
+
+### Backend API (Flask + MySQL)
+
+```bash
+flask db upgrade                                         # MySQL schema (database/migrations)
+flask rbac seed                                          # roles + permissions (config/rbac.yaml)
+flask users create <name> --role admin                   # first account
+python database/load_analytics_to_mysql.py --reference   # HDFS -> MySQL (HDFS must be running)
+python database/verify_mysql_load.py                     # value-level check of the load
+python database/load_model_metrics.py                    # Phase 6 metrics + cluster profiles
+flask run                                                # API on http://127.0.0.1:5000/api
+python -m pytest                                         # backend tests (in-memory SQLite)
+```
+
+See [documentation/backend_api.md](documentation/backend_api.md) and
+[documentation/database_schema.md](documentation/database_schema.md).
+
+### Web dashboard (React)
+
+```bash
+cd frontend && npm install && npm run dev                # http://localhost:5173 (needs `flask run`)
+```
+
+See [frontend/README.md](frontend/README.md).
 
 ### Regenerating the defect-injection lists (not in Git)
 

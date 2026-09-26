@@ -65,6 +65,9 @@ FLASK_HOST = _env("FLASK_HOST", "127.0.0.1")
 FLASK_PORT = int(_env("FLASK_PORT", "5000"))
 SECRET_KEY = _env("SECRET_KEY")
 JWT_SECRET_KEY = _env("JWT_SECRET_KEY")
+JWT_ACCESS_TOKEN_MINUTES = int(_env("JWT_ACCESS_TOKEN_MINUTES", "60"))
+# Comma-separated origins allowed to call /api/* (the React dev server: Vite 5173, CRA 3000).
+CORS_ORIGINS = [o.strip() for o in _env("CORS_ORIGINS", "http://localhost:5173,http://localhost:3000").split(",") if o.strip()]
 
 
 def hdfs_path(*parts: str) -> str:
