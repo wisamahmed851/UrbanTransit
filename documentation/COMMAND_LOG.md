@@ -1229,3 +1229,113 @@ becasue i want to open the mysql database okay so tell me how to open it also
 **Problems and fixes:** none.
 
 **Git commit:** see `git log` (CMD-021 commit).
+
+---
+
+## CMD-022 | 2026-09-26 (UTC+05:00) | Frontend: glass theme, Motion, replay network map (branch `frontend/glass-theme-map`)
+**My command (verbatim, two messages):**
+
+<details>
+<summary>Brief (click to expand)</summary>
+
+```text
+I have an existing analytics dashboard for "UrbanTransit IQ" (a smart public
+transit / data science project — buses, metro/rail lines, city infrastructure).
+
+Use the design-taste-frontend, web-design-guidelines, and docyrus-dashboard-design
+skills, plus the ui-color-palette MCP server, for this task.
+
+GOAL: Re-theme and upgrade the existing dashboard UI. Do not rebuild it from
+scratch — restyle and enhance the existing components.
+
+BRAND COLORS:
+- Primary: Blue (deep navy/royal blue, like a night-sky city skyline)
+- Secondary: Yellow/Gold (warm accent, used sparingly for highlights, CTAs,
+  active states, and data emphasis)
+Use the ui-color-palette MCP to generate a full accessible palette (tints,
+shades, semantic tokens for success/warning/error, light + dark mode) from
+these two colors, following the color-consistency lock — one accent color
+family used consistently, no random extra hues.
+
+VISUAL STYLE:
+- "Crystal" / glassmorphism look: frosted-glass cards with subtle
+  backdrop-blur, soft inner glow, thin light-catching borders (1px, low
+  opacity), gentle drop shadows, slightly rounded corners consistently
+  across all cards/panels
+- Realistic depth: layered elevation (background gradient -> glass panels ->
+  floating stat cards), avoid flat/generic AI-dashboard look
+- Dark, premium base background (deep navy/blue gradient or subtle mesh),
+  yellow used as accent glow/highlight color, not as large fill areas
+
+ANIMATIONS:
+- Smooth entrance animations for cards/charts on load (staggered fade + slight
+  rise, not bouncy)
+- Live-data feel: animated counters/number ticks for KPIs, subtle pulse on
+  live/active indicators (e.g. "buses currently active")
+- Smooth hover states on cards (slight lift + glow), smooth chart transitions
+  when data updates
+- Use the canonical animation patterns from the skill (scroll-reveal stagger,
+  no hand-rolled scroll listeners) — CSS/Framer Motion/GSAP as appropriate for
+  the stack
+
+MAP COMPONENT:
+- Add a live map view matching the project's transit infrastructure: bus
+  routes, stops/stations, and vehicle positions
+- Style the map to match the theme (dark map base, blue/yellow route lines
+  and markers, glass-style info popups on stop/vehicle click)
+- Include a legend and basic controls (zoom, route filter/toggle)
+
+PROCESS:
+1. First, give me a short PLAN before writing any code: which existing
+   components you'll touch, the exact palette (hex values) you'll generate,
+   which map library you recommend for this stack, and where the map fits in
+   the dashboard layout.
+2. Wait for my confirmation.
+3. Then implement it, following the pre-flight checklist from
+   design-taste-frontend before you say it's done.
+```
+
+```text
+Answers:
+(a) Confirmed - replay map, never "live", with the date always visible.
+(c) Confirmed - MapLibre GL + CARTO Dark Matter. Before building, actually
+    test the offline fallback (kill network, confirm the navy fallback
+    renders), not just implement it.
+
+(b) Don't skip these yet. The three skills you said were "not available" DO
+    exist in this project at:
+      .agents/design-taste-frontend/SKILL.md
+      .agents/web-design-guidelines/SKILL.md
+      .agents/docyrus-dashboard-design/SKILL.md
+    (plus reference docs under docyrus-dashboard-design/references/, and
+    skills-lock.json confirming they were installed from GitHub sources).
+    Check whether you were only looking in a system skills path (e.g.
+    /mnt/skills/) instead of the project's own .agents/ folder. Read all
+    three SKILL.md files and the docyrus-dashboard-design reference docs
+    (dashboard-recipes.md, awesome-stats.md, awesome-card.md) before
+    building, and re-run their pre-flight checklists alongside the ones
+    you already planned. If any of the three genuinely still can't be
+    read even at the correct path, tell me exactly what error you get
+    before proceeding without it.
+
+Once you've confirmed you can read all three, proceed with the plan as
+written (palette, MapLibre map, restyled existing components, Motion
+animations) on branch frontend/glass-theme-map, logged as CMD-022.
+and proceed it if you find the skills aother wise tell me if you dont find them
+```
+</details>
+
+**Understood as:** Restyle the CMD-020 dashboard with a navy/gold glass theme, Motion
+animations and a replay (never "live") MapLibre network map. Palette from the
+ui-color-palette MCP; the three project skills read in full and their checklists run.
+
+**Skill findings (before building):** all three were at `.agents/skills/<name>/SKILL.md` (one
+level deeper than stated) and are readable. The earlier check listed only registered skills,
+not the project folder. `docyrus-dashboard-design` cannot be applied as written: `@docyrus/ui`
+and `@bklitui/ui` return npm E404, and `npx @docyrus/cli add awesome-card awesome-stats
+--dry-run` fails with "components.json not found. Run `npx shadcn@latest init` first". Its
+layout rules are applied with the existing components instead. `design-taste-frontend`
+declares dashboards out of scope (§13); its applicable rules and §14 pre-flight are applied.
+`web-design-guidelines` is an audit run at the end.
+
+**Actions taken:** _in progress_
