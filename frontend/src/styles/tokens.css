@@ -1,0 +1,119 @@
+/* UrbanTransit IQ design tokens.
+   Chart colours are the validated dataviz reference palette (light + dark each validated
+   for the slots used here: 4-slot categorical, see CMD-020). UI colours are separate so a
+   button never impersonates a data series. */
+
+:root {
+  color-scheme: light;
+
+  /* planes and ink */
+  --plane: #f3f5f4;            /* page background: cool concrete, not cream */
+  --surface: #fcfcfb;          /* cards, tables, chart surface (validator surface) */
+  --surface-sunk: #eceeec;
+  --ink: #15191c;
+  --ink-2: #4b5258;
+  --ink-muted: #7d848a;
+  --hairline: #dfe2df;
+  --axis: #c3c7c3;
+  --ring: rgba(21, 25, 28, 0.12);
+
+  /* UI accent: depot green (buttons, focus, the active station) */
+  --accent: #0f5c4d;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcebe6;
+  --focus: #0f5c4d;
+
+  /* categorical series, fixed order (identity follows the entity, never its rank) */
+  --series-1: #2a78d6;  /* blue   */
+  --series-2: #eb6834;  /* orange */
+  --series-3: #1baf7a;  /* aqua   */
+  --series-4: #eda100;  /* yellow */
+
+  /* sequential (blue ramp) for magnitude */
+  --seq-250: #86b6ef;
+  --seq-450: #2a78d6;
+  --seq-600: #184f95;
+
+  /* status: reserved meaning, always shipped with an icon + label */
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --serious: #ec835a;
+  --critical: #d03b3b;
+
+  /* sample-data marker */
+  --sample-ink: #7a4a00;
+  --sample-bg: #fff4dc;
+  --sample-hatch: #e9b949;
+
+  /* type */
+  --font: "Overpass", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --gap: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --plane: #101312;
+    --surface: #1a1a19;
+    --surface-sunk: #232422;
+    --ink: #f4f5f3;
+    --ink-2: #c3c2b7;
+    --ink-muted: #8f928c;
+    --hairline: #2c2c2a;
+    --axis: #3e3f3b;
+    --ring: rgba(255, 255, 255, 0.12);
+    --accent: #4fb39a;
+    --accent-ink: #0b1f1a;
+    --accent-soft: #1d3530;
+    --focus: #6fd0b6;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --seq-250: #184f95;
+    --seq-450: #3987e5;
+    --seq-600: #9ec5f4;
+    --good-ink: #0ca30c;
+    --sample-ink: #f3c96b;
+    --sample-bg: #2b2412;
+    --sample-hatch: #8a6a1f;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --plane: #101312;
+  --surface: #1a1a19;
+  --surface-sunk: #232422;
+  --ink: #f4f5f3;
+  --ink-2: #c3c2b7;
+  --ink-muted: #8f928c;
+  --hairline: #2c2c2a;
+  --axis: #3e3f3b;
+  --ring: rgba(255, 255, 255, 0.12);
+  --accent: #4fb39a;
+  --accent-ink: #0b1f1a;
+  --accent-soft: #1d3530;
+  --focus: #6fd0b6;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --seq-250: #184f95;
+  --seq-450: #3987e5;
+  --seq-600: #9ec5f4;
+  --good-ink: #0ca30c;
+  --sample-ink: #f3c96b;
+  --sample-bg: #2b2412;
+  --sample-hatch: #8a6a1f;
+}
