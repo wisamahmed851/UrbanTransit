@@ -1,0 +1,501 @@
+{
+  "purpose": "Re-score the shared Phase 7 model files on this machine; no training.",
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "tolerance": 0.005,
+  "classifiers": [
+    {
+      "task": "crowding_flag",
+      "algorithm": "xgboost",
+      "model_file": "models/python/crowding_flag/xgboost_v1.pkl",
+      "features": [
+        "hour",
+        "day_of_week",
+        "weekend",
+        "distance_km",
+        "planned_runtime_min",
+        "headway_min",
+        "scheduled_runtime_min",
+        "prior_route_crowding_rate",
+        "route_id",
+        "vehicle_id",
+        "direction",
+        "route_type",
+        "vehicle_type"
+      ],
+      "threshold": 0.7000000000000002,
+      "splits": {
+        "validation": {
+          "rows": 316679,
+          "accuracy": 0.913941,
+          "macro_f1": 0.775447,
+          "per_class_f1": {
+            "0.0": 0.951797,
+            "1.0": 0.599097
+          },
+          "confusion_matrix": {
+            "labels": [
+              "0.0",
+              "1.0"
+            ],
+            "values": [
+              [
+                269063,
+                22250
+              ],
+              [
+                5003,
+                20363
+              ]
+            ]
+          },
+          "vs_recorded": {
+            "accuracy": {
+              "recorded": 0.913941,
+              "recomputed": 0.913941,
+              "match": true
+            },
+            "macro_f1": {
+              "recorded": 0.775447,
+              "recomputed": 0.775447,
+              "match": true
+            }
+          }
+        },
+        "test": {
+          "rows": 299504,
+          "accuracy": 0.902679,
+          "macro_f1": 0.761303,
+          "per_class_f1": {
+            "0.0": 0.945004,
+            "1.0": 0.577602
+          },
+          "confusion_matrix": {
+            "labels": [
+              "0.0",
+              "1.0"
+            ],
+            "values": [
+              [
+                250427,
+                23721
+              ],
+              [
+                5427,
+                19929
+              ]
+            ]
+          },
+          "vs_recorded": {
+            "accuracy": {
+              "recorded": 0.902679,
+              "recomputed": 0.902679,
+              "match": true
+            },
+            "macro_f1": {
+              "recorded": 0.761303,
+              "recomputed": 0.761303,
+              "match": true
+            }
+          }
+        }
+      },
+      "srs_target": {
+        "rule": "accuracy >= 0.85 or macro F1 >= 0.80 (SRS NFR 4)",
+        "accuracy_met": true,
+        "macro_f1_met": false
+      }
+    },
+    {
+      "task": "delay_severity",
+      "algorithm": "xgboost",
+      "model_file": "models/python/delay_severity/xgboost_v1.pkl",
+      "features": [
+        "hour",
+        "day_of_week",
+        "weekend",
+        "distance_km",
+        "planned_runtime_min",
+        "headway_min",
+        "scheduled_runtime_min",
+        "prior_route_delay_mean",
+        "route_id",
+        "vehicle_id",
+        "direction",
+        "route_type",
+        "vehicle_type"
+      ],
+      "threshold": null,
+      "splits": {
+        "validation": {
+          "rows": 340443,
+          "accuracy": 0.63811,
+          "macro_f1": 0.406059,
+          "per_class_f1": {
+            "Minor": 0.315751,
+            "Moderate": 0.365046,
+            "On Time": 0.787171,
+            "Severe": 0.156269
+          },
+          "confusion_matrix": {
+            "labels": [
+              "Minor",
+              "Moderate",
+              "On Time",
+              "Severe"
+            ],
+            "values": [
+              [
+                19602,
+                8931,
+                14027,
+                3338
+              ],
+              [
+                6575,
+                14055,
+                2177,
+                4655
+              ],
+              [
+                51678,
+                25831,
+                182288,
+                4576
+              ],
+              [
+                408,
+                725,
+                282,
+                1295
+              ]
+            ]
+          },
+          "vs_recorded": {
+            "accuracy": {
+              "recorded": 0.63811,
+              "recomputed": 0.63811,
+              "match": true
+            },
+            "macro_f1": {
+              "recorded": 0.406059,
+              "recomputed": 0.406059,
+              "match": true
+            }
+          }
+        },
+        "test": {
+          "rows": 321842,
+          "accuracy": 0.575702,
+          "macro_f1": 0.381782,
+          "per_class_f1": {
+            "Minor": 0.315292,
+            "Moderate": 0.368599,
+            "On Time": 0.732724,
+            "Severe": 0.110512
+          },
+          "confusion_matrix": {
+            "labels": [
+              "Minor",
+              "Moderate",
+              "On Time",
+              "Severe"
+            ],
+            "values": [
+              [
+                20931,
+                10975,
+                14508,
+                3289
+              ],
+              [
+                10486,
+                18312,
+                4497,
+                4208
+              ],
+              [
+                51155,
+                31398,
+                145201,
+                4315
+              ],
+              [
+                497,
+                1172,
+                57,
+                841
+              ]
+            ]
+          },
+          "vs_recorded": {
+            "accuracy": {
+              "recorded": 0.575702,
+              "recomputed": 0.575702,
+              "match": true
+            },
+            "macro_f1": {
+              "recorded": 0.381782,
+              "recomputed": 0.381782,
+              "match": true
+            }
+          }
+        }
+      },
+      "srs_target": {
+        "rule": "accuracy >= 0.85 or macro F1 >= 0.80 (SRS NFR 4)",
+        "accuracy_met": false,
+        "macro_f1_met": false
+      }
+    }
+  ],
+  "demand": {
+    "task": "daily_boardings",
+    "features": [
+      "lag_1",
+      "lag_7",
+      "lag_28",
+      "rolling_7_mean",
+      "rolling_28_mean"
+    ],
+    "algorithms": {
+      "baseline_28day": {
+        "validation": {
+          "rows": 7049,
+          "mae": 479.551826,
+          "rmse": 937.410494,
+          "mape": 46.303891,
+          "r2": 0.836657,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 479.551826,
+              "recomputed": 479.551826,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 937.410494,
+              "recomputed": 937.410494,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.836657,
+              "recomputed": 0.836657,
+              "match": true
+            }
+          }
+        },
+        "test": {
+          "rows": 7160,
+          "mae": 399.95635,
+          "rmse": 733.671496,
+          "mape": 33.184021,
+          "r2": 0.88012,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 399.95635,
+              "recomputed": 399.95635,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 733.671496,
+              "recomputed": 733.671496,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.88012,
+              "recomputed": 0.88012,
+              "match": true
+            }
+          }
+        }
+      },
+      "ridge": {
+        "validation": {
+          "rows": 7049,
+          "mae": 302.161443,
+          "rmse": 709.078454,
+          "mape": 30.499825,
+          "r2": 0.906539,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 302.161443,
+              "recomputed": 302.161443,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 709.078454,
+              "recomputed": 709.078454,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.906539,
+              "recomputed": 0.906539,
+              "match": true
+            }
+          }
+        },
+        "test": {
+          "rows": 7160,
+          "mae": 216.122834,
+          "rmse": 452.048268,
+          "mape": 16.784818,
+          "r2": 0.95449,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 216.122834,
+              "recomputed": 216.122834,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 452.048268,
+              "recomputed": 452.048268,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.95449,
+              "recomputed": 0.95449,
+              "match": true
+            }
+          }
+        }
+      },
+      "random_forest": {
+        "validation": {
+          "rows": 7049,
+          "mae": 273.913689,
+          "rmse": 670.717864,
+          "mape": 29.584053,
+          "r2": 0.916378,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 273.913689,
+              "recomputed": 273.913689,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 670.717864,
+              "recomputed": 670.717864,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.916378,
+              "recomputed": 0.916378,
+              "match": true
+            }
+          }
+        },
+        "test": {
+          "rows": 7160,
+          "mae": 193.367119,
+          "rmse": 422.417388,
+          "mape": 14.677831,
+          "r2": 0.96026,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 193.367119,
+              "recomputed": 193.367119,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 422.417388,
+              "recomputed": 422.417388,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.96026,
+              "recomputed": 0.96026,
+              "match": true
+            }
+          }
+        }
+      },
+      "xgboost": {
+        "validation": {
+          "rows": 7049,
+          "mae": 278.769836,
+          "rmse": 683.740631,
+          "mape": 29.47095,
+          "r2": 0.913099,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 278.769836,
+              "recomputed": 278.769836,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 683.740631,
+              "recomputed": 683.740631,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.913099,
+              "recomputed": 0.913099,
+              "match": true
+            }
+          }
+        },
+        "test": {
+          "rows": 7160,
+          "mae": 199.296387,
+          "rmse": 450.605409,
+          "mape": 15.518914,
+          "r2": 0.95478,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 199.296387,
+              "recomputed": 199.296387,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 450.605409,
+              "recomputed": 450.605409,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.95478,
+              "recomputed": 0.95478,
+              "match": true
+            }
+          }
+        }
+      }
+    },
+    "selected": "random_forest",
+    "srs_target": {
+      "rule": "selected model beats the documented 28-day baseline (SRS step 24)",
+      "baseline_test_mae": 399.95635,
+      "selected_test_mae": 193.367119,
+      "improvement_pct": 51.65,
+      "met": true
+    }
+  },
+  "clustering": {
+    "task": "route_clustering",
+    "routes": 116,
+    "selected": "agglomerative_k5",
+    "agglomerative_k5": {
+      "silhouette": 0.324122,
+      "recorded_silhouette": 0.324122,
+      "labels_identical_to_saved_model": true,
+      "clusters": 5
+    },
+    "kmeans_k5_v1.pkl": {
+      "expects_features": 9,
+      "current_features": 8,
+      "status": "stale file from an earlier 9-feature run; not scored, not served"
+    }
+  },
+  "result": "PASS"
+}
