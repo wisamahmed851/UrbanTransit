@@ -11,9 +11,11 @@
       "scenario_type": "increase_frequency",
       "route_id": "R012",
       "confidence": "estimate",
-      "warning_flags": [
-        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
-      ]
+      "warning_flags": [],
+      "estimated_new_headway_min": 12.0,
+      "estimated_waiting_time_reduction_min": 4.0,
+      "estimated_crowding_probability": 0.01,
+      "estimated_demand_coverage_improvement_passengers": 112
     }
   },
   {
@@ -28,9 +30,10 @@
       "scenario_type": "decrease_frequency",
       "route_id": "R014",
       "confidence": "estimate",
-      "warning_flags": [
-        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
-      ]
+      "warning_flags": [],
+      "estimated_new_headway_min": 60.0,
+      "estimated_waiting_time_increase_min": 7.5,
+      "estimated_crowding_probability": 0.19
     }
   },
   {
@@ -45,8 +48,10 @@
       "route_id": "R012",
       "confidence": "estimate",
       "warning_flags": [
-        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
-      ]
+        "This resolves the Critical/Overcrowded condition"
+      ],
+      "estimated_new_occupancy_pct": 0.19,
+      "estimated_crowding_probability": 0.023
     }
   },
   {
@@ -60,9 +65,9 @@
       "scenario_type": "change_vehicle_capacity",
       "route_id": "R025",
       "confidence": "estimate",
-      "warning_flags": [
-        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
-      ]
+      "warning_flags": [],
+      "estimated_new_occupancy_pct": 1.0,
+      "estimated_crowding_probability": 0.005
     }
   },
   {
@@ -76,9 +81,9 @@
       "scenario_type": "shift_trip_time",
       "route_id": "R030",
       "confidence": "estimate",
-      "warning_flags": [
-        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
-      ]
+      "warning_flags": [],
+      "estimated_severe_delay_risk": 0.057,
+      "estimated_demand_change": 10
     }
   },
   {
@@ -92,8 +97,11 @@
       "route_id": "R102",
       "confidence": "estimate",
       "warning_flags": [
-        "Simulation error: The truth value of an empty array is ambiguous. Use `array.size > 0` to check that an array is not empty."
-      ]
+        "Trip occupancy is 53.3%, NOT below Low threshold",
+        "Removal would create a gap above maximum headway (30+ min)"
+      ],
+      "estimated_riders_affected": 18,
+      "nearest_alternative_trip_min": 99
     }
   }
 ]
