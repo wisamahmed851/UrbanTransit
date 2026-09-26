@@ -1,0 +1,53 @@
+{
+  "metric_files": 28,
+  "model_metrics_rows": 340,
+  "rows_per_file": {
+    "crowding_flag_gbt_sample.json": 8,
+    "crowding_flag_logistic_regression_sample.json": 8,
+    "crowding_flag_random_forest_full_weighted.json": 25,
+    "crowding_flag_random_forest_full_weighted_enhanced_v2.json": 25,
+    "crowding_flag_random_forest_sample.json": 8,
+    "daily_boardings_decision_tree.json": 20,
+    "daily_boardings_gbt.json": 20,
+    "daily_boardings_linear_regression.json": 20,
+    "daily_boardings_random_forest.json": 20,
+    "delay_severity_decision_tree_sample.json": 8,
+    "delay_severity_gbt_one_vs_rest_sample.json": 8,
+    "delay_severity_logistic_regression.json": 8,
+    "delay_severity_random_forest.json": 8,
+    "delay_severity_random_forest_full_weighted.json": 35,
+    "delay_severity_random_forest_full_weighted_enhanced_v2.json": 35,
+    "delay_severity_random_forest_full_weighted_enhanced_v3_sqrt_weights.json": 35,
+    "delay_severity_random_forest_full_weighted_enhanced_v4_depth12.json": 28,
+    "delay_severity_xgboost_gpu.json": 4,
+    "demand_forecast_baseline.json": 8,
+    "route_clustering_bisecting_kmeans_k3.json": 1,
+    "route_clustering_bisecting_kmeans_k4.json": 1,
+    "route_clustering_bisecting_kmeans_k5.json": 1,
+    "route_clustering_gaussian_mixture_k3.json": 1,
+    "route_clustering_gaussian_mixture_k4.json": 1,
+    "route_clustering_gaussian_mixture_k5.json": 1,
+    "route_clustering_kmeans_k3.json": 1,
+    "route_clustering_kmeans_k4.json": 1,
+    "route_clustering_kmeans_k5.json": 1
+  },
+  "rows_per_task": {
+    "crowding_flag": 74,
+    "daily_boardings": 88,
+    "delay_severity": 169,
+    "route_clustering": 9
+  },
+  "rows_per_split_type": {
+    "validation_sample": 10,
+    "test_full": 10,
+    "validation_trial": 121,
+    "train": 67,
+    "validation": 62,
+    "test": 64,
+    "validation_tuning": 4,
+    "validation_selection": 2
+  },
+  "invalid_rows": 169,
+  "cluster_profiles_rows": 4,
+  "result": "PASS"
+}
