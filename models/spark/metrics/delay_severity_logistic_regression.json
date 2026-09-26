@@ -7,20 +7,20 @@
   "metrics": {
     "train": {
       "accuracy": 0.792208,
-      "macro_f1": 0.723792
+      "weighted_f1": 0.723792
     },
     "validation": {
       "accuracy": 0.81372,
-      "macro_f1": 0.750757
+      "weighted_f1": 0.750757
     },
     "test": {
       "accuracy": 0.772877,
-      "macro_f1": 0.700389
+      "weighted_f1": 0.700389
     }
   },
   "validation_tuning": {
     "accuracy": 0.814016,
-    "macro_f1": 0.751678
+    "weighted_f1": 0.751678
   },
   "rows": {
     "train": 1411526,

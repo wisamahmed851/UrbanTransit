@@ -1,0 +1,23 @@
+{
+  "task": "daily_boardings",
+  "algorithm": "trailing_28_day_mean_baseline",
+  "feature_rule": "Strict-prior trailing mean: each route-day uses up to the preceding 28 route-days; the current day is excluded.",
+  "metrics": {
+    "validation": {
+      "mae": 517.67498,
+      "rmse": 1022.839174,
+      "mape": 46.187533,
+      "r2": 0.838353,
+      "rows": 7092
+    },
+    "test": {
+      "mae": 430.033224,
+      "rmse": 800.952104,
+      "mape": 33.118233,
+      "r2": 0.8815,
+      "rows": 7198
+    }
+  },
+  "computed_from": "colab_export/features/route_daily_demand",
+  "date": "2026-09-26"
+}

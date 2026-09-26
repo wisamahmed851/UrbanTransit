@@ -1,0 +1,730 @@
+{
+  "task": "delay_severity",
+  "algorithm": "random_forest_full_weighted",
+  "model_scope": "full chronological training split; validation-only selection; untouched test split",
+  "selected_params": {
+    "numTrees": 80,
+    "maxDepth": 8
+  },
+  "threshold": null,
+  "class_counts_train": {
+    "3": 16757,
+    "1": 196040,
+    "0": 1050527,
+    "2": 148202
+  },
+  "class_weights": {
+    "3": 21.05875157,
+    "1": 1.80004846,
+    "0": 0.33590902,
+    "2": 2.3810846
+  },
+  "validation_trials": [
+    {
+      "params": {
+        "numTrees": 80,
+        "maxDepth": 6
+      },
+      "threshold": null,
+      "validation": {
+        "accuracy": 0.692606,
+        "weighted_f1": 0.725546,
+        "macro_f1": 0.492501,
+        "per_class_f1": {
+          "On Time": 0.828639,
+          "Minor": 0.325444,
+          "Moderate": 0.435463,
+          "Severe": 0.380459
+        },
+        "confusion_matrix_long": [
+          {
+            "actual": "On Time",
+            "predicted": "On Time",
+            "count": 198404
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Minor",
+            "count": 45406
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Moderate",
+            "count": 19484
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Severe",
+            "count": 875
+          },
+          {
+            "actual": "Minor",
+            "predicted": "On Time",
+            "count": 15142
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Minor",
+            "count": 18817
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Moderate",
+            "count": 11010
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Severe",
+            "count": 901
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "On Time",
+            "count": 1027
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Minor",
+            "count": 5438
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Moderate",
+            "count": 16199
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Severe",
+            "count": 4737
+          },
+          {
+            "actual": "Severe",
+            "predicted": "On Time",
+            "count": 125
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Minor",
+            "count": 108
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Moderate",
+            "count": 305
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Severe",
+            "count": 2165
+          }
+        ],
+        "rows": 340143
+      },
+      "threshold_trials": [
+        {
+          "threshold": null,
+          "metrics": {
+            "accuracy": 0.692606,
+            "weighted_f1": 0.725546,
+            "macro_f1": 0.492501,
+            "per_class_f1": {
+              "On Time": 0.828639,
+              "Minor": 0.325444,
+              "Moderate": 0.435463,
+              "Severe": 0.380459
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "On Time",
+                "predicted": "On Time",
+                "count": 198404
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Minor",
+                "count": 45406
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Moderate",
+                "count": 19484
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Severe",
+                "count": 875
+              },
+              {
+                "actual": "Minor",
+                "predicted": "On Time",
+                "count": 15142
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Minor",
+                "count": 18817
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Moderate",
+                "count": 11010
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Severe",
+                "count": 901
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "On Time",
+                "count": 1027
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Minor",
+                "count": 5438
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Moderate",
+                "count": 16199
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Severe",
+                "count": 4737
+              },
+              {
+                "actual": "Severe",
+                "predicted": "On Time",
+                "count": 125
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Minor",
+                "count": 108
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Moderate",
+                "count": 305
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Severe",
+                "count": 2165
+              }
+            ],
+            "rows": 340143
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "numTrees": 80,
+        "maxDepth": 8
+      },
+      "threshold": null,
+      "validation": {
+        "accuracy": 0.707826,
+        "weighted_f1": 0.740562,
+        "macro_f1": 0.553835,
+        "per_class_f1": {
+          "On Time": 0.831117,
+          "Minor": 0.351384,
+          "Moderate": 0.543849,
+          "Severe": 0.48899
+        },
+        "confusion_matrix_long": [
+          {
+            "actual": "On Time",
+            "predicted": "On Time",
+            "count": 198083
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Minor",
+            "count": 55109
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Moderate",
+            "count": 10667
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Severe",
+            "count": 310
+          },
+          {
+            "actual": "Minor",
+            "predicted": "On Time",
+            "count": 13584
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Minor",
+            "count": 22727
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Moderate",
+            "count": 9226
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Severe",
+            "count": 333
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "On Time",
+            "count": 723
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Minor",
+            "count": 5570
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Moderate",
+            "count": 17798
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Severe",
+            "count": 3310
+          },
+          {
+            "actual": "Severe",
+            "predicted": "On Time",
+            "count": 108
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Minor",
+            "count": 81
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Moderate",
+            "count": 360
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Severe",
+            "count": 2154
+          }
+        ],
+        "rows": 340143
+      },
+      "threshold_trials": [
+        {
+          "threshold": null,
+          "metrics": {
+            "accuracy": 0.707826,
+            "weighted_f1": 0.740562,
+            "macro_f1": 0.553835,
+            "per_class_f1": {
+              "On Time": 0.831117,
+              "Minor": 0.351384,
+              "Moderate": 0.543849,
+              "Severe": 0.48899
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "On Time",
+                "predicted": "On Time",
+                "count": 198083
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Minor",
+                "count": 55109
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Moderate",
+                "count": 10667
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Severe",
+                "count": 310
+              },
+              {
+                "actual": "Minor",
+                "predicted": "On Time",
+                "count": 13584
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Minor",
+                "count": 22727
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Moderate",
+                "count": 9226
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Severe",
+                "count": 333
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "On Time",
+                "count": 723
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Minor",
+                "count": 5570
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Moderate",
+                "count": 17798
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Severe",
+                "count": 3310
+              },
+              {
+                "actual": "Severe",
+                "predicted": "On Time",
+                "count": 108
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Minor",
+                "count": 81
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Moderate",
+                "count": 360
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Severe",
+                "count": 2154
+              }
+            ],
+            "rows": 340143
+          }
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "train": {
+      "accuracy": 0.705801,
+      "weighted_f1": 0.733822,
+      "macro_f1": 0.573264,
+      "per_class_f1": {
+        "On Time": 0.830985,
+        "Minor": 0.357323,
+        "Moderate": 0.565066,
+        "Severe": 0.539682
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "On Time",
+          "predicted": "On Time",
+          "count": 796784
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Minor",
+          "count": 212715
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Moderate",
+          "count": 40621
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Severe",
+          "count": 407
+        },
+        {
+          "actual": "Minor",
+          "predicted": "On Time",
+          "count": 62020
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Minor",
+          "count": 95765
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Moderate",
+          "count": 37605
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Severe",
+          "count": 650
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "On Time",
+          "count": 7884
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Minor",
+          "count": 30952
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Moderate",
+          "count": 89947
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Severe",
+          "count": 19419
+        },
+        {
+          "actual": "Severe",
+          "predicted": "On Time",
+          "count": 471
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Minor",
+          "count": 542
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Moderate",
+          "count": 1984
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Severe",
+          "count": 13760
+        }
+      ],
+      "rows": 1411526
+    },
+    "validation": {
+      "accuracy": 0.707826,
+      "weighted_f1": 0.740562,
+      "macro_f1": 0.553835,
+      "per_class_f1": {
+        "On Time": 0.831117,
+        "Minor": 0.351384,
+        "Moderate": 0.543849,
+        "Severe": 0.48899
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "On Time",
+          "predicted": "On Time",
+          "count": 198083
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Minor",
+          "count": 55109
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Moderate",
+          "count": 10667
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Severe",
+          "count": 310
+        },
+        {
+          "actual": "Minor",
+          "predicted": "On Time",
+          "count": 13584
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Minor",
+          "count": 22727
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Moderate",
+          "count": 9226
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Severe",
+          "count": 333
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "On Time",
+          "count": 723
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Minor",
+          "count": 5570
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Moderate",
+          "count": 17798
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Severe",
+          "count": 3310
+        },
+        {
+          "actual": "Severe",
+          "predicted": "On Time",
+          "count": 108
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Minor",
+          "count": 81
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Moderate",
+          "count": 360
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Severe",
+          "count": 2154
+        }
+      ],
+      "rows": 340143
+    },
+    "test": {
+      "accuracy": 0.67543,
+      "weighted_f1": 0.705603,
+      "macro_f1": 0.532531,
+      "per_class_f1": {
+        "On Time": 0.808413,
+        "Minor": 0.360838,
+        "Moderate": 0.546042,
+        "Severe": 0.414829
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "On Time",
+          "predicted": "On Time",
+          "count": 168789
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Minor",
+          "count": 52219
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Moderate",
+          "count": 10596
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Severe",
+          "count": 264
+        },
+        {
+          "actual": "Minor",
+          "predicted": "On Time",
+          "count": 14958
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Minor",
+          "count": 24386
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Moderate",
+          "count": 9958
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Severe",
+          "count": 363
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "On Time",
+          "count": 1902
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Minor",
+          "count": 8803
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Moderate",
+          "count": 21890
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Severe",
+          "count": 4832
+        },
+        {
+          "actual": "Severe",
+          "predicted": "On Time",
+          "count": 64
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Minor",
+          "count": 90
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Moderate",
+          "count": 306
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Severe",
+          "count": 2098
+        }
+      ],
+      "rows": 321518
+    }
+  },
+  "labels": [
+    "On Time",
+    "Minor",
+    "Moderate",
+    "Severe"
+  ],
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "macro_f1_definition": "unweighted mean of the separately calculated per-class F1 scores; Spark evaluator f1 is reported separately as weighted_f1.",
+  "date": "2026-09-26"
+}

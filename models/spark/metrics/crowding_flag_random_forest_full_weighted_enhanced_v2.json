@@ -1,0 +1,527 @@
+{
+  "task": "crowding_flag",
+  "algorithm": "random_forest_full_weighted",
+  "model_scope": "full chronological training split; validation-only selection; untouched test split",
+  "feature_set": "enhanced_safe_prior_history",
+  "numeric_features": [
+    "hour",
+    "day_of_week",
+    "weekend_indicator",
+    "peak_hour_indicator_asof",
+    "historical_delay_average",
+    "n_stops",
+    "distance_km",
+    "travel_time_min",
+    "demand_wow_growth",
+    "rolling_28_mean_occupancy",
+    "lag_7_occupancy",
+    "planned_runtime_min",
+    "headway_min",
+    "headway_minutes",
+    "historical_demand_average",
+    "peak_hour_share_asof",
+    "demand_mom_growth",
+    "prior_route_hour_crowding_rate"
+  ],
+  "categorical_features": [
+    "route_id",
+    "vehicle_id",
+    "direction",
+    "route_type"
+  ],
+  "selected_params": {
+    "numTrees": 80,
+    "maxDepth": 8
+  },
+  "threshold": 0.5,
+  "class_counts_train": {
+    "1": 131527,
+    "0": 1183244
+  },
+  "class_weights": {
+    "1": 4.99810305,
+    "0": 0.55557898
+  },
+  "validation_trials": [
+    {
+      "params": {
+        "numTrees": 80,
+        "maxDepth": 6
+      },
+      "threshold": 0.5,
+      "validation": {
+        "accuracy": 0.863837,
+        "weighted_f1": 0.88827,
+        "macro_f1": 0.717669,
+        "per_class_f1": {
+          "False": 0.920814,
+          "True": 0.514524
+        },
+        "confusion_matrix_long": [
+          {
+            "actual": "False",
+            "predicted": "False",
+            "count": 250709
+          },
+          {
+            "actual": "False",
+            "predicted": "True",
+            "count": 40604
+          },
+          {
+            "actual": "True",
+            "predicted": "False",
+            "count": 2516
+          },
+          {
+            "actual": "True",
+            "predicted": "True",
+            "count": 22850
+          }
+        ],
+        "rows": 316679
+      },
+      "threshold_trials": [
+        {
+          "threshold": 0.2,
+          "metrics": {
+            "accuracy": 0.703229,
+            "weighted_f1": 0.771054,
+            "macro_f1": 0.576176,
+            "per_class_f1": {
+              "False": 0.808228,
+              "True": 0.344125
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 198043
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 93270
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 711
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 24655
+              }
+            ],
+            "rows": 316679
+          }
+        },
+        {
+          "threshold": 0.3,
+          "metrics": {
+            "accuracy": 0.798307,
+            "weighted_f1": 0.841608,
+            "macro_f1": 0.653417,
+            "per_class_f1": {
+              "False": 0.877507,
+              "True": 0.429327
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 228781
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 62532
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 1340
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 24026
+              }
+            ],
+            "rows": 316679
+          }
+        },
+        {
+          "threshold": 0.4,
+          "metrics": {
+            "accuracy": 0.842149,
+            "weighted_f1": 0.87295,
+            "macro_f1": 0.69537,
+            "per_class_f1": {
+              "False": 0.906825,
+              "True": 0.483915
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 243255
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 48058
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 1930
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 23436
+              }
+            ],
+            "rows": 316679
+          }
+        },
+        {
+          "threshold": 0.5,
+          "metrics": {
+            "accuracy": 0.863837,
+            "weighted_f1": 0.88827,
+            "macro_f1": 0.717669,
+            "per_class_f1": {
+              "False": 0.920814,
+              "True": 0.514524
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 250709
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 40604
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 2516
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 22850
+              }
+            ],
+            "rows": 316679
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "numTrees": 80,
+        "maxDepth": 8
+      },
+      "threshold": 0.5,
+      "validation": {
+        "accuracy": 0.872972,
+        "weighted_f1": 0.894976,
+        "macro_f1": 0.729796,
+        "per_class_f1": {
+          "False": 0.926486,
+          "True": 0.533107
+        },
+        "confusion_matrix_long": [
+          {
+            "actual": "False",
+            "predicted": "False",
+            "count": 253486
+          },
+          {
+            "actual": "False",
+            "predicted": "True",
+            "count": 37827
+          },
+          {
+            "actual": "True",
+            "predicted": "False",
+            "count": 2400
+          },
+          {
+            "actual": "True",
+            "predicted": "True",
+            "count": 22966
+          }
+        ],
+        "rows": 316679
+      },
+      "threshold_trials": [
+        {
+          "threshold": 0.2,
+          "metrics": {
+            "accuracy": 0.744394,
+            "weighted_f1": 0.802239,
+            "macro_f1": 0.609339,
+            "per_class_f1": {
+              "False": 0.839036,
+              "True": 0.379641
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 210966
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 80347
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 598
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 24768
+              }
+            ],
+            "rows": 316679
+          }
+        },
+        {
+          "threshold": 0.3,
+          "metrics": {
+            "accuracy": 0.814876,
+            "weighted_f1": 0.85368,
+            "macro_f1": 0.670629,
+            "per_class_f1": {
+              "False": 0.888598,
+              "True": 0.45266
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 233812
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 57501
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 1124
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 24242
+              }
+            ],
+            "rows": 316679
+          }
+        },
+        {
+          "threshold": 0.4,
+          "metrics": {
+            "accuracy": 0.849393,
+            "weighted_f1": 0.878276,
+            "macro_f1": 0.704545,
+            "per_class_f1": {
+              "False": 0.911417,
+              "True": 0.497672
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 245359
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 45954
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 1740
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 23626
+              }
+            ],
+            "rows": 316679
+          }
+        },
+        {
+          "threshold": 0.5,
+          "metrics": {
+            "accuracy": 0.872972,
+            "weighted_f1": 0.894976,
+            "macro_f1": 0.729796,
+            "per_class_f1": {
+              "False": 0.926486,
+              "True": 0.533107
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "False",
+                "predicted": "False",
+                "count": 253486
+              },
+              {
+                "actual": "False",
+                "predicted": "True",
+                "count": 37827
+              },
+              {
+                "actual": "True",
+                "predicted": "False",
+                "count": 2400
+              },
+              {
+                "actual": "True",
+                "predicted": "True",
+                "count": 22966
+              }
+            ],
+            "rows": 316679
+          }
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "train": {
+      "accuracy": 0.86694,
+      "weighted_f1": 0.886643,
+      "macro_f1": 0.749086,
+      "per_class_f1": {
+        "False": 0.921049,
+        "True": 0.577123
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "False",
+          "predicted": "False",
+          "count": 1020451
+        },
+        {
+          "actual": "False",
+          "predicted": "True",
+          "count": 162793
+        },
+        {
+          "actual": "True",
+          "predicted": "False",
+          "count": 12150
+        },
+        {
+          "actual": "True",
+          "predicted": "True",
+          "count": 119377
+        }
+      ],
+      "rows": 1314771
+    },
+    "validation": {
+      "accuracy": 0.872972,
+      "weighted_f1": 0.894976,
+      "macro_f1": 0.729796,
+      "per_class_f1": {
+        "False": 0.926486,
+        "True": 0.533107
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "False",
+          "predicted": "False",
+          "count": 253486
+        },
+        {
+          "actual": "False",
+          "predicted": "True",
+          "count": 37827
+        },
+        {
+          "actual": "True",
+          "predicted": "False",
+          "count": 2400
+        },
+        {
+          "actual": "True",
+          "predicted": "True",
+          "count": 22966
+        }
+      ],
+      "rows": 316679
+    },
+    "test": {
+      "accuracy": 0.88315,
+      "weighted_f1": 0.901346,
+      "macro_f1": 0.748354,
+      "per_class_f1": {
+        "False": 0.93253,
+        "True": 0.564177
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "False",
+          "predicted": "False",
+          "count": 241855
+        },
+        {
+          "actual": "False",
+          "predicted": "True",
+          "count": 32293
+        },
+        {
+          "actual": "True",
+          "predicted": "False",
+          "count": 2704
+        },
+        {
+          "actual": "True",
+          "predicted": "True",
+          "count": 22652
+        }
+      ],
+      "rows": 299504
+    }
+  },
+  "labels": [
+    "False",
+    "True"
+  ],
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "macro_f1_definition": "unweighted mean of the separately calculated per-class F1 scores; Spark evaluator f1 is reported separately as weighted_f1.",
+  "date": "2026-09-26"
+}

@@ -1,0 +1,517 @@
+{
+  "task": "delay_severity",
+  "algorithm": "random_forest_full_weighted",
+  "model_scope": "full chronological training split; validation-only selection; untouched test split",
+  "feature_set": "enhanced_safe_prior_history",
+  "numeric_features": [
+    "hour",
+    "day_of_week",
+    "weekend_indicator",
+    "peak_hour_indicator_asof",
+    "historical_delay_average",
+    "n_stops",
+    "distance_km",
+    "travel_time_min",
+    "demand_wow_growth",
+    "occupancy_pct",
+    "planned_runtime_min",
+    "headway_min",
+    "headway_minutes",
+    "historical_demand_average",
+    "peak_hour_share_asof",
+    "demand_mom_growth",
+    "prior_route_hour_delay_mean"
+  ],
+  "categorical_features": [
+    "route_id",
+    "vehicle_id",
+    "direction",
+    "route_type"
+  ],
+  "selected_params": {
+    "numTrees": 100,
+    "maxDepth": 12
+  },
+  "threshold": null,
+  "class_counts_train": {
+    "3": 16757,
+    "1": 196040,
+    "0": 1050527,
+    "2": 148202
+  },
+  "class_weights": {
+    "3": 4.58898154,
+    "1": 1.34165885,
+    "0": 0.57957659,
+    "2": 1.54307634
+  },
+  "weight_power": 0.5,
+  "validation_trials": [
+    {
+      "params": {
+        "numTrees": 100,
+        "maxDepth": 12
+      },
+      "threshold": null,
+      "validation": {
+        "accuracy": 0.866115,
+        "weighted_f1": 0.860467,
+        "macro_f1": 0.71774,
+        "per_class_f1": {
+          "On Time": 0.935871,
+          "Minor": 0.5127,
+          "Moderate": 0.732498,
+          "Severe": 0.689891
+        },
+        "confusion_matrix_long": [
+          {
+            "actual": "On Time",
+            "predicted": "On Time",
+            "count": 250580
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Minor",
+            "count": 10263
+          },
+          {
+            "actual": "On Time",
+            "predicted": "Moderate",
+            "count": 3326
+          },
+          {
+            "actual": "Minor",
+            "predicted": "On Time",
+            "count": 19270
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Minor",
+            "count": 20771
+          },
+          {
+            "actual": "Minor",
+            "predicted": "Moderate",
+            "count": 5829
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "On Time",
+            "count": 1333
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Minor",
+            "count": 4068
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Moderate",
+            "count": 21638
+          },
+          {
+            "actual": "Moderate",
+            "predicted": "Severe",
+            "count": 362
+          },
+          {
+            "actual": "Severe",
+            "predicted": "On Time",
+            "count": 149
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Minor",
+            "count": 54
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Moderate",
+            "count": 886
+          },
+          {
+            "actual": "Severe",
+            "predicted": "Severe",
+            "count": 1614
+          }
+        ],
+        "rows": 340143
+      },
+      "threshold_trials": [
+        {
+          "threshold": null,
+          "metrics": {
+            "accuracy": 0.866115,
+            "weighted_f1": 0.860467,
+            "macro_f1": 0.71774,
+            "per_class_f1": {
+              "On Time": 0.935871,
+              "Minor": 0.5127,
+              "Moderate": 0.732498,
+              "Severe": 0.689891
+            },
+            "confusion_matrix_long": [
+              {
+                "actual": "On Time",
+                "predicted": "On Time",
+                "count": 250580
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Minor",
+                "count": 10263
+              },
+              {
+                "actual": "On Time",
+                "predicted": "Moderate",
+                "count": 3326
+              },
+              {
+                "actual": "Minor",
+                "predicted": "On Time",
+                "count": 19270
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Minor",
+                "count": 20771
+              },
+              {
+                "actual": "Minor",
+                "predicted": "Moderate",
+                "count": 5829
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "On Time",
+                "count": 1333
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Minor",
+                "count": 4068
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Moderate",
+                "count": 21638
+              },
+              {
+                "actual": "Moderate",
+                "predicted": "Severe",
+                "count": 362
+              },
+              {
+                "actual": "Severe",
+                "predicted": "On Time",
+                "count": 149
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Minor",
+                "count": 54
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Moderate",
+                "count": 886
+              },
+              {
+                "actual": "Severe",
+                "predicted": "Severe",
+                "count": 1614
+              }
+            ],
+            "rows": 340143
+          }
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "train": {
+      "accuracy": 0.865726,
+      "weighted_f1": 0.860022,
+      "macro_f1": 0.747972,
+      "per_class_f1": {
+        "On Time": 0.934496,
+        "Minor": 0.539045,
+        "Moderate": 0.769235,
+        "Severe": 0.749113
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "On Time",
+          "predicted": "On Time",
+          "count": 997487
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Minor",
+          "count": 39734
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Moderate",
+          "count": 13305
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Severe",
+          "count": 1
+        },
+        {
+          "actual": "Minor",
+          "predicted": "On Time",
+          "count": 77331
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Minor",
+          "count": 93410
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Moderate",
+          "count": 25292
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Severe",
+          "count": 7
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "On Time",
+          "count": 8866
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Minor",
+          "count": 17223
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Moderate",
+          "count": 119483
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Severe",
+          "count": 2630
+        },
+        {
+          "actual": "Severe",
+          "predicted": "On Time",
+          "count": 601
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Minor",
+          "count": 169
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Moderate",
+          "count": 4372
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Severe",
+          "count": 11615
+        }
+      ],
+      "rows": 1411526
+    },
+    "validation": {
+      "accuracy": 0.866115,
+      "weighted_f1": 0.860467,
+      "macro_f1": 0.71774,
+      "per_class_f1": {
+        "On Time": 0.935871,
+        "Minor": 0.5127,
+        "Moderate": 0.732498,
+        "Severe": 0.689891
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "On Time",
+          "predicted": "On Time",
+          "count": 250580
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Minor",
+          "count": 10263
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Moderate",
+          "count": 3326
+        },
+        {
+          "actual": "Minor",
+          "predicted": "On Time",
+          "count": 19270
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Minor",
+          "count": 20771
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Moderate",
+          "count": 5829
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "On Time",
+          "count": 1333
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Minor",
+          "count": 4068
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Moderate",
+          "count": 21638
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Severe",
+          "count": 362
+        },
+        {
+          "actual": "Severe",
+          "predicted": "On Time",
+          "count": 149
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Minor",
+          "count": 54
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Moderate",
+          "count": 886
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Severe",
+          "count": 1614
+        }
+      ],
+      "rows": 340143
+    },
+    "test": {
+      "accuracy": 0.834071,
+      "weighted_f1": 0.827857,
+      "macro_f1": 0.695002,
+      "per_class_f1": {
+        "On Time": 0.916109,
+        "Minor": 0.49462,
+        "Moderate": 0.73666,
+        "Severe": 0.632618
+      },
+      "confusion_matrix_long": [
+        {
+          "actual": "On Time",
+          "predicted": "On Time",
+          "count": 215788
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Minor",
+          "count": 12194
+        },
+        {
+          "actual": "On Time",
+          "predicted": "Moderate",
+          "count": 3886
+        },
+        {
+          "actual": "Minor",
+          "predicted": "On Time",
+          "count": 20266
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Minor",
+          "count": 21880
+        },
+        {
+          "actual": "Minor",
+          "predicted": "Moderate",
+          "count": 7519
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "On Time",
+          "count": 3098
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Minor",
+          "count": 4674
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Moderate",
+          "count": 29027
+        },
+        {
+          "actual": "Moderate",
+          "predicted": "Severe",
+          "count": 628
+        },
+        {
+          "actual": "Severe",
+          "predicted": "On Time",
+          "count": 77
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Minor",
+          "count": 59
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Moderate",
+          "count": 948
+        },
+        {
+          "actual": "Severe",
+          "predicted": "Severe",
+          "count": 1474
+        }
+      ],
+      "rows": 321518
+    }
+  },
+  "labels": [
+    "On Time",
+    "Minor",
+    "Moderate",
+    "Severe"
+  ],
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "macro_f1_definition": "unweighted mean of the separately calculated per-class F1 scores; Spark evaluator f1 is reported separately as weighted_f1.",
+  "date": "2026-09-26"
+}
