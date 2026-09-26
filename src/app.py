@@ -44,14 +44,14 @@ def create_app(config_object: type = BaseConfig) -> Flask:
     register_error_handlers(app)
     register_cli(app)
     if not app.testing:
-        warm_models()
+        warm_models(app)
     return app
 
 
-def warm_models() -> None:
+def warm_models(app: Flask) -> None:
     """Load the saved models in a background thread at startup, so the first prediction or
-    forecast does not wait 8-10 s for joblib to read them. A missing model file is fine here;
-    the endpoint reports it when called."""
+    forecast does not wait 8-10 s for joblib to read them, and pre-compute the default network
+    forecast. A missing model file or database is fine here; the endpoint reports it when called."""
     import threading
 
     def load():
@@ -63,6 +63,8 @@ def warm_models() -> None:
                 pass
         try:
             forecasting.load_regressor()
+            with app.app_context():
+                forecasting.network_forecast(model_serving.serving_config()["forecast"]["default_horizon_days"])
         except Exception:  # noqa: BLE001
             pass
 

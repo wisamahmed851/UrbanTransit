@@ -62,10 +62,13 @@ def load_classifier(task: str) -> dict:
                        "The saved model files are not on this server. Unzip the shared models.zip into models/.",
                        {"missing": missing})
     record = json.loads(record_file.read_text(encoding="utf-8"))
+    model = joblib.load(model_file)
+    if hasattr(model, "n_jobs"):
+        model.n_jobs = 1          # saved with n_jobs=-1; a thread pool per small request only costs time
     return {
         "task": task, "algorithm": spec["algorithm"], "version": spec["version"],
         "file": str(model_file.relative_to(settings.PROJECT_ROOT)),
-        "model": joblib.load(model_file), "preprocessor": joblib.load(prep_file),
+        "model": model, "preprocessor": joblib.load(prep_file),
         "numeric": record["features"]["numeric"], "categorical": record["features"]["categorical"],
         "labels": record["test"]["confusion_matrix"]["labels"],   # sorted class names, the order of predict_proba
         "threshold": record.get("threshold"),

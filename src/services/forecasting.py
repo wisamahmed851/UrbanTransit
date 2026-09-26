@@ -18,12 +18,12 @@ The model is the one Phase 7 selected (lowest validation MAE): see config/servin
 """
 
 from datetime import date, timedelta
-from functools import cache
+from functools import cache, lru_cache
 
 import joblib
 import numpy as np
 import pandas as pd
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from config import settings
 from src.errors import ApiError
@@ -44,7 +44,12 @@ def load_regressor():
         raise ApiError(503, "model_unavailable",
                        "The saved demand model is not on this server. Unzip the shared models.zip into models/.",
                        {"missing": [str(path.relative_to(settings.PROJECT_ROOT))]})
-    return spec, joblib.load(path)
+    model = joblib.load(path)
+    # Saved with n_jobs=-1: every predict() would start a worker pool, which costs far more
+    # than the prediction itself for the small batches a recursive forecast makes.
+    if hasattr(model, "n_jobs"):
+        model.n_jobs = 1
+    return spec, model
 
 
 def next_features(history: list[float]) -> list[float]:
@@ -135,9 +140,21 @@ def route_forecast(route_id: str, horizon: int, history_days: int) -> dict:
     }
 
 
+def data_version() -> tuple:
+    """Changes whenever route_daily_boardings is reloaded, so cached forecasts are recomputed."""
+    return tuple(db.session.execute(select(func.count(), func.max(RouteDailyBoardings.service_date),
+                                           func.sum(RouteDailyBoardings.boardings))).one())
+
+
 def network_forecast(horizon: int) -> dict:
-    """All routes forecast together: the daily network total and the routes with the most growth."""
+    """All routes forecast together: the daily network total and the routes with the most growth.
+    The result depends only on the loaded data and the horizon, so it is cached per process."""
     check_horizon(horizon)
+    return _network_forecast(horizon, data_version())
+
+
+@lru_cache(maxsize=16)
+def _network_forecast(horizon: int, _version: tuple) -> dict:
     series = route_series()
     fc = recursive_forecast(series, horizon)
     total: dict[str, float] = {}
