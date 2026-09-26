@@ -1,0 +1,38 @@
+{
+  "task": "daily_boardings",
+  "algorithm": "xgboost",
+  "features": [
+    "lag_1",
+    "lag_7",
+    "lag_28",
+    "rolling_7_mean",
+    "rolling_28_mean"
+  ],
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "validation": {
+    "mae": 278.769836,
+    "rmse": 683.740631,
+    "mape": 29.47095,
+    "r2": 0.913099
+  },
+  "test": {
+    "mae": 199.296387,
+    "rmse": 450.605409,
+    "mape": 15.518914,
+    "r2": 0.95478
+  },
+  "lag_rule": "pandas shift() before every rolling aggregate; no current/future value"
+}

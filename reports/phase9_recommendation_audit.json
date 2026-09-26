@@ -1,0 +1,68 @@
+[
+  {
+    "category": "ANOMALY",
+    "condition": "count >= 80 per entity and anomaly type in 30 days",
+    "flagged_subjects": 12,
+    "source_subjects": 13956,
+    "flagged_pct_of_source": 0.09,
+    "metric": "count",
+    "metric_min": 81.0,
+    "metric_mean": 99.5,
+    "metric_max": 123.0
+  },
+  {
+    "category": "CAPACITY",
+    "condition": "larger vehicle suggestion, denied boardings >= 35, p90 load >= 90",
+    "flagged_subjects": 14,
+    "source_subjects": 3540,
+    "flagged_pct_of_source": 0.4,
+    "metric": "p90_load",
+    "metric_min": 91.0,
+    "metric_mean": 91.0,
+    "metric_max": 91.0
+  },
+  {
+    "category": "FREQUENCY",
+    "condition": "persistent overload share >= 85%; Critical >= 95%",
+    "flagged_subjects": 7,
+    "source_subjects": 4386,
+    "flagged_pct_of_source": 0.16,
+    "metric": "overload_day_share",
+    "metric_min": 0.98,
+    "metric_mean": 0.994343,
+    "metric_max": 1.0
+  },
+  {
+    "category": "SCHEDULE",
+    "condition": "late share > 60% or early/late share > 45%/45%; one per route",
+    "flagged_subjects": 42,
+    "source_subjects": 354,
+    "flagged_pct_of_source": 11.86,
+    "metric": "late_share",
+    "metric_min": 0.0659,
+    "metric_mean": 0.507662,
+    "metric_max": 0.7142
+  },
+  {
+    "category": "STOP",
+    "condition": "is_bottleneck = true",
+    "flagged_subjects": 38,
+    "source_subjects": 756,
+    "flagged_pct_of_source": 5.03,
+    "metric": "late_record_rate",
+    "metric_min": 0.07812,
+    "metric_mean": 0.113702,
+    "metric_max": 0.1807
+  },
+  {
+    "category": "RELIABILITY",
+    "condition": "on-time rate < 60%",
+    "flagged_subjects": 37,
+    "source_subjects": 118,
+    "flagged_pct_of_source": 31.36,
+    "metric": "on_time_rate",
+    "metric_min": 0.4415,
+    "metric_mean": 0.530689,
+    "metric_max": 0.5956
+  }
+]

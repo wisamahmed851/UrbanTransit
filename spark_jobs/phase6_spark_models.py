@@ -120,7 +120,7 @@ def sample_predictions(task, pred, kind, algorithm="best"):
         pred = pred.withColumn("probability", vector_to_array("probability").cast("string"))
         cols.append("probability")
     (pred.filter(F.col("split") == "test").select(*[c for c in cols if c in pred.columns])
-         .orderBy("service_date", "route_id").limit(20).toPandas().to_csv(out / f"{task}_{algorithm}.csv", index=False))
+         .orderBy("service_date", "route_id").limit(500).toPandas().to_csv(out / f"{task}_{algorithm}.csv", index=False))
 
 
 def run_classification(log, task, df, target, features, categorical, algorithms, positive_rate=None):

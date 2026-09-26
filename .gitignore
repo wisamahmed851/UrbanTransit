@@ -45,6 +45,7 @@ parquet_data/*
 *.zip
 *.tar.gz
 colab_export/
+python_pipeline/local_clean/
 
 # ---- Model binaries ----
 models/*
@@ -55,11 +56,16 @@ models/*
 models/spark/*
 !models/spark/metrics/
 !models/spark/metrics/*.json
+!models/python/
+models/python/*
+!models/python/metrics/
+!models/python/metrics/*.json
 *.pkl
 *.joblib
 *.h5
 *.onnx
 *.ubj
+models/python/**/*.pkl
 
 # ---- Node / frontend ----
 node_modules/

@@ -1362,3 +1362,50 @@ declares dashboards out of scope (§13); its applicable rules and §14 pre-fligh
 **Problems and fixes:** the MapLibre worker under Vite; the +5 h GPS timestamp shift; empty buses and overview routes on slow basemap loads; the phantom grid column; the counter restart; the overlay overlap (details in DEV_LOG). The machine ran at 100% CPU from `qemu-system-x86_64` during testing, so visual checks used reduced motion and motion was verified separately.
 
 **Git commit:** see `git log` on `frontend/glass-theme-map` (CMD-022 commits).
+
+---
+
+## CMD-019 | 2026-09-26 (UTC+05:00) | Phase 9 recommendation actionability correction
+**My command (verbatim):**
+```text
+DO regeneration
+```
+
+**Understood as:** Regenerate the Phase 9 recommendations after replacing permissive thresholds with selective, evidence-backed gates; preserve a concise audit and inspect the R012 what-if model inputs.
+
+**Actions taken:**
+- Updated `config/thresholds.yaml`: recurring anomaly count >= 80 in 30 days; capacity needs both >= 35 denied boardings per trip and p90 load >= 90; persistent frequency overload needs >= 85% of observed days (>= 95% Critical); schedule gates are 60% late or 45% early/late.
+- Made the engine read the configuration-backed capacity and schedule gates, deduplicate schedule actions by route and frequency actions by route/action, and reject service-cut actions whose source says `insufficient_data`.
+- Regenerated `reports/recommendations.json`, `reports/recommendations_report.md`, and `reports/phase9_recommendation_audit.json` directly from HDFS analytics data.
+- Regenerated `reports/whatif_examples.json`. R012 now carries the exact saved-model feature vector and actual route-period context: observed occupancy 130%, boardings 133, and historical route-period crowding rate 6.129%. The saved classifier score remains 0.008 after adding two trips, but the artifact explicitly warns that its feature set excludes current occupancy and boardings, so the score is not a direct occupancy estimate.
+
+**Result:** PASS for actionability volume: 140 recommendations, within the requested 50-150 range. Counts are 12 ANOMALY, 14 CAPACITY, 1 FREQUENCY, 37 RELIABILITY, 38 SCHEDULE, and 38 STOP. Every generated entry includes its specific subject and numerical evidence.
+
+**Git commit:** pending.
+
+---
+
+## CMD-023 | 2026-09-26 (UTC+05:00) | Merge `main` into `frontend/glass-theme-map`
+**My command (verbatim):**
+```text
+now push this ui into the glass-theme-map branch
+now what i want is i want to clone the main branch code to here but that branch have something that i dont have and i have something that that branch dont have so what i want i want both branched data that branch the pipelines and other things except frotnend and backend okay the frontend and bakcend will be from thsi branch but before that push this branch on the github and then take the pull from the main or merge from the main in locally
+```
+
+**Understood as:** Push `frontend/glass-theme-map`, then merge `origin/main` into it locally, so the branch gets main's pipeline work (Phases 7-9) while frontend and backend stay as on this branch.
+
+**Actions taken:**
+1. `git push -u origin frontend/glass-theme-map` (tip `1b266fb`).
+2. `git fetch`; `origin/main` had moved from `8852571` to `d028ee1` (Arham: Phase 7 Python pipeline, Phase 8 comparison, Phase 9 recommendation engine and what-if simulator).
+3. Checked the overlap: main changes nothing under `src/`, `frontend/`, `database/` or `tests/`; only the three log files were changed on both sides. `git merge --no-ff origin/main` conflicted only in those.
+4. Resolved the logs by keeping both sides' additions verbatim: base, then this branch's entries, then main's.
+   - `AI_USAGE.md` and `DEV_LOG.md` on main had their newest sections appended in UTF-16 (a PowerShell `>>` redirect), which left NUL bytes in the file. That text was decoded and saved as UTF-8, with the words unchanged.
+   - `AI_USAGE.md`: main's row keeps number 10; this branch's rows (not yet on main) were renumbered 11-13.
+
+**Two entries are numbered CMD-019.** They were numbered independently on parallel branches: CMD-019 "Backend: Flask + MySQL" (this branch, 12:56) and CMD-019 "Phase 9 recommendation actionability correction" (main). Entries are never renumbered, so both stay; refer to them by number and title. Numbering continues from CMD-023.
+
+**Noted for the pipeline owner (not changed):** main's `config/thresholds.yaml` keeps every earlier value and adds a `recommendations:` section, but the rewrite dropped all comments that explained the thresholds (including the rule that the delay-severity bands must match `config/phase4.yaml`).
+
+**Result:** Success. Frontend and backend files are identical to this branch; pipeline, model and report files are identical to `origin/main`.
+
+**Git commit:** the merge commit on `frontend/glass-theme-map`.

@@ -208,3 +208,23 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Environment note:** during testing the machine ran at 100% CPU (`qemu-system-x86_64`, probably an Android emulator) with 1.5 GB RAM free, so frame rates in headless Edge varied from 2 to 61 fps. Visual checks therefore used reduced motion (final states); motion was verified separately (counters end on exact values, chart marks appear, replay advances).
 - **Verification:** 64/64 backend tests; production build; lint (only fast-refresh hints); palette validator in both modes; headless Edge screenshots (dark, light, phone), deep link, play, filters, zoom and popup; offline fallback. The taste §14 pre-flight and the Web Interface Guidelines audit results are in CMD-022.
 
+## 2026-09-26 — Phase 7 independent Python pipeline
+- Added a deliberately independent pandas/PyArrow pipeline. It stages only `/urbantransit/clean/` Parquet from HDFS locally and does not import Spark or read Phase 4/6 features, models, or predictions.
+- Built delay severity and crowding classifiers (Logistic Regression, sklearn Random Forest, XGBoost), independent route-day demand baseline/regressors, and K-Means/DBSCAN/Agglomerative route clustering. Every supervised task uses the Phase 4/6 chronological boundaries.
+- Task A’s best Python test macro F1 is .3825 (XGBoost), below the Spark result; class balancing was applied but raw scheduled/prior-history features remain weak for four delay bands. Task B XGBoost reaches .7609 macro F1 with a validation-selected .70 threshold, exceeding Spark’s .7484.
+- Task C Random Forest test MAE/RMSE is 193.37/422.42, below its independently computed 28-day baseline 399.96/733.67. Task D selects Agglomerative k=5, silhouette .3241.
+
+
+## Phase 9: Recommendation Engine and What-if Simulator
+- Created recommendation_engine/engine.py to process Phase 5 analytical outputs and generate operational recommendations via rule-based logic (Critical, High, Medium, Low).
+- Parsed and queried HDFS Parquet data natively on Windows by using fsspec and PyArrow through webhdfs://localhost:9870, coupled with a socket.getaddrinfo monkeypatch to resolve the DataNode internally.
+- Built recommendation_engine/whatif_simulator.py to evaluate hypothetical modifications by using actual Phase 6/Phase 7 models (XGBoost pipelines) to estimate impacts without hard-coded rules.
+- Updated config/thresholds.yaml to include recommendation parameters.
+- Generated Phase 9 documentation inside documentation/recommendation_engine_explained.md.
+
+## 2026-09-26 — Merged `main` (Phases 7-9) into `frontend/glass-theme-map` (CMD-023)
+- Main's Phase 7 Python pipeline, Phase 8 comparison and Phase 9 recommendation engine/what-if simulator are now on this branch; frontend and backend are unchanged by the merge.
+- Only the three log files conflicted. Main's `AI_USAGE.md` and `DEV_LOG.md` had UTF-16 sections (NUL bytes) from a PowerShell `>>` redirect; they were converted to UTF-8 in the merge.
+- Two log entries are numbered CMD-019 (parallel branches); both are kept, see CMD-023.
+- `config/thresholds.yaml` (from main) lost its explanatory comments; its values are unchanged plus a new `recommendations:` section.
+

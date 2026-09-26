@@ -1,0 +1,128 @@
+{
+  "task": "delay_severity",
+  "algorithm": "random_forest",
+  "features": {
+    "numeric": [
+      "hour",
+      "day_of_week",
+      "weekend",
+      "distance_km",
+      "planned_runtime_min",
+      "headway_min",
+      "scheduled_runtime_min",
+      "prior_route_delay_mean"
+    ],
+    "categorical": [
+      "route_id",
+      "vehicle_id",
+      "direction",
+      "route_type",
+      "vehicle_type"
+    ]
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "validation": {
+    "accuracy": 0.632388,
+    "macro_f1": 0.392633,
+    "per_class_f1": {
+      "Minor": 0.280355,
+      "Moderate": 0.345612,
+      "On Time": 0.789086,
+      "Severe": 0.155478
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Minor",
+        "Moderate",
+        "On Time",
+        "Severe"
+      ],
+      "values": [
+        [
+          16023,
+          11100,
+          14977,
+          3798
+        ],
+        [
+          5552,
+          14050,
+          2256,
+          5604
+        ],
+        [
+          46528,
+          28095,
+          183687,
+          6063
+        ],
+        [
+          304,
+          598,
+          276,
+          1532
+        ]
+      ]
+    }
+  },
+  "test": {
+    "accuracy": 0.574757,
+    "macro_f1": 0.373099,
+    "per_class_f1": {
+      "Minor": 0.276494,
+      "Moderate": 0.361749,
+      "On Time": 0.742485,
+      "Severe": 0.111668
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Minor",
+        "Moderate",
+        "On Time",
+        "Severe"
+      ],
+      "values": [
+        [
+          17135,
+          12335,
+          15732,
+          4501
+        ],
+        [
+          8876,
+          17636,
+          4581,
+          6410
+        ],
+        [
+          47835,
+          29078,
+          149052,
+          6104
+        ],
+        [
+          396,
+          952,
+          61,
+          1158
+        ]
+      ]
+    }
+  },
+  "threshold": null,
+  "test_default_threshold": null,
+  "model_scope": "independent pandas/PyArrow clean-Parquet pipeline"
+}
