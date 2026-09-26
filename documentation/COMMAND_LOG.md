@@ -1027,3 +1027,128 @@ checklist and STOP. Do not start Phase 6.
 **Problems and fixes:** none.
 
 **Git commit:** see `git log` (CMD-018 commit).
+
+---
+
+## CMD-019 | 2026-09-26 12:56 (UTC+05:00) | Backend: Flask + MySQL (branch `backend/flask-mysql`)
+**My command (verbatim):**
+
+<details>
+<summary>Full backend instruction (click to expand)</summary>
+
+```text
+Pull main first (origin/main is at 8852571, one commit ahead of us - Arham's
+Phase 6 Colab work). Then create and switch to a new branch backend/flask-mysql
+from that pulled main. Do not touch spark_jobs/phase6_*, forecasting/,
+route_clustering/, delay_analysis/, occupancy_analysis/, recommendation_engine/,
+models/, or reports/spark_*, reports/phase6_* - those are Arham's, still in
+progress. Log this as the next CMD entry on the new branch.
+
+Standing rules: small commits on THIS branch only; DEV_LOG and AI_USAGE
+updated; everything on D:; readable code with docstrings; Laravel/NestJS
+analogies where useful (Flask Blueprint = NestJS module / Laravel route
+group; SQLAlchemy = Eloquent/TypeORM; Flask-Migrate = migrations).
+
+Build ONLY what's supported by real, finished data. Do not invent or stub
+data shapes we haven't confirmed - use the exact column names, types and row
+counts already discovered in the audit (analytics_schemas.txt in the
+scratchpad, and this message).
+
+======================================================
+1. MySQL schema (database/ + Flask-Migrate)
+======================================================
+App metadata (empty at first, populated at runtime):
+- users, roles, permissions (RBAC: admin, operator, analyst, evaluator)
+- audit_log (actor, action, entity, timestamp, details_json)
+- model_versions (task, algorithm, version, metrics_json, is_active,
+  registered_at) - leave EMPTY; do not guess Phase 6 "winners", see item 4
+- job_runs (job_name, status, started_at, finished_at, log_path) - leave EMPTY
+
+Analytics summary tables, one per Phase 5 HDFS table we will actually serve
+through the API (pick the ones the SRS dashboards need first - do not port
+all 41 blindly if some are clearly intermediate/internal; use judgement and
+list which ones you included and which you skipped, with a one-line reason
+each):
+  route_performance, route_reliability, eda_route_demand, eda_route_delay,
+  delay_congestion_patterns, overcrowding_summary, persistent_overcrowding,
+  underutilized_services, demand_supply_gap, service_frequency,
+  delay_by_dimension, delay_by_stop, stop_performance, eda_stop_usage,
+  eda_peak_hours, eda_peak_days, peak_period_summary, flow_od_pairs,
+  flow_direction_demand, od_matrix, travel_time_analysis,
+  travel_time_peak_offpeak, schedule_adherence, headway_bunching,
+  special_event_dates, anomaly_summary, passenger_segments, segment_summary
+Match column names and types EXACTLY as reported (note the mixed decimal
+precisions - decimal(6,4) for most shares, decimal(16,1) for
+underutilization_score, decimal(30,3)/decimal(14,2)/decimal(16,1) elsewhere;
+preserve these rather than normalising to one type, in case it matters for
+Phase 8's numeric comparison later). All columns nullable, as reported.
+
+A loader script (database/load_analytics_to_mysql.py) that reads each table
+from HDFS Parquet and populates the matching MySQL table. Run it for real
+and show me actual row counts per table, compared against the row counts in
+the audit (e.g. route_performance = 118, od_matrix = 316,810).
+
+======================================================
+2. Model metrics (real, even though predictions aren't)
+======================================================
+- model_metrics table: task, algorithm, split_type, metric_name,
+  metric_value, extra_json (for the inconsistent fields: rows, k,
+  silhouette, split_dates, features, model_scope, training_fraction).
+  Handle the layout differences you found (main runs vs 10%-sample runs vs
+  XGBoost vs clustering) by normalising into these flat rows rather than one
+  rigid schema.
+- Load the 21 real files from models/spark/metrics/*.json into this table
+  and show me the row count.
+- Note in the model_metrics documentation that delay_severity models are
+  flagged as INVALID (occupancy_pct leakage) and must not be used for
+  serving predictions until Arham retrains without that feature - the API
+  should still show the metrics for transparency, but the API docs must
+  state these numbers don't yet reflect a valid model.
+- cluster_profiles table, loaded from reports/phase6_cluster_profiles.csv
+  (4 rows, the plain-language cluster labels). No route-to-cluster
+  assignment table exists yet - do not invent one.
+
+======================================================
+3. Flask app (src/) - real endpoints only where data is real
+======================================================
+- App factory + Blueprints: auth, admin (route/stop/vehicle CRUD against the
+  Phase 1 reference tables, read from MySQL summary tables where useful),
+  analytics (serves every summary table above with filters: route_id,
+  stop_id, direction, day_class, time_period, date range), models
+  (read-only: GET /models/metrics, GET /models/clusters), reports (CSV
+  export of any analytics endpoint), health
+- JWT auth (Flask-JWT-Extended) + role-based decorators
+- Central JSON error handler
+- CORS enabled for a local React dev server
+
+======================================================
+4. Explicit stubs (mark clearly, do not fake real logic)
+======================================================
+- POST /predictions/delay - stub, note in response and docs: "unavailable -
+  underlying models flagged invalid (occupancy_pct leakage), pending retrain"
+- POST /predictions/crowding - stub, note: "unavailable - Phase 7 pipeline
+  and full prediction set not yet produced"
+- GET /recommendations -
+```
+
+</details>
+
+**Note:** the instruction as received ends mid-sentence at `GET /recommendations -`. The
+recommendations stub is built to the same pattern as the other two stubs, and the missing
+text is flagged back to the user.
+
+**Understood as:** Fast-forward `main` to `8852571`, branch `backend/flask-mysql`, and build
+the Flask + MySQL backend only on finished data: a Flask-Migrate schema (RBAC, audit, empty
+`model_versions`/`job_runs`, Phase 5 summary tables with exact Spark types, Phase 1 reference
+tables for admin CRUD), a real HDFS→MySQL loader run with row-count reconciliation, model
+metrics and cluster profiles loaded from the committed Phase 6 files, JWT/RBAC Blueprints, a
+JSON error handler, CORS, CSV export and clearly marked stubs. Arham's Phase 6/7 paths stay
+untouched.
+
+**Facts changed by the pull (vs the audit):** `8852571` added 7 metric files (28, not 21),
+relabelled the 4 clusters in `reports/phase6_cluster_profiles.csv`, renamed the historical
+`macro_f1` keys to `weighted_f1` in two files, and added full-data retrains. The Task A
+retrain (`spark_jobs/phase6_retrain_ab_wsl.py`) still uses `occupancy_pct` as a feature, so
+the INVALID flag applies to every `delay_severity` file, including the new ones.
+
+**Actions taken:** _in progress_
