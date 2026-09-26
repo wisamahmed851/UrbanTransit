@@ -178,3 +178,18 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Tests:** 60 pytest tests on in-memory SQLite, all passing. A live smoke test against MySQL with a temporary admin (deleted afterwards) passed: R097 is Overcrowded with composite 50.7, as in Phase 5, and the od_matrix CSV has 316,811 lines.
 - **Failure:** the first test run had one failing assertion. It expected 4 daily_boardings test-MAE rows, but there are 5 because Arham's trailing-28-day baseline is also a daily_boardings file. The test was fixed, not the data.
 - **Finding for Phase 6:** the enhanced delay and crowding feature lists include `travel_time_min` and `headway_minutes`, which `feature_catalog.md` classes as same-trip outcomes. The crowding models are not flagged yet; this needs a decision.
+
+## 2026-09-26 — Frontend: React dashboard, branch `frontend/react-dashboard` (CMD-020)
+- **Stack:** Vite 8 + React 19 + TypeScript (strict), react-router, Recharts, and the Overpass font bundled locally. It lives in `frontend/`, runs on Windows (Node 24, npm cache on D:), and proxies `/api` to Flask in WSL.
+- **Live data:** Overview, Routes and route detail, Delays, Crowding and capacity, Stops, Demand and journeys, Passengers, Model results, the Data explorer (all 30 tables, filters, CSV export) and admin (reference CRUD, users, audit log) all read the CMD-019 API.
+- **Sample data:** only Predictions and Recommendations. The API answers them with its 503 stub, and the pages then show generated figures inside a hatched "Sample data, not pipeline output" frame that quotes the API's reason. Sample recommendations use placeholder route ids (`R0xx`), so they cannot be mistaken for real advice.
+- **Design:** transit-line navigation; dataviz palette validated for 4 slots in light and dark mode; a table view for every chart; status icons with labels; responsive down to 390 px.
+- **Checked in headless Edge** with a temporary admin, deleted afterwards: 15 pages in light mode, 3 in dark, and phone width. No failed API calls and no horizontal page overflow; the only console errors were the expected 503 stubs.
+- **Failures found by the screenshots and fixed:**
+  1. `peak_penalty_pct` is a fraction (0.33 = 33%) despite its name. The first version divided by 100 and showed 0.3%.
+  2. Chart line animation cut lines off mid-draw; animation is now off.
+  3. Recharts drops value labels on zero-width bars, which hid R097's two 0 scores; values now come from a right-hand category axis.
+  4. The login logo inherited the illustration's width rule.
+  5. Model metrics rounded 0.695 to 0.7; they now show 3 decimals.
+- **Build:** `npm run build` passes. The main bundle is 279 kB, and charts load lazily (377 kB) instead of one 711 kB bundle.
+- **Open:** the MySQL host (WSL or Laragon) is still undecided; the frontend is unaffected either way.

@@ -1193,4 +1193,18 @@ with real results. The MySQL host question from the previous exchange (WSL vs La
 still open, so the backend configuration is unchanged. Branched from `backend/flask-mysql`
 because the frontend depends on that API.
 
-**Actions taken:** _in progress_
+**Actions taken:**
+1. `git checkout -b frontend/react-dashboard` (from `backend/flask-mysql`).
+2. Loaded the frontend-design and dataviz guidance; validated the 4-slot categorical palette in light and dark mode (`validate_palette.js`: all gates pass; light contrast warning handled by table views and text labels).
+3. Scaffolded `frontend/` (Vite + React + TypeScript), installed react-router-dom, recharts and @fontsource/overpass; npm cache on D:.
+4. Built the design tokens, API client, auth context, shell and shared components, 15 screens, and the sample-data module.
+5. Visual check in headless Edge (playwright-core in `D:\DevCache\pw-tools`, outside the repo) against the live API, with a temporary admin that was deleted afterwards; fixed 5 issues found in the screenshots.
+6. Docs: `frontend/README.md`, README, DEV_LOG, AI_USAGE.
+
+**Files changed:** `frontend/**`, `README.md`, `DEV_LOG.md`, `AI_USAGE.md`, `documentation/COMMAND_LOG.md`. Backend and pipeline files unchanged.
+
+**Result:** Success. Every page except Predictions and Recommendations shows real data. Those two show sample data only when the API returns its explicit stub, inside a hatched "Sample data, not pipeline output" frame. `npm run build` passes.
+
+**Problems and fixes:** `peak_penalty_pct` is a fraction, not a percent (it displayed 0.3% instead of 33%); line animation cut charts off; Recharts hid labels on 0-value bars; the login logo was oversized; model metrics were rounded to 2 decimals. All were fixed and re-checked in the browser.
+
+**Git commit:** see `git log` on `frontend/react-dashboard` (CMD-020 commits).

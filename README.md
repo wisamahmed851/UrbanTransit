@@ -14,7 +14,7 @@ and to produce forecasts and recommendations for transit operators.
 | Data science | pandas, NumPy, scikit-learn, XGBoost, statsmodels |
 | App database | MySQL |
 | Backend API | Flask |
-| Frontend | React / Next.js (Phase 11) |
+| Frontend | React + Vite + TypeScript (`frontend/`) |
 
 ## Repository layout
 
@@ -98,6 +98,14 @@ python -m pytest                                         # backend tests (in-mem
 
 See [documentation/backend_api.md](documentation/backend_api.md) and
 [documentation/database_schema.md](documentation/database_schema.md).
+
+### Web dashboard (React)
+
+```bash
+cd frontend && npm install && npm run dev                # http://localhost:5173 (needs `flask run`)
+```
+
+See [frontend/README.md](frontend/README.md).
 
 ### Regenerating the defect-injection lists (not in Git)
 
