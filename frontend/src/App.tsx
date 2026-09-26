@@ -13,6 +13,7 @@ const CrowdingPage = lazy(() => import('./pages/CrowdingPage').then((m) => ({ de
 const DelaysPage = lazy(() => import('./pages/DelaysPage').then((m) => ({ default: m.DelaysPage })))
 const DemandPage = lazy(() => import('./pages/DemandPage').then((m) => ({ default: m.DemandPage })))
 const ExplorerPage = lazy(() => import('./pages/ExplorerPage').then((m) => ({ default: m.ExplorerPage })))
+const MapPage = lazy(() => import('./pages/MapPage').then((m) => ({ default: m.MapPage })))
 const ModelsPage = lazy(() => import('./pages/ModelsPage').then((m) => ({ default: m.ModelsPage })))
 const OverviewPage = lazy(() => import('./pages/OverviewPage').then((m) => ({ default: m.OverviewPage })))
 const PassengersPage = lazy(() => import('./pages/PassengersPage').then((m) => ({ default: m.PassengersPage })))
@@ -39,6 +40,7 @@ export function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route element={<RequireAuth><Layout /></RequireAuth>}>
             <Route index element={<OverviewPage />} />
+            <Route path="map" element={<MapPage />} />
             <Route path="routes" element={<RoutesPage />} />
             <Route path="routes/:routeId" element={<RouteDetailPage />} />
             <Route path="delays" element={<DelaysPage />} />

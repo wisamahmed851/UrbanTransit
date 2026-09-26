@@ -15,6 +15,7 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
     title: 'Network',
     stations: [
       { to: '/', label: 'Overview' },
+      { to: '/map', label: 'Network map' },
       { to: '/routes', label: 'Routes' },
       { to: '/delays', label: 'Delays' },
       { to: '/crowding', label: 'Crowding and capacity' },
