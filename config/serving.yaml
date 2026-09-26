@@ -1,0 +1,27 @@
+# UrbanTransit IQ - how the backend serves the saved Phase 7 (Python) models (CMD-024).
+# Read by src/services/model_serving.py, src/services/forecasting.py and src/services/whatif.py.
+# Changing a value here needs a Flask restart, not a retrain.
+
+models_dir: models/python          # relative to the repository root
+
+# Which saved model answers each task. The algorithm is the one Phase 7 selected
+# (best validation score); `version` is the file suffix (<algorithm>_v1.pkl).
+served:
+  crowding_flag:   {algorithm: xgboost, version: v1}
+  delay_severity:  {algorithm: xgboost, version: v1}
+  daily_boardings: {algorithm: random_forest, version: v1}
+  route_clustering: {algorithm: agglomerative_k5, version: v1}
+
+# SRS 1.7 NFR 4. Every prediction response says whether its model meets these.
+srs_targets:
+  classification_accuracy: 0.85
+  classification_macro_f1: 0.80
+
+forecast:
+  default_horizon_days: 14         # SRS step 22: "configurable future periods"
+  max_horizon_days: 56             # recursive forecasts feed on their own output; keep them short
+  default_history_days: 90
+
+# Trips used to describe a "typical" trip for a route, direction, day type and hour
+# (headway, runtime, vehicle): the most recent weeks of completed trips.
+trip_context_weeks: 8

@@ -1,12 +1,13 @@
-"""Load the committed Phase 6 evidence into MySQL: model_metrics and cluster_profiles.
+"""Load the committed model evidence into MySQL: model_metrics and cluster_profiles.
 
     python database/load_model_metrics.py        # inside WSL, venv active (no Spark needed)
 
-* `models/spark/metrics/*.json` -> `model_metrics`, flattened by `metrics_normaliser.py`.
+* `models/spark/metrics/*.json` (Phase 6) and `models/python/metrics/*.json` (Phase 7) ->
+  `model_metrics`, flattened by `metrics_normaliser.py`; the `pipeline` column tells them apart.
 * `reports/phase6_cluster_profiles.csv` -> `cluster_profiles` (one row per K-Means cluster).
 
 Both tables are replaced in one transaction. These files are read only; they belong to
-the Phase 6 work and are not modified. Results go to `reports/model_metrics_load_report.json`.
+the Phase 6/7 work and are not modified. Results go to `reports/model_metrics_load_report.json`.
 """
 
 import csv
@@ -19,23 +20,25 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sqlalchemy import delete, func, select  # noqa: E402
 
-from database.metrics_normaliser import normalise  # noqa: E402
+from database.metrics_normaliser import normalise, normalise_python  # noqa: E402
 from src.app import create_app  # noqa: E402
 from src.extensions import db  # noqa: E402
 from src.models.ml import ClusterProfile, ModelMetric  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-METRICS_DIR = ROOT / "models" / "spark" / "metrics"
+METRIC_SOURCES = {"spark": (ROOT / "models" / "spark" / "metrics", normalise),
+                  "python": (ROOT / "models" / "python" / "metrics", normalise_python)}
 CLUSTER_CSV = ROOT / "reports" / "phase6_cluster_profiles.csv"
 REPORT_PATH = ROOT / "reports" / "model_metrics_load_report.json"
 
 
 def read_metric_rows() -> tuple[list[dict], dict[str, int]]:
     rows, per_file = [], {}
-    for path in sorted(METRICS_DIR.glob("*.json")):
-        file_rows = normalise(path.name, json.loads(path.read_text(encoding="utf-8")))
-        per_file[path.name] = len(file_rows)
-        rows += file_rows
+    for pipeline, (folder, flatten) in METRIC_SOURCES.items():
+        for path in sorted(folder.glob("*.json")):
+            file_rows = flatten(path.name, json.loads(path.read_text(encoding="utf-8")))
+            per_file[f"{pipeline}/{path.name}"] = len(file_rows)
+            rows += file_rows
     return rows, per_file
 
 
@@ -65,6 +68,7 @@ def main() -> int:
         "metric_files": len(per_file),
         "model_metrics_rows": n_metrics,
         "rows_per_file": per_file,
+        "rows_per_pipeline": dict(Counter(r["pipeline"] for r in metric_rows)),
         "rows_per_task": dict(Counter(r["task"] for r in metric_rows)),
         "rows_per_split_type": dict(Counter(r["split_type"] for r in metric_rows)),
         "invalid_rows": sum(r["validity_flag"] == "INVALID" for r in metric_rows),
