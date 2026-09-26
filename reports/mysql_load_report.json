@@ -1,7 +1,7 @@
 {
-  "started_utc": "2026-09-26T13:15:27+00:00",
-  "finished_utc": "2026-09-26T13:22:08+00:00",
-  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_181449.log",
+  "started_utc": "2026-09-26T13:27:19+00:00",
+  "finished_utc": "2026-09-26T13:43:40+00:00",
+  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_132650.log",
   "tables": [
     {
       "table": "route_performance",
@@ -340,7 +340,7 @@
       "hdfs_rows": 3210,
       "inserted": 3210,
       "mysql_rows": 3210,
-      "seconds": 23.9,
+      "seconds": 20.6,
       "status": "ok"
     },
     {
@@ -352,19 +352,23 @@
       "mysql_rows": 1139087,
       "time_window": {
         "hdfs": [
-          "2025-11-10 10:30:00",
-          "2025-11-17 04:23:52"
+          "2025-11-10 05:30:00",
+          "2025-11-16 23:23:52"
         ],
         "mysql": [
-          "2025-11-10 10:30:00",
-          "2025-11-17 04:23:52"
+          "2025-11-10 05:30:00",
+          "2025-11-16 23:23:52"
         ]
       },
       "vehicles": {
         "hdfs": 728,
         "mysql": 728
       },
-      "seconds": 390.0,
+      "date_mismatches": {
+        "hdfs": 0,
+        "mysql": 0
+      },
+      "seconds": 982.0,
       "status": "ok"
     }
   ],

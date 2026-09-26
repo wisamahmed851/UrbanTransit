@@ -29,12 +29,20 @@ Reference tables are a working copy that admins can edit, so they are loaded onl
 
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+# PySpark hands timestamps to Python converted into the *process* timezone, while Spark
+# itself runs in UTC (config/settings.py). WSL here is Asia/Karachi, which shifted every
+# gps_events time by +5 h on the first load (CMD-022). Pin the Python side to UTC as well,
+# so a timestamp leaves Spark with exactly the value stored in the source files.
+os.environ["TZ"] = "UTC"
+time.tzset()
 
 from sqlalchemy import delete, func, select  # noqa: E402
 
@@ -167,14 +175,22 @@ def load_network(spark, log, batch_size: int) -> list[dict]:
         entry["mysql_rows"] = mysql_count(table)
         ok = entry["hdfs_rows"] == entry["mysql_rows"]
         if name == "gps_events":
-            s_ = df.agg(F.min("event_time").alias("a"), F.max("event_time").alias("b"),
-                        F.countDistinct("vehicle_id").alias("v")).first()
+            # Format inside Spark (session UTC = source values) so this comparison does not pass
+            # through the same Python conversion as the load; that blind spot hid the +5 h shift.
+            fmt = "yyyy-MM-dd HH:mm:ss"
+            s_ = df.agg(F.date_format(F.min("event_time"), fmt).alias("a"), F.date_format(F.max("event_time"), fmt).alias("b"),
+                        F.countDistinct("vehicle_id").alias("v"),
+                        F.sum((F.to_date("event_time") != F.col("event_date")).cast("int")).alias("d")).first()
             with db.engine.connect() as conn:
                 m_ = conn.execute(select(func.min(table.c.event_time), func.max(table.c.event_time),
-                                         func.count(table.c.vehicle_id.distinct()))).one()
-            entry["time_window"] = {"hdfs": [str(s_["a"]), str(s_["b"])], "mysql": [str(m_[0]), str(m_[1])]}
+                                         func.count(table.c.vehicle_id.distinct()),
+                                         func.sum(func.date(table.c.event_time) != table.c.event_date))).one()
+            mysql_a, mysql_b = (m_[0].strftime("%Y-%m-%d %H:%M:%S"), m_[1].strftime("%Y-%m-%d %H:%M:%S"))
+            entry["time_window"] = {"hdfs": [s_["a"], s_["b"]], "mysql": [mysql_a, mysql_b]}
             entry["vehicles"] = {"hdfs": s_["v"], "mysql": m_[2]}
-            ok = ok and s_["a"] == m_[0] and s_["b"] == m_[1] and s_["v"] == m_[2]
+            entry["date_mismatches"] = {"hdfs": s_["d"], "mysql": int(m_[3] or 0)}
+            ok = (ok and s_["a"] == mysql_a and s_["b"] == mysql_b and s_["v"] == m_[2]
+                  and s_["d"] == int(m_[3] or 0))
         entry["seconds"] = round(time.perf_counter() - t0, 1)
         entry["status"] = "ok" if ok else "count_mismatch"
         log.info("%-26s hdfs=%-9s mysql=%-9s %s (%.1f s) %s", name, entry["hdfs_rows"], entry["mysql_rows"],
