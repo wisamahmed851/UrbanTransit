@@ -228,3 +228,15 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - Two log entries are numbered CMD-019 (parallel branches); both are kept, see CMD-023.
 - `config/thresholds.yaml` (from main) lost its explanatory comments; its values are unchanged plus a new `recommendations:` section.
 
+
+## 2026-09-26/27 — Trained models installed, verified and served (CMD-024)
+- **Models:** the teammate's trained models (`models.zip`, 151 MB, trained elsewhere; no training on this laptop) unpacked into `models/` at the paths the pipeline uses. Binaries stay gitignored; the metric JSONs in the zip are identical to the committed ones (line endings only). The four Spark full-data retrains are empty folders in the zip (metrics only); `models/python/route_clustering/kmeans_k5_v1.pkl` is a stale 9-feature file.
+- **Verification:** `database/evaluate_saved_models.py` re-scored the saved Python models on the Phase 7 chronological validation/test splits with Phase 7's own feature code: **PASS 33/33** (crowding XGBoost test accuracy 0.903 / macro F1 0.761, SRS accuracy target met; delay XGBoost 0.576 / 0.382, **below target**; demand RF MAE 193.4 vs baseline 400.0, 51.7% better; agglomerative k=5 silhouette 0.324, labels identical). The models were pickled with scikit-learn 1.9.0 and run on 1.9.1 without any difference in results.
+- **Backend:** migration `6e3739ffae4a` (6 serving tables, `model_metrics.pipeline`), `database/load_model_outputs.py`, services for predictions, recursive demand forecast with backtest, and what-if; the three 503 stubs replaced; model registry filled; evaluator role gains two read-only permissions.
+- **Frontend:** Predictions, Demand forecast, What-if, Recommendations, Spark vs Python and Model results pages on real data; critical alerts on the Overview; the sample-data module deleted.
+- **Problems found and fixed:**
+  1. The saved models carry `n_jobs=-1`; every small `predict()` started a worker pool (random forest 0.23 s -> 0.06 s per call once set to 1). Together with caching the network forecast, the Forecast page went from 7.3 s to 0.07 s.
+  2. First requests waited 8-10 s for joblib; models now load in a background thread at startup.
+  3. In the "remove a trip" scenario the crowding model's risk fell while occupancy rose: the model learned from differences between routes (quiet routes run less often), not from timetable changes. The what-if response now says so whenever the two disagree.
+  4. The Phase 8 report text claims "roughly 80%" overall agreement; counted from the 1,455 cases it is 56.5%. The API counts from the cases. The task C "actual" column is the Spark target, which differs from the Python target (raw APC boardings): noted as a caveat, not changed (Phase 8 is the teammate's).
+- **Verification:** pytest 107/107 (including the real model binaries); build and lint (no new warnings); headless Edge screenshots dark/light/phone, no console errors, no horizontal overflow; API timings within the SRS 5-second target.

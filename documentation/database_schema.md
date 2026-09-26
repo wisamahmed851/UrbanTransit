@@ -162,6 +162,29 @@ Loaded unchanged from `reports/phase6_cluster_profiles.csv`: `prediction` (clust
 eight mean route features, `routes` and `plain_language_label`. **No route-to-cluster
 assignment exists yet**, so there is no table mapping routes to clusters.
 
+## 4b. Model serving (CMD-024, migration `6e3739ffae4a`)
+
+`model_metrics.pipeline` (`spark` | `python`) was added; the 19 Phase 7 files load with no
+validity flag (the Python delay model does not use `occupancy_pct`). 462 rows in all.
+
+| table | rows | source | purpose |
+|---|---:|---|---|
+| `route_daily_boardings` | 41,451 | Phase 7 `demand_frame()` | lag features and history for the demand forecast |
+| `trip_context` | 7,051 | Phase 7 `base_trip()`, 2026-07-07..2026-08-31 (296,100 trips) | typical trip per route, direction, day type, hour: model inputs and observed outcomes |
+| `recommendations` | 140 | `reports/recommendations.json` | Phase 9 output |
+| `pipeline_comparison` | 1,455 | `reports/comparison/task_*.csv` | Phase 8 cases |
+| `route_clusters` | 116 | saved agglomerative k=5 `labels_` | route to cluster |
+| `python_cluster_profiles` | 5 | `reports/python_cluster_profiles.csv` | cluster profiles |
+
+`model_versions` now holds the four served models (is_active) with their re-scored metrics,
+and `job_runs` records each `load_model_outputs.py` run.
+
+```bash
+bash python_pipeline/stage_clean_parquet.sh     # HDFS clean tables -> python_pipeline/local_clean
+python database/evaluate_saved_models.py        # re-score the saved models: PASS 33/33
+python database/load_model_outputs.py           # fill the tables above (about 4 min, 4 GB RAM)
+```
+
 ## 5. Loading and verification
 
 ```bash

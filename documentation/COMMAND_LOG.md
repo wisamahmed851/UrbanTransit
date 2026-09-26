@@ -1409,3 +1409,40 @@ now what i want is i want to clone the main branch code to here but that branch 
 **Result:** Success. Frontend and backend files are identical to this branch; pipeline, model and report files are identical to `origin/main`.
 
 **Git commit:** the merge commit on `frontend/glass-theme-map`.
+
+---
+
+## CMD-024 | 2026-09-26 (UTC+05:00) | Trained models: install, check accuracy, serve through the API and dashboard (branch `feature/model-integration`)
+**My command (verbatim):**
+```text
+now i will never run the model on this pc specs becasue it will take my laptops life almost it will choke my processor becasue the data are in millions so my friend gave me the train model file in this location
+C:\Users\AKL\Downloads\models.zip so move it here unzip it and placed it in its perfect  location where it should be and then chek if whats their acuracy is and then bind it with my backend and then bind theat frontend with my backend according to this SRS
+C:\Users\AKL\Downloads\UrbanTransit IQ-Data Science Intelligence Arena_SRS.pdf
+the srs is in this pdf so ready it from there and complete my flow
+```
+
+**Understood as:** No training on this machine. Unpack the teammate's trained models (`models.zip`, 151 MB) into `models/` at the paths the pipeline scripts expect; report their accuracy against the SRS targets (NFR 4: >= 85% accuracy or macro F1 >= 0.80; forecasts must beat a documented baseline); replace the 503 stubs with API endpoints that use those models and the committed Phase 7-9 outputs (SRS steps 19-26, 43-49, 55); connect the dashboard pages to them. No retraining, no made-up numbers (SRS 1.8 item 11).
+
+**Actions taken:**
+1. Read the SRS (54 pages; text extracted with pypdf into the scratchpad) and mapped it to the work: steps 19-26 (prediction, forecasting, crowding risk), 43-49 (comparison, recommendations, what-if), 50 and 53-55 (dashboards), NFR 4 (accuracy) and NFR 1 (5 s dashboards), 1.8 item 11 (no fabricated values).
+2. Unpacked the zip into `models/` (479 files; binaries gitignored). Metric JSONs identical to the committed ones.
+3. Installed `pyarrow` in the venv (Phase 7 needs it); staged the clean Parquet with `python_pipeline/stage_clean_parquet.sh`.
+4. `database/evaluate_saved_models.py`: re-scored the saved models (inference only). PASS 33/33.
+5. Backend: migration `6e3739ffae4a`, `database/load_model_outputs.py` (PASS: 41,451 / 7,051 / 116 / 5 / 140 / 1,455 / 4 rows), metrics for both pipelines (462 rows), services, blueprints `predictions` and `insights`, stubs removed, `flask rbac seed` (evaluator + `predictions:use`, `recommendations:read`).
+6. Frontend: 3 new pages (Demand forecast, What-if, Spark vs Python), Predictions/Recommendations/Model results rewritten on real data, critical alerts on Overview, sample module deleted.
+7. Performance: single-threaded predict, cached network forecast, warm start.
+
+**Accuracy (test split, 2026-07-02..2026-08-31, re-scored here) vs SRS NFR 4:**
+
+| task | served model | result | SRS target |
+|---|---|---|---|
+| crowding risk | Python XGBoost | accuracy 90.3%, macro F1 0.761 | met (accuracy >= 85%) |
+| delay severity | Python XGBoost | accuracy 57.6%, macro F1 0.382 | **not met**; answers are labelled indicative |
+| daily demand | Python random forest | MAE 193.4 vs baseline 400.0 (-51.7%), R² 0.960 | met (beats baseline) |
+| route clustering | Python agglomerative k=5 | silhouette 0.324 | n/a |
+
+**Result:** Success. pytest 107/107; build and lint clean (no new warnings); screenshots checked; all endpoints within 5 s.
+
+**Open points for the team:** the delay model needs better features to reach the SRS target (the Spark delay models that score higher are INVALID for leakage); the Phase 8 report's "roughly 80%" agreement should read 56.5%; the 4 Spark full-data retrain binaries were not in the zip.
+
+**Git commit:** `6fc1503`, `b56b788`, `4959a71`, `083cbf7`, `1d96be9` and the docs commit on `feature/model-integration`.

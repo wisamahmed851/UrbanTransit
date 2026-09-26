@@ -26,14 +26,14 @@ Sign in with an account made by `flask users create <name> --role admin`.
 |---|---|
 | Network map | route lines, stops and a **replay** of the 7-day GPS sample (10-16 Nov 2025); never "live", the replay date is always on screen |
 | Overview, Routes, route detail, Delays, Crowding and capacity, Stops, Demand and journeys, Passengers | Phase 5 analytics tables, live from the API |
-| Model results | Phase 6 metric files and cluster profiles, live from the API; delay models shown as not valid |
+| Model results | Spark (Phase 6) and Python (Phase 7) metrics with the SRS target check, the served-model registry, both sets of route groups |
+| Predictions, Demand forecast, What-if | the saved Phase 7 models, served by the API; every figure labelled an estimate |
+| Recommendations, Critical alerts on Overview | the Phase 9 engine output |
+| Spark vs Python | the Phase 8 comparison cases |
 | Data explorer | any of the 30 analytics tables, with filters and CSV export |
 | Routes, stops, vehicles / Users / Audit log | admin API (role-gated) |
-| **Predictions, Recommendations** | **sample data**: the API answers 503 "unavailable" for these, so the page shows generated figures inside a hatched "Sample data, not pipeline output" frame |
-
-Sample data lives only in `src/sample/sampleData.ts` and is used only when the API returns its
-explicit stub response. When the real endpoints return data, the pages show it instead;
-delete the sample module then.
+No page uses sample data since CMD-024 (the sample module was deleted). The API client still
+recognises the backend's explicit 503 stub response, should a new endpoint start as one.
 
 ## Structure
 

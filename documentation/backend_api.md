@@ -22,7 +22,8 @@ flask users create alice --role admin             # prompts for the password
 python database/load_analytics_to_mysql.py --reference   # needs HDFS started
 python database/load_model_metrics.py
 flask run                                         # http://127.0.0.1:5000  (or python src/app.py)
-python -m pytest                                  # 60 tests, in-memory SQLite
+python database/load_model_outputs.py            # CMD-024 serving tables (needs staged clean Parquet)
+python -m pytest                                  # 107 tests, in-memory SQLite
 ```
 
 ## Conventions
@@ -47,8 +48,8 @@ python -m pytest                                  # 60 tests, in-memory SQLite
 | reference:write | ✓ | | | |
 | users:manage | ✓ | | | |
 | audit:read | ✓ | | | ✓ |
-| predictions:use | ✓ | ✓ | | |
-| recommendations:read | ✓ | ✓ | ✓ | |
+| predictions:use | ✓ | ✓ | | ✓ |
+| recommendations:read | ✓ | ✓ | ✓ | ✓ |
 
 ## Endpoints
 
@@ -135,13 +136,38 @@ the API cannot say which routes belong to a cluster.
 
 Reference edits change the MySQL copy only; they are not written back to HDFS.
 
-### Stubs (no real data yet)
+### Predictions, forecasts, what-if (saved Phase 7 models; CMD-024)
 
-These return **HTTP 503** with `{"status": "unavailable", "stub": true, "feature", "reason"}`.
-They never return a made-up result.
+These replaced the CMD-019 503 stubs. Every answer is labelled an estimate and names the model,
+its version, its test metrics (re-scored on this server) and whether it meets SRS NFR 4.
 
-| method | path | permission | reason |
+| method | path | permission | notes |
 |---|---|---|---|
-| POST | `/api/predictions/delay` | predictions:use | `unavailable - underlying models flagged invalid (occupancy_pct leakage), pending retrain` |
-| POST | `/api/predictions/crowding` | predictions:use | `unavailable - Phase 7 pipeline and full prediction set not yet produced` |
-| GET | `/api/recommendations` | recommendations:read | `unavailable - Phase 7 recommendation engine not yet built` |
+| POST | `/api/predictions/crowding` | predictions:use | body `{route_id, direction, service_date, hour, vehicle_id?}`; probability that the trip's peak load exceeds 90% of capacity, flagged at the tuned 0.70 threshold |
+| POST | `/api/predictions/delay` | predictions:use | same body; probabilities of On Time / Minor / Moderate / Severe. **Below the SRS target** (test accuracy 0.576, macro F1 0.382); every answer carries that warning |
+| GET | `/api/predictions/crowding-risk?date=&route_id=&limit=` | predictions:use | every route/direction/hour running on that day type, highest risk first (SRS 26) |
+| GET | `/api/forecasts/demand?route_id=&horizon=&history=` | analytics:read | route-day boardings: history, test-period backtest vs 28-day baseline, recursive forecast (`horizon` 1-56, default 14) |
+| GET | `/api/forecasts/demand/network?horizon=` | analytics:read | network daily total and routes by forecast demand; cached per data version |
+| GET | `/api/whatif/scenarios` | predictions:use | the 7 scenario types |
+| POST | `/api/whatif` | predictions:use | body `{scenario, route_id, direction, service_date, hour, params}`; before/after occupancy, wait, capacity, coverage, crowding and delay risk (SRS 48-49) |
+
+Inputs a request does not name (headway, runtime, usual vehicle, recent crowding/delay
+history) come from `trip_context`. A route/direction/hour with no recent service answers
+**404 `no_scheduled_service`** with the hours that do have service. Missing model files answer
+**503 `model_unavailable`**. Prediction and what-if calls are written to the audit log.
+
+### Recommendations and dual-pipeline comparison (CMD-024)
+
+| method | path | permission | notes |
+|---|---|---|---|
+| GET | `/api/recommendations?priority=&category=&subject_id=&q=` | recommendations:read | the 140 Phase 9 recommendations, Critical first, with a summary by priority and category |
+| GET | `/api/comparison` | models:read | Phase 8 per task: cases, agreement, Spark-correct and Python-correct rates counted from the cases, caveats |
+| GET | `/api/comparison/<task>?agreement_status=&match=` | models:read | the compared cases of `delay_severity`, `crowding_flag` or `daily_boardings` |
+| GET | `/api/models/versions` | models:read | model registry: the four served models and their re-scored metrics |
+| GET | `/api/models/evaluation` | models:read | `reports/saved_model_evaluation.json` |
+| GET | `/api/models/clusters/python` | models:read | the 5 Python route groups with their routes |
+
+`/api/models/metrics` also accepts `pipeline=spark|python`.
+
+**Role change:** the evaluator role has `predictions:use` and `recommendations:read` since
+CMD-024, so evaluators can try every feature. None of these endpoints writes data.
