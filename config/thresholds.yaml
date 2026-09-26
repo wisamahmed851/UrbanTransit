@@ -1,53 +1,50 @@
-# UrbanTransit IQ - analytics thresholds
-# STATUS: all values are INITIAL, TO BE TUNED once real/generated data is analysed.
-
-status: "initial, to be tuned"
-
-# Occupancy = passengers on board / vehicle capacity (ratio).
-# A vehicle falls into the first category whose max_ratio is >= its load.
-occupancy_categories:
-  - { name: Low,         max_ratio: 0.40 }
-  - { name: Moderate,    max_ratio: 0.70 }
-  - { name: High,        max_ratio: 0.90 }
-  - { name: Overcrowded, max_ratio: 1.10 }
-  - { name: Critical,    max_ratio: null }   # anything above Overcrowded
-
-# Delay severity of a trip's delay_minutes (Phase 4 feature). A trip falls into the first
-# class whose below_minutes is GREATER than its delay (upper bound exclusive); early running
-# counts as On Time. On Time < 5 matches the delay log's recording threshold (the generator
-# only logs trips >= 5 min late) and must equal config/phase4.yaml delay.on_time_late_min -
-# spark_jobs/phase4_features.py refuses to run if they differ.
-# Read by: spark_jobs/phase4_features.py (severity), spark_jobs/verify_phase5.py (check 9).
-delay_severity:
-  - { name: On Time,  below_minutes: 5 }
-  - { name: Minor,    below_minutes: 10 }
-  - { name: Moderate, below_minutes: 20 }
-  - { name: Severe,   below_minutes: null }  # 20 min or more
-
-# Peak detection on hourly ridership per route/stop.
-peak_detection:
-  window_minutes: 60             # aggregation window
-  zscore_threshold: 1.5          # hour is a peak if z-score of ridership >= this
-  min_share_of_daily_ridership: 0.08
-  default_peak_hours:            # fallback when data is too sparse
-    morning: ["07:00", "09:00"]
-    evening: ["16:30", "18:30"]
-
-# Bunching: observed headway / scheduled headway.
 bunching:
-  headway_ratio_threshold: 0.5   # ratio below this = bunched
-  gap_ratio_threshold: 1.5       # ratio above this = service gap
+  gap_ratio_threshold: 1.5
+  headway_ratio_threshold: 0.5
   min_scheduled_headway_minutes: 3
-
+delay_severity:
+- below_minutes: 5
+  name: On Time
+- below_minutes: 10
+  name: Minor
+- below_minutes: 20
+  name: Moderate
+- below_minutes: null
+  name: Severe
+occupancy_categories:
+- max_ratio: 0.4
+  name: Low
+- max_ratio: 0.7
+  name: Moderate
+- max_ratio: 0.9
+  name: High
+- max_ratio: 1.1
+  name: Overcrowded
+- max_ratio: null
+  name: Critical
+peak_detection:
+  default_peak_hours:
+    evening:
+    - '16:30'
+    - '18:30'
+    morning:
+    - 07:00
+    - 09:00
+  min_share_of_daily_ridership: 0.08
+  window_minutes: 60
+  zscore_threshold: 1.5
 recommendations:
   priority_rules:
+    anomaly_min_count: 65
+    capacity_min_denied_boardings: 25
+    critical_bottleneck_delay_pct: 0.25
+    critical_delay_trip_pct: 0.5
     critical_occupancy_threshold: 0.95
-    critical_delay_trip_pct: 0.30
-    critical_bottleneck_delay_pct: 0.20
-    high_occupancy_threshold: 0.85
-    high_reliability_threshold: 0.70
     high_demand_supply_gap: 0.25
-    medium_low_occupancy_threshold: 0.30
-    medium_low_occupancy_trip_pct: 0.60
-    medium_headway_irregularity: 0.25
+    high_occupancy_threshold: 0.8
+    high_reliability_threshold: 0.6
     low_schedule_deviation_min: 5
+    medium_headway_irregularity: 0.25
+    medium_low_occupancy_threshold: 0.01
+    medium_low_occupancy_trip_pct: 0.6
+status: initial, to be tuned

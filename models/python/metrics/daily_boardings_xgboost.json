@@ -23,16 +23,16 @@
     ]
   },
   "validation": {
-    "mae": 278.440063,
-    "rmse": 683.069634,
-    "mape": 29.302683,
-    "r2": 0.91327
+    "mae": 278.769836,
+    "rmse": 683.740631,
+    "mape": 29.47095,
+    "r2": 0.913099
   },
   "test": {
-    "mae": 201.81076,
-    "rmse": 455.224412,
-    "mape": 15.499973,
-    "r2": 0.953848
+    "mae": 199.296387,
+    "rmse": 450.605409,
+    "mape": 15.518914,
+    "r2": 0.95478
   },
   "lag_rule": "pandas shift() before every rolling aggregate; no current/future value"
 }
