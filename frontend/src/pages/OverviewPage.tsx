@@ -2,11 +2,13 @@ import { ChartLineUp, Crown, Path, Siren, UsersThree } from '@phosphor-icons/rea
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Row } from '../api/client'
+import type { RecommendationsResponse } from '../api/types'
+import { useAuth } from '../auth/AuthContext'
 import { ChartFrame, HBarChart, LinesChart } from '../components/charts'
 import { DataTable } from '../components/DataTable'
 import { loadBasemap, type Basemap } from '../components/map/basemap'
 import { ROUTE_TYPES, TransitMap, type Geometry } from '../components/map/TransitMap'
-import { Empty, ErrorNotice, Loading, PageHead, Panel, RouteBadge, RouteClass, Stats } from '../components/ui'
+import { Empty, ErrorNotice, Loading, PageHead, Panel, RouteBadge, RouteClass, Stats, Status } from '../components/ui'
 import { label, num, ROUTE_CLASSES } from '../lib/format'
 import { useApi, useRows } from '../lib/useApi'
 
@@ -30,7 +32,26 @@ function NetworkPreview() {
   )
 }
 
+/** SRS step 50 "critical alerts": the Critical-priority recommendations of the Phase 9 engine. */
+function CriticalAlerts() {
+  const recs = useApi<RecommendationsResponse>('/recommendations', { priority: 'Critical', limit: 6 })
+  if (recs.error) return <ErrorNotice error={recs.error} />
+  if (!recs.data) return <Loading what="alerts" />
+  return (
+    <Panel title="Critical alerts" note={`${recs.data.total} Critical recommendations from the recommendation engine, with the evidence behind each.`}
+      action={<Link className="btn" to="/recommendations?priority=Critical">All recommendations</Link>}>
+      <DataTable rows={recs.data.rows} columns={[
+        { key: 'subject_id', label: 'Where', render: (r) => /^R\d+$/.test(r.subject_id) ? <Link to={`/routes/${r.subject_id}`}>{r.subject_id}</Link> : r.subject_id },
+        { key: 'action', label: 'Action', wrap: true },
+        { key: 'evidence', label: 'Evidence', wrap: true },
+        { key: 'priority', label: 'Priority', render: () => <Status tone="critical">Critical</Status> },
+      ]} />
+    </Panel>
+  )
+}
+
 export function OverviewPage() {
+  const { can } = useAuth()
   const perf = useRows('route_performance', { limit: 1000, sort: 'composite_score' })
   const days = useRows('eda_peak_days', { limit: 1000, sort: 'service_date' })
   const hours = useRows('eda_peak_hours', { limit: 1000 })
@@ -79,6 +100,8 @@ export function OverviewPage() {
         { label: 'Anomaly signals', icon: Siren, value: anomalies.data ? signals : '…', format: whole,
           sub: `${anomalies.data?.rows.length ?? 0} kinds, see Demand` },
       ]} />
+
+      {can('recommendations:read') && <CriticalAlerts />}
 
       <NetworkPreview />
 

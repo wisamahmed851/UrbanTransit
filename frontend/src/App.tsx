@@ -10,9 +10,11 @@ import { LoginPage } from './pages/LoginPage'
 const AuditPage = lazy(() => import('./pages/admin/AuditPage').then((m) => ({ default: m.AuditPage })))
 const ReferencePage = lazy(() => import('./pages/admin/ReferencePage').then((m) => ({ default: m.ReferencePage })))
 const UsersPage = lazy(() => import('./pages/admin/UsersPage').then((m) => ({ default: m.UsersPage })))
+const ComparisonPage = lazy(() => import('./pages/ComparisonPage').then((m) => ({ default: m.ComparisonPage })))
 const CrowdingPage = lazy(() => import('./pages/CrowdingPage').then((m) => ({ default: m.CrowdingPage })))
 const DelaysPage = lazy(() => import('./pages/DelaysPage').then((m) => ({ default: m.DelaysPage })))
 const DemandPage = lazy(() => import('./pages/DemandPage').then((m) => ({ default: m.DemandPage })))
+const ForecastPage = lazy(() => import('./pages/ForecastPage').then((m) => ({ default: m.ForecastPage })))
 const ExplorerPage = lazy(() => import('./pages/ExplorerPage').then((m) => ({ default: m.ExplorerPage })))
 const MapPage = lazy(() => import('./pages/MapPage').then((m) => ({ default: m.MapPage })))
 const ModelsPage = lazy(() => import('./pages/ModelsPage').then((m) => ({ default: m.ModelsPage })))
@@ -23,6 +25,7 @@ const RecommendationsPage = lazy(() => import('./pages/RecommendationsPage').the
 const RouteDetailPage = lazy(() => import('./pages/RouteDetailPage').then((m) => ({ default: m.RouteDetailPage })))
 const RoutesPage = lazy(() => import('./pages/RoutesPage').then((m) => ({ default: m.RoutesPage })))
 const StopsPage = lazy(() => import('./pages/StopsPage').then((m) => ({ default: m.StopsPage })))
+const WhatIfPage = lazy(() => import('./pages/WhatIfPage').then((m) => ({ default: m.WhatIfPage })))
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { user, ready } = useAuth()
@@ -53,6 +56,9 @@ export function App() {
               <Route path="models" element={<ModelsPage />} />
               <Route path="explorer" element={<ExplorerPage />} />
               <Route path="predictions" element={<PredictionsPage />} />
+              <Route path="forecast" element={<ForecastPage />} />
+              <Route path="whatif" element={<WhatIfPage />} />
+              <Route path="comparison" element={<ComparisonPage />} />
               <Route path="recommendations" element={<RecommendationsPage />} />
               <Route path="admin/reference" element={<ReferencePage />} />
               <Route path="admin/users" element={<UsersPage />} />

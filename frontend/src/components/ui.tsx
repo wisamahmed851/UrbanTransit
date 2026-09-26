@@ -1,6 +1,6 @@
 /** Small presentational pieces shared by every page. */
 
-import { CheckCircle, Circle, Placeholder, Warning, WarningCircle, WarningDiamond } from '@phosphor-icons/react'
+import { CheckCircle, Circle, Warning, WarningCircle, WarningDiamond } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
 import type { ApiError } from '../api/client'
@@ -49,17 +49,6 @@ export function ErrorNotice({ error }: { error: ApiError }) {
     <div className="notice notice-error" role="alert">
       <strong>{error.message}</strong>
       {hint && <span>{hint}</span>}
-    </div>
-  )
-}
-
-/** Wraps sample (dummy) content. The hatched edge and the sentence travel with the data. */
-export function Sample({ reason, children }: { reason: string; children: ReactNode }) {
-  return (
-    <div className="sample sample-block">
-      <span className="sample-tag"><Placeholder size={14} weight="bold" aria-hidden="true" /> Sample data, not pipeline output</span>
-      <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--ink-2)' }}>{reason}</p>
-      {children}
     </div>
   )
 }

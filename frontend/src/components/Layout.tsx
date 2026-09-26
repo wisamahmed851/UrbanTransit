@@ -1,6 +1,7 @@
 /**
  * App shell. Navigation is drawn as a transit line: pages are stations, the current page is
- * the filled stop. Pages still running on sample data sit on a dashed (hatched) track.
+ * the filled stop. A line marked `kind: 'sample'` is drawn as a dashed (hatched) track; since
+ * CMD-024 no page runs on sample data, so no line uses it.
  */
 
 import { Suspense, useEffect, useState } from 'react'
@@ -26,18 +27,20 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
     ],
   },
   {
-    title: 'Evidence',
+    title: 'Intelligence',
     stations: [
-      { to: '/models', label: 'Model results', perm: 'models:read' },
-      { to: '/explorer', label: 'Data explorer' },
+      { to: '/recommendations', label: 'Recommendations', perm: 'recommendations:read' },
+      { to: '/forecast', label: 'Demand forecast' },
+      { to: '/predictions', label: 'Predictions', perm: 'predictions:use' },
+      { to: '/whatif', label: 'What-if scenarios', perm: 'predictions:use' },
     ],
   },
   {
-    title: 'Coming with Phase 7',
-    kind: 'sample',
+    title: 'Evidence',
     stations: [
-      { to: '/predictions', label: 'Predictions', perm: 'predictions:use' },
-      { to: '/recommendations', label: 'Recommendations', perm: 'recommendations:read' },
+      { to: '/models', label: 'Model results', perm: 'models:read' },
+      { to: '/comparison', label: 'Spark vs Python', perm: 'models:read' },
+      { to: '/explorer', label: 'Data explorer' },
     ],
   },
   {

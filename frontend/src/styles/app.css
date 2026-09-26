@@ -326,6 +326,33 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
+/* ---------- model answers (CMD-024) ---------- */
+
+.muted { color: var(--ink-muted); font-size: var(--fs-xs); }
+.model-card { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.6rem 1rem; margin: 0; }
+.model-card dt { color: var(--ink-muted); font-size: var(--fs-xs); }
+.model-card dd { margin: 0.1rem 0 0; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+/* estimates are named in words and outlined in the accent, never passed off as observations */
+.estimate-tag {
+  display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.12rem 0.5rem; border-radius: 999px;
+  border: 1px solid var(--accent); color: var(--ink); font-size: var(--fs-xs); font-weight: 600; white-space: nowrap;
+}
+.answer { display: grid; gap: 0.9rem; }
+.answer-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.answer-head h3 { font-size: var(--fs-xl); letter-spacing: -0.01em; }
+/* probability meter: filled share plus a tick at the decision threshold */
+.meter { position: relative; height: 0.7rem; border-radius: 999px; background: var(--sunk); overflow: visible; }
+.meter > i { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: var(--series-1); }
+.meter > b { position: absolute; top: -0.3rem; bottom: -0.3rem; width: 2px; background: var(--accent); }
+.meter-scale { display: flex; justify-content: space-between; color: var(--ink-muted); font-size: var(--fs-xs); margin-top: 0.35rem; }
+.rec-card { display: grid; gap: 0.45rem; align-content: start; }
+.rec-card header { display: flex; justify-content: space-between; align-items: start; gap: 0.5rem; flex-wrap: wrap; }
+.rec-card h3 { font-size: var(--fs-md); }
+.rec-card p { font-size: var(--fs-sm); }
+.rec-meta { color: var(--ink-muted); font-size: var(--fs-xs); display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.change-up { color: var(--warning); }
+.change-down { color: var(--good); }
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 960px) {
