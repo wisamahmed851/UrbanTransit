@@ -1,0 +1,28 @@
+# UrbanTransit IQ - default roles and permissions for the backend API.
+# Applied (idempotently) with:  flask rbac seed
+# Endpoints check permissions, never role names, except the admin-only screens.
+
+permissions:
+  analytics:read: Read the Phase 5 analytics summary tables
+  reports:export: Export analytics tables as CSV
+  models:read: Read Phase 6 model metrics and cluster profiles
+  reference:read: Read routes, stops and vehicles
+  reference:write: Create, update and delete routes, stops and vehicles
+  users:manage: Create users, assign roles, deactivate accounts
+  audit:read: Read the audit log
+  predictions:use: Call the prediction endpoints
+  recommendations:read: Read recommendations
+
+roles:
+  admin:
+    description: Full access, including user management and reference-data edits
+    permissions: all
+  operator:
+    description: Transit operations staff; uses dashboards, exports, predictions and recommendations
+    permissions: [analytics:read, reports:export, models:read, reference:read, predictions:use, recommendations:read]
+  analyst:
+    description: Data analyst; reads and exports analytics and model evidence
+    permissions: [analytics:read, reports:export, models:read, reference:read, recommendations:read]
+  evaluator:
+    description: Reviewer/assessor; read-only access to results, evidence and the audit trail
+    permissions: [analytics:read, reports:export, models:read, reference:read, audit:read]
