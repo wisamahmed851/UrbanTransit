@@ -1,8 +1,11 @@
 /** Small presentational pieces shared by every page. */
 
+import { CheckCircle, Circle, Placeholder, Warning, WarningCircle, WarningDiamond } from '@phosphor-icons/react'
+import type { Icon } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
 import type { ApiError } from '../api/client'
 import { CLASS_TONE } from '../lib/format'
+import { CountUp, Reveal } from './motion'
 
 export function PageHead({ title, children }: { title: string; children?: ReactNode }) {
   return (
@@ -17,7 +20,7 @@ export function Panel({ title, note, action, children, className = '' }: {
   title?: string; note?: ReactNode; action?: ReactNode; children: ReactNode; className?: string
 }) {
   return (
-    <section className={`panel ${className}`}>
+    <Reveal as="section" className={`panel ${className}`}>
       {(title || action) && (
         <div className="panel-head">
           <div>{title && <h2>{title}</h2>}{note && <p>{note}</p>}</div>
@@ -25,7 +28,7 @@ export function Panel({ title, note, action, children, className = '' }: {
         </div>
       )}
       {children}
-    </section>
+    </Reveal>
   )
 }
 
@@ -54,34 +57,27 @@ export function ErrorNotice({ error }: { error: ApiError }) {
 export function Sample({ reason, children }: { reason: string; children: ReactNode }) {
   return (
     <div className="sample sample-block">
-      <span className="sample-tag"><SampleIcon /> Sample data, not pipeline output</span>
+      <span className="sample-tag"><Placeholder size={14} weight="bold" aria-hidden="true" /> Sample data, not pipeline output</span>
       <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--ink-2)' }}>{reason}</p>
       {children}
     </div>
   )
 }
 
-function SampleIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-      <rect x="1.5" y="1.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M4 12 12 4M1.5 8 8 1.5M8 14.5 14.5 8" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  )
-}
-
-const TONE_ICON: Record<string, ReactNode> = {
-  good: <path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />,
-  warning: <><path d="M8 2 14.5 13.5h-13z" fill="currentColor" /><path d="M8 6.5v3.2M8 11.6v.1" stroke="#15191c" strokeWidth="1.6" strokeLinecap="round" /></>,
-  serious: <><circle cx="8" cy="8" r="6.5" fill="currentColor" /><path d="M8 4.5v4.2M8 11.2v.1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" /></>,
-  critical: <><rect x="2" y="2" width="12" height="12" rx="2" transform="rotate(45 8 8)" fill="currentColor" /><path d="M8 5v3.6M8 10.9v.1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" /></>,
-  neutral: <circle cx="8" cy="8" r="4" fill="none" stroke="currentColor" strokeWidth="2" />,
+/** Status tone -> Phosphor glyph. Shapes differ per tone, so colour never carries meaning alone. */
+const TONE_ICON: Record<'good' | 'warning' | 'serious' | 'critical' | 'neutral', Icon> = {
+  good: CheckCircle,
+  warning: Warning,
+  serious: WarningCircle,
+  critical: WarningDiamond,
+  neutral: Circle,
 }
 
 export function Status({ tone, children }: { tone: keyof typeof TONE_ICON; children: ReactNode }) {
+  const Glyph = TONE_ICON[tone]
   return (
     <span className="status" data-tone={tone}>
-      <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">{TONE_ICON[tone]}</svg>
+      <Glyph size={16} weight="fill" aria-hidden="true" />
       {children}
     </span>
   )
@@ -89,35 +85,67 @@ export function Status({ tone, children }: { tone: keyof typeof TONE_ICON; child
 
 export function RouteClass({ value }: { value: unknown }) {
   const v = String(value ?? '')
-  return v ? <Status tone={CLASS_TONE[v] ?? 'neutral'}>{v}</Status> : <>–</>
+  return v ? <Status tone={CLASS_TONE[v] ?? 'neutral'}>{v}</Status> : <>-</>
 }
 
 /** Route code on a sign plate; the coloured edge encodes route type (the code is always shown). */
 export function RouteBadge({ code, type, id }: { code?: unknown; type?: unknown; id?: unknown }) {
   return (
     <span className="route-badge" data-type={String(type ?? '')} title={type ? `${String(type).toUpperCase()} route ${id ?? ''}` : String(id ?? '')}>
-      <i aria-hidden="true" /><b>{String(code ?? id ?? '–')}</b>
+      <i aria-hidden="true" /><b>{String(code ?? id ?? '-')}</b>
     </span>
   )
 }
 
-export function Stats({ items }: { items: { label: string; value: ReactNode; sub?: ReactNode }[] }) {
+export interface StatItem {
+  label: string
+  /** A number counts up (give `format`); any other node is shown as is. */
+  value: ReactNode | number
+  format?: (n: number) => string
+  sub?: ReactNode
+  icon?: Icon
+  /** Optional trend of real values, drawn as a small sparkline under the number. */
+  spark?: number[]
+}
+
+/** Floating KPI cards: icon + value + label + context line, optionally a sparkline. */
+export function Stats({ items }: { items: StatItem[] }) {
   return (
     <div className="stat-strip">
-      {items.map((s) => (
-        <div className="stat" key={s.label}>
-          <span className="stat-value">{s.value}</span>
-          <span className="stat-label">{s.label}</span>
-          {s.sub && <span className="stat-sub">{s.sub}</span>}
-        </div>
-      ))}
+      {items.map((s) => {
+        const Glyph = s.icon
+        return (
+          <Reveal className="stat" key={s.label}>
+            <span className="stat-top">
+              <span className="stat-label">{s.label}</span>
+              {Glyph && <span className="stat-icon" aria-hidden="true"><Glyph size={18} weight="duotone" /></span>}
+            </span>
+            <span className="stat-value">
+              {typeof s.value === 'number' && s.format ? <CountUp value={s.value} format={s.format} /> : s.value}
+            </span>
+            {s.sub && <span className="stat-sub">{s.sub}</span>}
+            {s.spark && s.spark.length > 1 && <Sparkline values={s.spark} />}
+          </Reveal>
+        )
+      })}
     </div>
+  )
+}
+
+/** Data-driven sparkline (not decoration): the line is the series itself, min to max. */
+function Sparkline({ values }: { values: number[] }) {
+  const min = Math.min(...values), max = Math.max(...values), span = max - min || 1
+  const pts = values.map((v, i) => `${(i / (values.length - 1)) * 100},${30 - ((v - min) / span) * 26 - 2}`).join(' ')
+  return (
+    <svg className="stat-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points={pts} fill="none" stroke="currentColor" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+    </svg>
   )
 }
 
 export function ScoreBar({ value }: { value: unknown }) {
   const n = Number(value)
-  if (value === null || value === undefined || !Number.isFinite(n)) return <>–</>
+  if (value === null || value === undefined || !Number.isFinite(n)) return <>-</>
   return (
     <span className="cell-bar">
       <span aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, n))}%` }} /></span>

@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react'
 import { lazy } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './auth/AuthContext'
@@ -34,31 +35,33 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 /** Route table. Every page except sign-in sits behind RequireAuth inside the Layout shell. */
 export function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route element={<RequireAuth><Layout /></RequireAuth>}>
-            <Route index element={<OverviewPage />} />
-            <Route path="map" element={<MapPage />} />
-            <Route path="routes" element={<RoutesPage />} />
-            <Route path="routes/:routeId" element={<RouteDetailPage />} />
-            <Route path="delays" element={<DelaysPage />} />
-            <Route path="crowding" element={<CrowdingPage />} />
-            <Route path="stops" element={<StopsPage />} />
-            <Route path="demand" element={<DemandPage />} />
-            <Route path="passengers" element={<PassengersPage />} />
-            <Route path="models" element={<ModelsPage />} />
-            <Route path="explorer" element={<ExplorerPage />} />
-            <Route path="predictions" element={<PredictionsPage />} />
-            <Route path="recommendations" element={<RecommendationsPage />} />
-            <Route path="admin/reference" element={<ReferencePage />} />
-            <Route path="admin/users" element={<UsersPage />} />
-            <Route path="admin/audit" element={<AuditPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+    <MotionConfig reducedMotion="user">
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route element={<RequireAuth><Layout /></RequireAuth>}>
+              <Route index element={<OverviewPage />} />
+              <Route path="map" element={<MapPage />} />
+              <Route path="routes" element={<RoutesPage />} />
+              <Route path="routes/:routeId" element={<RouteDetailPage />} />
+              <Route path="delays" element={<DelaysPage />} />
+              <Route path="crowding" element={<CrowdingPage />} />
+              <Route path="stops" element={<StopsPage />} />
+              <Route path="demand" element={<DemandPage />} />
+              <Route path="passengers" element={<PassengersPage />} />
+              <Route path="models" element={<ModelsPage />} />
+              <Route path="explorer" element={<ExplorerPage />} />
+              <Route path="predictions" element={<PredictionsPage />} />
+              <Route path="recommendations" element={<RecommendationsPage />} />
+              <Route path="admin/reference" element={<ReferencePage />} />
+              <Route path="admin/users" element={<UsersPage />} />
+              <Route path="admin/audit" element={<AuditPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </MotionConfig>
   )
 }

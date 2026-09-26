@@ -1,3 +1,4 @@
+import { ArrowsInLineHorizontal, ArrowsOutLineHorizontal, Clock, UsersThree } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DataTable } from '../components/DataTable'
@@ -6,6 +7,7 @@ import { ErrorNotice, Loading, PageHead, Panel, Stats } from '../components/ui'
 import { label, num, pct } from '../lib/format'
 import { useAllRows, useRows } from '../lib/useApi'
 
+const whole = (n: number) => num(Math.round(n))
 const SUPPORTED = ['route_id', 'direction', 'day_class', 'time_period']
 
 export function CrowdingPage() {
@@ -18,7 +20,7 @@ export function CrowdingPage() {
   })
 
   const count = <T extends Record<string, unknown>>(rows: T[] | null, key: string, value: string) =>
-    rows ? num(rows.filter((r) => r[key] === value).length) : '…'
+    rows ? rows.filter((r) => r[key] === value).length : '…'
   const suggestions = (gap.rows ?? []).filter((r) => r.suggestion && r.suggestion !== 'no_change')
     .sort((a, b) => Number(b.utilization) - Number(a.utilization))
   const underused = (under.rows ?? []).filter((r) => r.utilization_status === 'underutilized')
@@ -35,10 +37,10 @@ export function CrowdingPage() {
       {error && <ErrorNotice error={error} />}
 
       <Stats items={[
-        { label: 'Periods with more riders than space', value: count(gap.rows, 'gap_status', 'excess_demand'), sub: '90%+ of capacity used, or riders left behind' },
-        { label: 'Periods with far more space than riders', value: count(gap.rows, 'gap_status', 'excess_supply'), sub: 'under 30% of capacity used' },
-        { label: 'Too little service', value: count(freq.rows, 'frequency_match', 'too_little'), sub: 'average load 85%+ or often overloaded' },
-        { label: 'Underused service', value: under.rows ? num(underused.length) : '…', sub: 'low load at 2+ trips an hour' },
+        { label: 'Periods with more riders than space', icon: UsersThree, format: whole, value: count(gap.rows, 'gap_status', 'excess_demand'), sub: '90%+ of capacity used, or riders left behind' },
+        { label: 'Periods with far more space than riders', icon: ArrowsOutLineHorizontal, format: whole, value: count(gap.rows, 'gap_status', 'excess_supply'), sub: 'under 30% of capacity used' },
+        { label: 'Too little service', icon: Clock, format: whole, value: count(freq.rows, 'frequency_match', 'too_little'), sub: 'average load 85%+ or often overloaded' },
+        { label: 'Underused service', icon: ArrowsInLineHorizontal, format: whole, value: under.rows ? underused.length : '…', sub: 'low load at 2+ trips an hour' },
       ]} />
 
       <Panel title="Capacity changes suggested by the analysis" note="From the Phase 5 demand and supply analysis: the vehicle size or frequency that would bring load to 85%. These are analysis results, not approved plans.">
