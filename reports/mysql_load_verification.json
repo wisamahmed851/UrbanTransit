@@ -1,0 +1,126 @@
+{
+  "result": "PASS",
+  "failed": [],
+  "tables": {
+    "route_performance": {
+      "columns_checked": 44,
+      "mismatches": []
+    },
+    "route_reliability": {
+      "columns_checked": 11,
+      "mismatches": []
+    },
+    "eda_route_demand": {
+      "columns_checked": 9,
+      "mismatches": []
+    },
+    "eda_route_delay": {
+      "columns_checked": 10,
+      "mismatches": []
+    },
+    "delay_congestion_patterns": {
+      "columns_checked": 9,
+      "mismatches": []
+    },
+    "overcrowding_summary": {
+      "columns_checked": 13,
+      "mismatches": []
+    },
+    "persistent_overcrowding": {
+      "columns_checked": 10,
+      "mismatches": []
+    },
+    "underutilized_services": {
+      "columns_checked": 15,
+      "mismatches": []
+    },
+    "demand_supply_gap": {
+      "columns_checked": 18,
+      "mismatches": []
+    },
+    "service_frequency": {
+      "columns_checked": 16,
+      "mismatches": []
+    },
+    "delay_by_dimension": {
+      "columns_checked": 8,
+      "mismatches": []
+    },
+    "delay_by_stop": {
+      "columns_checked": 14,
+      "mismatches": []
+    },
+    "delay_top_trips": {
+      "columns_checked": 10,
+      "mismatches": []
+    },
+    "stop_performance": {
+      "columns_checked": 20,
+      "mismatches": []
+    },
+    "eda_stop_usage": {
+      "columns_checked": 11,
+      "mismatches": []
+    },
+    "eda_peak_hours": {
+      "columns_checked": 9,
+      "mismatches": []
+    },
+    "eda_peak_days": {
+      "columns_checked": 8,
+      "mismatches": []
+    },
+    "peak_period_summary": {
+      "columns_checked": 12,
+      "mismatches": []
+    },
+    "flow_od_pairs": {
+      "columns_checked": 9,
+      "mismatches": []
+    },
+    "flow_direction_demand": {
+      "columns_checked": 11,
+      "mismatches": []
+    },
+    "od_matrix": {
+      "columns_checked": 13,
+      "mismatches": []
+    },
+    "travel_time_analysis": {
+      "columns_checked": 12,
+      "mismatches": []
+    },
+    "travel_time_peak_offpeak": {
+      "columns_checked": 10,
+      "mismatches": []
+    },
+    "schedule_adherence": {
+      "columns_checked": 15,
+      "mismatches": []
+    },
+    "headway_bunching": {
+      "columns_checked": 13,
+      "mismatches": []
+    },
+    "special_event_dates": {
+      "columns_checked": 9,
+      "mismatches": []
+    },
+    "anomalies": {
+      "columns_checked": 7,
+      "mismatches": []
+    },
+    "anomaly_summary": {
+      "columns_checked": 5,
+      "mismatches": []
+    },
+    "passenger_segments": {
+      "columns_checked": 14,
+      "mismatches": []
+    },
+    "segment_summary": {
+      "columns_checked": 9,
+      "mismatches": []
+    }
+  }
+}

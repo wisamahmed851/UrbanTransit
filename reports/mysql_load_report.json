@@ -1,0 +1,339 @@
+{
+  "started_utc": "2026-09-26T08:10:44+00:00",
+  "finished_utc": "2026-09-26T08:14:36+00:00",
+  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_131013.log",
+  "tables": [
+    {
+      "table": "route_performance",
+      "group": "analytics",
+      "expected_rows": 118,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 22.7,
+      "status": "ok"
+    },
+    {
+      "table": "route_reliability",
+      "group": "analytics",
+      "expected_rows": 118,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 2.8,
+      "status": "ok"
+    },
+    {
+      "table": "eda_route_demand",
+      "group": "analytics",
+      "expected_rows": 118,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 3.1,
+      "status": "ok"
+    },
+    {
+      "table": "eda_route_delay",
+      "group": "analytics",
+      "expected_rows": 118,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 2.2,
+      "status": "ok"
+    },
+    {
+      "table": "delay_congestion_patterns",
+      "group": "analytics",
+      "expected_rows": 118,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 2.1,
+      "status": "ok"
+    },
+    {
+      "table": "overcrowding_summary",
+      "group": "analytics",
+      "expected_rows": 236,
+      "hdfs_rows": 236,
+      "inserted": 236,
+      "mysql_rows": 236,
+      "seconds": 2.6,
+      "status": "ok"
+    },
+    {
+      "table": "persistent_overcrowding",
+      "group": "analytics",
+      "expected_rows": 8240,
+      "hdfs_rows": 8240,
+      "inserted": 8240,
+      "mysql_rows": 8240,
+      "seconds": 7.2,
+      "status": "ok"
+    },
+    {
+      "table": "underutilized_services",
+      "group": "analytics",
+      "expected_rows": 3540,
+      "hdfs_rows": 3540,
+      "inserted": 3540,
+      "mysql_rows": 3540,
+      "seconds": 4.7,
+      "status": "ok"
+    },
+    {
+      "table": "demand_supply_gap",
+      "group": "analytics",
+      "expected_rows": 3540,
+      "hdfs_rows": 3540,
+      "inserted": 3540,
+      "mysql_rows": 3540,
+      "seconds": 3.9,
+      "status": "ok"
+    },
+    {
+      "table": "service_frequency",
+      "group": "analytics",
+      "expected_rows": 3540,
+      "hdfs_rows": 3540,
+      "inserted": 3540,
+      "mysql_rows": 3540,
+      "seconds": 3.1,
+      "status": "ok"
+    },
+    {
+      "table": "delay_by_dimension",
+      "group": "analytics",
+      "expected_rows": 939,
+      "hdfs_rows": 939,
+      "inserted": 939,
+      "mysql_rows": 939,
+      "seconds": 1.6,
+      "status": "ok"
+    },
+    {
+      "table": "delay_by_stop",
+      "group": "analytics",
+      "expected_rows": 756,
+      "hdfs_rows": 756,
+      "inserted": 756,
+      "mysql_rows": 756,
+      "seconds": 2.6,
+      "status": "ok"
+    },
+    {
+      "table": "delay_top_trips",
+      "group": "analytics",
+      "expected_rows": 500,
+      "hdfs_rows": 500,
+      "inserted": 500,
+      "mysql_rows": 500,
+      "seconds": 2.0,
+      "status": "ok"
+    },
+    {
+      "table": "stop_performance",
+      "group": "analytics",
+      "expected_rows": 756,
+      "hdfs_rows": 756,
+      "inserted": 756,
+      "mysql_rows": 756,
+      "seconds": 2.1,
+      "status": "ok"
+    },
+    {
+      "table": "eda_stop_usage",
+      "group": "analytics",
+      "expected_rows": 756,
+      "hdfs_rows": 756,
+      "inserted": 756,
+      "mysql_rows": 756,
+      "seconds": 2.0,
+      "status": "ok"
+    },
+    {
+      "table": "eda_peak_hours",
+      "group": "analytics",
+      "expected_rows": 60,
+      "hdfs_rows": 60,
+      "inserted": 60,
+      "mysql_rows": 60,
+      "seconds": 1.6,
+      "status": "ok"
+    },
+    {
+      "table": "eda_peak_days",
+      "group": "analytics",
+      "expected_rows": 365,
+      "hdfs_rows": 365,
+      "inserted": 365,
+      "mysql_rows": 365,
+      "seconds": 2.0,
+      "status": "ok"
+    },
+    {
+      "table": "peak_period_summary",
+      "group": "analytics",
+      "expected_rows": 15,
+      "hdfs_rows": 15,
+      "inserted": 15,
+      "mysql_rows": 15,
+      "seconds": 2.3,
+      "status": "ok"
+    },
+    {
+      "table": "flow_od_pairs",
+      "group": "analytics",
+      "expected_rows": 19296,
+      "hdfs_rows": 19296,
+      "inserted": 19296,
+      "mysql_rows": 19296,
+      "seconds": 8.8,
+      "status": "ok"
+    },
+    {
+      "table": "flow_direction_demand",
+      "group": "analytics",
+      "expected_rows": 3540,
+      "hdfs_rows": 3540,
+      "inserted": 3540,
+      "mysql_rows": 3540,
+      "seconds": 3.3,
+      "status": "ok"
+    },
+    {
+      "table": "od_matrix",
+      "group": "analytics",
+      "expected_rows": 316810,
+      "hdfs_rows": 316810,
+      "inserted": 316810,
+      "mysql_rows": 316810,
+      "seconds": 107.2,
+      "status": "ok"
+    },
+    {
+      "table": "travel_time_analysis",
+      "group": "analytics",
+      "expected_rows": 3540,
+      "hdfs_rows": 3540,
+      "inserted": 3540,
+      "mysql_rows": 3540,
+      "seconds": 2.5,
+      "status": "ok"
+    },
+    {
+      "table": "travel_time_peak_offpeak",
+      "group": "analytics",
+      "expected_rows": 236,
+      "hdfs_rows": 236,
+      "inserted": 236,
+      "mysql_rows": 236,
+      "seconds": 0.9,
+      "status": "ok"
+    },
+    {
+      "table": "schedule_adherence",
+      "group": "analytics",
+      "expected_rows": 354,
+      "hdfs_rows": 354,
+      "inserted": 354,
+      "mysql_rows": 354,
+      "seconds": 1.5,
+      "status": "ok"
+    },
+    {
+      "table": "headway_bunching",
+      "group": "analytics",
+      "expected_rows": 1180,
+      "hdfs_rows": 1180,
+      "inserted": 1180,
+      "mysql_rows": 1180,
+      "seconds": 1.6,
+      "status": "ok"
+    },
+    {
+      "table": "special_event_dates",
+      "group": "analytics",
+      "expected_rows": 365,
+      "hdfs_rows": 365,
+      "inserted": 365,
+      "mysql_rows": 365,
+      "seconds": 1.2,
+      "status": "ok"
+    },
+    {
+      "table": "anomalies",
+      "group": "analytics",
+      "expected_rows": 38382,
+      "hdfs_rows": 38382,
+      "inserted": 38382,
+      "mysql_rows": 38382,
+      "seconds": 8.3,
+      "status": "ok"
+    },
+    {
+      "table": "anomaly_summary",
+      "group": "analytics",
+      "expected_rows": 5,
+      "hdfs_rows": 5,
+      "inserted": 5,
+      "mysql_rows": 5,
+      "seconds": 0.9,
+      "status": "ok"
+    },
+    {
+      "table": "passenger_segments",
+      "group": "analytics",
+      "expected_rows": 56779,
+      "hdfs_rows": 56779,
+      "inserted": 56779,
+      "mysql_rows": 56779,
+      "seconds": 18.3,
+      "status": "ok"
+    },
+    {
+      "table": "segment_summary",
+      "group": "analytics",
+      "expected_rows": 5,
+      "hdfs_rows": 5,
+      "inserted": 5,
+      "mysql_rows": 5,
+      "seconds": 1.1,
+      "status": "ok"
+    },
+    {
+      "table": "stops",
+      "group": "reference",
+      "expected_rows": null,
+      "hdfs_rows": 756,
+      "inserted": 756,
+      "mysql_rows": 756,
+      "seconds": 1.5,
+      "status": "ok"
+    },
+    {
+      "table": "routes",
+      "group": "reference",
+      "expected_rows": null,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 0.6,
+      "status": "ok"
+    },
+    {
+      "table": "vehicles",
+      "group": "reference",
+      "expected_rows": null,
+      "hdfs_rows": 775,
+      "inserted": 775,
+      "mysql_rows": 775,
+      "seconds": 0.8,
+      "status": "ok"
+    }
+  ],
+  "failed": [],
+  "result": "PASS"
+}
