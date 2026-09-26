@@ -21,12 +21,12 @@ export function FilterBar({ supported, value, onChange, children }: {
     <form className="filters" onSubmit={(e) => e.preventDefault()} aria-label="Filters">
       {has('route_id') && (
         <label className="field">Route
-          <input value={value.route_id ?? ''} onChange={set('route_id')} placeholder="e.g. R001" size={8} />
+          <input value={value.route_id ?? ''} onChange={set('route_id')} placeholder="e.g. R001…" size={8} />
         </label>
       )}
       {has('stop_id') && (
         <label className="field">Stop
-          <input value={value.stop_id ?? ''} onChange={set('stop_id')} placeholder="e.g. S0001" size={8} />
+          <input value={value.stop_id ?? ''} onChange={set('stop_id')} placeholder="e.g. S0001…" size={8} />
         </label>
       )}
       {has('direction') && (

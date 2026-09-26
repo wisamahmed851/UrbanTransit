@@ -17,10 +17,12 @@ function NetworkArt() {
   return (
     <svg className="art" viewBox="0 0 480 210" role="img" aria-label="Schematic map of bus lines">
       <style>{`
-        .art-line { fill: none; stroke: var(--accent-ink); stroke-linecap: round; stroke-linejoin: round; opacity: .9;
-          stroke-dasharray: 700; stroke-dashoffset: 700; animation: draw 1.6s cubic-bezier(.6,.1,.2,1) forwards; }
-        .art-line:nth-child(2) { animation-delay: .15s } .art-line:nth-child(3) { animation-delay: .3s } .art-line:nth-child(4) { animation-delay: .45s }
-        .art-stop { fill: var(--accent); stroke: var(--accent-ink); stroke-width: 3; opacity: 0; animation: pop .3s 1.2s forwards; }
+        .art-line { fill: none; stroke: #5181ff; stroke-linecap: round; stroke-linejoin: round;
+          stroke-dasharray: 700; stroke-dashoffset: 700; animation: draw 1.6s cubic-bezier(.16,1,.3,1) forwards; }
+        .art-line:first-of-type { stroke: #f5b301; filter: drop-shadow(0 0 6px rgba(245,179,1,.45)) }
+        .art-line:nth-of-type(2) { animation-delay: .15s } .art-line:nth-of-type(3) { animation-delay: .3s; stroke: #6a9cff }
+        .art-line:nth-of-type(4) { animation-delay: .45s; stroke: #9da4b8; stroke-dasharray: 8 7; stroke-dashoffset: 0; opacity: 0; animation: pop .4s .9s forwards }
+        .art-stop { fill: #090d17; stroke: #ebf2ff; stroke-width: 3; opacity: 0; animation: pop .3s 1.2s forwards; }
         @keyframes draw { to { stroke-dashoffset: 0 } }
         @keyframes pop { to { opacity: 1 } }
         @media (prefers-reduced-motion: reduce) { .art-line { stroke-dashoffset: 0; animation: none } .art-stop { opacity: 1; animation: none } }
@@ -72,10 +74,10 @@ export function LoginPage() {
         <h2>Sign in</h2>
         <form onSubmit={submit}>
           <label className="field">Username
-            <input autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} required autoFocus />
+            <input name="username" autoComplete="username" spellCheck={false} autoCapitalize="none" value={username} onChange={(e) => setUsername(e.target.value)} required autoFocus />
           </label>
           <label className="field">Password
-            <input type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input name="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>
           {error && <ErrorNotice error={error} />}
           <button className="btn" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>

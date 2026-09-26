@@ -1,4 +1,7 @@
-"""Flatten the Phase 6 metric JSON files (models/spark/metrics/*.json) into `model_metrics` rows.
+"""Flatten the metric JSON files into `model_metrics` rows.
+
+* `normalise`: Phase 6 Spark files (models/spark/metrics/*.json), several layouts, below.
+* `normalise_python`: Phase 7 Python files (models/python/metrics/*.json), one layout.
 
 The files come in several layouts (see documentation/backend_api.md, "Model metrics"):
 
@@ -60,7 +63,7 @@ def normalise(file_name: str, data: dict) -> list[dict]:
 
     def make(split_type: str, name: str, value, extra: dict) -> dict:
         return {
-            "source_file": file_name, "task": task, "algorithm": algorithm,
+            "pipeline": "spark", "source_file": file_name, "task": task, "algorithm": algorithm,
             "split_type": split_type, "metric_name": name, "metric_value": value,
             "extra_json": {**file_extra, **extra}, "validity_flag": flag, "validity_note": note,
         }
@@ -88,6 +91,42 @@ def normalise(file_name: str, data: dict) -> list[dict]:
     if _is_number(data.get("actual_clusters")):
         out.append(make("train", "actual_clusters", float(data["actual_clusters"]), {}))
 
+    if not out:
+        raise ValueError(f"{file_name}: no numeric metric found; the layout is not recognised")
+    return out
+
+
+# Phase 7 top-level keys that hold a metrics block, and the split_type each becomes.
+PYTHON_BLOCKS = {"validation": "validation", "test": "test", "test_default_threshold": "test_default_threshold"}
+
+
+def normalise_python(file_name: str, data: dict) -> list[dict]:
+    """Rows for one Phase 7 file: `{validation, test}` blocks (classifiers, regressors) or
+    `silhouette` + `clusters` (clustering). `test_default_threshold` is the crowding model
+    scored at 0.5 instead of its tuned threshold.
+
+    No validity flag is raised: the Phase 7 delay model's inputs exclude `occupancy_pct`
+    (`run_classification` removes it), so the Spark leakage finding does not apply.
+    """
+    task, algorithm = data["task"], data["algorithm"]
+    file_extra = {k: v for k, v in data.items() if k not in PYTHON_BLOCKS and k not in {"task", "algorithm", "silhouette", "clusters"}}
+
+    def make(split_type: str, name: str, value, extra: dict) -> dict:
+        return {
+            "pipeline": "python", "source_file": file_name, "task": task, "algorithm": algorithm,
+            "split_type": split_type, "metric_name": name, "metric_value": value,
+            "extra_json": {**file_extra, **extra}, "validity_flag": None, "validity_note": None,
+        }
+
+    out = []
+    for key, split in PYTHON_BLOCKS.items():
+        if isinstance(data.get(key), dict):
+            metrics, rest = _flatten_block(data[key])
+            out += [make(split, name, value, rest) for name, value in metrics]
+    if _is_number(data.get("silhouette")):
+        out.append(make("train", "silhouette", float(data["silhouette"]), {}))
+    if _is_number(data.get("clusters")):
+        out.append(make("train", "clusters", float(data["clusters"]), {}))
     if not out:
         raise ValueError(f"{file_name}: no numeric metric found; the layout is not recognised")
     return out

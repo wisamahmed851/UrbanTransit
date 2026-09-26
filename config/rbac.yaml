@@ -5,12 +5,12 @@
 permissions:
   analytics:read: Read the Phase 5 analytics summary tables
   reports:export: Export analytics tables as CSV
-  models:read: Read Phase 6 model metrics and cluster profiles
+  models:read: Read model metrics (Spark and Python), clusters, the model registry and the pipeline comparison
   reference:read: Read routes, stops and vehicles
   reference:write: Create, update and delete routes, stops and vehicles
   users:manage: Create users, assign roles, deactivate accounts
   audit:read: Read the audit log
-  predictions:use: Call the prediction endpoints
+  predictions:use: Run predictions and what-if scenarios (read-only; nothing is changed)
   recommendations:read: Read recommendations
 
 roles:
@@ -24,5 +24,7 @@ roles:
     description: Data analyst; reads and exports analytics and model evidence
     permissions: [analytics:read, reports:export, models:read, reference:read, recommendations:read]
   evaluator:
-    description: Reviewer/assessor; read-only access to results, evidence and the audit trail
-    permissions: [analytics:read, reports:export, models:read, reference:read, audit:read]
+    description: Reviewer/assessor; read-only access to results, evidence, predictions and the audit trail
+    # predictions:use and recommendations:read added in CMD-024: evaluators must be able to try the
+    # prediction, what-if and recommendation features (SRS 1.10 item 13); none of them writes data.
+    permissions: [analytics:read, reports:export, models:read, reference:read, audit:read, predictions:use, recommendations:read]

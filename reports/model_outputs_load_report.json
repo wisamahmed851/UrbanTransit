@@ -1,0 +1,26 @@
+{
+  "tables": {
+    "route_daily_boardings": 41451,
+    "trip_context": 7051,
+    "route_clusters": 116,
+    "python_cluster_profiles": 5,
+    "recommendations": 140,
+    "pipeline_comparison": 1455,
+    "model_versions": 4
+  },
+  "expected": {
+    "route_daily_boardings": 41451,
+    "trip_context": 7051,
+    "route_clusters": 116,
+    "python_cluster_profiles": 5,
+    "recommendations": 140,
+    "pipeline_comparison": 1455,
+    "model_versions": 4
+  },
+  "trip_context_window": {
+    "window_start": "2026-07-07",
+    "window_end": "2026-08-31",
+    "trips_in_window": 296100
+  },
+  "result": "PASS"
+}

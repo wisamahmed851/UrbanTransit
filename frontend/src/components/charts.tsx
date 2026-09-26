@@ -2,9 +2,14 @@
  * Charts (Recharts) following the dataviz rules: thin marks with 4px rounded data-ends,
  * hairline recessive axes, a hover tooltip on every mark, a legend for 2+ series, and a
  * table view twin for every chart. Colours come from CSS tokens so dark mode uses its own
- * validated steps.
+ * validated steps (CMD-022: blue and gold are the only two hues; a third series is navy-grey
+ * and always dashed, so it never depends on colour alone).
+ *
+ * When data changes (filters, segment switches) the marks glide to the new values in 450 ms;
+ * with reduced motion they switch instantly.
  */
 
+import { useReducedMotion } from 'motion/react'
 import { useEffect, useState, type ReactNode } from 'react'
 import {
   Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
@@ -12,7 +17,7 @@ import {
 import { DataTable, type Column } from './DataTable'
 import { Segmented } from './ui'
 
-const TOKENS = ['--ink', '--series-1', '--series-2', '--series-3', '--series-4', '--ink-2', '--ink-muted', '--hairline', '--axis', '--surface'] as const
+const TOKENS = ['--ink', '--series-1', '--series-2', '--series-3', '--ink-2', '--ink-muted', '--hairline', '--axis', '--bg-0'] as const
 type Palette = Record<(typeof TOKENS)[number], string>
 
 function readPalette(): Palette {
@@ -34,7 +39,14 @@ export function usePalette(): Palette {
   return p
 }
 
-const SERIES = ['--series-1', '--series-2', '--series-3', '--series-4'] as const
+const SERIES = ['--series-1', '--series-2', '--series-3'] as const
+const DASHED_SLOT = 2
+
+/** Shared transition props: animate data updates unless the viewer prefers reduced motion. */
+function useTransition() {
+  const reduce = useReducedMotion()
+  return { isAnimationActive: !reduce, animationDuration: 450, animationEasing: 'ease-out' as const }
+}
 
 /** Chart with a Chart / Table switch; the table is the accessible twin. */
 export function ChartFrame<R extends Record<string, string | number | boolean | null>>({ chart, rows, columns, legend }: {
@@ -48,7 +60,7 @@ export function ChartFrame<R extends Record<string, string | number | boolean | 
         {legend && legend.length > 1 && view === 'chart' ? (
           <div className="chart-legend">
             {legend.map((l) => (
-              <span key={l.label} style={{ '--c': p[SERIES[l.slot]] } as React.CSSProperties}><i />{l.label}</span>
+              <span key={l.label} style={{ '--c': p[SERIES[l.slot]] } as React.CSSProperties}><i data-dashed={l.slot === DASHED_SLOT || undefined} />{l.label}</span>
             ))}
           </div>
         ) : <span />}
@@ -86,6 +98,7 @@ export function HBarChart({ data, format, name, height }: {
   data: { label: string; value: number }[]; format: (v: number) => string; name: string; height?: number
 }) {
   const p = usePalette()
+  const motion = useTransition()
   const h = height ?? Math.max(120, data.length * 30 + 40)
   const byLabel = new Map(data.map((d) => [d.label, d.value]))
   return (
@@ -97,7 +110,7 @@ export function HBarChart({ data, format, name, height }: {
         <YAxis yAxisId="values" orientation="right" type="category" dataKey="label" width={64} axisLine={false} tickLine={false}
           tick={{ fill: p['--ink'], fontSize: 12 }} tickFormatter={(l: string) => format(byLabel.get(l) ?? NaN)} />
         <Tooltip cursor={{ fill: p['--hairline'], opacity: 0.5 }} content={<TooltipBox format={format} />} />
-        <Bar yAxisId="names" dataKey="value" name={name} fill={p['--series-1']} radius={[0, 4, 4, 0]} maxBarSize={18} isAnimationActive={false} />
+        <Bar yAxisId="names" dataKey="value" name={name} fill={p['--series-1']} radius={[0, 4, 4, 0]} maxBarSize={18} {...motion} />
       </BarChart>
     </ResponsiveContainer>
   )
@@ -109,6 +122,7 @@ export function ColumnChart({ data, format, name, xFormat, height = 240 }: {
   xFormat?: (l: string) => string; height?: number
 }) {
   const p = usePalette()
+  const motion = useTransition()
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 8 }} barCategoryGap={2}>
@@ -116,7 +130,7 @@ export function ColumnChart({ data, format, name, xFormat, height = 240 }: {
         <XAxis dataKey="label" tickFormatter={xFormat} stroke={p['--axis']} tick={{ fill: p['--ink-muted'], fontSize: 12 }} />
         <YAxis tickFormatter={format} stroke={p['--axis']} tick={{ fill: p['--ink-muted'], fontSize: 12 }} width={56} />
         <Tooltip cursor={{ fill: p['--hairline'], opacity: 0.5 }} content={<TooltipBox format={format} labelFormat={xFormat} />} />
-        <Bar dataKey="value" name={name} fill={p['--series-1']} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+        <Bar dataKey="value" name={name} fill={p['--series-1']} radius={[4, 4, 0, 0]} {...motion} />
       </BarChart>
     </ResponsiveContainer>
   )
@@ -125,10 +139,11 @@ export function ColumnChart({ data, format, name, xFormat, height = 240 }: {
 /** Lines over an ordered x axis; up to 3 series on one axis (never a second y-scale). */
 export function LinesChart({ data, xKey, series, format, xFormat, height = 260 }: {
   data: Record<string, string | number | null>[]; xKey: string
-  series: { key: string; label: string; slot: number }[]
+  series: { key: string; label: string; slot: 0 | 1 | 2 }[]
   format: (v: number) => string; xFormat?: (l: string) => string; height?: number
 }) {
   const p = usePalette()
+  const motion = useTransition()
   return (
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={data} margin={{ top: 8, right: 16, bottom: 4, left: 8 }}>
@@ -138,7 +153,8 @@ export function LinesChart({ data, xKey, series, format, xFormat, height = 260 }
         <Tooltip cursor={{ stroke: p['--axis'] }} content={<TooltipBox format={format} labelFormat={xFormat} />} />
         {series.map((s) => (
           <Line key={s.key} type="monotone" dataKey={s.key} name={s.label} stroke={p[SERIES[s.slot]]} strokeWidth={2}
-            dot={false} activeDot={{ r: 4, stroke: p['--surface'], strokeWidth: 2 }} connectNulls={false} isAnimationActive={false} />
+            strokeDasharray={s.slot === DASHED_SLOT ? '5 4' : undefined}
+            dot={false} activeDot={{ r: 4, stroke: p['--bg-0'], strokeWidth: 2 }} connectNulls={false} {...motion} />
         ))}
       </LineChart>
     </ResponsiveContainer>

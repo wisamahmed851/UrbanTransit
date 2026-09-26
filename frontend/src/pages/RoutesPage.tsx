@@ -24,7 +24,7 @@ export function RoutesPage() {
       </PageHead>
       {perf.error && <ErrorNotice error={perf.error} />}
       <form className="filters" onSubmit={(e) => e.preventDefault()} aria-label="Route filters">
-        <label className="field">Find a route<input value={q} onChange={(e) => setQ(e.target.value)} placeholder="R097 or BRT1" /></label>
+        <label className="field">Find a route<input value={q} onChange={(e) => setQ(e.target.value)} placeholder="R097 or BRT1…" /></label>
         <label className="field">Class
           <select value={cls} onChange={(e) => setCls(e.target.value)}>
             <option value="">All classes</option>{ROUTE_CLASSES.map((c) => <option key={c}>{c}</option>)}

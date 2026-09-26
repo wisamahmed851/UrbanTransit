@@ -1,4 +1,4 @@
-"""Model metrics normalisation on the real Phase 6 files, the models API, and the stubs."""
+"""Model metrics normalisation on the real Phase 6 (Spark) and Phase 7 (Python) files, and the models API."""
 
 import json
 from pathlib import Path
@@ -6,12 +6,14 @@ from pathlib import Path
 import pytest
 
 from database.load_model_metrics import read_cluster_rows
-from database.metrics_normaliser import normalise
+from database.metrics_normaliser import normalise, normalise_python
 from src.extensions import db
 from src.models.ml import ClusterProfile, ModelMetric
 
 METRICS_DIR = Path(__file__).resolve().parent.parent / "models" / "spark" / "metrics"
 FILES = sorted(METRICS_DIR.glob("*.json"))
+PY_METRICS_DIR = METRICS_DIR.parent.parent / "python" / "metrics"
+PY_FILES = sorted(PY_METRICS_DIR.glob("*.json"))
 
 
 def rows_of(name: str) -> list[dict]:
@@ -78,21 +80,33 @@ def test_clusters_api(client, auth, loaded):
     assert "route_id" not in body["clusters"][0]
 
 
-@pytest.mark.parametrize("method,url,feature", [
-    ("post", "/api/predictions/delay", "predictions.delay"),
-    ("post", "/api/predictions/crowding", "predictions.crowding"),
-])
-def test_stubs_are_explicit(client, auth, method, url, feature):
-    res = getattr(client, method)(url, json={}, headers=auth("operator"))
-    body = res.get_json()
-    assert res.status_code == 503
-    assert body["stub"] is True and body["status"] == "unavailable" and body["feature"] == feature
-    assert body["reason"].startswith("unavailable - ")
+@pytest.mark.parametrize("path", PY_FILES, ids=[p.stem for p in PY_FILES])
+def test_every_python_file_normalises(path):
+    rows = normalise_python(path.name, json.loads(path.read_text(encoding="utf-8")))
+    assert rows and all(r["pipeline"] == "python" and isinstance(r["metric_value"], float) for r in rows)
+    # The Phase 7 delay model excludes occupancy_pct, so the Spark leakage flag must not be copied over.
+    assert all(r["validity_flag"] is None for r in rows)
 
 
-def test_recommendations_are_generated_pipeline_artifacts(client, auth):
-    res = client.get("/api/recommendations", headers=auth("operator"))
-    body = res.get_json()
-    assert res.status_code == 200
-    assert body["total"] == 140
-    assert body["rows"][0]["evidence"]
+def test_python_layout():
+    rows = {(r["split_type"], r["metric_name"]): r for r in normalise_python(
+        "crowding_flag_xgboost.json", json.loads((PY_METRICS_DIR / "crowding_flag_xgboost.json").read_text(encoding="utf-8")))}
+    assert rows[("test", "macro_f1")]["metric_value"] == 0.761303
+    assert rows[("test", "per_class_f1[1.0]")]["metric_value"] == 0.577602
+    assert ("test_default_threshold", "accuracy") in rows
+    assert rows[("test", "accuracy")]["extra_json"]["threshold"] == pytest.approx(0.70)
+    assert "confusion_matrix" in rows[("test", "accuracy")]["extra_json"]
+    (sil, k) = normalise_python("route_clustering_agglomerative_k5.json", json.loads(
+        (PY_METRICS_DIR / "route_clustering_agglomerative_k5.json").read_text(encoding="utf-8")))
+    assert (sil["metric_name"], sil["metric_value"], k["metric_value"]) == ("silhouette", 0.324122, 5.0)
+
+
+def test_pipeline_filter(client, auth, loaded):
+    with client.application.app_context():
+        rows = [r for p in PY_FILES for r in normalise_python(p.name, json.loads(p.read_text(encoding="utf-8")))]
+        db.session.execute(ModelMetric.__table__.insert(), rows)
+        db.session.commit()
+    h = auth("analyst")
+    body = client.get("/api/models/metrics?pipeline=python", headers=h).get_json()
+    assert body["total"] == len(rows) and body["warnings"] == []
+    assert client.get("/api/models/metrics?pipeline=spark", headers=h).get_json()["total"] == loaded

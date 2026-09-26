@@ -100,6 +100,8 @@ def test_csv_export_filters_and_audit(client, auth):
     assert log["entries"][0]["entity"] == "analytics/od_matrix"
 
 
-def test_evaluator_can_export_but_not_predict(client, auth):
+def test_evaluator_can_export_and_predict_but_analyst_cannot_predict(client, auth):
+    # CMD-024: evaluators may run (read-only) predictions; analysts still may not.
     assert client.get("/api/reports", headers=auth("evaluator")).status_code == 200
-    assert client.post("/api/predictions/delay", json={}, headers=auth("evaluator")).status_code == 403
+    assert client.post("/api/predictions/delay", json={}, headers=auth("evaluator")).status_code == 400   # past auth, body invalid
+    assert client.post("/api/predictions/delay", json={}, headers=auth("analyst")).status_code == 403

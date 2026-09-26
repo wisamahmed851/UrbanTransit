@@ -36,14 +36,39 @@ def create_app(config_object: type = BaseConfig) -> Flask:
     cors.init_app(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
     from src import models, security  # noqa: F401  (tables for Flask-Migrate; JWT callbacks)
-    from src.blueprints import admin, analytics, auth, health, ml, operational, reports, stubs
+    from src.blueprints import admin, analytics, auth, health, insights, ml, network, predictions, reports
     from src.cli import register_cli
 
-    for module in (health, auth, admin, analytics, ml, operational, reports, stubs):
+    for module in (health, auth, admin, analytics, ml, network, reports, predictions, insights):
         app.register_blueprint(module.bp)
     register_error_handlers(app)
     register_cli(app)
+    if not app.testing:
+        warm_models(app)
     return app
+
+
+def warm_models(app: Flask) -> None:
+    """Load the saved models in a background thread at startup, so the first prediction or
+    forecast does not wait 8-10 s for joblib to read them, and pre-compute the default network
+    forecast. A missing model file or database is fine here; the endpoint reports it when called."""
+    import threading
+
+    def load():
+        from src.services import forecasting, model_serving
+        for task in ("crowding_flag", "delay_severity"):
+            try:
+                model_serving.load_classifier(task)
+            except Exception:  # noqa: BLE001  (reported by the endpoint instead)
+                pass
+        try:
+            forecasting.load_regressor()
+            with app.app_context():
+                forecasting.network_forecast(model_serving.serving_config()["forecast"]["default_horizon_days"])
+        except Exception:  # noqa: BLE001
+            pass
+
+    threading.Thread(target=load, name="warm-models", daemon=True).start()
 
 
 if __name__ == "__main__":

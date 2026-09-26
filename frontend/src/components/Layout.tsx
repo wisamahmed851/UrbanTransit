@@ -1,11 +1,13 @@
 /**
  * App shell. Navigation is drawn as a transit line: pages are stations, the current page is
- * the filled stop. Pages still running on sample data sit on a dashed (hatched) track.
+ * the filled stop. A line marked `kind: 'sample'` is drawn as a dashed (hatched) track; since
+ * CMD-024 no page runs on sample data, so no line uses it.
  */
 
 import { Suspense, useEffect, useState } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import { StaggerScope } from './motion'
 import { Loading } from './ui'
 
 interface Station { to: string; label: string; perm?: string }
@@ -15,6 +17,7 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
     title: 'Network',
     stations: [
       { to: '/', label: 'Overview' },
+      { to: '/map', label: 'Network map' },
       { to: '/routes', label: 'Routes' },
       { to: '/delays', label: 'Delays' },
       { to: '/crowding', label: 'Crowding and capacity' },
@@ -24,18 +27,20 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
     ],
   },
   {
-    title: 'Evidence',
+    title: 'Intelligence',
     stations: [
-      { to: '/models', label: 'Model results', perm: 'models:read' },
-      { to: '/explorer', label: 'Data explorer' },
+      { to: '/recommendations', label: 'Recommendations', perm: 'recommendations:read' },
+      { to: '/forecast', label: 'Demand forecast' },
+      { to: '/predictions', label: 'Predictions', perm: 'predictions:use' },
+      { to: '/whatif', label: 'What-if scenarios', perm: 'predictions:use' },
     ],
   },
   {
-    title: 'Coming with Phase 7',
-    kind: 'sample',
+    title: 'Evidence',
     stations: [
-      { to: '/predictions', label: 'Predictions', perm: 'predictions:use' },
-      { to: '/recommendations', label: 'Recommendations', perm: 'recommendations:read' },
+      { to: '/models', label: 'Model results', perm: 'models:read' },
+      { to: '/comparison', label: 'Spark vs Python', perm: 'models:read' },
+      { to: '/explorer', label: 'Data explorer' },
     ],
   },
   {
@@ -49,11 +54,13 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
 ]
 
 type Theme = 'system' | 'light' | 'dark'
-const THEME_KEY = 'utiq.theme'
+export const THEME_KEY = 'utiq.theme'
+/** Dark is the brand's default; viewers can switch to light or follow the OS. */
+export const DEFAULT_THEME: Theme = 'dark'
 
 function useTheme(): [Theme, (t: Theme) => void] {
   const [theme, setTheme] = useState<Theme>(() => {
-    try { return (localStorage.getItem(THEME_KEY) as Theme) || 'system' } catch { return 'system' }
+    try { return (localStorage.getItem(THEME_KEY) as Theme) || DEFAULT_THEME } catch { return DEFAULT_THEME }
   })
   useEffect(() => {
     if (theme === 'system') document.documentElement.removeAttribute('data-theme')
@@ -66,10 +73,10 @@ function useTheme(): [Theme, (t: Theme) => void] {
 export function BrandMark() {
   return (
     <svg className="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="7" fill="var(--accent)" />
-      <path d="M6 16h20" stroke="var(--accent-ink)" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="11" cy="16" r="4" fill="var(--accent)" stroke="var(--accent-ink)" strokeWidth="3" />
-      <circle cx="22" cy="16" r="2.5" fill="var(--accent-ink)" />
+      <rect width="32" height="32" rx="9" fill="#274dcf" />
+      <path d="M6 16h20" stroke="#ebf2ff" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="11" cy="16" r="4" fill="#274dcf" stroke="#ebf2ff" strokeWidth="3" />
+      <circle cx="22" cy="16" r="3" fill="#f5b301" />
     </svg>
   )
 }
@@ -77,9 +84,11 @@ export function BrandMark() {
 export function Layout() {
   const { user, logout, can } = useAuth()
   const [theme, setTheme] = useTheme()
+  const { pathname } = useLocation()
 
   return (
     <div className="shell">
+      <a className="skip-link" href="#main">Skip to content</a>
       <aside className="line-nav">
         <Link to="/" className="brand">
           <BrandMark />
@@ -106,14 +115,14 @@ export function Layout() {
         <div className="nav-foot">
           <label className="field">Theme
             <select value={theme} onChange={(e) => setTheme(e.target.value as Theme)}>
-              <option value="system">Match system</option><option value="light">Light</option><option value="dark">Dark</option>
+              <option value="dark">Dark</option><option value="light">Light</option><option value="system">Match system</option>
             </select>
           </label>
           <span>Signed in as <span className="who">{user?.username}</span> ({user?.roles.join(', ')})</span>
           <button className="btn btn-quiet" onClick={logout}>Sign out</button>
         </div>
       </aside>
-      <main className="main" id="main"><Suspense fallback={<Loading what="page" />}><Outlet /></Suspense></main>
+      <main className="main" id="main"><Suspense fallback={<Loading what="page" />}><StaggerScope key={pathname}><Outlet /></StaggerScope></Suspense></main>
     </div>
   )
 }

@@ -105,6 +105,23 @@ Parquet. Their columns and NOT NULL rules follow `documentation/schemas/<table>.
 MySQL copy. The analytics pipeline keeps reading HDFS, so analytics show the data as it was
 when Phase 5 ran. The loader overwrites these tables only with `--force-reference`.
 
+### Network tables (CMD-022, migration `13bbf36cd65b`)
+
+| table | rows | source | purpose |
+|---|---:|---|---|
+| `route_stops` | 3,210 | clean `route_stops` | ordered stops per route and direction; draws the map's route lines |
+| `gps_events` | 1,139,087 | clean `gps_events` | simulated GPS pings, 7-day sample (10 Nov 05:30 to 16 Nov 23:23, 2025), 728 vehicles; indexed on `(event_time, vehicle_id)` for the replay |
+
+Loaded with `python database/load_analytics_to_mysql.py --network --tables none` (about 7 min).
+The check covers rows, first/last ping, vehicles, and pings whose date differs from `event_date`
+(0 = 0).
+
+**Timezone note:** PySpark converts timestamps into the Python process timezone while Spark
+runs in UTC. WSL is `Asia/Karachi`, so the first GPS load was shifted by +5 h, and the
+reconciliation missed it because both sides went through the same conversion. The loader now
+pins its process to UTC and compares against times formatted inside Spark. Only `gps_events`
+has TIMESTAMP columns; the analytics and reference tables hold DATEs and were never affected.
+
 ## 4. Model evidence
 
 ### `model_metrics` (340 rows from 28 files)
@@ -144,6 +161,29 @@ outcomes. This needs a decision before any crowding model is served.
 Loaded unchanged from `reports/phase6_cluster_profiles.csv`: `prediction` (cluster id), the
 eight mean route features, `routes` and `plain_language_label`. **No route-to-cluster
 assignment exists yet**, so there is no table mapping routes to clusters.
+
+## 4b. Model serving (CMD-024, migration `6e3739ffae4a`)
+
+`model_metrics.pipeline` (`spark` | `python`) was added; the 19 Phase 7 files load with no
+validity flag (the Python delay model does not use `occupancy_pct`). 462 rows in all.
+
+| table | rows | source | purpose |
+|---|---:|---|---|
+| `route_daily_boardings` | 41,451 | Phase 7 `demand_frame()` | lag features and history for the demand forecast |
+| `trip_context` | 7,051 | Phase 7 `base_trip()`, 2026-07-07..2026-08-31 (296,100 trips) | typical trip per route, direction, day type, hour: model inputs and observed outcomes |
+| `recommendations` | 140 | `reports/recommendations.json` | Phase 9 output |
+| `pipeline_comparison` | 1,455 | `reports/comparison/task_*.csv` | Phase 8 cases |
+| `route_clusters` | 116 | saved agglomerative k=5 `labels_` | route to cluster |
+| `python_cluster_profiles` | 5 | `reports/python_cluster_profiles.csv` | cluster profiles |
+
+`model_versions` now holds the four served models (is_active) with their re-scored metrics,
+and `job_runs` records each `load_model_outputs.py` run.
+
+```bash
+bash python_pipeline/stage_clean_parquet.sh     # HDFS clean tables -> python_pipeline/local_clean
+python database/evaluate_saved_models.py        # re-score the saved models: PASS 33/33
+python database/load_model_outputs.py           # fill the tables above (about 4 min, 4 GB RAM)
+```
 
 ## 5. Loading and verification
 

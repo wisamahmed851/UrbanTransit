@@ -1,12 +1,57 @@
+import { ChartLineUp, Crown, Path, Siren, UsersThree } from '@phosphor-icons/react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Row } from '../api/client'
+import type { RecommendationsResponse } from '../api/types'
+import { useAuth } from '../auth/AuthContext'
 import { ChartFrame, HBarChart, LinesChart } from '../components/charts'
 import { DataTable } from '../components/DataTable'
-import { Empty, ErrorNotice, Loading, PageHead, Panel, RouteBadge, RouteClass, Stats } from '../components/ui'
+import { loadBasemap, type Basemap } from '../components/map/basemap'
+import { ROUTE_TYPES, TransitMap, type Geometry } from '../components/map/TransitMap'
+import { Empty, ErrorNotice, Loading, PageHead, Panel, RouteBadge, RouteClass, Stats, Status } from '../components/ui'
 import { label, num, ROUTE_CLASSES } from '../lib/format'
-import { useRows } from '../lib/useApi'
+import { useApi, useRows } from '../lib/useApi'
+
+const ALL_TYPES = new Set(ROUTE_TYPES.map((t) => t.type))
+const whole = (n: number) => num(Math.round(n))
+
+/** Small, non-interactive view of the network that links to the full map. */
+function NetworkPreview() {
+  const [basemap, setBasemap] = useState<Basemap | null>(null)
+  const geometry = useApi<Geometry>('/network/geometry')
+  useEffect(() => { let live = true; loadBasemap().then((b) => live && setBasemap(b)); return () => { live = false } }, [])
+  return (
+    <Panel title="The network"
+      note="118 routes by type: BRT in gold, trunk and local in blue, feeder dashed."
+      action={<Link className="btn" to="/map">Open network map</Link>}>
+      <div className="map-shell compact">
+        {basemap ? <TransitMap basemap={basemap} geometry={geometry.data} types={ALL_TYPES} showStops={false} interactive={false} zoom={9.5} />
+          : <Loading what="map" />}
+      </div>
+    </Panel>
+  )
+}
+
+/** SRS step 50 "critical alerts": the Critical-priority recommendations of the Phase 9 engine. */
+function CriticalAlerts() {
+  const recs = useApi<RecommendationsResponse>('/recommendations', { priority: 'Critical', limit: 6 })
+  if (recs.error) return <ErrorNotice error={recs.error} />
+  if (!recs.data) return <Loading what="alerts" />
+  return (
+    <Panel title="Critical alerts" note={`${recs.data.total} Critical recommendations from the recommendation engine, with the evidence behind each.`}
+      action={<Link className="btn" to="/recommendations?priority=Critical">All recommendations</Link>}>
+      <DataTable rows={recs.data.rows} columns={[
+        { key: 'subject_id', label: 'Where', render: (r) => /^R\d+$/.test(r.subject_id) ? <Link to={`/routes/${r.subject_id}`}>{r.subject_id}</Link> : r.subject_id },
+        { key: 'action', label: 'Action', wrap: true },
+        { key: 'evidence', label: 'Evidence', wrap: true },
+        { key: 'priority', label: 'Priority', render: () => <Status tone="critical">Critical</Status> },
+      ]} />
+    </Panel>
+  )
+}
 
 export function OverviewPage() {
+  const { can } = useAuth()
   const perf = useRows('route_performance', { limit: 1000, sort: 'composite_score' })
   const days = useRows('eda_peak_days', { limit: 1000, sort: 'service_date' })
   const hours = useRows('eda_peak_hours', { limit: 1000 })
@@ -44,12 +89,21 @@ export function OverviewPage() {
       {error && <ErrorNotice error={error} />}
 
       <Stats items={[
-        { label: 'Routes scored', value: perf.data ? num(eligible.length) : '…', sub: perf.data ? `${routes.length - eligible.length} with too little data` : undefined },
-        { label: 'High performing', value: perf.data ? num(routes.filter((r) => r.route_class === 'High Performing').length) : '…', sub: 'top 30% by composite score' },
-        { label: 'Persistently overcrowded', value: perf.data ? num(routes.filter((r) => r.overcrowded_flag).length) : '…', sub: 'routes with a recurring overload pattern' },
-        { label: 'Boardings per day', value: avgDaily ? num(avgDaily) : '…', sub: 'estimated, system-wide average' },
-        { label: 'Anomaly signals', value: anomalies.data ? num(signals) : '…', sub: `${anomalies.data?.rows.length ?? 0} kinds, see Demand` },
+        { label: 'Routes scored', icon: Path, value: perf.data ? eligible.length : '…', format: whole,
+          sub: perf.data ? `${routes.length - eligible.length} with too little data` : undefined },
+        { label: 'High performing', icon: Crown, value: perf.data ? routes.filter((r) => r.route_class === 'High Performing').length : '…', format: whole,
+          sub: 'top 30% by composite score' },
+        { label: 'Persistently overcrowded', icon: UsersThree, value: perf.data ? routes.filter((r) => r.overcrowded_flag).length : '…', format: whole,
+          sub: 'routes with a recurring overload pattern' },
+        { label: 'Boardings per day', icon: ChartLineUp, value: avgDaily ?? '…', format: whole,
+          sub: 'estimated system average, 1 Sep 2025 to 31 Aug 2026', spark: dayRows.map((r) => Number(r.est_system_boardings ?? 0)) },
+        { label: 'Anomaly signals', icon: Siren, value: anomalies.data ? signals : '…', format: whole,
+          sub: `${anomalies.data?.rows.length ?? 0} kinds, see Demand` },
       ]} />
+
+      {can('recommendations:read') && <CriticalAlerts />}
+
+      <NetworkPreview />
 
       <div className="grid-2">
         <Panel title="How the routes score" note="Each route gets one class. Overcrowding is also flagged separately, whatever the class.">

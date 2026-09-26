@@ -1,12 +1,14 @@
-"""Phase 6 model evidence: flattened metrics and the K-Means cluster profiles.
+"""Model evidence: flattened metrics (Phase 6 Spark and Phase 7 Python) and the Spark K-Means
+cluster profiles.
 
-`model_metrics` holds one row per (source file, split, metric). The Phase 6 JSON files
+`model_metrics` holds one row per (source file, split, metric); `pipeline` says which
+pipeline wrote the file (`spark`: models/spark/metrics, `python`: models/python/metrics). The JSON files
 use four different layouts, so they are normalised into flat rows
 (`database/metrics_normaliser.py`) instead of one rigid schema. Anything that is not a
 single number (row counts, k, split dates, feature lists, confusion matrices, trial
 parameters) goes into `extra_json`.
 
-`validity_flag` is set to INVALID for every `delay_severity` row. Those models use
+`validity_flag` is set to INVALID for every Spark `delay_severity` row. Those models use
 `occupancy_pct`, a same-trip outcome, as an input (occupancy leakage). The metrics are
 shown for transparency but must not back predictions.
 """
@@ -18,7 +20,8 @@ class ModelMetric(db.Model):
     __tablename__ = "model_metrics"
 
     id = db.Column(db.Integer, primary_key=True)
-    source_file = db.Column(db.String(128), nullable=False, index=True)  # models/spark/metrics/<file>
+    pipeline = db.Column(db.String(16), nullable=False, default="spark", server_default="spark", index=True)
+    source_file = db.Column(db.String(128), nullable=False, index=True)  # models/<pipeline>/metrics/<file>
     task = db.Column(db.String(64), nullable=False, index=True)
     algorithm = db.Column(db.String(128), nullable=False)
     split_type = db.Column(db.String(32), nullable=False)    # train | validation | test | test_full | ...
