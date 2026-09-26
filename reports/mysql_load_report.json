@@ -1,7 +1,7 @@
 {
-  "started_utc": "2026-09-26T13:54:28+00:00",
-  "finished_utc": "2026-09-26T13:56:14+00:00",
-  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_185417.log",
+  "started_utc": "2026-09-26T20:20:29+00:00",
+  "finished_utc": "2026-09-26T20:22:58+00:00",
+  "log": "reports/processing_logs/load_analytics_to_mysql_20260926_202015.log",
   "tables": [
     {
       "table": "route_performance",
@@ -624,10 +624,76 @@
       "mysql_rows": 5,
       "seconds": 0.3,
       "status": "ok"
+    },
+    {
+      "table": "stops",
+      "group": "reference",
+      "expected_rows": null,
+      "hdfs_rows": 756,
+      "inserted": 756,
+      "mysql_rows": 756,
+      "seconds": 3.5,
+      "status": "ok"
+    },
+    {
+      "table": "routes",
+      "group": "reference",
+      "expected_rows": null,
+      "hdfs_rows": 118,
+      "inserted": 118,
+      "mysql_rows": 118,
+      "seconds": 0.6,
+      "status": "ok"
+    },
+    {
+      "table": "vehicles",
+      "group": "reference",
+      "expected_rows": null,
+      "hdfs_rows": 775,
+      "inserted": 775,
+      "mysql_rows": 775,
+      "seconds": 0.7,
+      "status": "ok"
+    },
+    {
+      "table": "route_stops",
+      "group": "network",
+      "expected_rows": null,
+      "hdfs_rows": 3210,
+      "inserted": 3210,
+      "mysql_rows": 3210,
+      "seconds": 1.0,
+      "status": "ok"
+    },
+    {
+      "table": "gps_events",
+      "group": "network",
+      "expected_rows": null,
+      "hdfs_rows": 1139087,
+      "inserted": 1139087,
+      "mysql_rows": 1139087,
+      "time_window": {
+        "hdfs": [
+          "2025-11-10 05:30:00",
+          "2025-11-16 23:23:52"
+        ],
+        "mysql": [
+          "2025-11-10 05:30:00",
+          "2025-11-16 23:23:52"
+        ]
+      },
+      "vehicles": {
+        "hdfs": 728,
+        "mysql": 728
+      },
+      "date_mismatches": {
+        "hdfs": 0,
+        "mysql": 0
+      },
+      "seconds": 133.8,
+      "status": "ok"
     }
   ],
-  "failed": [
-    "route_performance"
-  ],
-  "result": "FAIL"
+  "failed": [],
+  "result": "PASS"
 }
