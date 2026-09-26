@@ -1,0 +1,6 @@
+cluster,avg_occupancy,avg_delay_minutes,reliability_score,trip_frequency,peak_demand_ratio,load_factor,avg_travel_time,demand_mom_growth,avg_daily_boardings,profile_label
+0,0.626,1.476,0.792,11791.4,1.481,0.626,37.183,0.056,2517.781,High-load reliable routes
+1,0.269,1.16,0.834,9259.391,1.69,0.269,31.906,0.08,830.343,Low-demand reliable routes
+2,0.272,3.955,0.621,14299.867,1.657,0.272,51.521,0.084,1666.94,Delay-prone mid-demand routes
+3,0.122,-0.243,0.887,2074.0,2.086,0.122,45.428,1.073,564.25,Low-demand rapidly growing routes
+4,0.433,1.325,0.753,35795.25,1.504,0.433,75.156,0.059,13153.364,Very-high-demand trunk routes

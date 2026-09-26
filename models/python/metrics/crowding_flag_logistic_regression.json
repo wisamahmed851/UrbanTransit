@@ -1,0 +1,111 @@
+{
+  "task": "crowding_flag",
+  "algorithm": "logistic_regression",
+  "features": {
+    "numeric": [
+      "hour",
+      "day_of_week",
+      "weekend",
+      "distance_km",
+      "planned_runtime_min",
+      "headway_min",
+      "scheduled_runtime_min",
+      "prior_route_crowding_rate"
+    ],
+    "categorical": [
+      "route_id",
+      "vehicle_id",
+      "direction",
+      "route_type",
+      "vehicle_type"
+    ]
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "validation": {
+    "accuracy": 0.874649,
+    "macro_f1": 0.665427,
+    "per_class_f1": {
+      "0.0": 0.930002,
+      "1.0": 0.400851
+    },
+    "confusion_matrix": {
+      "labels": [
+        "0.0",
+        "1.0"
+      ],
+      "values": [
+        [
+          263704,
+          27609
+        ],
+        [
+          12087,
+          13279
+        ]
+      ]
+    }
+  },
+  "test": {
+    "accuracy": 0.866499,
+    "macro_f1": 0.664681,
+    "per_class_f1": {
+      "0.0": 0.924822,
+      "1.0": 0.404539
+    },
+    "confusion_matrix": {
+      "labels": [
+        "0.0",
+        "1.0"
+      ],
+      "values": [
+        [
+          245938,
+          28210
+        ],
+        [
+          11774,
+          13582
+        ]
+      ]
+    }
+  },
+  "threshold": 0.6500000000000002,
+  "test_default_threshold": {
+    "accuracy": 0.810824,
+    "macro_f1": 0.636663,
+    "per_class_f1": {
+      "0.0": 0.888216,
+      "1.0": 0.38511
+    },
+    "confusion_matrix": {
+      "labels": [
+        "0.0",
+        "1.0"
+      ],
+      "values": [
+        [
+          225102,
+          49046
+        ],
+        [
+          7613,
+          17743
+        ]
+      ]
+    }
+  },
+  "model_scope": "independent pandas/PyArrow clean-Parquet pipeline"
+}

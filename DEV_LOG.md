@@ -168,3 +168,9 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **R097:** High Performing → **Overcrowded** (overcrowding 0, load 0, composite 50.7, rank 0.431). R031, R036 and R020 moved Overcrowded → Low Performing.
 - **Still High Performing:** 9 routes overload on 20–34.6% of trips on a normal day. They are penalised (overcrowding scores 19.7–53.3) but stay in the top 30% on the other eight components, and all nine carry the flag.
 - `verify_phase5.py` 9/9 PASS; the composite recomputed from its components has 0 mismatches.
+
+## 2026-09-26 — Phase 7 independent Python pipeline
+- Added a deliberately independent pandas/PyArrow pipeline. It stages only `/urbantransit/clean/` Parquet from HDFS locally and does not import Spark or read Phase 4/6 features, models, or predictions.
+- Built delay severity and crowding classifiers (Logistic Regression, sklearn Random Forest, XGBoost), independent route-day demand baseline/regressors, and K-Means/DBSCAN/Agglomerative route clustering. Every supervised task uses the Phase 4/6 chronological boundaries.
+- Task A’s best Python test macro F1 is .3825 (XGBoost), below the Spark result; class balancing was applied but raw scheduled/prior-history features remain weak for four delay bands. Task B XGBoost reaches .7609 macro F1 with a validation-selected .70 threshold, exceeding Spark’s .7484.
+- Task C Random Forest test MAE/RMSE is 193.37/422.42, below its independently computed 28-day baseline 399.96/733.67. Task D selects Agglomerative k=5, silhouette .3241.

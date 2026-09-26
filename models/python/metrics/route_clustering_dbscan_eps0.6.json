@@ -1,0 +1,16 @@
+{
+  "task": "route_clustering",
+  "algorithm": "dbscan_eps0.6",
+  "features": [
+    "avg_occupancy",
+    "avg_delay_minutes",
+    "reliability_score",
+    "trip_frequency",
+    "peak_demand_ratio",
+    "load_factor",
+    "avg_travel_time",
+    "demand_mom_growth"
+  ],
+  "silhouette": -0.224531,
+  "clusters": 3
+}
