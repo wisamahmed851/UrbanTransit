@@ -1208,3 +1208,24 @@ because the frontend depends on that API.
 **Problems and fixes:** `peak_penalty_pct` is a fraction, not a percent (it displayed 0.3% instead of 33%); line animation cut charts off; Recharts hid labels on 0-value bars; the login logo was oversized; model metrics were rounded to 2 decimals. All were fixed and re-checked in the browser.
 
 **Git commit:** see `git log` on `frontend/react-dashboard` (CMD-020 commits).
+
+---
+
+## CMD-021 | 2026-09-26 (UTC+05:00) | Operations: WSL check, first portal account, database access
+**My command (verbatim):**
+```text
+check weather my WSL is working or not and give me the credentials of the portal
+becasue i want to open the mysql database okay so tell me how to open it also
+```
+
+**Understood as:** Check the WSL/MySQL stack, create the first portal login (none existed), and explain how to open the MySQL database in a GUI.
+
+**Actions taken:** `wsl -l -v`; service, disk and memory checks; `database/verify_mysql.py`; table counts; `flask users create admin --role admin` with a generated password; login verified through `POST /api/auth/login`; confirmed that Windows `127.0.0.1:3306` is forwarded to the WSL MySQL (`wslrelay`) and that HeidiSQL ships with Laragon (`D:\laragon\bin\heidisql\heidisql.exe`).
+
+**Files changed:** `documentation/COMMAND_LOG.md` only. Credentials were given to the user directly and are not written to any file.
+
+**Result:** Success. Ubuntu-24.04 is running; MySQL is active (`VERIFY_MYSQL: PASS`); data present (route_performance 118, od_matrix 316,810, model_metrics 340); portal user `admin` (id 3) created and able to sign in. HDFS is stopped, which is fine: it is only needed to reload data.
+
+**Problems and fixes:** none.
+
+**Git commit:** see `git log` (CMD-021 commit).
