@@ -49,7 +49,7 @@ export function ModelsPage() {
     ...(task === 'route_clustering' ? [{ key: 'k', label: 'k', num: true } as Column] : []),
     ...spec.metrics.map(([k, l]) => ({
       key: k, label: l, num: true,
-      render: (r: Row) => r[k] == null ? '–' : ['accuracy'].includes(k) ? pct(r[k], 1) : num(r[k], k === 'mae' || k === 'rmse' || k === 'mape' ? 1 : 3),
+      render: (r: Row) => r[k] == null ? '-' : ['accuracy'].includes(k) ? pct(r[k], 1) : Number(r[k]).toFixed(k === 'mae' || k === 'rmse' || k === 'mape' ? 1 : 3),
     } as Column)),
     { key: 'split', label: 'Evaluated on', render: (r) => (r.split === 'test_full' ? 'Full test set (trained on a 10% sample)' : r.split === 'train' ? 'Training-period routes' : 'Held-out test set') },
     { key: 'validity', label: 'Status', render: (r) => r.validity === 'INVALID' ? <Status tone="critical">Not valid</Status> : <Status tone="neutral">Not reviewed for serving</Status> },

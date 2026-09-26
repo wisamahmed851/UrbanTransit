@@ -41,7 +41,7 @@ export function ReferencePage() {
       <div className="filters">
         <Segmented label="Entity" value={entity} onChange={switchTo}
           options={[{ value: 'routes', label: 'Routes' }, { value: 'stops', label: 'Stops' }, { value: 'vehicles', label: 'Vehicles' }]} />
-        <label className="field">Search<input value={q} onChange={(e) => { setQ(e.target.value); setOffset(0) }} placeholder="ID or name" /></label>
+        <label className="field">Search<input value={q} onChange={(e) => { setQ(e.target.value); setOffset(0) }} placeholder="ID or name…" /></label>
         {writable && <button className="btn" type="button" onClick={() => setEditing({ mode: 'create', row: template() })}>Add {entity.slice(0, -1)}</button>}
       </div>
 
@@ -55,7 +55,7 @@ export function ReferencePage() {
           <>
             <DataTable rows={list.data.rows} stale={list.loading} rowKey={(r) => String(r[KEY[entity]])} columns={[
               ...LIST_COLUMNS[entity].map((c) => ({ key: c, label: c.replace(/_/g, ' ') })),
-              { key: 'dq_flags', label: 'Data-quality flags', sortable: false, render: (r) => (Array.isArray(r.dq_flags) && r.dq_flags.length ? r.dq_flags.join(', ') : '–') },
+              { key: 'dq_flags', label: 'Data-quality flags', sortable: false, render: (r) => (Array.isArray(r.dq_flags) && r.dq_flags.length ? r.dq_flags.join(', ') : '-') },
               ...(writable ? [{ key: '_edit', label: '', sortable: false, render: (r: Row) => (
                 <button className="btn btn-quiet" type="button" onClick={() => setEditing({ mode: 'edit', row: r })}>Edit</button>) }] : []),
             ]} />

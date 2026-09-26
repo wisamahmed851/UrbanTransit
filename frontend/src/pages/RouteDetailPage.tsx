@@ -68,9 +68,9 @@ export function RouteDetailPage() {
             { m: 'Arrival delay spread (std)', v: minutes(rel.arrival_delay_std) },
             { m: 'Early arrivals', v: pct(rel.early_arrival_share) },
             { m: 'Late arrivals', v: pct(rel.late_arrival_share) },
-            { m: 'Congestion pattern', v: cong ? label(cong.congestion_pattern) : '–' },
-            { m: 'Morning peak delay vs midday', v: cong ? `+${minutes(cong.morning_excess_min)}` : '–' },
-            { m: 'Evening peak delay vs midday', v: cong ? `+${minutes(cong.evening_excess_min)}` : '–' },
+            { m: 'Congestion pattern', v: cong ? label(cong.congestion_pattern) : '-' },
+            { m: 'Morning peak delay vs midday', v: cong ? `+${minutes(cong.morning_excess_min)}` : '-' },
+            { m: 'Evening peak delay vs midday', v: cong ? `+${minutes(cong.evening_excess_min)}` : '-' },
             ...(travel.data?.rows ?? []).map((t) => ({ m: `Peak travel penalty, direction ${t.direction}`, v: pct(t.peak_penalty_pct) })),
           ]} columns={[{ key: 'm', label: 'Measure', sortable: false }, { key: 'v', label: 'Value', num: true, sortable: false }]} />
         </Panel>

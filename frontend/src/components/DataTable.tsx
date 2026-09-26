@@ -88,7 +88,7 @@ export function DataTable<R extends Row>({ columns, rows, caption, stale, empty,
 }
 
 function fallback(v: unknown): ReactNode {
-  if (v === null || v === undefined || v === '') return '–'
+  if (v === null || v === undefined || v === '') return '-'
   if (typeof v === 'boolean') return v ? 'Yes' : 'No'
   return String(v)
 }
@@ -98,7 +98,7 @@ export function Pager({ total, limit, offset, onChange }: { total: number; limit
   const from = offset + 1, to = Math.min(offset + limit, total)
   return (
     <div className="pager">
-      <span>{from.toLocaleString()}–{to.toLocaleString()} of {total.toLocaleString()}</span>
+      <span>{from.toLocaleString()}-{to.toLocaleString()} of {total.toLocaleString()}</span>
       <button className="btn btn-quiet" disabled={offset === 0} onClick={() => onChange(Math.max(0, offset - limit))}>Previous</button>
       <button className="btn btn-quiet" disabled={to >= total} onClick={() => onChange(offset + limit)}>Next</button>
     </div>

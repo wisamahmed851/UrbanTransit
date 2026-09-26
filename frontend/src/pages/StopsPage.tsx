@@ -35,7 +35,7 @@ export function StopsPage() {
       </Panel>
 
       <form className="filters" onSubmit={(e) => e.preventDefault()} aria-label="Stop filters">
-        <label className="field">Find a stop<input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name or S0001" /></label>
+        <label className="field">Find a stop<input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name or S0001…" /></label>
         <label className="field">Fare zone
           <select value={zone} onChange={(e) => setZone(e.target.value)}>
             <option value="">All zones</option><option value="A">A (centre)</option><option value="B">B</option><option value="C">C (outer)</option>

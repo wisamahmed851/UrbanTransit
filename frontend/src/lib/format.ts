@@ -6,7 +6,7 @@ const nf2 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
 const nf3 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 })
 
 export function num(v: unknown, digits: 0 | 1 | 2 | 3 = 0): string {
-  if (v === null || v === undefined || v === '') return '–'
+  if (v === null || v === undefined || v === '') return '-'
   const n = Number(v)
   if (!Number.isFinite(n)) return String(v)
   return [nf0, nf1, nf2, nf3][digits].format(n)
@@ -14,13 +14,13 @@ export function num(v: unknown, digits: 0 | 1 | 2 | 3 = 0): string {
 
 /** A 0–1 share shown as a percentage. */
 export function pct(v: unknown, digits = 1): string {
-  if (v === null || v === undefined || v === '') return '–'
+  if (v === null || v === undefined || v === '') return '-'
   const n = Number(v)
   return Number.isFinite(n) ? `${(n * 100).toFixed(digits)}%` : String(v)
 }
 
 export function minutes(v: unknown): string {
-  if (v === null || v === undefined) return '–'
+  if (v === null || v === undefined) return '-'
   const n = Number(v)
   return Number.isFinite(n) ? `${n.toFixed(1)} min` : String(v)
 }
@@ -46,7 +46,7 @@ const LABELS: Record<string, string> = {
 }
 
 export function label(v: unknown): string {
-  if (v === null || v === undefined || v === '') return '–'
+  if (v === null || v === undefined || v === '') return '-'
   const s = String(v)
   return LABELS[s] ?? s.replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase())
 }

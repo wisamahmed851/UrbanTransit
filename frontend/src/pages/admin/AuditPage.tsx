@@ -17,7 +17,7 @@ export function AuditPage() {
     <div className="page">
       <PageHead title="Audit log">Every sign-in, export and change, newest first.</PageHead>
       <form className="filters" onSubmit={(e) => e.preventDefault()}>
-        <label className="field">User<input value={actor} onChange={(e) => { setActor(e.target.value); setOffset(0) }} placeholder="exact username" /></label>
+        <label className="field">User<input value={actor} onChange={(e) => { setActor(e.target.value); setOffset(0) }} placeholder="Exact username…" /></label>
         <label className="field">Action
           <select value={action} onChange={(e) => { setAction(e.target.value); setOffset(0) }}>
             <option value="">All actions</option>
@@ -36,7 +36,7 @@ export function AuditPage() {
               { key: 'action', label: 'Action' },
               { key: 'entity', label: 'On' },
               { key: 'details', label: 'Details', sortable: false, wrap: true, render: (r) => r.details ? (
-                <code style={{ fontSize: 'var(--fs-xs)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{JSON.stringify(r.details)}</code>) : '–' },
+                <code style={{ fontSize: 'var(--fs-xs)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{JSON.stringify(r.details)}</code>) : '-' },
             ]} />
             <Pager total={offset + entries.length + (entries.length === LIMIT ? 1 : 0)} limit={LIMIT} offset={offset} onChange={setOffset} />
           </>
