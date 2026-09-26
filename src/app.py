@@ -35,11 +35,14 @@ def create_app(config_object: type = BaseConfig) -> Flask:
     jwt.init_app(app)
     cors.init_app(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
-    from src import models  # noqa: F401  (registers every table for Flask-Migrate)
-    from src.blueprints import health
+    from src import models, security  # noqa: F401  (tables for Flask-Migrate; JWT callbacks)
+    from src.blueprints import admin, analytics, auth, health, ml, reports, stubs
+    from src.cli import register_cli
 
-    app.register_blueprint(health.bp)
+    for module in (health, auth, admin, analytics, ml, reports, stubs):
+        app.register_blueprint(module.bp)
     register_error_handlers(app)
+    register_cli(app)
     return app
 
 
