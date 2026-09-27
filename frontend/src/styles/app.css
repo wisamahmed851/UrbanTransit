@@ -353,6 +353,12 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
 .change-up { color: var(--warning); }
 .change-down { color: var(--good); }
 
+.job-log {
+  margin: 0; padding: 0.8rem 1rem; max-height: 14rem; overflow: auto; white-space: pre-wrap;
+  background: var(--sunk); border: 1px solid var(--glass-border); border-radius: var(--radius-md);
+  font: 0.78rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--ink-2);
+}
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 960px) {

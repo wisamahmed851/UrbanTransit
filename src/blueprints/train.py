@@ -1,3 +1,12 @@
+"""Start model training from the dashboard (admin only).
+
+POST /api/train  {"pipeline": "spark" | "python" | "all"}
+
+Training reads millions of rows and can hold the CPU for a long time, so it needs the
+`models:train` permission (admin only, CMD-025) and only one run may be active at a time;
+a second request answers 409. Progress is recorded in `job_runs` (see /api/jobs).
+"""
+
 import subprocess
 import threading
 import sys
@@ -5,7 +14,9 @@ from pathlib import Path
 
 from flask import Blueprint, jsonify, request
 
+from src.errors import ApiError
 from src.security import permission_required
+from src.services.audit import record
 
 bp = Blueprint("train", __name__, url_prefix="/api/train")
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -29,7 +40,18 @@ def run_tracked(name, log_path, cmd):
     
     return process.returncode == 0
 
+PIPELINES = ("spark", "python", "all")
+_running = threading.Lock()
+
+
 def _run_training(pipeline: str):
+    try:
+        _train(pipeline)
+    finally:
+        _running.release()
+
+
+def _train(pipeline: str):
     subprocess.run(["bash", "hdfs_scripts/start_hdfs.sh"], cwd=str(ROOT))
     
     if pipeline in ("spark", "all"):
@@ -41,9 +63,18 @@ def _run_training(pipeline: str):
     run_tracked("load_model_outputs", "reports/processing_logs/load_model.log", [sys.executable, "database/load_model_outputs.py"])
 
 @bp.post("")
-@permission_required("models:read")
+@permission_required("models:train")
 def train_models():
-    data = request.get_json() or {}
+    data = request.get_json(silent=True) or {}
     pipeline = data.get("pipeline", "all")
-    threading.Thread(target=_run_training, args=(pipeline,), name="train-models", daemon=True).start()
+    if pipeline not in PIPELINES:
+        raise ApiError(400, "invalid_parameter", f"'pipeline' must be one of {', '.join(PIPELINES)}.")
+    if not _running.acquire(blocking=False):
+        raise ApiError(409, "training_running", "A training run is already in progress. Follow it on this page.")
+    try:
+        record("models.train", f"pipelines/{pipeline}", {"pipeline": pipeline}, commit=True)
+        threading.Thread(target=_run_training, args=(pipeline,), name="train-models", daemon=True).start()
+    except Exception:
+        _running.release()             # nothing started, so the next request may try again
+        raise
     return jsonify(message=f"Training '{pipeline}' started in the background."), 202

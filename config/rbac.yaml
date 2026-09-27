@@ -12,6 +12,7 @@ permissions:
   audit:read: Read the audit log
   predictions:use: Run predictions and what-if scenarios (read-only; nothing is changed)
   recommendations:read: Read recommendations
+  models:train: Start model training from the dashboard (heavy; admin only, CMD-025)
 
 roles:
   admin:

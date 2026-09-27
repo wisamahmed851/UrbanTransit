@@ -46,7 +46,7 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
  {
   title: 'Administration',
   stations: [
-   { to: '/admin/train', label: 'Train models', perm: 'models:read' },
+   { to: '/admin/train', label: 'Train models', perm: 'models:train' },
    { to: '/admin/reference', label: 'Routes, stops, vehicles', perm: 'reference:read' },
    { to: '/admin/users', label: 'Users', perm: 'users:manage' },
    { to: '/admin/audit', label: 'Audit log', perm: 'audit:read' },
