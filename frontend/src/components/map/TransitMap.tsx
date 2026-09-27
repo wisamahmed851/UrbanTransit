@@ -3,8 +3,8 @@
  *
  * Route types share one colour family and are told apart by weight and dash, never by a new
  * hue (colour lock): BRT = thick gold with a soft glow, trunk = blue, local = thin light blue,
- * feeder = dashed grey. Hub stops get a gold ring. The map is always dark, in both themes,
- * because the basemap is.
+ * feeder = dashed grey. Hub stops get a gold ring. Basemap, route casing and stop fills use
+ * the active app theme while route colours keep the same semantic meaning.
  *
  * Our sources and layers are added imperatively on `style.load` (the style definition is
  * parsed; tiles and fonts may still be loading) and fed with `setData` / `setFilter`.
@@ -17,7 +17,7 @@ import type { ExpressionSpecification, FilterSpecification, GeoJSONSource, Layer
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import Map, { type MapLayerMouseEvent, type MapRef } from 'react-map-gl/maplibre'
 import type { FeatureCollection, LineString, Point } from 'geojson'
-import type { Basemap } from './basemap'
+import type { Basemap, MapTheme } from './basemap'
 
 export type RouteType = 'brt' | 'trunk' | 'local' | 'feeder'
 export const ROUTE_TYPES: { type: RouteType; label: string; color: string; width: number; dashed?: boolean }[] = [
@@ -66,9 +66,13 @@ const WIDTH_BY_TYPE = expr(['match', ['get', 'route_type'], 'brt', 5, 'trunk', 3
 const ZOOM_R = (lo: number, hi: number) => expr(['interpolate', ['linear'], ['zoom'], 10, lo, 14, hi])
 
 /** Layer definitions in draw order (bottom to top); filters are set separately. */
-const LAYERS: LayerSpecification[] = [
+const layersFor = (theme: MapTheme): LayerSpecification[] => {
+ const surface = theme === 'dark' ? '#090d17' : '#f7f9ff'
+ const stopStroke = theme === 'dark' ? '#b6bdd1' : '#565d70'
+ const vehicleStroke = theme === 'dark' ? '#ebf2ff' : '#ffffff'
+ return [
  { id: 'routes-casing', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
-  paint: { 'line-color': '#090d17', 'line-width': expr(['+', WIDTH_BY_TYPE, 2]), 'line-opacity': 0.7 } },
+  paint: { 'line-color': surface, 'line-width': expr(['+', WIDTH_BY_TYPE, 2]), 'line-opacity': 0.8 } },
  { id: 'routes-glow', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
   paint: { 'line-color': '#f5b301', 'line-width': 12, 'line-blur': 8, 'line-opacity': 0.28 } },
  { id: 'routes', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
@@ -77,18 +81,19 @@ const LAYERS: LayerSpecification[] = [
  { id: 'routes-feeder', type: 'line', source: 'routes',
   paint: { 'line-color': '#9da4b8', 'line-width': 2, 'line-dasharray': [2, 1.6], 'line-opacity': 0.9 } },
  { id: 'stops', type: 'circle', source: 'stops', filter: filt(['!=', ['get', 'stop_type'], 'hub']),
-  paint: { 'circle-radius': ZOOM_R(1.8, 5), 'circle-color': '#090d17', 'circle-stroke-color': '#b6bdd1', 'circle-stroke-width': 1 } },
+  paint: { 'circle-radius': ZOOM_R(1.8, 5), 'circle-color': surface, 'circle-stroke-color': stopStroke, 'circle-stroke-width': 1 } },
  { id: 'stops-hub', type: 'circle', source: 'stops', filter: filt(['==', ['get', 'stop_type'], 'hub']),
-  paint: { 'circle-radius': ZOOM_R(3.5, 8), 'circle-color': '#090d17', 'circle-stroke-color': '#f5b301', 'circle-stroke-width': 2 } },
+  paint: { 'circle-radius': ZOOM_R(3.5, 8), 'circle-color': surface, 'circle-stroke-color': '#f5b301', 'circle-stroke-width': 2 } },
  { id: 'vehicles', type: 'circle', source: 'vehicles',
-  paint: { 'circle-radius': ZOOM_R(3.5, 7), 'circle-stroke-color': '#ebf2ff', 'circle-stroke-width': 1.5,
+  paint: { 'circle-radius': ZOOM_R(3.5, 7), 'circle-stroke-color': vehicleStroke, 'circle-stroke-width': 1.5,
    'circle-color': expr(['match', ['get', 'route_type'], 'brt', '#f5b301', 'feeder', '#9da4b8', '#5181ff']) } },
-]
+ ]
+}
 
 /** Add our sources and layers once the style definition is in (idempotent). */
-function install(map: MlMap) {
+function install(map: MlMap, theme: MapTheme) {
  for (const id of ['routes', 'stops', 'vehicles']) if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: EMPTY })
- for (const layer of LAYERS) if (!map.getLayer(layer.id)) map.addLayer(layer)
+ for (const layer of layersFor(theme)) if (!map.getLayer(layer.id)) map.addLayer(layer)
 }
 
 export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
@@ -96,16 +101,17 @@ export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
 ) {
  const mapRef = useRef<MapRef>(null)
  useImperativeHandle(ref, () => mapRef.current as MapRef, [])
- const [ready, setReady] = useState(false)
+ const [readyTheme, setReadyTheme] = useState<MapTheme | null>(null)
  const [cursor, setCursor] = useState('')
+ const ready = readyTheme === basemap.theme
 
  // Install our layers as soon as the style definition is parsed ('styledata' fires then,
  // long before tiles and fonts finish). install() is idempotent, so repeat events are harmless.
  const onStyleData = (e: { target: MlMap }) => {
   const map = e.target
   if (!(map as unknown as { style?: { _loaded?: boolean } }).style?._loaded) return
-  install(map)
-  if (!ready) setReady(true)
+  install(map, basemap.theme)
+  if (readyTheme !== basemap.theme) setReadyTheme(basemap.theme)
  }
 
  // Data.
@@ -157,6 +163,7 @@ export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
 
  return (
   <Map
+   key={basemap.theme}
    ref={mapRef}
    initialViewState={{ longitude: 74.33, latitude: 31.52, zoom }}
    mapStyle={basemap.style}

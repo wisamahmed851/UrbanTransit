@@ -36,7 +36,8 @@ def context(hour: int, day_type: str = "weekday", **overrides) -> TripContext:
                   vehicle_type="standard", capacity_total=80.0, route_type="brt", distance_km=18.5,
                   planned_runtime_min=55.0, headway_min=10.0, scheduled_runtime_min=55.0,
                   prior_route_crowding_rate=0.2, prior_route_delay_mean=2.5,
-                  prior_route_occupancy_mean=0.77, prior_route_hour_occupancy_mean=0.81, trips_observed=40,
+                  prior_route_occupancy_mean=0.77, prior_route_hour_occupancy_mean=0.81,
+                  prior_route_hour_delay_mean=3.25, prior_route_hour_severe_rate=0.15, trips_observed=40,
                   observed_crowding_rate=0.25, observed_mean_delay_min=2.1, mean_boardings=70.0,
                   mean_max_load=64.0, mean_occupancy=0.8, p90_occupancy=0.95,
                   window_start=date(2026, 7, 7), window_end=date(2026, 8, 31))
@@ -130,6 +131,8 @@ def test_delay_prediction_is_labelled_below_target(client, auth, served):
     assert [p["severity"] for p in probs] == ["On Time", "Minor", "Moderate", "Severe"]
     assert sum(p["probability"] for p in probs) == pytest.approx(1, abs=1e-3)
     assert body["prediction"]["severity"] == max(probs, key=lambda p: p["probability"])["severity"]
+    assert body["inputs"]["prior_route_hour_delay_mean"] == 3.25
+    assert body["inputs"]["prior_route_hour_severe_rate"] == 0.15
     assert body["model"]["meets_srs_target"] is False and body["warnings"]
 
 

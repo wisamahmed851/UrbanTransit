@@ -144,7 +144,9 @@ def simulate(scenario: str, route_id: str, direction: int, day: date, hour: int,
         new_demand = demand * (1 + _number(params, "percent", 10, -90, 300) / 100)
         notes.append("The models take no demand input, so crowding and delay risk are unchanged; occupancy shows the effect.")
 
-    risks = model_risks(ctx, day, new_hour, 60.0 / new_trips)
+    # A shifted trip takes the new hour's own history (the delay model uses route-hour inputs).
+    after_ctx = ms.find_context(route_id, direction, day, new_hour) if new_hour != hour else ctx
+    risks = model_risks(after_ctx, day, new_hour, 60.0 / new_trips)
     after = state(ctx, day, new_hour, new_trips, new_capacity, new_demand, risks)
     if (after.occupancy - before.occupancy) * (after.crowding_probability - before.crowding_probability) < 0:
         notes.append("The crowding model and the occupancy estimate move in opposite directions. The model learned "

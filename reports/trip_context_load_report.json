@@ -1,0 +1,15 @@
+{
+  "mode": "trip_context_only",
+  "tables": {
+    "trip_context": 7051
+  },
+  "expected": {
+    "trip_context": 7051
+  },
+  "trip_context_window": {
+    "window_start": "2026-07-07",
+    "window_end": "2026-08-31",
+    "trips_in_window": 296100
+  },
+  "result": "PASS"
+}

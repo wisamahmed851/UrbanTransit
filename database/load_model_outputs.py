@@ -3,6 +3,7 @@
     bash python_pipeline/stage_clean_parquet.sh     # once: HDFS clean tables -> python_pipeline/local_clean
     python database/evaluate_saved_models.py        # writes reports/saved_model_evaluation.json
     python database/load_model_outputs.py           # inside WSL, venv active, MySQL running
+    python database/load_model_outputs.py --trip-context-only  # backfill serving inputs only
 
 | table | built from |
 |---|---|
@@ -19,6 +20,7 @@ Every table is replaced in one transaction, so the API never sees half a load. T
 files are only read. Result: `reports/model_outputs_load_report.json`.
 """
 
+import argparse
 import csv
 import json
 import sys
@@ -87,9 +89,16 @@ def build_trip_context(trips: pd.DataFrame, weeks: int) -> tuple[list[dict], dic
         "prior_route_delay_mean": last28.delay_minutes.agg(lambda s: s.mean() if s.notna().sum() >= 5 else None),
         "prior_route_occupancy_mean": last28.occupancy.agg(lambda s: s.mean() if s.notna().sum() >= 5 else None),
     }).reset_index()
-    hour_history = (ordered.groupby(["route_id", "direction", "hour"]).tail(56)
-                    .groupby(["route_id", "direction", "hour"]).occupancy.mean()
-                    .rename("prior_route_hour_occupancy_mean").reset_index())
+    # Route/direction/hour history over the last 56 trips (min 5), as base_trip builds
+    # prior_route_hour_* but ending with the latest trip: the next trip's inputs.
+    last56 = ordered.groupby(["route_id", "direction", "hour"]).tail(56).copy()
+    last56["severe"] = last56.delay_severity.eq("Severe").astype(float)
+    at_least5 = lambda s: s.mean() if s.notna().sum() >= 5 else None  # noqa: E731
+    hour_history = last56.groupby(["route_id", "direction", "hour"]).agg(
+        prior_route_hour_occupancy_mean=("occupancy", "mean"),
+        prior_route_hour_delay_mean=("delay_minutes", at_least5),
+        prior_route_hour_severe_rate=("severe", at_least5),
+    ).reset_index()
 
     cells = w.groupby(["route_id", "direction", "day_type", "hour"]).agg(
         vehicle_id=("vehicle_id", _mode), vehicle_type=("vehicle_type", _mode),
@@ -193,30 +202,46 @@ def build_model_versions() -> list[dict]:
     return out
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Load model-serving tables into MySQL.")
+    parser.add_argument(
+        "--trip-context-only", action="store_true",
+        help="atomically rebuild only trip_context (does not require staged ticket Parquet)",
+    )
+    args = parser.parse_args(argv)
+    report_path = (ROOT / "reports" / "trip_context_load_report.json"
+                   if args.trip_context_only else REPORT_PATH)
     app = create_app()
     with app.app_context():
-        job = JobRun(job_name="load_model_outputs", status="running",
-                     log_path="reports/model_outputs_load_report.json")
+        job = JobRun(
+            job_name="load_trip_context" if args.trip_context_only else "load_model_outputs",
+            status="running", log_path=str(report_path.relative_to(ROOT)).replace("\\", "/"),
+        )
         db.session.add(job)
         db.session.commit()
         try:
             trips = p7.base_trip()
-            demand = p7.demand_frame()[["route_id", "service_date", "boardings"]]
-            daily = [{"route_id": r, "service_date": d.date(), "boardings": int(b)}
-                     for r, d, b in demand.itertuples(index=False)]
-            stop_period = p7.stop_period_demand_frame()[["entry_stop_id", "service_date", "time_period", "tap_ins"]]
-            stop_period_rows = [{"entry_stop_id": stop, "service_date": day.date(), "time_period": time_period,
-                                 "tap_ins": int(taps)}
-                                for stop, day, time_period, taps in stop_period.itertuples(index=False)]
             context, window = build_trip_context(trips, SERVING["trip_context_weeks"])
-            assignments, profiles = build_route_clusters(trips)
-            tables = {
-                RouteDailyBoardings: daily, StopPeriodBoardings: stop_period_rows,
-                TripContext: context, RouteCluster: assignments,
-                PythonClusterProfile: profiles, Recommendation: read_recommendations(),
-                PipelineComparison: read_comparison(), ModelVersion: build_model_versions(),
-            }
+            if args.trip_context_only:
+                tables = {TripContext: context}
+            else:
+                demand = p7.demand_frame()[["route_id", "service_date", "boardings"]]
+                daily = [{"route_id": r, "service_date": d.date(), "boardings": int(b)}
+                         for r, d, b in demand.itertuples(index=False)]
+                stop_period = p7.stop_period_demand_frame()[
+                    ["entry_stop_id", "service_date", "time_period", "tap_ins"]]
+                stop_period_rows = [
+                    {"entry_stop_id": stop, "service_date": day.date(), "time_period": time_period,
+                     "tap_ins": int(taps)}
+                    for stop, day, time_period, taps in stop_period.itertuples(index=False)
+                ]
+                assignments, profiles = build_route_clusters(trips)
+                tables = {
+                    RouteDailyBoardings: daily, StopPeriodBoardings: stop_period_rows,
+                    TripContext: context, RouteCluster: assignments,
+                    PythonClusterProfile: profiles, Recommendation: read_recommendations(),
+                    PipelineComparison: read_comparison(), ModelVersion: build_model_versions(),
+                }
             with db.engine.begin() as conn:
                 for model, rows in tables.items():
                     conn.execute(delete(model.__table__))
@@ -225,7 +250,8 @@ def main() -> int:
                 counts = {m.__tablename__: conn.execute(select(func.count()).select_from(m.__table__)).scalar_one()
                           for m in tables}
             expected = {m.__tablename__: len(rows) for m, rows in tables.items()}
-            report = {"tables": counts, "expected": expected, "trip_context_window": window,
+            report = {"mode": "trip_context_only" if args.trip_context_only else "all",
+                      "tables": counts, "expected": expected, "trip_context_window": window,
                       "result": "PASS" if counts == expected else "FAIL"}
             job.status = "success" if report["result"] == "PASS" else "failed"
         except Exception as exc:
@@ -235,7 +261,7 @@ def main() -> int:
         job.finished_at = utcnow()
         db.session.commit()
 
-    REPORT_PATH.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     for name, n in counts.items():
         print(f"{n:7,d}  {name}")
     print(f"trip_context window {window['window_start']}..{window['window_end']} "

@@ -1,13 +1,12 @@
 import { ChartLineUp, Crown, Path, Siren, UsersThree } from '@phosphor-icons/react'
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Row } from '../api/client'
 import type { RecommendationsResponse } from '../api/types'
 import { useAuth } from '../auth/AuthContext'
 import { ChartFrame, HBarChart, LinesChart } from '../components/charts'
 import { DataTable } from '../components/DataTable'
-import { loadBasemap, type Basemap } from '../components/map/basemap'
 import { ROUTE_TYPES, TransitMap, type Geometry } from '../components/map/TransitMap'
+import { useBasemap } from '../components/map/useBasemap'
 import { Empty, ErrorNotice, Loading, PageHead, Panel, RouteBadge, RouteClass, Stats, Status } from '../components/ui'
 import { label, num, ROUTE_CLASSES } from '../lib/format'
 import { useApi, useRows } from '../lib/useApi'
@@ -17,9 +16,8 @@ const whole = (n: number) => num(Math.round(n))
 
 /** Small, non-interactive view of the network that links to the full map. */
 function NetworkPreview() {
- const [basemap, setBasemap] = useState<Basemap | null>(null)
+ const basemap = useBasemap()
  const geometry = useApi<Geometry>('/network/geometry')
- useEffect(() => { let live = true; loadBasemap().then((b) => live && setBasemap(b)); return () => { live = false } }, [])
  return (
   <Panel title="The network"
    note="118 routes by type: BRT in gold, trunk and local in blue, feeder dashed."

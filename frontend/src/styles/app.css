@@ -292,57 +292,58 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
 .login-art .art { width: 100%; height: auto; max-height: 14rem; }
 .login-form { display: grid; align-content: center; justify-items: center; gap: 1rem; padding: 3rem; }
 .login-form > * { width: min(22rem, 100%); }
+.login-form .btn { justify-content: center; }
 .login-form h2 { text-align: left; }
 .login-form form { display: grid; gap: 0.9rem; width: min(22rem, 100%); }
 .login-form .field input { width: 100%; }
 
-/* ---------- network map (always dark: the basemap is dark in both themes) ---------- */
+/* ---------- network map (basemap and controls follow the active app theme) ---------- */
 
 .map-page { max-width: none; }
-.map-shell { position: relative; height: calc(100dvh - 9.5rem); min-height: 28rem; border-radius: var(--radius-lg); overflow: hidden; background: #090d17; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
+.map-shell { position: relative; height: calc(100dvh - 9.5rem); min-height: 28rem; border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-0); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
 .map-shell.compact { height: 20rem; min-height: 0; }
-.map-overlay { position: absolute; z-index: 2; border-radius: var(--radius-lg); padding: 0.75rem 0.85rem; background: rgba(26, 31, 44, 0.72); border-color: rgba(235, 242, 255, 0.12); color: #ebf2ff; font-size: var(--fs-sm); }
-.map-overlay .field { color: #b6bdd1; }
-.map-overlay .field input, .map-overlay .field select { background: rgba(9, 13, 23, 0.55); color: #ebf2ff; border-color: rgba(235, 242, 255, 0.14); min-width: 0; width: 100%; }
+.map-overlay { position: absolute; z-index: 2; border-radius: var(--radius-lg); padding: 0.75rem 0.85rem; background: var(--glass-strong); border: 1px solid var(--glass-border); color: var(--ink); font-size: var(--fs-sm); }
+.map-overlay .field { color: var(--ink-2); }
+.map-overlay .field input, .map-overlay .field select { background: var(--sunk); color: var(--ink); border-color: var(--glass-border); min-width: 0; width: 100%; }
 .map-filter { top: 0.9rem; left: 0.9rem; width: min(17rem, calc(100% - 1.8rem)); display: grid; gap: 0.6rem; }
 .map-filter fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
-.map-filter legend { color: #b6bdd1; font-size: var(--fs-sm); margin-bottom: 0.2rem; }
-.map-filter label.check { display: flex; align-items: center; gap: 0.5rem; font-size: var(--fs-sm); color: #d0d7e9; cursor: pointer; }
+.map-filter legend { color: var(--ink-2); font-size: var(--fs-sm); margin-bottom: 0.2rem; }
+.map-filter label.check { display: flex; align-items: center; gap: 0.5rem; font-size: var(--fs-sm); color: var(--ink); cursor: pointer; }
 .map-controls { top: 0.9rem; right: 0.9rem; display: grid; gap: 0.35rem; padding: 0.4rem; }
-.map-controls button { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: var(--radius-md); border: 1px solid rgba(235, 242, 255, 0.12); background: rgba(9, 13, 23, 0.5); color: #ebf2ff; cursor: pointer; transition: border-color 0.2s; }
-.map-controls button:hover { border-color: rgba(245, 179, 1, 0.6); }
+.map-controls button { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: var(--radius-md); border: 1px solid var(--glass-border); background: var(--sunk); color: var(--ink); cursor: pointer; transition: border-color 0.2s; }
+.map-controls button:hover { border-color: var(--focus); }
 /* legend sits under the zoom controls, so nothing shares the bottom edge with the replay bar (which can wrap) */
 .map-legend { right: 0.9rem; top: 10.4rem; display: grid; gap: 0.35rem; }
 .map-h { font-size: var(--fs-sm); margin-bottom: 0.15rem; }
-.legend-row { display: flex; align-items: center; gap: 0.55rem; color: #d0d7e9; font-size: var(--fs-xs); }
+.legend-row { display: flex; align-items: center; gap: 0.55rem; color: var(--ink); font-size: var(--fs-xs); }
 .legend-line { width: 1.8rem; height: 0; border-top: 3px solid var(--c); }
 .legend-line[data-w="5"] { border-top-width: 5px; }
 .legend-line[data-w="2"] { border-top-width: 2px; }
 .legend-line[data-dashed] { border-top-style: dashed; }
-.legend-dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px #ebf2ff; margin: 0 0.5rem; }
+.legend-dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px var(--glass-solid); margin: 0 0.5rem; }
 .legend-ring { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--c); margin: 0 0.5rem; }
 .map-replay { left: 0.9rem; right: 0.9rem; bottom: 0.9rem; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.9rem; align-items: center; }
 .map-replay input[type="range"] { width: 100%; accent-color: #f5b301; }
 .map-replay .days { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
-.day-chip { border: 1px solid rgba(235, 242, 255, 0.14); background: rgba(9, 13, 23, 0.45); color: #d0d7e9; border-radius: var(--radius-sm); padding: 0.2rem 0.5rem; font-size: var(--fs-xs); cursor: pointer; }
-.day-chip[aria-pressed="true"] { border-color: #f5b301; color: #ebf2ff; background: rgba(245, 179, 1, 0.14); }
+.day-chip { border: 1px solid var(--glass-border); background: var(--sunk); color: var(--ink); border-radius: var(--radius-sm); padding: 0.2rem 0.5rem; font-size: var(--fs-xs); cursor: pointer; }
+.day-chip[aria-pressed="true"] { border-color: var(--accent); color: var(--ink); background: var(--accent-soft); }
 .replay-pill { display: inline-flex; align-items: center; gap: 0.6rem; white-space: nowrap; font-weight: 700; }
-.replay-pill small { display: block; font-weight: 500; color: #b6bdd1; font-size: var(--fs-xs); }
+.replay-pill small { display: block; font-weight: 500; color: var(--ink-2); font-size: var(--fs-xs); }
 .pulse { position: relative; width: 0.65rem; height: 0.65rem; border-radius: 50%; background: #f5b301; flex: none; }
 .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #f5b301; animation: pulse 1.8s var(--ease-out) infinite; }
 @keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.6); opacity: 0; } }
 .pulse[data-paused] { background: #848c9f; }
 .pulse[data-paused]::after { animation: none; opacity: 0; }
-.map-offline { position: absolute; z-index: 2; top: 0.9rem; left: 50%; transform: translateX(-50%); margin: 0; white-space: nowrap; padding: 0.4rem 0.7rem; border-radius: var(--radius-md); background: rgba(26, 31, 44, 0.85); color: #ebf2ff; font-size: var(--fs-xs); border: 1px solid rgba(235, 242, 255, 0.12); }
-.map-popup .maplibregl-popup-content { border-radius: var(--radius-md); padding: 0.7rem 0.85rem; color: #ebf2ff; background: rgba(26, 31, 44, 0.82); border-color: rgba(235, 242, 255, 0.14); min-width: 13rem; font-family: var(--font); }
+.map-offline { position: absolute; z-index: 2; top: 0.9rem; left: 50%; transform: translateX(-50%); margin: 0; white-space: nowrap; padding: 0.4rem 0.7rem; border-radius: var(--radius-md); background: var(--glass-strong); color: var(--ink); font-size: var(--fs-xs); border: 1px solid var(--glass-border); }
+.map-popup .maplibregl-popup-content { border-radius: var(--radius-md); padding: 0.7rem 0.85rem; color: var(--ink); background: var(--glass-strong); border: 1px solid var(--glass-border); min-width: 13rem; font-family: var(--font); }
 .map-popup .maplibregl-popup-tip { display: none; }
-.map-popup .maplibregl-popup-close-button { color: #b6bdd1; font-size: 1.1rem; padding: 0 0.4rem; }
+.map-popup .maplibregl-popup-close-button { color: var(--ink-2); font-size: 1.1rem; padding: 0 0.4rem; }
 .map-popup .map-h { margin-bottom: 0.35rem; padding-right: 1rem; }
 .map-popup dl { display: grid; grid-template-columns: auto auto; gap: 0.15rem 0.9rem; margin: 0; font-size: var(--fs-xs); }
-.map-popup dt { color: #b6bdd1; }
+.map-popup dt { color: var(--ink-2); }
 .map-popup dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
-.maplibregl-ctrl-attrib { background: rgba(9, 13, 23, 0.6) !important; color: #848c9f !important; }
-.maplibregl-ctrl-attrib a { color: #b6bdd1 !important; }
+.maplibregl-ctrl-attrib { background: var(--glass-strong) !important; color: var(--ink-muted) !important; }
+.maplibregl-ctrl-attrib a { color: var(--ink-2) !important; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 

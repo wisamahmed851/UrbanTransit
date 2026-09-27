@@ -1173,3 +1173,29 @@ listed above. Keep styling consistent with the current theme
 **Result:** Success for items 1-12. The route-creation flow is on the admin "Routes, stops, vehicles" page (the public Routes page has none); its create step moved to a modal, the inline edit form is unchanged as only creation was asked for.
 
 **Git commit:** `1d0a59e`, `6cb1e91` and the docs commit on `frontend/motion-datatables-site`.
+
+---
+
+## CMD-028 | 2026-09-27 (UTC+05:00) | Merge main, install new models, fix serving errors, login button, map theme (branch `frontend/motion-datatables-site`)
+**My command (verbatim):**
+```text
+okay so now take the pull from the main branch
+and this is the model file path
+C:\Users\AKL\Downloads\models (1).zip
+so take it put it the propper folder and then fix the errors that's cuasing these problems okay so and in the login page sign up button text should be in the middle
+and in the map page the map is dark always so please fix it it should be accoridng to the theme
+that's active
+and the map thing is also the same as in the overview page
+```
+
+**Understood as:** Merge `origin/main` into this branch; unpack the new model zip into `models/`; re-score and reload the served models and fix whatever still breaks delay prediction, what-if, occupancy and stop-period predictions; centre the Sign in button's label; make the network map (map page and the Overview preview) follow the active light/dark theme.
+
+**Actions taken:**
+1. Fetched `origin/main` and merged it into the feature branch; it was already up to date. Verified every model binary against `models (1).zip` by SHA-256 and all 56 metric files by parsed JSON equality.
+2. Added the delay model's missing `prior_route_hour_delay_mean` and `prior_route_hour_severe_rate` inputs to `trip_context`, the loader, serving rows and shifted-hour what-if scenarios. Added migration `14a50a4cc0a8` and regression assertions.
+3. Added `--trip-context-only` to `database/load_model_outputs.py` because the machine has staged trip Parquet but not ticket Parquet. The atomic backfill loaded 7,051 rows; 7,015 have both history values and 36 correctly use the trained imputer because they have fewer than five prior trips.
+4. Centred the login submit label within the full-width button.
+5. Added one shared theme-aware basemap hook for the full map and Overview preview. Dark uses recoloured CARTO Dark Matter, light uses recoloured CARTO Positron, system mode follows OS changes, and offline fallback, route casing, stops, overlays and popups all use the active theme.
+6. Updated stale model-metric test snapshots to the values supplied by the current archive.
+
+**Result:** The production frontend build passes, the full backend suite passes, the focused model-serving/metric suite passes, and lint has only the existing warnings. The database is at migration head; a real MySQL-backed delay prediction includes both new inputs and returns probabilities summing to 1.0. `reports/trip_context_load_report.json` records the successful backfill.

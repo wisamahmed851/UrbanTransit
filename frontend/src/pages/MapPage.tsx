@@ -7,8 +7,8 @@ import { ArrowsIn, Minus, Pause, Play, Plus } from '@phosphor-icons/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Popup, type MapRef } from 'react-map-gl/maplibre'
 import { useSearchParams } from 'react-router-dom'
-import { loadBasemap, type Basemap } from '../components/map/basemap'
 import { ROUTE_TYPES, TransitMap, type Geometry, type Picked, type RouteType, type Vehicle } from '../components/map/TransitMap'
+import { useBasemap } from '../components/map/useBasemap'
 import { RouteBadge, ErrorNotice, Loading } from '../components/ui'
 import { label, num } from '../lib/format'
 import { useApi } from '../lib/useApi'
@@ -27,7 +27,7 @@ const dayLabel = (d: string) => DAY_FMT.format(new Date(`${d}T12:00:00`))
 
 export function MapPage() {
  const mapRef = useRef<MapRef>(null)
- const [basemap, setBasemap] = useState<Basemap | null>(null)
+ const basemap = useBasemap()
  const geometry = useApi<Geometry>('/network/geometry')
  const replay = useApi<ReplayWindow>('/network/replay')
 
@@ -51,8 +51,6 @@ export function MapPage() {
  const setMinute = useCallback((m: number) => setParam('t', hhmm(m)), [setParam])
  const [playing, setPlaying] = useState(false)
  const [speed, setSpeed] = useState(5)
-
- useEffect(() => { let live = true; loadBasemap().then((b) => live && setBasemap(b)); return () => { live = false } }, [])
 
  // Until a day is chosen, show the first full weekday of the sample, in the morning peak.
  const days = useMemo(() => replay.data?.days ?? [], [replay.data])

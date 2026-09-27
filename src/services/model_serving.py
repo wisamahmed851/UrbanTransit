@@ -178,6 +178,10 @@ def feature_row(task: str, ctx: TripContext, day: date, vehicle_id: str | None =
     row[history] = getattr(ctx, history)
     if task == "occupancy_forecast":
         row["prior_route_hour_occupancy_mean"] = ctx.prior_route_hour_occupancy_mean
+    if task == "delay_severity":
+        # The delay model's route-hour history (CMD-028; the served v1 file was retrained with it).
+        row["prior_route_hour_delay_mean"] = ctx.prior_route_hour_delay_mean
+        row["prior_route_hour_severe_rate"] = ctx.prior_route_hour_severe_rate
     m = load_regressor(task) if task == "occupancy_forecast" else load_classifier(task)
     return {k: row[k] for k in m["numeric"] + m["categorical"]}
 

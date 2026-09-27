@@ -91,14 +91,14 @@ def test_every_python_file_normalises(path):
 def test_python_layout():
     rows = {(r["split_type"], r["metric_name"]): r for r in normalise_python(
         "crowding_flag_xgboost.json", json.loads((PY_METRICS_DIR / "crowding_flag_xgboost.json").read_text(encoding="utf-8")))}
-    assert rows[("test", "macro_f1")]["metric_value"] == 0.761303
-    assert rows[("test", "per_class_f1[1.0]")]["metric_value"] == 0.577602
+    assert rows[("test", "macro_f1")]["metric_value"] == 0.749294
+    assert rows[("test", "per_class_f1[1.0]")]["metric_value"] == 0.558748
     assert ("test_default_threshold", "accuracy") in rows
     assert rows[("test", "accuracy")]["extra_json"]["threshold"] == pytest.approx(0.70)
     assert "confusion_matrix" in rows[("test", "accuracy")]["extra_json"]
     (sil, k) = normalise_python("route_clustering_agglomerative_k5.json", json.loads(
         (PY_METRICS_DIR / "route_clustering_agglomerative_k5.json").read_text(encoding="utf-8")))
-    assert (sil["metric_name"], sil["metric_value"], k["metric_value"]) == ("silhouette", 0.324122, 5.0)
+    assert (sil["metric_name"], sil["metric_value"], k["metric_value"]) == ("silhouette", 0.312627, 5.0)
 
 
 def test_pipeline_filter(client, auth, loaded):

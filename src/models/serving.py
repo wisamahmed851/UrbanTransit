@@ -71,6 +71,9 @@ class TripContext(db.Model):
     prior_route_delay_mean = db.Column(db.Double)
     prior_route_occupancy_mean = db.Column(db.Double)
     prior_route_hour_occupancy_mean = db.Column(db.Double)
+    # delay model v1 (enhanced): the same route/direction/hour's last 56 trips (CMD-028)
+    prior_route_hour_delay_mean = db.Column(db.Double)
+    prior_route_hour_severe_rate = db.Column(db.Double)
     # what was observed in this cell over the window
     trips_observed = db.Column(db.Integer, nullable=False)
     observed_crowding_rate = db.Column(db.Double)
