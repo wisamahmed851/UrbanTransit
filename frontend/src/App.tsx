@@ -4,7 +4,9 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-route
 import { AuthProvider, useAuth } from './auth/AuthContext'
 import { Layout } from './components/Layout'
 import { Loading } from './components/ui'
+import { CursorFollower } from './components/CursorFollower'
 import { LoginPage } from './pages/LoginPage'
+import { WelcomePage } from './pages/WelcomePage'
 
 // Pages load on first visit, so the charts library is not in the sign-in bundle.
 const AuditPage = lazy(() => import('./pages/admin/AuditPage').then((m) => ({ default: m.AuditPage })))
@@ -33,7 +35,10 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
  const { user, ready } = useAuth()
  const location = useLocation()
  if (!ready) return <Loading what="session" />
- if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />
+ // Signed-out visitors to the home page see the public site; deep links go to sign-in.
+ if (!user) return location.pathname === '/'
+  ? <Navigate to="/welcome" replace />
+  : <Navigate to="/login" replace state={{ from: location.pathname }} />
  return <>{children}</>
 }
 
@@ -44,6 +49,7 @@ export function App() {
    <BrowserRouter>
     <AuthProvider>
      <Routes>
+      <Route path="/welcome" element={<WelcomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route element={<RequireAuth><Layout /></RequireAuth>}>
        <Route index element={<OverviewPage />} />
@@ -72,6 +78,7 @@ export function App() {
      </Routes>
     </AuthProvider>
    </BrowserRouter>
+   <CursorFollower />
   </MotionConfig>
  )
 }

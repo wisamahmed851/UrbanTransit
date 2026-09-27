@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { BrandMark } from '../components/Layout'
@@ -82,9 +82,10 @@ export function LoginPage() {
      {error && <ErrorNotice error={error} />}
      <button className="btn" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
     </form>
-    <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--ink-muted)', maxWidth: '36ch' }}>
+    <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--ink-muted)' }}>
      No account yet? An admin creates one with <code>flask users create</code>.
     </p>
+    <Link to="/welcome" style={{ fontSize: 'var(--fs-sm)', color: 'var(--link)' }}>About UrbanTransit IQ</Link>
    </section>
   </div>
  )

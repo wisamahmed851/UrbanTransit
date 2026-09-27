@@ -72,15 +72,9 @@ function useTheme(): [Theme, (t: Theme) => void] {
  return [theme, setTheme]
 }
 
-export function BrandMark() {
- return (
-  <svg className="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-   <rect width="32" height="32" rx="9" fill="#274dcf" />
-   <path d="M6 16h20" stroke="#ebf2ff" strokeWidth="3" strokeLinecap="round" />
-   <circle cx="11" cy="16" r="4" fill="#274dcf" stroke="#ebf2ff" strokeWidth="3" />
-   <circle cx="22" cy="16" r="3" fill="#f5b301" />
-  </svg>
- )
+/** The UrbanTransit IQ logo (CMD-026), decorative next to the product name. */
+export function BrandMark({ size = 64 }: { size?: 64 | 192 }) {
+ return <img className="brand-mark" src={`/logo-${size}.png`} alt="" width={32} height={32} decoding="async" />
 }
 
 export function Layout() {
