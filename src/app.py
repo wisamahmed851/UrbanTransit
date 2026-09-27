@@ -1,3 +1,4 @@
+
 """UrbanTransit IQ Flask application factory.
 
 Run (inside WSL, repo root, venv active):
@@ -36,10 +37,10 @@ def create_app(config_object: type = BaseConfig) -> Flask:
     cors.init_app(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"]}})
 
     from src import models, security  # noqa: F401  (tables for Flask-Migrate; JWT callbacks)
-    from src.blueprints import admin, analytics, auth, health, insights, jobs, ml, network, predictions, reports
+    from src.blueprints import admin, analytics, auth, health, insights, jobs, ml, network, predictions, reports, train
     from src.cli import register_cli
 
-    for module in (health, auth, admin, jobs, analytics, ml, network, reports, predictions, insights):
+    for module in (health, auth, admin, jobs, analytics, ml, network, reports, predictions, insights, train):
         app.register_blueprint(module.bp)
     register_error_handlers(app)
     register_cli(app)
@@ -61,6 +62,10 @@ def warm_models(app: Flask) -> None:
                 model_serving.load_classifier(task)
             except Exception:  # noqa: BLE001  (reported by the endpoint instead)
                 pass
+        try:
+            model_serving.load_regressor("occupancy_forecast")
+        except Exception:  # noqa: BLE001  (reported by the endpoint instead)
+            pass
         try:
             forecasting.load_regressor()
             with app.app_context():

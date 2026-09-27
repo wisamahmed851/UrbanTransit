@@ -8,4 +8,4 @@ from src.models.ops import AuditLog, JobRun, ModelVersion  # noqa: F401
 from src.models.rbac import Permission, Role, User  # noqa: F401
 from src.models.reference import REFERENCE_MODELS, Route, Stop, Vehicle  # noqa: F401
 from src.models.serving import (PipelineComparison, PythonClusterProfile, Recommendation,  # noqa: F401
-                                RouteCluster, RouteDailyBoardings, TripContext)
+                                RouteCluster, RouteDailyBoardings, StopPeriodBoardings, TripContext)

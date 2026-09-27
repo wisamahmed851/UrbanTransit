@@ -2,6 +2,8 @@
 
 GET /api/forecasts/demand?route_id=R001&horizon=14&history=90   one route: history, backtest, forecast
 GET /api/forecasts/demand/network?horizon=14                    all routes: daily total and growth by route
+GET /api/forecasts/demand/stop-period?stop_id=S001&period=am_peak&horizon=14
+GET /api/forecasts/demand/stop-period/options                   valid stops and observed periods
 GET /api/recommendations?category=&priority=&subject_id=&q=     Phase 9 recommendations, most urgent first
 GET /api/comparison                                             Phase 8 agreement summary per task
 GET /api/comparison/<task>?agreement_status=&match=             the compared cases of one task
@@ -63,6 +65,28 @@ def demand_forecast():
 @permission_required("analytics:read")
 def network_forecast():
     return jsonify(forecasting.network_forecast(horizon_arg()))
+
+
+@bp.get("/forecasts/demand/stop-period")
+@permission_required("analytics:read")
+def stop_period_demand_forecast():
+    stop_id = (request.args.get("stop_id") or "").strip().upper()
+    time_period = (request.args.get("period") or "").strip().lower()
+    allowed = {"early", "am_peak", "midday", "pm_peak", "evening"}
+    if not stop_id or not time_period:
+        raise ApiError(400, "missing_fields", "'stop_id' and 'period' are required.",
+                       {"missing": [name for name, value in (("stop_id", stop_id), ("period", time_period)) if not value]})
+    if time_period not in allowed:
+        raise ApiError(400, "invalid_parameter", "'period' must be a supported service period.",
+                       {"periods": sorted(allowed)})
+    history = int_arg("history", serving_config()["forecast"]["default_history_days"], 7, 365)
+    return jsonify(forecasting.stop_period_forecast(stop_id, time_period, horizon_arg(), history))
+
+
+@bp.get("/forecasts/demand/stop-period/options")
+@permission_required("analytics:read")
+def stop_period_demand_options():
+    return jsonify(forecasting.stop_period_options())
 
 
 @bp.get("/recommendations")

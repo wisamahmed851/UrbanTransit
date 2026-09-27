@@ -1,0 +1,73 @@
+{
+  "task": "stop_period_demand",
+  "algorithm": "random_forest",
+  "version": "v1",
+  "target": "daily_smart_card_tap_ins",
+  "target_definition": "ticket entry tap-ins per entry_stop_id \u00d7 service_date \u00d7 time_period",
+  "coverage_note": "Smart-card and mobile-QR transactions only; cash riders are not observed.",
+  "features": {
+    "numeric": [
+      "day_of_week",
+      "weekend",
+      "lag_1",
+      "lag_7",
+      "lag_28",
+      "rolling_7_mean",
+      "rolling_28_mean"
+    ],
+    "categorical": [
+      "entry_stop_id",
+      "time_period"
+    ]
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-29",
+      "2026-06-30"
+    ],
+    "validation": [
+      "2026-07-01",
+      "2026-07-31"
+    ],
+    "test": [
+      "2026-08-01",
+      "2026-08-31"
+    ]
+  },
+  "validation": {
+    "mae": 0.960824,
+    "rmse": 1.641187,
+    "r2": 0.843946,
+    "mape_nonzero_pct": 47.892583,
+    "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
+  },
+  "test": {
+    "mae": 1.021776,
+    "rmse": 1.804427,
+    "r2": 0.844115,
+    "mape_nonzero_pct": 49.173845,
+    "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
+  },
+  "baseline_28day": {
+    "validation": {
+      "mae": 1.155946,
+      "rmse": 2.110315,
+      "r2": 0.741979,
+      "mape_nonzero_pct": 56.690671,
+      "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
+    },
+    "test": {
+      "mae": 1.305724,
+      "rmse": 2.436261,
+      "r2": 0.715833,
+      "mape_nonzero_pct": 61.853939,
+      "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
+    }
+  },
+  "selection": {
+    "selected_algorithm": "random_forest",
+    "criterion": "lowest validation MAE"
+  },
+  "leakage_guard": "Lag and rolling features use only earlier same stop-period days.",
+  "model_scope": "independent pandas/PyArrow clean-Parquet pipeline"
+}

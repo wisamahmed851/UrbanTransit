@@ -76,6 +76,31 @@ def load_classifier(task: str) -> dict:
     }
 
 
+@cache
+def load_regressor(task: str) -> dict:
+    """Load a numeric Phase 7 predictor and its fitted feature preprocessor."""
+    spec = serving_config()["served"][task]
+    folder, name = models_dir() / task, f"{spec['algorithm']}_{spec['version']}"
+    model_file, prep_file = folder / f"{name}.pkl", folder / f"{spec['algorithm']}_preprocessor_{spec['version']}.pkl"
+    record_file = models_dir() / "metrics" / f"{task}_{spec['algorithm']}.json"
+    missing = [str(p.relative_to(settings.PROJECT_ROOT)) for p in (model_file, prep_file, record_file) if not p.exists()]
+    if missing:
+        raise ApiError(503, "model_unavailable",
+                       "The saved model files are not on this server. Train the occupancy forecast or unzip the shared models.zip into models/.",
+                       {"missing": missing})
+    record = json.loads(record_file.read_text(encoding="utf-8"))
+    model = joblib.load(model_file)
+    if hasattr(model, "n_jobs"):
+        model.n_jobs = 1
+    return {
+        "task": task, "algorithm": spec["algorithm"], "version": spec["version"],
+        "file": str(model_file.relative_to(settings.PROJECT_ROOT)), "model": model,
+        "preprocessor": joblib.load(prep_file), "numeric": record["features"]["numeric"],
+        "categorical": record["features"]["categorical"], "recorded_test": record["test"],
+        "target": record.get("target"), "target_definition": record.get("target_definition"),
+    }
+
+
 def model_card(task: str) -> dict:
     """Name, version and test metrics of the served model, plus whether it meets the SRS target.
 
@@ -95,6 +120,21 @@ def model_card(task: str) -> dict:
         "meets_srs_target": test["accuracy"] >= targets["classification_accuracy"]
         or test["macro_f1"] >= targets["classification_macro_f1"],
         "srs_target": f"accuracy >= {targets['classification_accuracy']} or macro F1 >= {targets['classification_macro_f1']} (SRS NFR 4)",
+    }
+
+
+def regression_model_card(task: str) -> dict:
+    """A model card for numeric forecasts; classification accuracy/F1 do not apply."""
+    m = load_regressor(task)
+    row = db.session.execute(select(ModelVersion).filter_by(
+        task=task, algorithm=m["algorithm"], version=m["version"])).scalar_one_or_none()
+    test = ((row.metrics_json or {}).get("test") if row else None) or m["recorded_test"]
+    return {
+        "task": task, "algorithm": m["algorithm"], "version": m["version"], "file": m["file"],
+        "pipeline": "python (Phase 7)", "trained_on": "2025-09-01..2026-05-01, chronological split",
+        "test_mae": test["mae"], "test_rmse": test["rmse"], "test_r2": test["r2"],
+        "metrics_source": "model_versions (re-scored on this server)" if row else "training record",
+        "target": m["target"], "target_definition": m["target_definition"],
     }
 
 
@@ -127,12 +167,18 @@ def feature_row(task: str, ctx: TripContext, day: date, vehicle_id: str | None =
         "hour": ctx.hour, "day_of_week": day.weekday(), "weekend": int(day.weekday() >= 5),
         "distance_km": ctx.distance_km, "planned_runtime_min": ctx.planned_runtime_min,
         "headway_min": ctx.headway_min, "scheduled_runtime_min": ctx.scheduled_runtime_min,
+        "capacity_total": ctx.capacity_total,
         "route_id": ctx.route_id, "vehicle_id": vehicle_id or ctx.vehicle_id, "direction": ctx.direction,
         "route_type": ctx.route_type, "vehicle_type": vehicle_type,
     }
-    history = {"crowding_flag": "prior_route_crowding_rate", "delay_severity": "prior_route_delay_mean"}[task]
+    history = {"crowding_flag": "prior_route_crowding_rate", "delay_severity": "prior_route_delay_mean",
+               "occupancy_forecast": "prior_route_occupancy_mean"}[task]
+    # The context window's observed occupancy is historical input for the next trip;
+    # it is not the requested trip's outcome.
     row[history] = getattr(ctx, history)
-    m = load_classifier(task)
+    if task == "occupancy_forecast":
+        row["prior_route_hour_occupancy_mean"] = ctx.prior_route_hour_occupancy_mean
+    m = load_regressor(task) if task == "occupancy_forecast" else load_classifier(task)
     return {k: row[k] for k in m["numeric"] + m["categorical"]}
 
 
@@ -170,6 +216,28 @@ def predict_crowding(route_id: str, direction: int, day: date, hour: int, vehicl
         "prediction": {"crowded": probability >= m["threshold"], "probability": round(probability, 4),
                        "threshold": m["threshold"], "meaning": CROWDING_MEANING},
         "inputs": row, "observed": observed(ctx), "model": card, "warnings": warnings,
+    }
+
+
+def predict_occupancy(route_id: str, direction: int, day: date, hour: int, vehicle_id: str | None = None) -> dict:
+    """Estimate peak on-board occupancy for a future scheduled trip."""
+    ctx = find_context(route_id, direction, day, hour)
+    row = feature_row("occupancy_forecast", ctx, day, vehicle_id)
+    m = load_regressor("occupancy_forecast")
+    # Retain meaningful overload forecasts, but prevent negative / unusable display values.
+    frame = pd.DataFrame([row], columns=m["numeric"] + m["categorical"])
+    frame[m["numeric"]] = frame[m["numeric"]].astype(float)
+    ratio = float(np.clip(m["model"].predict(m["preprocessor"].transform(frame))[0], 0.0, 1.5))
+    capacity = row.get("capacity_total") or ctx.capacity_total
+    return {
+        "task": "occupancy_forecast", "estimate": True,
+        "trip": {"route_id": route_id, "direction": direction, "service_date": day.isoformat(),
+                 "hour": hour, "day_type": day_type_of(day)},
+        "prediction": {"occupancy_ratio": round(ratio, 4), "estimated_peak_load": round(ratio * float(capacity), 1),
+                       "capacity_total": capacity, "crowded_at_90pct": ratio > 0.90,
+                       "meaning": "estimated maximum on-board load as a share of assigned vehicle capacity"},
+        "inputs": row, "observed": observed(ctx), "model": regression_model_card("occupancy_forecast"),
+        "warnings": ["This is a pre-departure estimate based on schedule and prior-route history; it is not a live passenger count."],
     }
 
 

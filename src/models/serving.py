@@ -4,6 +4,7 @@
 | table | source | used by |
 |---|---|---|
 | `route_daily_boardings` | Phase 7 `demand_frame()`: completed trips' boardings per route and day | demand forecast (lag features), forecast history |
+| `stop_period_boardings` | Phase 7 `stop_period_demand_frame()`: ticket tap-ins by entry stop/day/period | stop-period demand forecast |
 | `trip_context` | Phase 7 `base_trip()`, last `trip_context_weeks` weeks | the "typical trip" inputs a prediction needs (headway, runtime, vehicle, recent history) |
 | `recommendations` | `reports/recommendations.json` (Phase 9 engine) | recommendations page |
 | `pipeline_comparison` | `reports/comparison/task_*.csv` (Phase 8) | Spark vs Python page |
@@ -23,6 +24,21 @@ class RouteDailyBoardings(db.Model):
     route_id = db.Column(db.String(16), primary_key=True)
     service_date = db.Column(db.Date, primary_key=True)
     boardings = db.Column(db.Integer, nullable=False)
+
+
+class StopPeriodBoardings(db.Model):
+    """Observed smart-card tap-ins per entry stop, service day and time period.
+
+    It does not represent cash passengers. The API calls the target ``tap_ins`` so
+    that the UI cannot accidentally present it as a complete passenger count.
+    """
+
+    __tablename__ = "stop_period_boardings"
+
+    entry_stop_id = db.Column(db.String(16), primary_key=True)
+    service_date = db.Column(db.Date, primary_key=True)
+    time_period = db.Column(db.String(16), primary_key=True)
+    tap_ins = db.Column(db.Integer, nullable=False)
 
 
 class TripContext(db.Model):
@@ -53,6 +69,8 @@ class TripContext(db.Model):
     scheduled_runtime_min = db.Column(db.Double)
     prior_route_crowding_rate = db.Column(db.Double)
     prior_route_delay_mean = db.Column(db.Double)
+    prior_route_occupancy_mean = db.Column(db.Double)
+    prior_route_hour_occupancy_mean = db.Column(db.Double)
     # what was observed in this cell over the window
     trips_observed = db.Column(db.Integer, nullable=False)
     observed_crowding_rate = db.Column(db.Double)

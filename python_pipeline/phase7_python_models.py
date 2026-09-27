@@ -73,6 +73,32 @@ def reg_scores(y, p):
     return {"mae": round(float(mean_absolute_error(y,p)),6), "rmse": round(float(mean_squared_error(y,p)**.5),6),
             "mape": round(float(mean_absolute_percentage_error(y,p)*100),6), "r2": round(float(r2_score(y,p)),6)}
 
+
+def occupancy_scores(y, p):
+    """Regression scores for an occupancy ratio; ordinary MAPE is undefined at zero."""
+    out = {"mae": round(float(mean_absolute_error(y, p)), 6),
+           "rmse": round(float(mean_squared_error(y, p) ** .5), 6),
+           "r2": round(float(r2_score(y, p)), 6)}
+    observed = np.asarray(y, dtype=float)
+    predicted = np.asarray(p, dtype=float)
+    nonzero = observed > 0.01
+    out["mape_nonzero_pct"] = (round(float(np.mean(np.abs((observed[nonzero] - predicted[nonzero]) / observed[nonzero])) * 100), 6)
+                               if nonzero.any() else None)
+    out["mape_note"] = "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
+    return out
+
+
+def count_scores(y, p):
+    """Regression scores for non-negative counts; MAPE excludes true zero counts."""
+    out = reg_scores(y, p)
+    actual, predicted = np.asarray(y, dtype=float), np.asarray(p, dtype=float)
+    nonzero = actual > 0
+    out.pop("mape", None)
+    out["mape_nonzero_pct"] = (round(float(np.mean(np.abs((actual[nonzero] - predicted[nonzero]) / actual[nonzero])) * 100), 6)
+                               if nonzero.any() else None)
+    out["mape_note"] = "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
+    return out
+
 def base_trip() -> pd.DataFrame:
     trips, pc, delays, vehicles, routes, schedules = (read(x) for x in ("trips","passenger_counts","delays","vehicles","routes","schedules"))
     trips = trips[trips.trip_status.eq("completed")].copy()
@@ -98,6 +124,14 @@ def base_trip() -> pd.DataFrame:
     x["prior_route_hour_severe_rate"] = hour_groups.delay_severity.transform(
         lambda s: s.eq("Severe").shift().rolling(56,min_periods=5).mean())
     x["prior_route_crowding_rate"] = x.groupby(["route_id","direction"]).crowding_flag.transform(lambda s: s.shift().rolling(28,min_periods=5).mean())
+    # Current-trip max_load / occupancy is the target, never a model input. This
+    # feature ends at the preceding trip and is safe for a future-trip estimate.
+    x["occupancy_pct"] = x.max_load / x.capacity_total
+    x.loc[(x.capacity_total <= 0) | ~np.isfinite(x.occupancy_pct), "occupancy_pct"] = np.nan
+    x["prior_route_occupancy_mean"] = x.groupby(["route_id","direction"]).occupancy_pct.transform(
+        lambda s: s.shift().rolling(28, min_periods=5).mean())
+    x["prior_route_hour_occupancy_mean"] = x.groupby(["route_id", "direction", "hour"]).occupancy_pct.transform(
+        lambda s: s.shift().rolling(56, min_periods=5).mean())
     return x
 
 def prep(frame, numeric, categorical):
@@ -166,6 +200,181 @@ def run_demand():
         rec={"task":"daily_boardings","algorithm":name,"features":feats,"split_dates":DATES,"validation":reg_scores(va.boardings,pv),"test":reg_scores(te.boardings,pt),"lag_rule":"pandas shift() before every rolling aggregate; no current/future value"}; save_json("daily_boardings",name,rec); results[name]=(rec,pt)
     best=min((v[0]["validation"]["mae"],k) for k,v in results.items() if k!="baseline_28day")[1]; sm=te[["route_id","service_date","boardings"]].copy(); sm["predicted"]=results[best][1]; sm["split"]="test"; SAMPLES.mkdir(parents=True,exist_ok=True); sm.head(20).to_csv(SAMPLES/"daily_boardings_best.csv",index=False); return results
 
+
+def run_occupancy_forecast(version="v1", full_train=False):
+    """Estimate a trip's peak occupancy ratio before it departs.
+
+    ``occupancy_pct`` is the target (max on-board load / assigned vehicle capacity).
+    Current-trip load, boardings, occupancy and crowding flag are intentionally not
+    features; the only occupancy signal is a prior-trip rolling mean.
+    """
+    x = base_trip().dropna(subset=["occupancy_pct"]).copy()
+    numeric = ["hour", "day_of_week", "weekend", "distance_km", "planned_runtime_min",
+               "headway_min", "scheduled_runtime_min", "capacity_total", "prior_route_occupancy_mean",
+               "prior_route_hour_occupancy_mean"]
+    categorical = ["route_id", "vehicle_id", "direction", "route_type", "vehicle_type"]
+    cols = numeric + categorical
+    x.loc[:, numeric] = x[numeric].replace([np.inf, -np.inf], np.nan)
+    tr, va, te = (period(x, split).dropna(subset=["prior_route_occupancy_mean", "prior_route_hour_occupancy_mean"])
+                  for split in ("train", "validation", "test"))
+    if len(tr) > 400000 and not full_train:
+        tr = tr.sample(n=400000, random_state=RNG).reset_index(drop=True)
+    encoder = prep(tr, numeric, categorical)
+    Xtr, Xv, Xt = encoder.fit_transform(tr[cols]), encoder.transform(va[cols]), encoder.transform(te[cols])
+    output = MODEL / "occupancy_forecast"; output.mkdir(parents=True, exist_ok=True)
+    # Candidate choice is based strictly on validation MAE. All candidates use the
+    # same leakage-safe inputs and untouched chronological test split.
+    candidates = {
+        "ridge": Ridge(alpha=5.0),
+        "random_forest": RandomForestRegressor(n_estimators=180, max_depth=16,
+                                                  min_samples_leaf=3, n_jobs=-1, random_state=RNG),
+    }
+    results = {}
+    for name, model in candidates.items():
+        model.fit(Xtr, tr.occupancy_pct)
+        rec = {
+            "task": "occupancy_forecast", "algorithm": name, "version": version,
+            "target": "occupancy_pct", "target_definition": "trip max_load / vehicle capacity_total",
+            "target_unit": "ratio of assigned vehicle capacity", "feature_set": "strict_prior_route_and_route_hour_history",
+            "features": {"numeric": numeric, "categorical": categorical}, "split_dates": DATES,
+            "validation": occupancy_scores(va.occupancy_pct, model.predict(Xv)),
+            "test": occupancy_scores(te.occupancy_pct, model.predict(Xt)),
+            "leakage_guard": "Current-trip max_load, boardings, occupancy_pct and crowding_flag are excluded; every occupancy-history feature ends at the preceding trip.",
+            "model_scope": "independent pandas/PyArrow clean-Parquet pipeline",
+        }
+        save_json("occupancy_forecast", name if version == "v1" else f"{name}_{version}", rec)
+        joblib.dump(model, output / f"{name}_{version}.pkl")
+        results[name] = (rec, model)
+    best_name = min(results, key=lambda name: results[name][0]["validation"]["mae"])
+    record, model = results[best_name]
+    record["selection"] = {"selected_algorithm": best_name, "criterion": "lowest validation MAE",
+                           "candidates": {name: value[0]["validation"] for name, value in results.items()}}
+    save_json("occupancy_forecast", f"selected_{version}", record)
+    joblib.dump(encoder, output / f"{best_name}_preprocessor_{version}.pkl")
+    sample = te[["trip_id", "route_id", "service_date", "occupancy_pct"]].copy()
+    sample["predicted"] = model.predict(Xt); sample["split"] = "test"
+    SAMPLES.mkdir(parents=True, exist_ok=True)
+    sample.head(20).to_csv(SAMPLES / f"occupancy_forecast_{version}_best.csv", index=False)
+    return record
+
+
+STOP_PERIODS = ("early", "am_peak", "midday", "pm_peak", "evening")
+
+
+def time_period(hours: pd.Series) -> pd.Series:
+    """Stable, operator-readable period buckets for tap-in demand."""
+    return pd.cut(hours, [-1, 5, 9, 15, 19, 23], labels=STOP_PERIODS).astype(str)
+
+
+def stop_period_demand_frame() -> pd.DataFrame:
+    """Daily smart-card tap-ins for each observed stop and service-period cell.
+
+    This uses the ticket's entry tap-in directly. It deliberately does not inflate
+    smart-card journeys into all passenger demand: cash riders are not observed.
+    """
+    tickets = read("tickets")[["entry_stop_id", "service_date", "entry_time"]].dropna().copy()
+    tickets["service_date"] = pd.to_datetime(tickets.service_date)
+    tickets["hour"] = pd.to_datetime(tickets.entry_time).dt.hour
+    tickets["time_period"] = time_period(tickets.hour)
+    observed = tickets.groupby(["entry_stop_id", "service_date", "time_period"], as_index=False).size().rename(columns={"size": "tap_ins"})
+    # Zero is a valid observed count. Generate it only for a stop-period cell that
+    # has appeared, rather than claiming unobserved service periods are zero demand.
+    cells = observed[["entry_stop_id", "time_period"]].drop_duplicates()
+    dates = pd.date_range(observed.service_date.min(), observed.service_date.max(), freq="D")
+    grid = cells.merge(pd.DataFrame({"service_date": dates}), how="cross")
+    d = grid.merge(observed, how="left", on=["entry_stop_id", "service_date", "time_period"])
+    d["tap_ins"] = d.tap_ins.fillna(0.0).astype(float)
+    d["day_of_week"] = d.service_date.dt.dayofweek
+    d["weekend"] = (d.day_of_week >= 5).astype(int)
+    d = d.sort_values(["entry_stop_id", "time_period", "service_date"])
+    keys = ["entry_stop_id", "time_period"]
+    for lag in (1, 7, 28):
+        d[f"lag_{lag}"] = d.groupby(keys).tap_ins.shift(lag)
+    for window in (7, 28):
+        d[f"rolling_{window}_mean"] = d.groupby(keys).tap_ins.transform(
+            lambda s: s.shift().rolling(window, min_periods=1).mean())
+    return d
+
+
+def stop_period_splits(d: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict]:
+    """Use the latest available ticket months without pretending they extend to August.
+
+    The staged ticket source ends in January 2026, unlike the APC source used for
+    route-day demand.  A 31-day validation month and untouched final 31-day test
+    month preserve chronological evaluation while keeping enough prior history.
+    """
+    end = pd.Timestamp(d.service_date.max()).normalize()
+    test_start = end - pd.Timedelta(days=30)
+    validation_start = test_start - pd.Timedelta(days=31)
+    ready = d.dropna(subset=["lag_1", "lag_7", "lag_28"]).copy()
+    train = ready[ready.service_date < validation_start].copy()
+    validation = ready[(ready.service_date >= validation_start) & (ready.service_date < test_start)].copy()
+    test = ready[ready.service_date >= test_start].copy()
+    if min(len(train), len(validation), len(test)) == 0:
+        raise ValueError("Ticket history cannot form chronological train/validation/test splits.")
+    dates = {
+        "train": [str(train.service_date.min().date()), str(train.service_date.max().date())],
+        "validation": [str(validation.service_date.min().date()), str(validation.service_date.max().date())],
+        "test": [str(test.service_date.min().date()), str(test.service_date.max().date())],
+    }
+    return train, validation, test, dates
+
+
+def run_stop_period_demand(version="v1"):
+    """Train a stop × period tap-in demand forecast and trailing-average baseline."""
+    d = stop_period_demand_frame()
+    numeric = ["day_of_week", "weekend", "lag_1", "lag_7", "lag_28", "rolling_7_mean", "rolling_28_mean"]
+    categorical = ["entry_stop_id", "time_period"]
+    features = numeric + categorical
+    tr, va, te, split_dates = stop_period_splits(d)
+    encoder = prep(tr, numeric, categorical)
+    Xtr, Xv, Xt = encoder.fit_transform(tr[features]), encoder.transform(va[features]), encoder.transform(te[features])
+    candidates = {
+        "ridge": Ridge(alpha=3.0),
+        "random_forest": RandomForestRegressor(n_estimators=160, max_depth=16,
+                                                  min_samples_leaf=2, n_jobs=-1, random_state=RNG),
+    }
+    results = {"baseline_28day": (count_scores(va.tap_ins, va.rolling_28_mean),
+                                   count_scores(te.tap_ins, te.rolling_28_mean), None)}
+    output = MODEL / "stop_period_demand"; output.mkdir(parents=True, exist_ok=True)
+    for name, model in candidates.items():
+        model.fit(Xtr, tr.tap_ins)
+        validation = count_scores(va.tap_ins, np.clip(model.predict(Xv), 0, None))
+        test = count_scores(te.tap_ins, np.clip(model.predict(Xt), 0, None))
+        results[name] = (validation, test, model)
+        save_json("stop_period_demand", name if version == "v1" else f"{name}_{version}", {
+            "task": "stop_period_demand", "algorithm": name, "version": version,
+            "target": "daily_smart_card_tap_ins",
+            "target_definition": "ticket entry tap-ins per entry_stop_id × service_date × time_period",
+            "coverage_note": "Smart-card and mobile-QR transactions only; cash riders are not observed.",
+            "features": {"numeric": numeric, "categorical": categorical}, "split_dates": split_dates,
+            "validation": validation, "test": test,
+            "leakage_guard": "Lag and rolling features use only earlier same stop-period days.",
+            "model_scope": "independent pandas/PyArrow clean-Parquet pipeline",
+        })
+        joblib.dump(model, output / f"{name}_{version}.pkl")
+    selected = min(candidates, key=lambda name: results[name][0]["mae"])
+    selected_record = {
+        "task": "stop_period_demand", "algorithm": selected, "version": version,
+        "target": "daily_smart_card_tap_ins",
+        "target_definition": "ticket entry tap-ins per entry_stop_id × service_date × time_period",
+        "coverage_note": "Smart-card and mobile-QR transactions only; cash riders are not observed.",
+        "features": {"numeric": numeric, "categorical": categorical}, "split_dates": split_dates,
+        "validation": results[selected][0], "test": results[selected][1],
+        "baseline_28day": {"validation": results["baseline_28day"][0], "test": results["baseline_28day"][1]},
+        "selection": {"selected_algorithm": selected, "criterion": "lowest validation MAE"},
+        "leakage_guard": "Lag and rolling features use only earlier same stop-period days.",
+        "model_scope": "independent pandas/PyArrow clean-Parquet pipeline",
+    }
+    save_json("stop_period_demand", f"selected_{version}", selected_record)
+    joblib.dump(encoder, output / f"{selected}_preprocessor_{version}.pkl")
+    sample = te[["entry_stop_id", "service_date", "time_period", "tap_ins"]].copy()
+    sample["predicted"] = np.clip(results[selected][2].predict(Xt), 0, None)
+    sample["split"] = "test"
+    SAMPLES.mkdir(parents=True, exist_ok=True)
+    sample.head(20).to_csv(SAMPLES / f"stop_period_demand_{version}_best.csv", index=False)
+    return selected_record
+
 def run_clusters():
     x=base_trip(); x=period(x,"train"); x["occupancy"]=(x.max_load/x.capacity_total); x["travel"]=(pd.to_datetime(x.actual_arrival)-pd.to_datetime(x.actual_departure)).dt.total_seconds()/60
     daily=x.groupby(["route_id","service_date"]).boardings.sum().rename("daily").reset_index(); growth=daily.sort_values(["route_id","service_date"]); growth["mom"]=growth.groupby("route_id").daily.pct_change(28)
@@ -207,10 +416,12 @@ def write_docs(results):
     REPORT.write_text("\n".join(lines),encoding="utf-8")
 
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--task",choices=["a","b","c","d","all"],default="all"); p.add_argument("--version", default="v1"); p.add_argument("--enhanced-delay", action="store_true", help="Use only strictly-prior route-hour delay history for Task A."); p.add_argument("--full-train", action="store_true", help="Train classifiers on every chronological training-split row instead of the deterministic 400k-row cap."); a=p.parse_args(); results={}
+    p=argparse.ArgumentParser(); p.add_argument("--task",choices=["a","b","c","d","e","f","all"],default="all"); p.add_argument("--version", default="v1"); p.add_argument("--enhanced-delay", action="store_true", help="Use only strictly-prior route-hour delay history for Task A."); p.add_argument("--full-train", action="store_true", help="Train classifiers/occupancy model on every chronological training-split row instead of the deterministic 400k-row cap."); a=p.parse_args(); results={}
     if a.task in ("a","all"): results["delay_severity"]=run_classification("delay_severity","delay_severity","prior_route_delay_mean",4,a.version,a.enhanced_delay,a.full_train)
     if a.task in ("b","all"): results["crowding_flag"]=run_classification("crowding_flag","crowding_flag","prior_route_crowding_rate",2)
     if a.task in ("c","all"): results["daily_boardings"]=run_demand()
+    if a.task in ("e","all"): results["occupancy_forecast"]=run_occupancy_forecast(a.version, a.full_train)
+    if a.task in ("f","all"): results["stop_period_demand"]=run_stop_period_demand(a.version)
     if a.task in ("d","all"):
         o,n,pf=run_clusters(); results["route_clustering"]={k:(v[0],) for k,v in o.items()}
     write_docs(results)

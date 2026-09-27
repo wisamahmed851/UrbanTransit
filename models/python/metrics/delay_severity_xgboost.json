@@ -1,6 +1,8 @@
 {
   "task": "delay_severity",
   "algorithm": "xgboost",
+  "version": "v1",
+  "feature_set": "enhanced_strict_prior_route_hour_history",
   "features": {
     "numeric": [
       "hour",
@@ -10,7 +12,9 @@
       "planned_runtime_min",
       "headway_min",
       "scheduled_runtime_min",
-      "prior_route_delay_mean"
+      "prior_route_delay_mean",
+      "prior_route_hour_delay_mean",
+      "prior_route_hour_severe_rate"
     ],
     "categorical": [
       "route_id",
@@ -35,13 +39,13 @@
     ]
   },
   "validation": {
-    "accuracy": 0.63811,
-    "macro_f1": 0.406059,
+    "accuracy": 0.669639,
+    "macro_f1": 0.434585,
     "per_class_f1": {
-      "Minor": 0.315751,
-      "Moderate": 0.365046,
-      "On Time": 0.787171,
-      "Severe": 0.156269
+      "Minor": 0.331409,
+      "Moderate": 0.398,
+      "On Time": 0.80957,
+      "Severe": 0.19936
     },
     "confusion_matrix": {
       "labels": [
@@ -52,40 +56,40 @@
       ],
       "values": [
         [
-          19602,
-          8931,
-          14027,
-          3338
+          19832,
+          8784,
+          15216,
+          2066
         ],
         [
-          6575,
-          14055,
-          2177,
-          4655
+          6836,
+          14804,
+          2586,
+          3236
         ],
         [
-          51678,
-          25831,
-          182288,
-          4576
+          46752,
+          22544,
+          192124,
+          2953
         ],
         [
-          408,
-          725,
-          282,
-          1295
+          365,
+          798,
+          333,
+          1214
         ]
       ]
     }
   },
   "test": {
-    "accuracy": 0.575702,
-    "macro_f1": 0.381782,
+    "accuracy": 0.59986,
+    "macro_f1": 0.404835,
     "per_class_f1": {
-      "Minor": 0.315292,
-      "Moderate": 0.368599,
-      "On Time": 0.732724,
-      "Severe": 0.110512
+      "Minor": 0.319302,
+      "Moderate": 0.395083,
+      "On Time": 0.75388,
+      "Severe": 0.151077
     },
     "confusion_matrix": {
       "labels": [
@@ -96,28 +100,28 @@
       ],
       "values": [
         [
-          20931,
-          10975,
-          14508,
-          3289
+          20651,
+          11229,
+          15074,
+          2749
         ],
         [
-          10486,
-          18312,
-          4497,
-          4208
+          9647,
+          19043,
+          4578,
+          4235
         ],
         [
-          51155,
-          31398,
-          145201,
-          4315
+          48959,
+          27551,
+          152321,
+          3238
         ],
         [
-          497,
-          1172,
+          391,
+          1074,
           57,
-          841
+          1045
         ]
       ]
     }

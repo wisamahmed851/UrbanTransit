@@ -42,7 +42,7 @@ from src.extensions import db  # noqa: E402
 from src.models.ops import JobRun, ModelVersion  # noqa: E402
 from src.models.rbac import utcnow  # noqa: E402
 from src.models.serving import (PipelineComparison, PythonClusterProfile, Recommendation,  # noqa: E402
-                                RouteCluster, RouteDailyBoardings, TripContext)
+                                RouteCluster, RouteDailyBoardings, StopPeriodBoardings, TripContext)
 
 SERVING = yaml.safe_load((ROOT / "config" / "serving.yaml").read_text(encoding="utf-8"))
 MODELS = ROOT / SERVING["models_dir"]
@@ -79,12 +79,17 @@ def build_trip_context(trips: pd.DataFrame, weeks: int) -> tuple[list[dict], dic
     w["day_type"] = w.weekend.map({1: "weekend", 0: "weekday"})
     w["occupancy"] = w.max_load / w.capacity_total
 
-    ordered = trips.sort_values(["route_id", "direction", "scheduled_departure", "trip_id"])
+    ordered = trips.sort_values(["route_id", "direction", "scheduled_departure", "trip_id"]).copy()
+    ordered["occupancy"] = ordered.max_load / ordered.capacity_total
     last28 = ordered.groupby(["route_id", "direction"]).tail(28).groupby(["route_id", "direction"])
     history = pd.DataFrame({
         "prior_route_crowding_rate": last28.crowding_flag.agg(lambda s: s.mean() if s.notna().sum() >= 5 else None),
         "prior_route_delay_mean": last28.delay_minutes.agg(lambda s: s.mean() if s.notna().sum() >= 5 else None),
+        "prior_route_occupancy_mean": last28.occupancy.agg(lambda s: s.mean() if s.notna().sum() >= 5 else None),
     }).reset_index()
+    hour_history = (ordered.groupby(["route_id", "direction", "hour"]).tail(56)
+                    .groupby(["route_id", "direction", "hour"]).occupancy.mean()
+                    .rename("prior_route_hour_occupancy_mean").reset_index())
 
     cells = w.groupby(["route_id", "direction", "day_type", "hour"]).agg(
         vehicle_id=("vehicle_id", _mode), vehicle_type=("vehicle_type", _mode),
@@ -95,7 +100,8 @@ def build_trip_context(trips: pd.DataFrame, weeks: int) -> tuple[list[dict], dic
         observed_mean_delay_min=("delay_minutes", "mean"), mean_boardings=("boardings", "mean"),
         mean_max_load=("max_load", "mean"), mean_occupancy=("occupancy", "mean"),
         p90_occupancy=("occupancy", lambda s: s.quantile(0.9)),
-    ).reset_index().merge(history, "left", ["route_id", "direction"])
+    ).reset_index().merge(history, "left", ["route_id", "direction"]).merge(
+        hour_history, "left", ["route_id", "direction", "hour"])
     cells["window_start"], cells["window_end"] = start.date(), end.date()
     rows = [{k: _none_if_nan(v) for k, v in r.items()} for r in cells.to_dict("records")]
     for r in rows:
@@ -144,7 +150,7 @@ def read_comparison() -> list[dict]:
 
 
 def build_model_versions() -> list[dict]:
-    """The four served models, with the metrics recomputed on this machine."""
+    """The served models, with metrics recomputed on this machine."""
     ev = json.loads(EVALUATION.read_text(encoding="utf-8"))
     classifiers = {c["task"]: c for c in ev["classifiers"]}
     out = []
@@ -159,6 +165,23 @@ def build_model_versions() -> list[dict]:
             metrics = {"test": {k: v for k, v in a["test"].items() if k != "vs_recorded"},
                        "validation": {k: v for k, v in a["validation"].items() if k != "vs_recorded"},
                        "srs_target": ev["demand"]["srs_target"]}
+        elif task == "occupancy_forecast":
+            a = ev.get("occupancy_forecast")
+            if a:
+                metrics = {"test": {k: v for k, v in a["splits"]["test"].items() if k not in {"vs_recorded", "rows"}},
+                           "validation": {k: v for k, v in a["splits"]["validation"].items() if k not in {"vs_recorded", "rows"}},
+                           "target": a["target"]}
+            else:
+                # The serving endpoint can be enabled before the optional full
+                # re-scoring job is next run; retain the recorded split evidence.
+                record = json.loads((MODELS / "metrics" / f"{task}_{spec['algorithm']}.json").read_text(encoding="utf-8"))
+                metrics = {"test": record["test"], "validation": record["validation"],
+                           "target": record["target"], "verification": "training record; re-score pending"}
+        elif task == "stop_period_demand":
+            record = json.loads((MODELS / "metrics" / f"{task}_selected_{spec['version']}.json").read_text(encoding="utf-8"))
+            metrics = {"test": record["test"], "validation": record["validation"],
+                       "baseline_28day": record["baseline_28day"], "target": record["target"],
+                       "coverage_note": record["coverage_note"], "verification": "training record; independent re-score pending"}
         else:
             metrics = ev["clustering"][spec["algorithm"]]
         out.append({"task": task, "algorithm": spec["algorithm"], "version": spec["version"],
@@ -179,10 +202,15 @@ def main() -> int:
             demand = p7.demand_frame()[["route_id", "service_date", "boardings"]]
             daily = [{"route_id": r, "service_date": d.date(), "boardings": int(b)}
                      for r, d, b in demand.itertuples(index=False)]
+            stop_period = p7.stop_period_demand_frame()[["entry_stop_id", "service_date", "time_period", "tap_ins"]]
+            stop_period_rows = [{"entry_stop_id": stop, "service_date": day.date(), "time_period": time_period,
+                                 "tap_ins": int(taps)}
+                                for stop, day, time_period, taps in stop_period.itertuples(index=False)]
             context, window = build_trip_context(trips, SERVING["trip_context_weeks"])
             assignments, profiles = build_route_clusters(trips)
             tables = {
-                RouteDailyBoardings: daily, TripContext: context, RouteCluster: assignments,
+                RouteDailyBoardings: daily, StopPeriodBoardings: stop_period_rows,
+                TripContext: context, RouteCluster: assignments,
                 PythonClusterProfile: profiles, Recommendation: read_recommendations(),
                 PipelineComparison: read_comparison(), ModelVersion: build_model_versions(),
             }

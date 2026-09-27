@@ -1,6 +1,7 @@
 """Predictions and what-if scenarios from the saved Phase 7 models (CMD-024). They replace the 503 stubs.
 
 POST /api/predictions/crowding        {route_id, direction, service_date, hour, vehicle_id?}
+POST /api/predictions/occupancy       same body; numeric estimated peak occupancy
 POST /api/predictions/delay           same body
 GET  /api/predictions/crowding-risk   ?date=YYYY-MM-DD&route_id=&limit=  every cell of that day type, riskiest first
 GET  /api/whatif/scenarios            the supported scenario types
@@ -51,6 +52,15 @@ def predict_crowding():
     body = json_body(required=("route_id", "direction", "service_date", "hour"))
     result = model_serving.predict_crowding(*trip_request(body), vehicle_id=body.get("vehicle_id") or None)
     record("predictions.crowding", f"routes/{result['trip']['route_id']}", {**result["trip"], **result["prediction"]}, commit=True)
+    return jsonify(result)
+
+
+@bp.post("/predictions/occupancy")
+@permission_required("predictions:use")
+def predict_occupancy():
+    body = json_body(required=("route_id", "direction", "service_date", "hour"))
+    result = model_serving.predict_occupancy(*trip_request(body), vehicle_id=body.get("vehicle_id") or None)
+    record("predictions.occupancy", f"routes/{result['trip']['route_id']}", {**result["trip"], **result["prediction"]}, commit=True)
     return jsonify(result)
 
 

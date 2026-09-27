@@ -153,16 +153,20 @@ Reference edits change the MySQL copy only; they are not written back to HDFS.
 
 ### Predictions, forecasts, what-if (saved Phase 7 models; CMD-024)
 
-These replaced the CMD-019 503 stubs. Every answer is labelled an estimate and names the model,
-its version, its test metrics (re-scored on this server) and whether it meets SRS NFR 4.
+These replaced the CMD-019 503 stubs. Every answer is labelled an estimate and names the model
+and its held-out metrics. Classification answers state SRS NFR 4 status; numeric forecasts show
+MAE, RMSE and R² instead because accuracy/F1 do not apply.
 
 | method | path | permission | notes |
 |---|---|---|---|
 | POST | `/api/predictions/crowding` | predictions:use | body `{route_id, direction, service_date, hour, vehicle_id?}`; probability that the trip's peak load exceeds 90% of capacity, flagged at the tuned 0.70 threshold |
+| POST | `/api/predictions/occupancy` | predictions:use | same body; numeric estimate of peak on-board occupancy and peak riders. Uses schedule, assigned capacity and strictly prior route occupancy history; it never uses the requested trip's load or boardings. |
 | POST | `/api/predictions/delay` | predictions:use | same body; probabilities of On Time / Minor / Moderate / Severe. **Below the SRS target** (test accuracy 0.576, macro F1 0.382); every answer carries that warning |
 | GET | `/api/predictions/crowding-risk?date=&route_id=&limit=` | predictions:use | every route/direction/hour running on that day type, highest risk first (SRS 26) |
 | GET | `/api/forecasts/demand?route_id=&horizon=&history=` | analytics:read | route-day boardings: history, test-period backtest vs 28-day baseline, recursive forecast (`horizon` 1-56, default 14) |
 | GET | `/api/forecasts/demand/network?horizon=` | analytics:read | network daily total and routes by forecast demand; cached per data version |
+| GET | `/api/forecasts/demand/stop-period?stop_id=&period=&horizon=&history=` | analytics:read | daily smart-card/QR **entry tap-ins** for one stop and `early`, `am_peak`, `midday`, `pm_peak` or `evening`; recursive forecast, explicitly excluding cash riders |
+| GET | `/api/forecasts/demand/stop-period/options` | analytics:read | valid stop/period cells from the loaded ticket history |
 | GET | `/api/whatif/scenarios` | predictions:use | the 7 scenario types |
 | POST | `/api/whatif` | predictions:use | body `{scenario, route_id, direction, service_date, hour, params}`; before/after occupancy, wait, capacity, coverage, crowding and delay risk (SRS 48-49) |
 
@@ -178,7 +182,7 @@ history) come from `trip_context`. A route/direction/hour with no recent service
 | GET | `/api/recommendations?priority=&category=&subject_id=&q=` | recommendations:read | the 140 Phase 9 recommendations, Critical first, with a summary by priority and category |
 | GET | `/api/comparison` | models:read | Phase 8 per task: cases, agreement, Spark-correct and Python-correct rates counted from the cases, caveats |
 | GET | `/api/comparison/<task>?agreement_status=&match=` | models:read | the compared cases of `delay_severity`, `crowding_flag` or `daily_boardings` |
-| GET | `/api/models/versions` | models:read | model registry: the four served models and their re-scored metrics |
+| GET | `/api/models/versions` | models:read | model registry: the served models and their re-scored metrics |
 | GET | `/api/models/evaluation` | models:read | `reports/saved_model_evaluation.json` |
 | GET | `/api/models/clusters/python` | models:read | the 5 Python route groups with their routes |
 

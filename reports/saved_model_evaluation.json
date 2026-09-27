@@ -481,6 +481,63 @@
       "met": true
     }
   },
+  "occupancy_forecast": {
+    "task": "occupancy_forecast",
+    "algorithm": "random_forest",
+    "target": "occupancy_pct",
+    "splits": {
+      "validation": {
+        "rows": 316659,
+        "mae": 0.122038,
+        "rmse": 0.176867,
+        "r2": 0.693188,
+        "mape_nonzero_pct": 62.377208,
+        "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
+        "vs_recorded": {
+          "mae": {
+            "recorded": 0.12196,
+            "recomputed": 0.122038,
+            "match": true
+          },
+          "rmse": {
+            "recorded": 0.176802,
+            "recomputed": 0.176867,
+            "match": true
+          },
+          "r2": {
+            "recorded": 0.693595,
+            "recomputed": 0.693188,
+            "match": true
+          }
+        }
+      },
+      "test": {
+        "rows": 299499,
+        "mae": 0.11862,
+        "rmse": 0.173641,
+        "r2": 0.715135,
+        "mape_nonzero_pct": 55.625151,
+        "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
+        "vs_recorded": {
+          "mae": {
+            "recorded": 0.118569,
+            "recomputed": 0.11862,
+            "match": true
+          },
+          "rmse": {
+            "recorded": 0.1736,
+            "recomputed": 0.173641,
+            "match": true
+          },
+          "r2": {
+            "recorded": 0.71533,
+            "recomputed": 0.715135,
+            "match": true
+          }
+        }
+      }
+    }
+  },
   "clustering": {
     "task": "route_clustering",
     "routes": 116,

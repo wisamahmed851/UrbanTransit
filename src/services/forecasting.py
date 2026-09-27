@@ -29,10 +29,11 @@ from config import settings
 from src.errors import ApiError
 from src.extensions import db
 from src.models.ops import ModelVersion
-from src.models.serving import RouteDailyBoardings
+from src.models.serving import RouteDailyBoardings, StopPeriodBoardings
 from src.services.model_serving import models_dir, serving_config
 
 FEATURES = ["lag_1", "lag_7", "lag_28", "rolling_7_mean", "rolling_28_mean"]
+STOP_PERIOD_FEATURES = ["day_of_week", "weekend", *FEATURES, "entry_stop_id", "time_period"]
 TEST_PERIOD = (date(2026, 7, 2), date(2026, 8, 31))   # Phase 7 DATES["test"]
 
 
@@ -151,6 +152,88 @@ def network_forecast(horizon: int) -> dict:
     The result depends only on the loaded data and the horizon, so it is cached per process."""
     check_horizon(horizon)
     return _network_forecast(horizon, data_version())
+
+
+@cache
+def load_stop_period_regressor():
+    """Load the independent ticket tap-in model and its fitted preprocessor."""
+    spec = serving_config()["served"].get("stop_period_demand")
+    if not spec:
+        raise ApiError(503, "model_unavailable", "The stop-period demand model has not been trained yet.")
+    base = models_dir() / "stop_period_demand"
+    model_path = base / f"{spec['algorithm']}_{spec['version']}.pkl"
+    prep_path = base / f"{spec['algorithm']}_preprocessor_{spec['version']}.pkl"
+    missing = [p for p in (model_path, prep_path) if not p.exists()]
+    if missing:
+        raise ApiError(503, "model_unavailable", "The saved stop-period demand model is not on this server.",
+                       {"missing": [str(p.relative_to(settings.PROJECT_ROOT)) for p in missing]})
+    model, encoder = joblib.load(model_path), joblib.load(prep_path)
+    if hasattr(model, "n_jobs"):
+        model.n_jobs = 1
+    return spec, model, encoder
+
+
+def stop_period_series(stop_id: str, time_period: str) -> pd.Series | None:
+    rows = db.session.execute(
+        select(StopPeriodBoardings.service_date, StopPeriodBoardings.tap_ins)
+        .where(StopPeriodBoardings.entry_stop_id == stop_id, StopPeriodBoardings.time_period == time_period)
+        .order_by(StopPeriodBoardings.service_date)
+    ).all()
+    if not rows:
+        return None
+    return pd.Series([float(v) for _, v in rows], index=[d for d, _ in rows], dtype=float)
+
+
+def next_stop_features(history: list[float], forecast_date: date, stop_id: str, time_period: str) -> dict:
+    base = next_features(history)
+    return {"day_of_week": forecast_date.weekday(), "weekend": int(forecast_date.weekday() >= 5),
+            **dict(zip(FEATURES, base)), "entry_stop_id": stop_id, "time_period": time_period}
+
+
+def stop_period_model_card() -> dict:
+    spec, _, _ = load_stop_period_regressor()
+    row = db.session.execute(select(ModelVersion).filter_by(task="stop_period_demand", algorithm=spec["algorithm"],
+                                                             version=spec["version"])).scalar_one_or_none()
+    metrics = (row.metrics_json or {}) if row else {}
+    return {"task": "stop_period_demand", "algorithm": spec["algorithm"], "version": spec["version"],
+            "pipeline": "python (ticket tap-ins)", "features": STOP_PERIOD_FEATURES,
+            "test": metrics.get("test"), "baseline_28day": metrics.get("baseline_28day"),
+            "coverage_note": "Smart-card and mobile-QR tap-ins only; cash riders are not observed."}
+
+
+def stop_period_forecast(stop_id: str, time_period: str, horizon: int, history_days: int) -> dict:
+    check_horizon(horizon)
+    series = stop_period_series(stop_id, time_period)
+    if series is None or len(series) < 28:
+        raise ApiError(404, "not_found", f"Stop {stop_id} has no {time_period} tap-in history (28 days needed).")
+    _, model, encoder = load_stop_period_regressor()
+    history = series.tolist()
+    rows = []
+    for step in range(1, horizon + 1):
+        forecast_date = series.index[-1] + timedelta(days=step)
+        raw = pd.DataFrame([next_stop_features(history, forecast_date, stop_id, time_period)], columns=STOP_PERIOD_FEATURES)
+        predicted = max(0.0, float(model.predict(encoder.transform(raw))[0]))
+        history.append(predicted)
+        rows.append({"date": forecast_date.isoformat(), "predicted": round(predicted, 1)})
+    return {
+        "stop_id": stop_id, "time_period": time_period, "estimate": True, "horizon_days": horizon,
+        "last_observed_date": series.index[-1].isoformat(),
+        "history": [{"date": d.isoformat(), "actual": v} for d, v in series.iloc[-history_days:].items()],
+        "forecast": rows, "model": stop_period_model_card(),
+        "notes": ["Target: observed ticket entry tap-ins, not all passenger boardings.",
+                  "Forecast is recursive: each estimated day becomes history for the next day."],
+    }
+
+
+def stop_period_options() -> dict:
+    rows = db.session.execute(select(StopPeriodBoardings.entry_stop_id, StopPeriodBoardings.time_period)
+                              .distinct().order_by(StopPeriodBoardings.entry_stop_id, StopPeriodBoardings.time_period)).all()
+    by_stop: dict[str, list[str]] = {}
+    for stop_id, time_period in rows:
+        by_stop.setdefault(stop_id, []).append(time_period)
+    return {"stops": [{"stop_id": stop_id, "periods": periods} for stop_id, periods in by_stop.items()],
+            "period_order": ["early", "am_peak", "midday", "pm_peak", "evening"],
+            "source": "clean ticket entry tap-ins"}
 
 
 @lru_cache(maxsize=16)

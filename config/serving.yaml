@@ -8,6 +8,8 @@ models_dir: models/python          # relative to the repository root
 # (best validation score); `version` is the file suffix (<algorithm>_v1.pkl).
 served:
   crowding_flag:   {algorithm: xgboost, version: v1}
+  occupancy_forecast: {algorithm: random_forest, version: v1}
+  stop_period_demand: {algorithm: random_forest, version: v1}
   delay_severity:  {algorithm: xgboost, version: v1}
   daily_boardings: {algorithm: random_forest, version: v1}
   route_clustering: {algorithm: agglomerative_k5, version: v1}

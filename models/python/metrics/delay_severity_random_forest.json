@@ -1,6 +1,8 @@
 {
   "task": "delay_severity",
   "algorithm": "random_forest",
+  "version": "v1",
+  "feature_set": "enhanced_strict_prior_route_hour_history",
   "features": {
     "numeric": [
       "hour",
@@ -10,7 +12,9 @@
       "planned_runtime_min",
       "headway_min",
       "scheduled_runtime_min",
-      "prior_route_delay_mean"
+      "prior_route_delay_mean",
+      "prior_route_hour_delay_mean",
+      "prior_route_hour_severe_rate"
     ],
     "categorical": [
       "route_id",
@@ -35,13 +39,13 @@
     ]
   },
   "validation": {
-    "accuracy": 0.632388,
-    "macro_f1": 0.392633,
+    "accuracy": 0.66175,
+    "macro_f1": 0.42132,
     "per_class_f1": {
-      "Minor": 0.280355,
-      "Moderate": 0.345612,
-      "On Time": 0.789086,
-      "Severe": 0.155478
+      "Minor": 0.292815,
+      "Moderate": 0.389228,
+      "On Time": 0.808726,
+      "Severe": 0.194513
     },
     "confusion_matrix": {
       "labels": [
@@ -52,40 +56,40 @@
       ],
       "values": [
         [
-          16023,
-          11100,
-          14977,
-          3798
+          16217,
+          11497,
+          15634,
+          2550
         ],
         [
-          5552,
-          14050,
-          2256,
-          5604
+          5340,
+          15761,
+          2337,
+          4024
         ],
         [
-          46528,
-          28095,
-          183687,
-          6063
+          43046,
+          25557,
+          191892,
+          3878
         ],
         [
-          304,
-          598,
-          276,
-          1532
+          265,
+          709,
+          318,
+          1418
         ]
       ]
     }
   },
   "test": {
-    "accuracy": 0.574757,
-    "macro_f1": 0.373099,
+    "accuracy": 0.593577,
+    "macro_f1": 0.399289,
     "per_class_f1": {
-      "Minor": 0.276494,
-      "Moderate": 0.361749,
-      "On Time": 0.742485,
-      "Severe": 0.111668
+      "Minor": 0.288442,
+      "Moderate": 0.394061,
+      "On Time": 0.75382,
+      "Severe": 0.160831
     },
     "confusion_matrix": {
       "labels": [
@@ -96,28 +100,28 @@
       ],
       "values": [
         [
-          17135,
-          12335,
-          15732,
-          4501
+          17838,
+          12927,
+          15516,
+          3422
         ],
         [
-          8876,
-          17636,
-          4581,
-          6410
+          8220,
+          19308,
+          4441,
+          5534
         ],
         [
-          47835,
-          29078,
-          149052,
-          6104
+          47670,
+          27410,
+          152491,
+          4498
         ],
         [
-          396,
-          952,
-          61,
-          1158
+          254,
+          847,
+          65,
+          1401
         ]
       ]
     }

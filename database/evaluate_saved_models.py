@@ -111,6 +111,24 @@ def evaluate_demand() -> dict:
     return result
 
 
+def evaluate_occupancy(trips: pd.DataFrame) -> dict:
+    """Re-score the numeric occupancy model without retraining it."""
+    task, algorithm = "occupancy_forecast", "random_forest"
+    rec = recorded(task, algorithm)
+    numeric, categorical = rec["features"]["numeric"], rec["features"]["categorical"]
+    model = joblib.load(MODELS / task / f"{algorithm}_v1.pkl")
+    prep = joblib.load(MODELS / task / f"{algorithm}_preprocessor_v1.pkl")
+    frame = trips.dropna(subset=["occupancy_pct", "prior_route_occupancy_mean"]).copy()
+    frame.loc[:, numeric] = frame[numeric].replace([np.inf, -np.inf], np.nan)
+    result = {"task": task, "algorithm": algorithm, "target": rec["target"], "splits": {}}
+    for split in ("validation", "test"):
+        part = p7.period(frame, split)
+        scores = p7.occupancy_scores(part.occupancy_pct, model.predict(prep.transform(part[numeric + categorical])))
+        result["splits"][split] = {"rows": len(part), **scores,
+                                   "vs_recorded": compare(rec[split], scores, ("mae", "rmse", "r2"))}
+    return result
+
+
 def route_profiles(trips: pd.DataFrame) -> pd.DataFrame:
     """The eight route features of run_clusters (train period), one row per route, sorted by route_id."""
     x = p7.period(trips, "train")
@@ -164,6 +182,10 @@ def print_summary(report: dict) -> None:
         ok = all(v["match"] for s in ("validation", "test") for v in a[s]["vs_recorded"].values())
         print(f"daily_boardings  {name:14s} test MAE={t['mae']:8.1f} RMSE={t['rmse']:8.1f} R2={t['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
     print(f"{'':16s} SRS target: {report['demand']['srs_target']}")
+    occupancy = report["occupancy_forecast"]
+    test = occupancy["splits"]["test"]
+    ok = all(v["match"] for s in occupancy["splits"].values() for v in s["vs_recorded"].values())
+    print(f"occupancy_forecast {occupancy['algorithm']:8s} test MAE={test['mae']:.4f} RMSE={test['rmse']:.4f} R2={test['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
     c = report["clustering"]["agglomerative_k5"]
     print(f"route_clustering agglomerative_k5 silhouette={c['silhouette']} (recorded {c['recorded_silhouette']}), "
           f"labels identical={c['labels_identical_to_saved_model']}")
@@ -177,11 +199,14 @@ def main() -> int:
         "tolerance": TOLERANCE,
         "classifiers": [evaluate_classifier(trips, "crowding_flag"), evaluate_classifier(trips, "delay_severity")],
         "demand": evaluate_demand(),
+        "occupancy_forecast": evaluate_occupancy(trips),
         "clustering": evaluate_clustering(trips),
     }
     checks = [v["match"] for c in report["classifiers"] for s in c["splits"].values() for v in s["vs_recorded"].values()]
     checks += [v["match"] for a in report["demand"]["algorithms"].values()
                for s in ("validation", "test") for v in a[s]["vs_recorded"].values()]
+    checks += [v["match"] for s in report["occupancy_forecast"]["splits"].values()
+               for v in s["vs_recorded"].values()]
     checks.append(report["clustering"]["agglomerative_k5"]["labels_identical_to_saved_model"])
     report["result"] = "PASS" if all(checks) else "DIFFERS"
     REPORT_PATH.write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")

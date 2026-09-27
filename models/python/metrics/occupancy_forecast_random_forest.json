@@ -1,0 +1,60 @@
+{
+  "task": "occupancy_forecast",
+  "algorithm": "random_forest",
+  "version": "v1",
+  "target": "occupancy_pct",
+  "target_definition": "trip max_load / vehicle capacity_total",
+  "target_unit": "ratio of assigned vehicle capacity",
+  "feature_set": "strict_prior_route_and_route_hour_history",
+  "features": {
+    "numeric": [
+      "hour",
+      "day_of_week",
+      "weekend",
+      "distance_km",
+      "planned_runtime_min",
+      "headway_min",
+      "scheduled_runtime_min",
+      "capacity_total",
+      "prior_route_occupancy_mean",
+      "prior_route_hour_occupancy_mean"
+    ],
+    "categorical": [
+      "route_id",
+      "vehicle_id",
+      "direction",
+      "route_type",
+      "vehicle_type"
+    ]
+  },
+  "split_dates": {
+    "train": [
+      "2025-09-01",
+      "2026-05-01"
+    ],
+    "validation": [
+      "2026-05-02",
+      "2026-07-01"
+    ],
+    "test": [
+      "2026-07-02",
+      "2026-08-31"
+    ]
+  },
+  "validation": {
+    "mae": 0.12196,
+    "rmse": 0.176802,
+    "r2": 0.693595,
+    "mape_nonzero_pct": 62.165297,
+    "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
+  },
+  "test": {
+    "mae": 0.118569,
+    "rmse": 0.1736,
+    "r2": 0.71533,
+    "mape_nonzero_pct": 55.455061,
+    "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
+  },
+  "leakage_guard": "Current-trip max_load, boardings, occupancy_pct and crowding_flag are excluded; every occupancy-history feature ends at the preceding trip.",
+  "model_scope": "independent pandas/PyArrow clean-Parquet pipeline"
+}

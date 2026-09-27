@@ -14,13 +14,19 @@ import pytest
 from src.extensions import db
 from src.models.ops import ModelVersion
 from src.models.serving import (PipelineComparison, PythonClusterProfile, Recommendation, RouteCluster,
-                                RouteDailyBoardings, TripContext)
+                                RouteDailyBoardings, StopPeriodBoardings, TripContext)
 
 MODELS = Path(__file__).resolve().parent.parent / "models" / "python"
 needs_models = pytest.mark.skipif(
     not all((MODELS / f).exists() for f in ("crowding_flag/xgboost_v1.pkl", "delay_severity/xgboost_v1.pkl",
                                             "daily_boardings/random_forest_v1.pkl")),
     reason="saved Phase 7 model binaries are not present (unzip models.zip into models/)")
+needs_occupancy_model = pytest.mark.skipif(
+    not all((MODELS / f).exists() for f in ("occupancy_forecast/random_forest_v1.pkl", "occupancy_forecast/random_forest_preprocessor_v1.pkl")),
+    reason="saved numeric occupancy model is not present (run Phase 7 task e or unzip models.zip into models/)")
+needs_stop_period_model = pytest.mark.skipif(
+    not all((MODELS / f).exists() for f in ("stop_period_demand/random_forest_v1.pkl", "stop_period_demand/random_forest_preprocessor_v1.pkl")),
+    reason="saved stop-period demand model is not present (run Phase 7 task f or unzip models.zip into models/)")
 
 TRIP = {"route_id": "R001", "direction": 0, "service_date": "2026-09-29", "hour": 8}   # a Tuesday
 
@@ -29,7 +35,8 @@ def context(hour: int, day_type: str = "weekday", **overrides) -> TripContext:
     values = dict(route_id="R001", direction=0, day_type=day_type, hour=hour, vehicle_id="V0001",
                   vehicle_type="standard", capacity_total=80.0, route_type="brt", distance_km=18.5,
                   planned_runtime_min=55.0, headway_min=10.0, scheduled_runtime_min=55.0,
-                  prior_route_crowding_rate=0.2, prior_route_delay_mean=2.5, trips_observed=40,
+                  prior_route_crowding_rate=0.2, prior_route_delay_mean=2.5,
+                  prior_route_occupancy_mean=0.77, prior_route_hour_occupancy_mean=0.81, trips_observed=40,
                   observed_crowding_rate=0.25, observed_mean_delay_min=2.1, mean_boardings=70.0,
                   mean_max_load=64.0, mean_occupancy=0.8, p90_occupancy=0.95,
                   window_start=date(2026, 7, 7), window_end=date(2026, 8, 31))
@@ -45,6 +52,9 @@ def served(app):
         db.session.add_all(RouteDailyBoardings(route_id="R001", service_date=start + timedelta(days=i),
                                                boardings=1000 + (300 if (start + timedelta(days=i)).weekday() < 5 else 0) + i)
                            for i in range(92))                   # 2026-06-01 .. 2026-08-31
+        db.session.add_all(StopPeriodBoardings(entry_stop_id="S0001", service_date=start + timedelta(days=i),
+                                               time_period="am_peak", tap_ins=20 + (4 if (start + timedelta(days=i)).weekday() < 5 else 0) + i % 3)
+                           for i in range(92))
         db.session.add_all([
             Recommendation(recommendation_id="REC-001", subject_id="R011", category="CAPACITY", priority="High",
                            priority_rank=2, action="Allocate higher-capacity vehicle or add trips.",
@@ -72,7 +82,7 @@ def served(app):
 # ---- permissions -------------------------------------------------------------------------
 
 @pytest.mark.parametrize("method,url", [
-    ("post", "/api/predictions/crowding"), ("post", "/api/predictions/delay"), ("post", "/api/whatif"),
+    ("post", "/api/predictions/crowding"), ("post", "/api/predictions/occupancy"), ("post", "/api/predictions/delay"), ("post", "/api/whatif"),
     ("get", "/api/predictions/crowding-risk?date=2026-09-29"),
 ])
 def test_analyst_cannot_run_predictions(client, auth, served, method, url):
@@ -98,6 +108,19 @@ def test_crowding_prediction(client, auth, served):
     assert body["inputs"]["day_of_week"] == 1 and body["inputs"]["weekend"] == 0
     assert body["model"]["metrics_source"].startswith("model_versions")
     assert body["model"]["meets_srs_target"] is True                 # accuracy 0.90 >= 0.85
+
+
+@needs_occupancy_model
+def test_numeric_occupancy_prediction(client, auth, served):
+    body = client.post("/api/predictions/occupancy", json=TRIP, headers=auth("operator")).get_json()
+    p = body["prediction"]
+    assert body["task"] == "occupancy_forecast" and body["estimate"] is True
+    assert 0 <= p["occupancy_ratio"] <= 1.5
+    assert p["estimated_peak_load"] == pytest.approx(p["occupancy_ratio"] * p["capacity_total"], abs=0.11)
+    assert "prior_route_occupancy_mean" in body["inputs"]
+    assert "prior_route_hour_occupancy_mean" in body["inputs"]
+    assert "max_load" not in body["inputs"] and "boardings" not in body["inputs"]
+    assert body["model"]["test_mae"] >= 0 and body["model"]["test_rmse"] >= 0
 
 
 @needs_models
@@ -156,6 +179,17 @@ def test_network_forecast(client, auth, served):
     body = client.get("/api/forecasts/demand/network?horizon=7", headers=auth("analyst")).get_json()
     assert body["routes"] == 1 and len(body["forecast"]) == 7
     assert body["by_route"][0]["route_id"] == "R001"
+
+
+@needs_stop_period_model
+def test_stop_period_forecast(client, auth, served):
+    h = auth("analyst")
+    body = client.get("/api/forecasts/demand/stop-period?stop_id=S0001&period=am_peak&horizon=7&history=30", headers=h).get_json()
+    assert body["stop_id"] == "S0001" and body["time_period"] == "am_peak"
+    assert len(body["history"]) == 30 and len(body["forecast"]) == 7
+    assert all(r["predicted"] >= 0 for r in body["forecast"])
+    options = client.get("/api/forecasts/demand/stop-period/options", headers=h).get_json()
+    assert options["stops"] == [{"stop_id": "S0001", "periods": ["am_peak"]}]
 
 
 # ---- what-if -----------------------------------------------------------------------------

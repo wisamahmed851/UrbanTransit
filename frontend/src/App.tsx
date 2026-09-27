@@ -10,6 +10,7 @@ import { LoginPage } from './pages/LoginPage'
 const AuditPage = lazy(() => import('./pages/admin/AuditPage').then((m) => ({ default: m.AuditPage })))
 const JobRunsPage = lazy(() => import('./pages/admin/JobRunsPage').then((m) => ({ default: m.JobRunsPage })))
 const ReferencePage = lazy(() => import('./pages/admin/ReferencePage').then((m) => ({ default: m.ReferencePage })))
+const TrainPage = lazy(() => import('./pages/admin/TrainPage').then((m) => ({ default: m.TrainPage })));
 const UsersPage = lazy(() => import('./pages/admin/UsersPage').then((m) => ({ default: m.UsersPage })))
 const ComparisonPage = lazy(() => import('./pages/ComparisonPage').then((m) => ({ default: m.ComparisonPage })))
 const CrowdingPage = lazy(() => import('./pages/CrowdingPage').then((m) => ({ default: m.CrowdingPage })))
@@ -29,47 +30,48 @@ const StopsPage = lazy(() => import('./pages/StopsPage').then((m) => ({ default:
 const WhatIfPage = lazy(() => import('./pages/WhatIfPage').then((m) => ({ default: m.WhatIfPage })))
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
-  const { user, ready } = useAuth()
-  const location = useLocation()
-  if (!ready) return <Loading what="session" />
-  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />
-  return <>{children}</>
+ const { user, ready } = useAuth()
+ const location = useLocation()
+ if (!ready) return <Loading what="session" />
+ if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />
+ return <>{children}</>
 }
 
 /** Route table. Every page except sign-in sits behind RequireAuth inside the Layout shell. */
 export function App() {
-  return (
-    <MotionConfig reducedMotion="user">
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route element={<RequireAuth><Layout /></RequireAuth>}>
-              <Route index element={<OverviewPage />} />
-              <Route path="map" element={<MapPage />} />
-              <Route path="routes" element={<RoutesPage />} />
-              <Route path="routes/:routeId" element={<RouteDetailPage />} />
-              <Route path="delays" element={<DelaysPage />} />
-              <Route path="crowding" element={<CrowdingPage />} />
-              <Route path="stops" element={<StopsPage />} />
-              <Route path="demand" element={<DemandPage />} />
-              <Route path="passengers" element={<PassengersPage />} />
-              <Route path="models" element={<ModelsPage />} />
-              <Route path="explorer" element={<ExplorerPage />} />
-              <Route path="predictions" element={<PredictionsPage />} />
-              <Route path="forecast" element={<ForecastPage />} />
-              <Route path="whatif" element={<WhatIfPage />} />
-              <Route path="comparison" element={<ComparisonPage />} />
-              <Route path="recommendations" element={<RecommendationsPage />} />
-              <Route path="admin/reference" element={<ReferencePage />} />
-              <Route path="admin/users" element={<UsersPage />} />
-              <Route path="admin/audit" element={<AuditPage />} />
-              <Route path="admin/jobs" element={<JobRunsPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </MotionConfig>
-  )
+ return (
+  <MotionConfig reducedMotion="user">
+   <BrowserRouter>
+    <AuthProvider>
+     <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<RequireAuth><Layout /></RequireAuth>}>
+       <Route index element={<OverviewPage />} />
+       <Route path="map" element={<MapPage />} />
+       <Route path="routes" element={<RoutesPage />} />
+       <Route path="routes/:routeId" element={<RouteDetailPage />} />
+       <Route path="delays" element={<DelaysPage />} />
+       <Route path="crowding" element={<CrowdingPage />} />
+       <Route path="stops" element={<StopsPage />} />
+       <Route path="demand" element={<DemandPage />} />
+       <Route path="passengers" element={<PassengersPage />} />
+       <Route path="models" element={<ModelsPage />} />
+       <Route path="explorer" element={<ExplorerPage />} />
+       <Route path="predictions" element={<PredictionsPage />} />
+       <Route path="forecast" element={<ForecastPage />} />
+       <Route path="whatif" element={<WhatIfPage />} />
+       <Route path="comparison" element={<ComparisonPage />} />
+       <Route path="recommendations" element={<RecommendationsPage />} />
+       <Route path="admin/train" element={<TrainPage />} />
+       <Route path="admin/reference" element={<ReferencePage />} />
+       <Route path="admin/users" element={<UsersPage />} />
+       <Route path="admin/audit" element={<AuditPage />} />
+       <Route path="admin/jobs" element={<JobRunsPage />} />
+       <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+     </Routes>
+    </AuthProvider>
+   </BrowserRouter>
+  </MotionConfig>
+ )
 }

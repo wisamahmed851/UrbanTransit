@@ -11,14 +11,14 @@ import { App } from './App'
 
 // Apply the saved theme (dark by default) before React renders, so no page flashes light.
 try {
-  const saved = localStorage.getItem('utiq.theme') ?? 'dark'
-  if (saved !== 'system') document.documentElement.setAttribute('data-theme', saved)
+ const saved = localStorage.getItem('utiq.theme') ?? 'dark'
+ if (saved !== 'system') document.documentElement.setAttribute('data-theme', saved)
 } catch {
-  document.documentElement.setAttribute('data-theme', 'dark')
+ document.documentElement.setAttribute('data-theme', 'dark')
 }
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+ <StrictMode>
+  <App />
+ </StrictMode>,
 )

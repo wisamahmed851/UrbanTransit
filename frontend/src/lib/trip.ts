@@ -6,8 +6,8 @@ export interface TripInput { route_id: string; direction: number; service_date: 
 
 /** Tomorrow as YYYY-MM-DD in the viewer's time zone. */
 export function tomorrow(): string {
-  const d = new Date(Date.now() + 86_400_000)
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+ const d = new Date(Date.now() + 86_400_000)
+ return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 export const DEFAULT_TRIP: TripInput = { route_id: 'R012', direction: 0, service_date: tomorrow(), hour: 8 }
@@ -15,5 +15,5 @@ export const DEFAULT_TRIP: TripInput = { route_id: 'R012', direction: 0, service
 export interface RouteOption { route_id: string; route_code: string; route_name: string }
 
 export function useRouteOptions() {
-  return useApi<{ rows: RouteOption[] }>('/admin/routes', { limit: 1000 })
+ return useApi<{ rows: RouteOption[] }>('/admin/routes', { limit: 1000 })
 }

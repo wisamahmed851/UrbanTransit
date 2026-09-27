@@ -27,3 +27,19 @@ def job_runs():
     total = db.session.execute(select(func.count()).select_from(query.order_by(None).subquery())).scalar_one()
     rows = db.session.execute(query.limit(limit).offset(offset)).scalars()
     return jsonify(entries=[row.to_dict() for row in rows], total=total, limit=limit, offset=offset)
+
+import os
+
+@bp.get("/<int:job_id>/log")
+@permission_required("audit:read")
+def job_log(job_id: int):
+    """Get the last 100 lines of a job's log file."""
+    job = db.session.get(JobRun, job_id)
+    if not job or not job.log_path or not os.path.exists(job.log_path):
+        return jsonify(log="No log available.")
+    try:
+        with open(job.log_path, 'r', encoding='utf-8', errors='replace') as f:
+            lines = f.readlines()
+            return jsonify(log="".join(lines[-100:]))
+    except Exception as e:
+        return jsonify(log=str(e))

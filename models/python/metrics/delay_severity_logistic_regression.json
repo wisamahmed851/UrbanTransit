@@ -1,6 +1,8 @@
 {
   "task": "delay_severity",
   "algorithm": "logistic_regression",
+  "version": "v1",
+  "feature_set": "enhanced_strict_prior_route_hour_history",
   "features": {
     "numeric": [
       "hour",
@@ -10,7 +12,9 @@
       "planned_runtime_min",
       "headway_min",
       "scheduled_runtime_min",
-      "prior_route_delay_mean"
+      "prior_route_delay_mean",
+      "prior_route_hour_delay_mean",
+      "prior_route_hour_severe_rate"
     ],
     "categorical": [
       "route_id",
@@ -35,13 +39,13 @@
     ]
   },
   "validation": {
-    "accuracy": 0.597163,
-    "macro_f1": 0.357212,
+    "accuracy": 0.649924,
+    "macro_f1": 0.40634,
     "per_class_f1": {
-      "Minor": 0.243859,
-      "Moderate": 0.312721,
-      "On Time": 0.763814,
-      "Severe": 0.108454
+      "Minor": 0.268892,
+      "Moderate": 0.383777,
+      "On Time": 0.800664,
+      "Severe": 0.172028
     },
     "confusion_matrix": {
       "labels": [
@@ -52,40 +56,40 @@
       ],
       "values": [
         [
-          14246,
-          10751,
-          15487,
-          5414
+          15941,
+          10952,
+          16582,
+          2423
         ],
         [
-          5034,
-          12271,
-          3632,
-          6525
+          6716,
+          14137,
+          3261,
+          3348
         ],
         [
-          51324,
-          27355,
-          175350,
-          10344
+          49650,
+          20334,
+          189970,
+          4419
         ],
         [
-          336,
-          640,
-          301,
-          1433
+          363,
+          788,
+          345,
+          1214
         ]
       ]
     }
   },
   "test": {
-    "accuracy": 0.534054,
-    "macro_f1": 0.337444,
+    "accuracy": 0.588108,
+    "macro_f1": 0.389072,
     "per_class_f1": {
-      "Minor": 0.245362,
-      "Moderate": 0.320331,
-      "On Time": 0.713664,
-      "Severe": 0.070418
+      "Minor": 0.263966,
+      "Moderate": 0.399275,
+      "On Time": 0.749834,
+      "Severe": 0.143212
     },
     "confusion_matrix": {
       "labels": [
@@ -96,28 +100,28 @@
       ],
       "values": [
         [
-          15315,
-          11137,
-          15831,
-          7420
+          16774,
+          13101,
+          16842,
+          2986
         ],
         [
-          7878,
-          14568,
-          5755,
-          9302
+          8990,
+          18835,
+          5350,
+          4328
         ],
         [
-          51547,
-          26923,
-          140828,
-          12771
+          51297,
+          23882,
+          152574,
+          4316
         ],
         [
-          393,
-          825,
-          179,
-          1170
+          328,
+          1025,
+          119,
+          1095
         ]
       ]
     }
