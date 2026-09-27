@@ -39,7 +39,7 @@ MODEL = ROOT / "models" / "python"
 METRICS = MODEL / "metrics"
 SAMPLES = ROOT / "reports" / "python_sample_predictions"
 REPORT = ROOT / "reports" / "python_model_metrics.md"
-DATES = {"train": ("2025-09-01", "2026-05-01"), "validation": ("2026-05-02", "2026-07-01"), "test": ("2026-07-02", "2026-08-31")}
+DATES = {"train": ("2025-09-01", "2026-05-13"), "validation": ("2026-05-14", "2026-07-07"), "test": ("2026-07-08", "2026-08-31")}
 RNG = 42
 
 
@@ -145,6 +145,7 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
     numeric = [c for c in numeric if c not in {target,"occupancy_pct"}]
     if task == "delay_severity" and enhanced_delay:
         numeric += ["prior_route_hour_delay_mean", "prior_route_hour_severe_rate"]
+        # prior_route_delay_mean is already passed via the 'drop' parameter which is added to numeric above.
     # Task B never uses current occupancy, max-load, boardings, or any direct target proxy.
     cols=numeric+categorical
     x.loc[:, numeric] = x[numeric].replace([np.inf, -np.inf], np.nan)
@@ -158,8 +159,8 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
     ytr,yv,yt=tr[target].astype(str),va[target].astype(str),te[target].astype(str)
     algorithms={
       "logistic_regression": LogisticRegression(max_iter=500,class_weight="balanced",n_jobs=-1),
-      "random_forest": RandomForestClassifier(n_estimators=180,max_depth=12,min_samples_leaf=3,class_weight="balanced",n_jobs=-1,random_state=RNG),
-      "xgboost": XGBClassifier(n_estimators=300,max_depth=8,learning_rate=.08,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=-1,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
+      "random_forest": RandomForestClassifier(n_estimators=300,max_depth=16,min_samples_leaf=2,class_weight="balanced",n_jobs=-1,random_state=RNG),
+      "xgboost": XGBClassifier(n_estimators=400,max_depth=12,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=-1,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
     results={}; chosen=[]
     for name,m in algorithms.items():
         if name=="xgboost":
