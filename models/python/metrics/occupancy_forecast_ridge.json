@@ -30,29 +30,29 @@
   "split_dates": {
     "train": [
       "2025-09-01",
-      "2026-05-01"
+      "2026-05-13"
     ],
     "validation": [
-      "2026-05-02",
-      "2026-07-01"
+      "2026-05-14",
+      "2026-07-07"
     ],
     "test": [
-      "2026-07-02",
+      "2026-07-08",
       "2026-08-31"
     ]
   },
   "validation": {
-    "mae": 0.142596,
-    "rmse": 0.200768,
-    "r2": 0.604898,
-    "mape_nonzero_pct": 80.865902,
+    "mae": 0.142462,
+    "rmse": 0.201467,
+    "r2": 0.601845,
+    "mape_nonzero_pct": 82.334968,
     "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
   },
   "test": {
-    "mae": 0.134698,
-    "rmse": 0.192594,
-    "r2": 0.649628,
-    "mape_nonzero_pct": 70.064597,
+    "mae": 0.134797,
+    "rmse": 0.192728,
+    "r2": 0.649572,
+    "mape_nonzero_pct": 70.030327,
     "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
   },
   "leakage_guard": "Current-trip max_load, boardings, occupancy_pct and crowding_flag are excluded; every occupancy-history feature ends at the preceding trip.",

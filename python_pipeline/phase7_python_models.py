@@ -158,9 +158,9 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
     encoder=prep(tr, numeric, categorical); Xtr=encoder.fit_transform(tr[cols]); Xv=encoder.transform(va[cols]); Xt=encoder.transform(te[cols])
     ytr,yv,yt=tr[target].astype(str),va[target].astype(str),te[target].astype(str)
     algorithms={
-      "logistic_regression": LogisticRegression(max_iter=500,class_weight="balanced",n_jobs=-1),
-      "random_forest": RandomForestClassifier(n_estimators=300,max_depth=16,min_samples_leaf=2,class_weight="balanced",n_jobs=-1,random_state=RNG),
-      "xgboost": XGBClassifier(n_estimators=400,max_depth=12,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=-1,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
+      "logistic_regression": LogisticRegression(max_iter=500,class_weight="balanced",n_jobs=4),
+      "random_forest": RandomForestClassifier(n_estimators=300,max_depth=16,min_samples_leaf=2,class_weight="balanced",n_jobs=4,random_state=RNG),
+      "xgboost": XGBClassifier(n_estimators=400,max_depth=12,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
     results={}; chosen=[]
     for name,m in algorithms.items():
         if name=="xgboost":
@@ -194,7 +194,7 @@ def demand_frame():
 
 def run_demand():
     d=demand_frame(); feats=["lag_1","lag_7","lag_28","rolling_7_mean","rolling_28_mean"]; tr,va,te=(period(d,s).dropna(subset=feats) for s in ("train","validation","test"))
-    base=lambda q:q.rolling_28_mean; algorithms={"baseline_28day":None,"ridge":Pipeline([("impute",SimpleImputer(strategy="median")),("scale",StandardScaler()),("model",Ridge(alpha=1.0))]),"random_forest":RandomForestRegressor(n_estimators=220,max_depth=14,min_samples_leaf=2,n_jobs=-1,random_state=RNG),"xgboost":XGBRegressor(n_estimators=350,max_depth=7,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=-1,random_state=RNG)}; results={}
+    base=lambda q:q.rolling_28_mean; algorithms={"baseline_28day":None,"ridge":Pipeline([("impute",SimpleImputer(strategy="median")),("scale",StandardScaler()),("model",Ridge(alpha=1.0))]),"random_forest":RandomForestRegressor(n_estimators=220,max_depth=14,min_samples_leaf=2,n_jobs=4,random_state=RNG),"xgboost":XGBRegressor(n_estimators=350,max_depth=7,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG)}; results={}
     for name,m in algorithms.items():
         if m is None: pv,pt=base(va),base(te)
         else: m.fit(tr[feats],tr.boardings); pv,pt=m.predict(va[feats]),m.predict(te[feats]); (MODEL/"daily_boardings").mkdir(parents=True,exist_ok=True); joblib.dump(m,MODEL/"daily_boardings"/f"{name}_v1.pkl")
@@ -228,7 +228,7 @@ def run_occupancy_forecast(version="v1", full_train=False):
     candidates = {
         "ridge": Ridge(alpha=5.0),
         "random_forest": RandomForestRegressor(n_estimators=180, max_depth=16,
-                                                  min_samples_leaf=3, n_jobs=-1, random_state=RNG),
+                                                  min_samples_leaf=3, n_jobs=4, random_state=RNG),
     }
     results = {}
     for name, model in candidates.items():
@@ -333,7 +333,7 @@ def run_stop_period_demand(version="v1"):
     candidates = {
         "ridge": Ridge(alpha=3.0),
         "random_forest": RandomForestRegressor(n_estimators=160, max_depth=16,
-                                                  min_samples_leaf=2, n_jobs=-1, random_state=RNG),
+                                                  min_samples_leaf=2, n_jobs=4, random_state=RNG),
     }
     results = {"baseline_28day": (count_scores(va.tap_ins, va.rolling_28_mean),
                                    count_scores(te.tap_ins, te.rolling_28_mean), None)}

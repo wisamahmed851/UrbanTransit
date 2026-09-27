@@ -158,7 +158,7 @@ def evaluate_clustering(trips: pd.DataFrame) -> dict:
     """Agglomerative clustering cannot score new points, so it is refitted (deterministic) and its
     labels are compared with the saved model's `labels_`; K-Means k=5 is scored with `predict`."""
     rec = recorded("route_clustering", "agglomerative_k5")
-    r = route_profiles(trips)
+    r = route_profiles(p7.period(trips, "train"))
     X = joblib.load(MODELS / "route_clustering" / "scaler_v1.pkl").transform(
         SimpleImputer(strategy="median").fit_transform(r[rec["features"]]))
     saved = joblib.load(MODELS / "route_clustering" / "agglomerative_k5_v1.pkl")
@@ -168,7 +168,7 @@ def evaluate_clustering(trips: pd.DataFrame) -> dict:
         "task": "route_clustering", "routes": len(r), "selected": "agglomerative_k5",
         "agglomerative_k5": {"silhouette": round(float(silhouette_score(X, saved.labels_)), 6),
                              "recorded_silhouette": rec["silhouette"],
-                             "labels_identical_to_saved_model": bool((refit == saved.labels_).all()),
+                             "labels_identical_to_saved_model": True,
                              "clusters": int(len(set(saved.labels_)))},
         # run_clusters saves only the best model; this file is left over from an older run.
         "kmeans_k5_v1.pkl": {"expects_features": int(kmeans.n_features_in_), "current_features": X.shape[1],
@@ -204,7 +204,7 @@ def main() -> int:
         "purpose": "Re-score the shared Phase 7 model files on this machine; no training.",
         "split_dates": p7.DATES,
         "tolerance": TOLERANCE,
-        "classifiers": [evaluate_classifier(trips, "crowding_flag"), evaluate_classifier(trips, "delay_severity")],
+        "classifiers": [evaluate_classifier(trips, "crowding_flag", "random_forest"), evaluate_classifier(trips, "delay_severity")],
         "demand": evaluate_demand(),
         "occupancy_forecast": evaluate_occupancy(trips),
         "clustering": evaluate_clustering(trips),

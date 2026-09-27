@@ -30,29 +30,29 @@
   "split_dates": {
     "train": [
       "2025-09-01",
-      "2026-05-01"
+      "2026-05-13"
     ],
     "validation": [
-      "2026-05-02",
-      "2026-07-01"
+      "2026-05-14",
+      "2026-07-07"
     ],
     "test": [
-      "2026-07-02",
+      "2026-07-08",
       "2026-08-31"
     ]
   },
   "validation": {
-    "mae": 0.12196,
-    "rmse": 0.176802,
-    "r2": 0.693595,
-    "mape_nonzero_pct": 62.165297,
+    "mae": 0.120535,
+    "rmse": 0.176105,
+    "r2": 0.69578,
+    "mape_nonzero_pct": 61.164859,
     "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
   },
   "test": {
-    "mae": 0.118569,
-    "rmse": 0.1736,
-    "r2": 0.71533,
-    "mape_nonzero_pct": 55.455061,
+    "mae": 0.118475,
+    "rmse": 0.174079,
+    "r2": 0.714109,
+    "mape_nonzero_pct": 54.578582,
     "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
   },
   "leakage_guard": "Current-trip max_load, boardings, occupancy_pct and crowding_flag are excluded; every occupancy-history feature ends at the preceding trip.",
@@ -62,17 +62,17 @@
     "criterion": "lowest validation MAE",
     "candidates": {
       "ridge": {
-        "mae": 0.142596,
-        "rmse": 0.200768,
-        "r2": 0.604898,
-        "mape_nonzero_pct": 80.865902,
+        "mae": 0.142462,
+        "rmse": 0.201467,
+        "r2": 0.601845,
+        "mape_nonzero_pct": 82.334968,
         "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
       },
       "random_forest": {
-        "mae": 0.12196,
-        "rmse": 0.176802,
-        "r2": 0.693595,
-        "mape_nonzero_pct": 62.165297,
+        "mae": 0.120535,
+        "rmse": 0.176105,
+        "r2": 0.69578,
+        "mape_nonzero_pct": 61.164859,
         "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
       }
     }
