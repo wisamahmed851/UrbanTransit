@@ -3,6 +3,7 @@ import { api, ApiError } from '../../api/client'
 import type { User } from '../../api/types'
 import { useAuth } from '../../auth/AuthContext'
 import { DataTable } from '../../components/DataTable'
+import { Modal } from '../../components/Modal'
 import { ErrorNotice, Loading, PageHead, Panel, Status } from '../../components/ui'
 import { useApi } from '../../lib/useApi'
 
@@ -19,16 +20,20 @@ export function UsersPage() {
  const users = useApi<{ users: User[] }>('/admin/users')
  const [form, setForm] = useState({ username: '', email: '', password: '', roles: ['analyst'] })
  const [error, setError] = useState<ApiError | null>(null)
+ const [createError, setCreateError] = useState<ApiError | null>(null)
  const [busy, setBusy] = useState(false)
+ const [creating, setCreating] = useState(false)
 
+ // Same request and validation as the former inline form; on success the modal closes.
  const create = async (e: React.FormEvent) => {
   e.preventDefault()
-  setBusy(true); setError(null)
+  setBusy(true); setCreateError(null)
   try {
    await api('/admin/users', { method: 'POST', body: JSON.stringify({ ...form, email: form.email || null }) })
    setForm({ username: '', email: '', password: '', roles: ['analyst'] })
+   setCreating(false)
    users.reload()
-  } catch (err) { setError(err as ApiError) } finally { setBusy(false) }
+  } catch (err) { setCreateError(err as ApiError) } finally { setBusy(false) }
  }
 
  const update = async (u: User, patch: Partial<User>) => {
@@ -42,7 +47,11 @@ export function UsersPage() {
    <PageHead title="Users">Accounts and what each role may do. Changes apply on the user's next click, not at their next sign-in.</PageHead>
    {error && <ErrorNotice error={error} />}
 
-   <Panel title="Add a user">
+   <div className="page-actions">
+    <button className="btn" type="button" onClick={() => { setCreateError(null); setCreating(true) }}>New user</button>
+   </div>
+
+   <Modal open={creating} title="Add a user" onClose={() => setCreating(false)}>
     <form onSubmit={create} style={{ display: 'grid', gap: '0.9rem' }}>
      <div className="filters">
       <label className="field">Username<input required value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} /></label>
@@ -59,9 +68,13 @@ export function UsersPage() {
        </label>
       ))}
      </fieldset>
-     <div><button className="btn" type="submit" disabled={busy || !form.roles.length}>Add user</button></div>
+     {createError && <ErrorNotice error={createError} />}
+     <div className="btn-row">
+      <button className="btn" type="submit" disabled={busy || !form.roles.length}>Add user</button>
+      <button className="btn btn-quiet" type="button" onClick={() => setCreating(false)}>Cancel</button>
+     </div>
     </form>
-   </Panel>
+   </Modal>
 
    <Panel title="Accounts">
     {users.error ? <ErrorNotice error={users.error} /> : !users.data ? <Loading what="users" /> : (

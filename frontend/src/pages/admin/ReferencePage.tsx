@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { api, ApiError, type Row } from '../../api/client'
 import { useAuth } from '../../auth/AuthContext'
 import { DataTable, Pager } from '../../components/DataTable'
+import { Modal } from '../../components/Modal'
 import { ErrorNotice, Loading, PageHead, Panel, Segmented } from '../../components/ui'
 import { useApi } from '../../lib/useApi'
+import { Swap } from '../../components/motion'
 
 type Entity = 'routes' | 'stops' | 'vehicles'
 const KEY: Record<Entity, string> = { routes: 'route_id', stops: 'stop_id', vehicles: 'vehicle_id' }
@@ -42,17 +44,24 @@ export function ReferencePage() {
     <Segmented label="Entity" value={entity} onChange={switchTo}
      options={[{ value: 'routes', label: 'Routes' }, { value: 'stops', label: 'Stops' }, { value: 'vehicles', label: 'Vehicles' }]} />
     <label className="field">Search<input value={q} onChange={(e) => { setQ(e.target.value); setOffset(0) }} placeholder="ID or name…" /></label>
-    {writable && <button className="btn" type="button" onClick={() => setEditing({ mode: 'create', row: template() })}>Add {entity.slice(0, -1)}</button>}
+    {writable && <button className="btn" type="button" onClick={() => setEditing({ mode: 'create', row: template() })}>New {entity.slice(0, -1)}</button>}
    </div>
 
-   {editing && (
-    <EditForm entity={entity} mode={editing.mode} initial={editing.row}
+   {/* Creating opens a modal (CMD-027); editing an existing row stays inline as before. */}
+   {editing?.mode === 'edit' && (
+    <EditForm entity={entity} mode="edit" initial={editing.row}
      onDone={() => { setEditing(null); list.reload() }} onCancel={() => setEditing(null)} />
    )}
+   <Modal open={editing?.mode === 'create'} title={`New ${entity.slice(0, -1)}`} onClose={() => setEditing(null)}>
+    {editing?.mode === 'create' && (
+     <EditForm entity={entity} mode="create" initial={editing.row} bare
+      onDone={() => { setEditing(null); list.reload() }} onCancel={() => setEditing(null)} />
+    )}
+   </Modal>
 
    <Panel title={list.data ? `${list.data.total.toLocaleString()} ${entity}` : entity}>
     {list.error ? <ErrorNotice error={list.error} /> : !list.data ? <Loading /> : (
-     <>
+     <Swap k={entity}>
       <DataTable rows={list.data.rows} stale={list.loading} rowKey={(r) => String(r[KEY[entity]])} columns={[
        ...LIST_COLUMNS[entity].map((c) => ({ key: c, label: c.replace(/_/g, ' ') })),
        { key: 'dq_flags', label: 'Data-quality flags', sortable: false, render: (r) => (Array.isArray(r.dq_flags) && r.dq_flags.length ? r.dq_flags.join(', ') : '-') },
@@ -60,15 +69,17 @@ export function ReferencePage() {
         <button className="btn btn-quiet" type="button" onClick={() => setEditing({ mode: 'edit', row: r })}>Edit</button>) }] : []),
       ]} />
       <Pager total={list.data.total} limit={list.data.limit} offset={offset} onChange={setOffset} />
-     </>
+     </Swap>
     )}
    </Panel>
   </div>
  )
 }
 
-function EditForm({ entity, mode, initial, onDone, onCancel }: {
+function EditForm({ entity, mode, initial, onDone, onCancel, bare = false }: {
  entity: Entity; mode: 'create' | 'edit'; initial: Row; onDone: () => void; onCancel: () => void
+ /** Render the form without its panel (inside the create modal). */
+ bare?: boolean
 }) {
  const key = KEY[entity]
  const [values, setValues] = useState<Row>(() => Object.fromEntries(Object.entries(initial).filter(([k]) => k !== 'dq_flags')))
@@ -96,7 +107,7 @@ function EditForm({ entity, mode, initial, onDone, onCancel }: {
 
  const sample = initial
  return (
-  <Panel title={mode === 'edit' ? `Edit ${initial[key]}` : `New ${entity.slice(0, -1)}`}>
+  <Framed bare={bare} title={mode === 'edit' ? `Edit ${initial[key]}` : `New ${entity.slice(0, -1)}`}>
    <form onSubmit={save} style={{ display: 'grid', gap: '1rem' }}>
     <div className="filters">
      {Object.keys(values).map((k) => {
@@ -125,6 +136,10 @@ function EditForm({ entity, mode, initial, onDone, onCancel }: {
      {mode === 'edit' && <button className="btn btn-danger" type="button" onClick={remove} disabled={busy}>Delete</button>}
     </div>
    </form>
-  </Panel>
+  </Framed>
  )
+}
+
+function Framed({ bare, title, children }: { bare: boolean; title: string; children: React.ReactNode }) {
+ return bare ? <>{children}</> : <Panel title={title}>{children}</Panel>
 }
