@@ -107,7 +107,7 @@ export function MapPage() {
    </header>
    {(geometry.error || replay.error) && <ErrorNotice error={(geometry.error ?? replay.error)!} />}
 
-   {!basemap ? <Loading what="map" /> : (
+   {!basemap ? <Loading kind="block" what="map" /> : (
     <div className="map-shell" data-basemap={basemap.offline ? 'offline' : 'carto'}>
      <TransitMap ref={mapRef} basemap={basemap} geometry={geometry.data} vehicles={vehicles.data?.vehicles}
       types={types} route={route || null} showStops={showStops} onPick={setPicked}>

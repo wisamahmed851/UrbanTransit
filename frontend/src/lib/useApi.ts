@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { api, ApiError, StubUnavailable, type Row } from '../api/client'
 import type { RowsResponse } from '../api/types'
+import { usePageLoad } from './pageLoadContext'
 
 export interface ApiState<T> {
  data: T | null
@@ -25,11 +26,13 @@ export function useApi<T>(path: string | null, query?: Record<string, string | n
  // without triggering a refetch on every render.
  const key = JSON.stringify([path, query, tick])
  const latest = useRef(key)
+ const { track } = usePageLoad()
 
  useEffect(() => {
   if (!path) return
   latest.current = key
   setLoading(true)
+  const settle = track()      // keeps the page loader up while the page is opening
   api<T>(path, { query })
    .then((d) => { if (latest.current === key) { setData(d); setError(null); setStub(null) } })
    .catch((e) => {
@@ -37,7 +40,7 @@ export function useApi<T>(path: string | null, query?: Record<string, string | n
     if (e instanceof StubUnavailable) setStub(e)
     else setError(e instanceof ApiError ? e : new ApiError(0, 'error', String(e)))
    })
-   .finally(() => { if (latest.current === key) setLoading(false) })
+   .finally(() => { settle(); if (latest.current === key) setLoading(false) })
  }, [key])
 
  return { data, error, stub, loading, reload: () => setTick((t) => t + 1) }
@@ -57,10 +60,12 @@ export function useAllRows<R = Row>(table: string, query: Record<string, string 
  const [error, setError] = useState<ApiError | null>(null)
  const key = JSON.stringify([table, query])
  const latest = useRef(key)
+ const { track } = usePageLoad()
 
  useEffect(() => {
   latest.current = key
   let cancelled = false
+  const settle = track()
   ;(async () => {
    const out: R[] = []
    for (let offset = 0; ; offset += 1000) {
@@ -72,7 +77,8 @@ export function useAllRows<R = Row>(table: string, query: Record<string, string 
   })()
    .then((r) => { if (!cancelled && latest.current === key) { setRows(r); setError(null) } })
    .catch((e) => { if (!cancelled) setError(e instanceof ApiError ? e : new ApiError(0, 'error', String(e))) })
-  return () => { cancelled = true }
+   .finally(settle)
+  return () => { cancelled = true; settle() }
  }, [key])
 
  return { rows, error, loading: rows === null && !error }

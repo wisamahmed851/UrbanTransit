@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import type { RecommendationsResponse } from '../api/types'
 import { Pager } from '../components/DataTable'
-import { Reveal } from '../components/motion'
+import { Reveal, Swap } from '../components/motion'
 import { Empty, ErrorNotice, Loading, PageHead, Panel, Stats, Status } from '../components/ui'
 import { label } from '../lib/format'
 import { useApi } from '../lib/useApi'
@@ -69,7 +69,7 @@ export function RecommendationsPage() {
    {!recs.data ? (recs.loading && <Loading what="recommendations" />) : recs.data.rows.length === 0 ? (
     <Empty>No recommendations match these filters.</Empty>
    ) : (
-    <>
+    <Swap k={`${recs.data.total}-${offset}-${recs.data.rows[0]?.recommendation_id}`}>
      <div className="grid-2" style={{ opacity: recs.loading ? 0.6 : 1 }}>
       {recs.data.rows.map((r) => (
        <Reveal key={r.recommendation_id} as="article" className="panel rec-card">
@@ -84,7 +84,7 @@ export function RecommendationsPage() {
       ))}
      </div>
      <Pager total={recs.data.total} limit={PAGE} offset={offset} onChange={setOffset} />
-    </>
+    </Swap>
    )}
 
    <Panel title="Where these come from">

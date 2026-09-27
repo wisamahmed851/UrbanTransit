@@ -6,6 +6,7 @@ import { DataTable, type Column } from '../components/DataTable'
 import { ErrorNotice, Loading, PageHead, Panel, Segmented, Status } from '../components/ui'
 import { num, pct } from '../lib/format'
 import { useApi, type ApiState } from '../lib/useApi'
+import { Swap } from '../components/motion'
 
 type Task = 'delay_severity' | 'crowding_flag' | 'occupancy_forecast' | 'daily_boardings' | 'stop_period_demand' | 'route_clustering'
 type Pipeline = 'python' | 'spark'
@@ -101,10 +102,10 @@ export function ModelsPage() {
      <Segmented label="Model" value={task} onChange={setTask} options={TASKS.map((t) => ({ value: t.value, label: t.label }))} />
     </div>}>
     {metrics.error ? <ErrorNotice error={metrics.error} /> : metrics.loading && !metrics.data ? <Loading what="metrics" /> : (
-     <DataTable rows={table} stale={metrics.loading} columns={columns}
+     <Swap k={`${pipeline}-${task}`}><DataTable rows={table} stale={metrics.loading} columns={columns}
       empty={pipeline === 'spark' && PYTHON_ONLY.has(task)
        ? `The Spark pipeline has no ${spec.label.toLowerCase()} model: this task was built only in the Python pipeline. Switch to Python to see its results.`
-       : `No ${pipeline === 'spark' ? 'Spark' : 'Python'} results are loaded for this model yet. Run database/load_model_metrics.py after new metric files arrive.`} />
+       : `No ${pipeline === 'spark' ? 'Spark' : 'Python'} results are loaded for this model yet. Run database/load_model_metrics.py after new metric files arrive.`} /></Swap>
     )}
     <p className="panel-note">SRS target for classifiers: test accuracy of at least 85% or macro F1 of at least 0.80. Macro F1 weighs every class
      equally, so it shows how well rare classes (severe delays, crowded trips) are caught. MAE and RMSE are boardings per route-day.</p>

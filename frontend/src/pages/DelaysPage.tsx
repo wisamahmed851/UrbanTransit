@@ -5,6 +5,7 @@ import { DataTable } from '../components/DataTable'
 import { ErrorNotice, Loading, PageHead, Panel, Segmented } from '../components/ui'
 import { label, minutes, num, pct, WEEKDAYS } from '../lib/format'
 import { useRows } from '../lib/useApi'
+import { Swap } from '../components/motion'
 
 type Dim = 'hour' | 'day_of_week' | 'time_period' | 'day_class' | 'route_type' | 'distance_band'
 const ORDERED: Dim[] = ['hour', 'day_of_week', 'distance_band']
@@ -43,8 +44,8 @@ export function DelaysPage() {
      { value: 'hour', label: 'Hour' }, { value: 'day_of_week', label: 'Weekday' }, { value: 'time_period', label: 'Time of day' },
      { value: 'day_class', label: 'Day type' }, { value: 'route_type', label: 'Route type' }, { value: 'distance_band', label: 'Distance' },
     ]} />}>
-    {byDim.loading && !byDim.data ? <Loading /> : (
-     <ChartFrame
+    {byDim.loading && !byDim.data ? <Loading kind="chart" /> : (
+     <Swap k={dim}><ChartFrame
       chart={ORDERED.includes(dim) || dim === 'time_period'
        ? <ColumnChart name="Late share" data={chartData} format={(v) => pct(v, 0)} />
        : <HBarChart name="Late share" data={chartData} format={(v) => pct(v, 1)} />}
@@ -56,13 +57,13 @@ export function DelaysPage() {
        { key: 'avg_delay_min', label: 'Average delay', num: true, render: (r) => minutes(r.avg_delay_min) },
        { key: 'p90_arrival_delay_min', label: '90th percentile', num: true, render: (r) => minutes(r.p90_arrival_delay_min) },
       ]}
-     />
+     /></Swap>
     )}
    </Panel>
 
    <div className="grid-2">
     <Panel title="Most often late routes">
-     <DataTable rows={routes.data?.rows ?? []} columns={[
+     <DataTable rows={routes.data?.rows ?? []} loading={routes.loading} columns={[
       { key: 'route_id', label: 'Route', render: (r) => <Link to={`/routes/${r.route_id}`}>{String(r.route_code)} ({String(r.route_id)})</Link> },
       { key: 'late_share', label: 'Late', num: true, render: (r) => pct(r.late_share) },
       { key: 'punctuality_rate', label: 'On time', num: true, render: (r) => pct(r.punctuality_rate) },
@@ -71,7 +72,7 @@ export function DelaysPage() {
     </Panel>
 
     <Panel title="Bottleneck stops" note="Top 5% of stops by congestion-related delay records, with at least 50 records.">
-     <DataTable rows={bottlenecks.slice(0, 12)} empty="No bottleneck stops." columns={[
+     <DataTable rows={bottlenecks.slice(0, 12)} loading={stops.loading} empty="No bottleneck stops." columns={[
       { key: 'stop_name', label: 'Stop', render: (r) => `${r.stop_name} (${r.stop_id})` },
       { key: 'routes_serving', label: 'Routes', num: true },
       { key: 'congestion_record_rate', label: 'Congestion records per trip', num: true, render: (r) => num(r.congestion_record_rate, 2) },
@@ -82,7 +83,7 @@ export function DelaysPage() {
    </div>
 
    <Panel title="Most delayed trips" note="Single trips with the largest recorded delay.">
-    <DataTable rows={trips.data?.rows ?? []} columns={[
+    <DataTable rows={trips.data?.rows ?? []} loading={trips.loading} columns={[
      { key: 'service_date', label: 'Date' },
      { key: 'trip_id', label: 'Trip' },
      { key: 'route_id', label: 'Route', render: (r) => <Link to={`/routes/${r.route_id}`}>{String(r.route_id)}</Link> },

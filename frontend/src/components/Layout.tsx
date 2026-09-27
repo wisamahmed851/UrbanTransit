@@ -7,8 +7,10 @@
 import { Suspense, useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import { PageLoadProvider, TrackSuspense } from '../lib/pageLoad'
+import { usePageLoad } from '../lib/pageLoadContext'
 import { StaggerScope } from './motion'
-import { Loading } from './ui'
+import { PageLoader } from './PageLoader'
 
 interface Station { to: string; label: string; perm?: string }
 
@@ -77,6 +79,12 @@ export function BrandMark({ size = 64 }: { size?: 64 | 192 }) {
  return <img className="brand-mark" src={`/logo-${size}.png`} alt="" width={32} height={32} decoding="async" />
 }
 
+/** Holds the page hidden while the loader shows; marks it revealed once the loader has gone. */
+function PageStage({ children }: { children: React.ReactNode }) {
+ const { revealed } = usePageLoad()
+ return <div className="page-stage" data-revealed={revealed}>{children}</div>
+}
+
 export function Layout() {
  const { user, logout, can } = useAuth()
  const [theme, setTheme] = useTheme()
@@ -118,7 +126,15 @@ export function Layout() {
      <button className="btn btn-quiet" onClick={logout}>Sign out</button>
     </div>
    </aside>
-   <main className="main" id="main"><Suspense fallback={<Loading what="page" />}><StaggerScope key={pathname}><Outlet /></StaggerScope></Suspense></main>
+   <main className="main" id="main">
+    {/* One load cycle per route: loader first, then the page's entrance (lib/pageLoad.tsx). */}
+    <PageLoadProvider key={pathname}>
+     <PageStage>
+      <Suspense fallback={<TrackSuspense />}><StaggerScope><Outlet /></StaggerScope></Suspense>
+     </PageStage>
+     <PageLoader />
+    </PageLoadProvider>
+   </main>
   </div>
  )
 }

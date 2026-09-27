@@ -77,7 +77,7 @@ export function RouteDetailPage() {
    </div>
 
    <Panel title="Crowding by direction">
-    <DataTable rows={overcrowding.data?.rows ?? []} columns={[
+    <DataTable rows={overcrowding.data?.rows ?? []} loading={overcrowding.loading} columns={[
      { key: 'direction', label: 'Direction' },
      { key: 'measured_trips', label: 'Counted trips', num: true, render: (r) => num(r.measured_trips) },
      { key: 'avg_occupancy', label: 'Average load', num: true, render: (r) => pct(r.avg_occupancy) },
@@ -89,7 +89,7 @@ export function RouteDetailPage() {
 
    <Panel title="Capacity by time of day" note="Load at the busiest point of each trip compared with the seats and standing room scheduled.">
     {gap.loading && !gap.data ? <Loading /> : (
-     <DataTable rows={gap.data?.rows ?? []} columns={[
+     <DataTable rows={gap.data?.rows ?? []} loading={gap.loading} columns={[
       { key: 'direction', label: 'Dir.' },
       { key: 'day_class', label: 'Day', render: (r) => label(r.day_class) },
       { key: 'time_period', label: 'Time', render: (r) => label(r.time_period) },

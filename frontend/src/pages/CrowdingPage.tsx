@@ -63,7 +63,7 @@ export function CrowdingPage() {
    <div style={{ display: 'grid', gap: 'var(--gap)' }}>
     <Panel title="Where overcrowding keeps coming back" note="Route, direction, weekday and time of day, ranked by the share of normal days with an overloaded trip.">
      {persistent.error ? <ErrorNotice error={persistent.error} /> : (
-      <DataTable rows={persistent.data?.rows ?? []} columns={[
+      <DataTable rows={persistent.data?.rows ?? []} loading={persistent.loading} columns={[
        { key: 'route_id', label: 'Route' },
        { key: 'direction', label: 'Dir.' },
        { key: 'day_of_week', label: 'Weekday', render: (r) => ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][Number(r.day_of_week)] },

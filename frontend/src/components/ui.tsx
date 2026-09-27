@@ -2,10 +2,11 @@
 
 import { CheckCircle, Circle, Warning, WarningCircle, WarningDiamond } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
-import type { ReactNode } from 'react'
+import { motion } from 'motion/react'
+import { useId, type ReactNode } from 'react'
 import type { ApiError } from '../api/client'
 import { CLASS_TONE } from '../lib/format'
-import { CountUp, Reveal } from './motion'
+import { CountUp, CountUpText, Reveal } from './motion'
 
 export function PageHead({ title, children }: { title: string; children?: ReactNode }) {
  return (
@@ -32,8 +33,29 @@ export function Panel({ title, note, action, children, className = '' }: {
  )
 }
 
-export function Loading({ what = 'data' }: { what?: string }) {
- return <p className="loading" role="status">Loading {what}…</p>
+/**
+ * Placeholder while data is fetching (CMD-027): shimmer skeletons shaped like what is coming.
+ * `table` (default) draws a header and rows, `chart` bars on an axis, `block` one tall area
+ * (maps). The text stays for screen readers. With reduced motion the shimmer holds still.
+ */
+export function Loading({ what = 'data', kind = 'table' }: { what?: string; kind?: 'table' | 'chart' | 'block' }) {
+ return (
+  <div className={`skeleton skeleton-${kind}`} role="status" aria-busy="true">
+   <span className="sr-only">Loading {what}…</span>
+   {kind === 'table' && (
+    <>
+     <i className="sk sk-head" />
+     {[0.92, 0.78, 0.86, 0.7, 0.82].map((w, i) => <i key={i} className="sk sk-row" style={{ width: `${w * 100}%` }} />)}
+    </>
+   )}
+   {kind === 'chart' && (
+    <div className="sk-bars" aria-hidden="true">
+     {[0.55, 0.8, 0.45, 0.95, 0.65, 0.75, 0.4, 0.85, 0.6, 0.7].map((h, i) => <i key={i} className="sk sk-bar" style={{ height: `${h * 100}%` }} />)}
+    </div>
+   )}
+   {kind === 'block' && <i className="sk sk-block" />}
+  </div>
+ )
 }
 
 export function Empty({ children }: { children: ReactNode }) {
@@ -110,7 +132,8 @@ export function Stats({ items }: { items: StatItem[] }) {
        {Glyph && <span className="stat-icon" aria-hidden="true"><Glyph size={18} weight="duotone" /></span>}
       </span>
       <span className="stat-value">
-       {typeof s.value === 'number' && s.format ? <CountUp value={s.value} format={s.format} /> : s.value}
+       {typeof s.value === 'number' && s.format ? <CountUp value={s.value} format={s.format} />
+        : typeof s.value === 'string' ? <CountUpText text={s.value} /> : s.value}
       </span>
       {s.sub && <span className="stat-sub">{s.sub}</span>}
       {s.spark && s.spark.length > 1 && <Sparkline values={s.spark} />}
@@ -146,10 +169,18 @@ export function ScoreBar({ value }: { value: unknown }) {
 export function Segmented<T extends string>({ value, options, onChange, label }: {
  value: T; options: { value: T; label: string }[]; onChange: (v: T) => void; label: string
 }) {
+ // The highlight slides to the chosen option (a shared layoutId per control, transform only).
+ const id = useId()
  return (
   <div className="seg" role="group" aria-label={label}>
    {options.map((o) => (
-    <button key={o.value} type="button" aria-pressed={o.value === value} onClick={() => onChange(o.value)}>{o.label}</button>
+    <button key={o.value} type="button" aria-pressed={o.value === value} onClick={() => onChange(o.value)}>
+     {o.value === value && (
+      <motion.span layoutId={`seg-${id}`} className="seg-pill" aria-hidden="true"
+       transition={{ type: 'spring', stiffness: 500, damping: 38 }} />
+     )}
+     <span className="seg-label">{o.label}</span>
+    </button>
    ))}
   </div>
  )

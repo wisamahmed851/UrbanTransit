@@ -16,7 +16,7 @@ export function PassengersPage() {
    </PageHead>
    {seg.error && <ErrorNotice error={seg.error} />}
    <Panel title="Card holders by travel pattern">
-    {seg.loading && !seg.data ? <Loading /> : (
+    {seg.loading && !seg.data ? <Loading kind="chart" /> : (
      <ChartFrame
       chart={<HBarChart name="Share of card holders" data={chart} format={(v) => pct(v, 0)} />}
       rows={rows}

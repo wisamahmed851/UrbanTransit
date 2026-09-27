@@ -10,6 +10,7 @@ import { DEFAULT_TRIP, tomorrow, type TripInput } from '../lib/trip'
 import { ErrorNotice, Loading, PageHead, Panel, Segmented, Status } from '../components/ui'
 import { label, num, pct } from '../lib/format'
 import { useApi } from '../lib/useApi'
+import { Swap } from '../components/motion'
 
 type Kind = 'crowding' | 'occupancy' | 'delay'
 
@@ -49,9 +50,11 @@ export function PredictionsPage() {
    {error?.code === 'no_scheduled_service' && Array.isArray(error.details?.hours_with_service) && (
     <p className="panel-note">Hours with service: {(error.details.hours_with_service as number[]).map((h) => `${String(h).padStart(2, '0')}:00`).join(', ')}</p>
    )}
-   {answer?.task === 'crowding_flag' && <CrowdingAnswer a={answer} />}
-   {answer?.task === 'occupancy_forecast' && <OccupancyAnswer a={answer} />}
-   {answer?.task === 'delay_severity' && <DelayAnswer a={answer} />}
+   <Swap k={answer ? `${answer.task}-${JSON.stringify(answer.trip)}` : 'none'}>
+    {answer?.task === 'crowding_flag' && <CrowdingAnswer a={answer} />}
+    {answer?.task === 'occupancy_forecast' && <OccupancyAnswer a={answer} />}
+    {answer?.task === 'delay_severity' && <DelayAnswer a={answer} />}
+   </Swap>
 
    <RiskList />
   </div>

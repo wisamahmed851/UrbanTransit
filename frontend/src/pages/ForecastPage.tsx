@@ -57,12 +57,12 @@ export function ForecastPage() {
    ]} />
 
    <Panel title="Network total" note={n ? `Sum of ${n.routes} routes. Last observed day ${n.last_observed_date}.` : undefined}>
-    {!n ? <Loading what="forecast" /> : <NetworkChart n={n} />}
+    {!n ? <Loading kind="chart" what="forecast" /> : <NetworkChart n={n} />}
    </Panel>
 
    <Panel title={`Route ${route}`} note="Observed days, the model's one-day-ahead predictions on the test period (July and August 2026, not used in training), the 28-day-average baseline, and the forecast."
     action={<label className="field">Route<RouteSelect value={route} onChange={setRoute} /></label>}>
-    {single.error ? <ErrorNotice error={single.error} /> : !single.data ? <Loading what="route forecast" /> : <RouteChart f={single.data} stale={single.loading} />}
+    {single.error ? <ErrorNotice error={single.error} /> : !single.data ? <Loading kind="chart" what="route forecast" /> : <RouteChart f={single.data} stale={single.loading} />}
    </Panel>
 
    <Panel title={`Stop-period tap-ins${activeStop ? `: ${activeStop} / ${activePeriod.replace('_', ' ')}` : ''}`}
@@ -81,7 +81,7 @@ export function ForecastPage() {
     </div>}>
     {stopOptions.error ? <ErrorNotice error={stopOptions.error} />
      : stopForecast.error ? <ErrorNotice error={stopForecast.error} />
-      : !stopForecast.data ? <Loading what="stop-period forecast" /> : <StopPeriodChart f={stopForecast.data} stale={stopForecast.loading} />}
+      : !stopForecast.data ? <Loading kind="chart" what="stop-period forecast" /> : <StopPeriodChart f={stopForecast.data} stale={stopForecast.loading} />}
    </Panel>
 
    <Panel title="Routes by forecast demand" note="Average forecast boardings per day over the horizon, against the last 28 observed days. The peak day is the busiest forecast day.">

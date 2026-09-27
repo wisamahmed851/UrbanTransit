@@ -49,7 +49,7 @@ export function DemandPage() {
 
    <div className="grid-2">
     <Panel title="Busiest stop pairs" note="All routes combined, estimated journeys per day.">
-     <DataTable rows={pairs.data?.rows ?? []} columns={[
+     <DataTable rows={pairs.data?.rows ?? []} loading={pairs.loading} columns={[
       { key: 'origin_stop_id', label: 'From' },
       { key: 'destination_stop_id', label: 'To' },
       { key: 'est_journeys_per_day', label: 'Journeys / day', num: true, render: (r) => num(r.est_journeys_per_day) },
@@ -60,7 +60,7 @@ export function DemandPage() {
 
     <Panel title="Unusual activity" note="Signals worth a look: each type counts days or entities that broke from their usual pattern.">
      {anomalies.error ? <ErrorNotice error={anomalies.error} /> : (
-      <DataTable rows={anomalies.data?.rows ?? []} columns={[
+      <DataTable rows={anomalies.data?.rows ?? []} loading={anomalies.loading} columns={[
        { key: 'anomaly_type', label: 'Signal', render: (r) => label(r.anomaly_type) },
        { key: 'entity_type', label: 'Applies to', render: (r) => label(r.entity_type) },
        { key: 'signals', label: 'Signals', num: true, render: (r) => num(r.signals) },
@@ -72,7 +72,7 @@ export function DemandPage() {
    </div>
 
    <Panel title="Special event days" note="Days when demand on a route was 1.5× or more (spike) or half or less (drop) of the same weekday's median over the previous 8 weeks.">
-    <DataTable rows={eventDays} columns={[
+    <DataTable rows={eventDays} loading={events.loading} columns={[
      { key: 'service_date', label: 'Date' },
      { key: 'date_status', label: 'Type', render: (r) => label(r.date_status) },
      { key: 'holiday_name', label: 'Holiday' },

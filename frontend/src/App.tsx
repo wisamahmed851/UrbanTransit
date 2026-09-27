@@ -34,7 +34,7 @@ const WhatIfPage = lazy(() => import('./pages/WhatIfPage').then((m) => ({ defaul
 function RequireAuth({ children }: { children: React.ReactNode }) {
  const { user, ready } = useAuth()
  const location = useLocation()
- if (!ready) return <Loading what="session" />
+ if (!ready) return <Loading what="session" kind="block" />
  // Signed-out visitors to the home page see the public site; deep links go to sign-in.
  if (!user) return location.pathname === '/'
   ? <Navigate to="/welcome" replace />

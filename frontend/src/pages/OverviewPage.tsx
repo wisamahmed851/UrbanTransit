@@ -26,7 +26,7 @@ function NetworkPreview() {
    action={<Link className="btn" to="/map">Open network map</Link>}>
    <div className="map-shell compact">
     {basemap ? <TransitMap basemap={basemap} geometry={geometry.data} types={ALL_TYPES} showStops={false} interactive={false} zoom={9.5} />
-     : <Loading what="map" />}
+     : <Loading kind="block" what="map" />}
    </div>
   </Panel>
  )
@@ -107,7 +107,7 @@ export function OverviewPage() {
 
    <div className="grid-2">
     <Panel title="How the routes score" note="Each route gets one class. Overcrowding is also flagged separately, whatever the class.">
-     {perf.loading && !perf.data ? <Loading /> : (
+     {perf.loading && !perf.data ? <Loading kind="chart" /> : (
       <ChartFrame
        chart={<HBarChart name="Routes" data={byClass} format={(v) => num(v)} />}
        rows={byClass as unknown as Row[]}
@@ -121,7 +121,7 @@ export function OverviewPage() {
     </Panel>
 
     <Panel title="When people travel" note="Estimated boardings per day in each hour, by type of day.">
-     {hours.loading && !hours.data ? <Loading /> : (
+     {hours.loading && !hours.data ? <Loading kind="chart" /> : (
       <ChartFrame
        legend={[{ label: 'Weekday', slot: 0 }, { label: 'Weekend', slot: 1 }, { label: 'Holiday', slot: 2 }]}
        chart={<LinesChart data={hourly} xKey="hour" format={(v) => num(v)} xFormat={(h) => `${h}:00`}
@@ -138,7 +138,7 @@ export function OverviewPage() {
     </Panel>
 
     <Panel title="Daily ridership across the year" note="Estimated system boardings per service day." className="span-2">
-     {days.loading && !days.data ? <Loading /> : (
+     {days.loading && !days.data ? <Loading kind="chart" /> : (
       <ChartFrame
        chart={<LinesChart data={dayRows as Record<string, string | number | null>[]} xKey="service_date" format={(v) => num(v)}
         series={[{ key: 'est_system_boardings', label: 'Boardings', slot: 0 }]} />}
@@ -165,7 +165,7 @@ export function OverviewPage() {
     </Panel>
 
     <Panel title="Busiest event days" note="Days when demand spiked on many routes at once, against the same weekday's usual level.">
-     <DataTable rows={(events.data?.rows ?? []).filter((r) => r.date_status !== 'normal').slice(0, 8)} columns={[
+     <DataTable rows={(events.data?.rows ?? []).filter((r) => r.date_status !== 'normal').slice(0, 8)} loading={events.loading} columns={[
       { key: 'service_date', label: 'Date' },
       { key: 'date_status', label: 'Type', render: (r) => label(r.date_status) },
       { key: 'routes_spiking', label: 'Routes spiking', num: true },

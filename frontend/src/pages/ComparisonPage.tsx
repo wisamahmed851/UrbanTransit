@@ -5,6 +5,7 @@ import { DataTable, Pager } from '../components/DataTable'
 import { ErrorNotice, Loading, PageHead, Panel, Segmented, Status } from '../components/ui'
 import { num, pct } from '../lib/format'
 import { useApi } from '../lib/useApi'
+import { Swap } from '../components/motion'
 
 type Task = ComparisonTask['task']
 const STATUS_LABEL: Record<string, string> = {
@@ -31,7 +32,7 @@ export function ComparisonPage() {
    </PageHead>
 
    {summary.error && <ErrorNotice error={summary.error} />}
-   {!summary.data ? <Loading what="comparison" /> : (
+   {!summary.data ? <Loading kind="chart" what="comparison" /> : (
     <div className="grid-3">
      {summary.data.tasks.map((t) => (
       <Panel key={t.task} title={t.title} note={`${t.cases} cases`}>
@@ -63,7 +64,7 @@ export function ComparisonPage() {
      </label>
     </form>
     {cases.error ? <ErrorNotice error={cases.error} /> : !cases.data ? <Loading what="cases" /> : (
-     <>
+     <Swap k={`${task}-${status}`}>
       <DataTable rows={cases.data.rows} stale={cases.loading} columns={[
        { key: 'case_id', label: numeric ? 'Route and day' : 'Trip and day' },
        { key: 'actual', label: 'Actual', num: numeric, render: (r) => numeric ? num(Number(r.actual)) : r.actual },
@@ -75,7 +76,7 @@ export function ComparisonPage() {
        { key: 'explanation', label: 'Explanation ', wrap: true },
       ]} />
       <Pager total={cases.data.total} limit={PAGE} offset={offset} onChange={setOffset} />
-     </>
+     </Swap>
     )}
    </Panel>
   </div>

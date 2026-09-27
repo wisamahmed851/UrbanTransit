@@ -26,6 +26,7 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode
 import { createRoot, type Root } from 'react-dom/client'
 import { UNSAFE_LocationContext, UNSAFE_NavigationContext, UNSAFE_RouteContext } from 'react-router-dom'
 import type { Row } from '../api/client'
+import { Loading } from './ui'
 
 // Register the core library with the React wrapper (a DataTables call, not a React hook).
 const registerLibrary = DataTableReact.use
@@ -45,6 +46,8 @@ interface Props<R> {
  rows: R[]
  caption?: string
  stale?: boolean
+ /** Data still fetching: an empty table shows a skeleton instead of the "no rows" message. */
+ loading?: boolean
  empty?: ReactNode
  /** server-side sort: "-col" or "col"; omit for local sorting */
  sort?: string
@@ -72,7 +75,7 @@ function raw(v: unknown) {
 
 interface Cell { div: HTMLDivElement; root: Root }
 
-export function DataTable<R extends Row>({ columns, rows, caption, stale, empty, sort, onSort }: Props<R>) {
+export function DataTable<R extends Row>({ columns, rows, caption, stale, loading, empty, sort, onSort }: Props<R>) {
  const server = !!onSort
  const interactive = !server && rows.length >= INTERACTIVE_FROM
  const signature = columns.map((c) => `${c.key}:${c.label}`).join('|')
@@ -132,7 +135,10 @@ export function DataTable<R extends Row>({ columns, rows, caption, stale, empty,
  // eslint-disable-next-line react-hooks/exhaustive-deps
  })), [signature])
 
- if (!rows.length) return <div className="table-wrap"><p className="empty">{empty ?? 'No rows match these filters.'}</p></div>
+ if (!rows.length) {
+  return loading || stale ? <Loading what="rows" />
+   : <div className="table-wrap"><p className="empty">{empty ?? 'No rows match these filters.'}</p></div>
+ }
 
  const sortKey = (sort ?? '').replace(/^-/, '')
  const sortIndex = columns.findIndex((c) => c.key === sortKey)

@@ -27,7 +27,7 @@ export function StopsPage() {
    {stops.error && <ErrorNotice error={stops.error} />}
 
    <Panel title="Busiest stops" note="Estimated boardings plus alightings per day the stop was open.">
-    {stops.loading && !stops.data ? <Loading /> : (
+    {stops.loading && !stops.data ? <Loading kind="chart" /> : (
      <ChartFrame chart={<HBarChart name="Passengers per day" data={busiest} format={(v) => num(v)} />}
       rows={busiest as unknown as Row[]}
       columns={[{ key: 'label', label: 'Stop' }, { key: 'value', label: 'Passengers per day', num: true, render: (r) => num(r.value) }]} />
