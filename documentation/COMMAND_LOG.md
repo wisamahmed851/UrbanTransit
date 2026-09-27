@@ -1115,3 +1115,61 @@ and table behavior on top of what's already built. and after this check all the 
 **Found and not fixed (needs the teammate's new model files):** `POST /api/predictions/delay` and `POST /api/whatif` return HTTP 500 (`KeyError: prior_route_hour_delay_mean`); occupancy and stop-period predictions return 503 `model_unavailable`. pytest: 124 passed, 6 failed, all this cause.
 
 **Git commit:** `588a749`, `1a3c3d2`, `a087065` and the docs commit on `frontend/motion-datatables-site`.
+
+---
+
+## CMD-027 | 2026-09-27 (UTC+05:00) | Page loader, stronger motion, skeletons, counters; create forms in modals (branch `frontend/motion-datatables-site`)
+**My command (verbatim):**
+```text
+On branch frontend/motion-datatables-site, make the following changes:
+
+ANIMATIONS — make these more noticeable, not just fades
+1. Add a global page loader (theme-matched spinner/progress bar) that shows 
+   first on every page open. Only once the page's data has finished loading 
+   should the loader dismiss and the page's entrance animation begin — 
+   loader and content animation must not overlap or run at the same time.
+2. Strengthen the entrance animations: cards/widgets should scale in slightly 
+   (not just fade+rise) with a clearer stagger delay between items so the 
+   sequence is visible, not instant.
+3. Add animated number counters on ALL KPI/stat cards across the dashboard 
+   (not just Recommendations), counting up from 0 to the value whole-number 
+   only, no decimals.
+4. Add a skeleton-loading state (shimmer placeholders) for charts and tables 
+   while their data is fetching, shown after the page loader but before the 
+   real content animates in.
+5. Add subtle animated transitions when switching tabs/filters within a page 
+   (not just the Chart/Table cross-fade already done).
+6. Keep prefers-reduced-motion behavior working with all of the above.
+
+USER PAGE — replace inline "user making" section with a modal
+7. On the Users page, remove the existing inline "create/make user" section 
+   entirely from the page.
+8. Keep only a "New User" (or similarly labeled) button in its place on the 
+   main page.
+9. Clicking that button should open a modal containing the same create-user 
+   form/functionality that was removed — same fields, same validation, same 
+   submit behavior, just moved into a modal instead of inline.
+
+ROUTES PAGE — same pattern for "routes making" flow
+10. On the Routes page, remove the existing inline "create/make route" flow 
+    from the page in the same way.
+11. Keep only a button (e.g. "New Route") on the main page.
+12. Clicking it should open a modal with the same route-creation flow/steps 
+    that were removed, preserving all existing functionality.
+
+Do not change any other existing functionality, data, or layout beyond what's 
+listed above. Keep styling consistent with the current theme 
+(design-taste-frontend / docyrus-dashboard-design).
+```
+
+**Understood as:** A route-level loader that waits for the page's first data, then hands over to the entrance animation (never both at once); scale-in reveals with a visible stagger; whole-number count-up on every Stats card; shimmer skeletons for charts and tables whose data is still fetching after the loader; animated tab/segment and filter switches; reduced motion still honoured. On Users and on the admin Routes/stops/vehicles page, the inline create forms move unchanged into modals opened by a "New ..." button.
+
+**Actions taken:**
+1. `lib/pageLoad.tsx` + `components/PageLoader.tsx`: per-route load tracking and loader; entrance, reveals and counters wait for it.
+2. `motion.tsx`: scale-in reveals with 90 ms stagger (per batch), `CountUp` whole steps, `CountUpText` for formatted values, `Swap` for switched content; `ui.tsx`: skeleton `Loading` (table/chart/block), counters on all Stats, sliding segment highlight; `DataTable` `loading` skeleton.
+3. Swap on Delays, Comparison, Predictions, Recommendations, Model results and the reference-entity switch.
+4. `components/Modal.tsx` (native dialog); Users and Routes/stops/vehicles create forms moved into it unchanged; edit stays inline.
+
+**Result:** Success for items 1-12. The route-creation flow is on the admin "Routes, stops, vehicles" page (the public Routes page has none); its create step moved to a modal, the inline edit form is unchanged as only creation was asked for.
+
+**Git commit:** `1d0a59e`, `6cb1e91` and the docs commit on `frontend/motion-datatables-site`.
