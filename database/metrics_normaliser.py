@@ -27,11 +27,23 @@ from numbers import Number
 HANDLED_KEYS = {"task", "algorithm", "metrics", "validation_trials", "validation_tuning",
                 "validation_selection", "silhouette", "actual_clusters", "rows"}
 
-# Tasks whose metrics are shown for transparency but must not back predictions.
-INVALID_TASKS = {
-    "delay_severity": "occupancy_pct, a same-trip outcome, is a model input (leakage); "
-                      "not valid for serving until retrained without it",
-}
+LEAKAGE_NOTE = ("occupancy_pct, a same-trip outcome, is a model input (leakage); "
+                "not valid for serving until retrained without it")
+
+
+def spark_validity(data: dict) -> tuple[str | None, str | None]:
+    """Flag only Spark delay runs whose recorded feature vector leaks occupancy.
+
+    Historical artifact layouts without an explicit feature list are conservatively
+    retained as invalid. A new retrain is valid only when it records its numeric
+    features and demonstrably excludes `occupancy_pct`.
+    """
+    if data.get("task") != "delay_severity":
+        return None, None
+    numeric = data.get("numeric_features")
+    if not isinstance(numeric, list) or "occupancy_pct" in numeric:
+        return "INVALID", LEAKAGE_NOTE
+    return None, None
 
 
 def _is_number(value) -> bool:
@@ -58,8 +70,7 @@ def normalise(file_name: str, data: dict) -> list[dict]:
     task, algorithm = data["task"], data["algorithm"]
     file_extra = {k: v for k, v in data.items() if k not in HANDLED_KEYS}
     file_rows = data.get("rows") if isinstance(data.get("rows"), dict) else {}
-    flag = "INVALID" if task in INVALID_TASKS else None
-    note = INVALID_TASKS.get(task)
+    flag, note = spark_validity(data)
 
     def make(split_type: str, name: str, value, extra: dict) -> dict:
         return {

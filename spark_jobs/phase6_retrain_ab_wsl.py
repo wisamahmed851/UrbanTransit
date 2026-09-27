@@ -83,7 +83,10 @@ def main():
             .withColumn("peak_hour_indicator_asof", F.col("peak_hour_indicator_asof").cast("double")))
 
     if args.task == "a":
-        task, target, numeric = "delay_severity", "delay_severity", BASE_NUMERIC + ["occupancy_pct"]
+        # `occupancy_pct` is measured after the trip runs and is therefore a direct
+        # outcome proxy for delay severity.  It must never enter a pre-departure
+        # prediction vector.
+        task, target, numeric = "delay_severity", "delay_severity", list(BASE_NUMERIC)
         work = base.filter(F.col(target).isNotNull())
         if args.enhanced:
             prior = Window.partitionBy("route_id", "direction", "hour").orderBy("scheduled_departure", "trip_id").rowsBetween(-56, -1)

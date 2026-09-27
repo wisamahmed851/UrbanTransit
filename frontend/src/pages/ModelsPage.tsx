@@ -76,10 +76,10 @@ export function ModelsPage() {
 
       {pipeline === 'spark' && metrics.data?.warnings.map((w) => (
         <div key={w.task} className="notice notice-error" role="alert">
-          <strong>These Spark delay-severity scores do not describe a usable model.</strong>
-          <span>Every Spark delay model was trained with the trip's own occupancy as an input, which is only known after
-            the trip has run, so the scores overstate what could be predicted before departure. The served delay model
-            is the Python one, which does not use it.</span>
+          <strong>Some historical Spark delay-severity scores do not describe a usable model.</strong>
+          <span>Those runs used the trip's own occupancy as an input, which is only known after the trip has run, so their
+            scores overstate what could be predicted before departure. A separately listed Spark retrain is valid only
+            when its recorded feature vector excludes occupancy.</span>
           <span style={{ color: 'var(--ink-muted)' }}>API: {w.message}</span>
         </div>
       ))}

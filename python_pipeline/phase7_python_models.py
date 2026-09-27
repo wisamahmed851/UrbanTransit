@@ -77,6 +77,13 @@ def base_trip() -> pd.DataFrame:
     x.loc[x.max_load.isna() | x.capacity_total.isna() | (x.capacity_total <= 0), "crowding_flag"] = np.nan
     x = x.sort_values(["route_id","direction","scheduled_departure","trip_id"])
     x["prior_route_delay_mean"] = x.groupby(["route_id","direction"]).delay_minutes.transform(lambda s: s.shift().rolling(28,min_periods=5).mean())
+    # These are all strictly earlier completed trips in the same route/time cell.
+    # They are safe for a pre-departure estimate and capture recurring peak-period
+    # delay patterns that a route-wide average misses.
+    hour_groups = x.groupby(["route_id","direction","hour"])
+    x["prior_route_hour_delay_mean"] = hour_groups.delay_minutes.transform(lambda s: s.shift().rolling(56,min_periods=5).mean())
+    x["prior_route_hour_severe_rate"] = hour_groups.delay_severity.transform(
+        lambda s: s.eq("Severe").shift().rolling(56,min_periods=5).mean())
     x["prior_route_crowding_rate"] = x.groupby(["route_id","direction"]).crowding_flag.transform(lambda s: s.shift().rolling(28,min_periods=5).mean())
     return x
 
@@ -84,17 +91,19 @@ def prep(frame, numeric, categorical):
     return ColumnTransformer([("num", Pipeline([("impute",SimpleImputer(strategy="median")),("scale",StandardScaler())]), numeric),
                               ("cat", Pipeline([("impute",SimpleImputer(strategy="most_frequent")),("encode",OrdinalEncoder(handle_unknown="use_encoded_value",unknown_value=-1))]), categorical)])
 
-def run_classification(task, target, drop, xgb_classes):
+def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_delay=False, full_train=False):
     x = base_trip().dropna(subset=[target]).copy()
     numeric = ["hour","day_of_week","weekend","distance_km","planned_runtime_min","headway_min","scheduled_runtime_min",drop]
     categorical = ["route_id","vehicle_id","direction","route_type","vehicle_type"]
     numeric = [c for c in numeric if c not in {target,"occupancy_pct"}]
+    if task == "delay_severity" and enhanced_delay:
+        numeric += ["prior_route_hour_delay_mean", "prior_route_hour_severe_rate"]
     # Task B never uses current occupancy, max-load, boardings, or any direct target proxy.
     cols=numeric+categorical
     x.loc[:, numeric] = x[numeric].replace([np.inf, -np.inf], np.nan)
     tr, va, te = (period(x,s) for s in ("train","validation","test"))
     # Keep fitting bounded in WSL; validation/test remain complete chronological splits.
-    if len(tr)>400000:
+    if len(tr)>400000 and not full_train:
         # Deterministic capped stratified fit set; validation and test stay complete.
         cap = 400000 // tr[target].nunique()
         tr = tr.groupby(target, group_keys=False).apply(lambda g: g.sample(n=min(len(g), cap), random_state=RNG), include_groups=True).reset_index(drop=True)
@@ -119,11 +128,12 @@ def run_classification(task, target, drop, xgb_classes):
             threshold,maxf=max(trials,key=lambda z:z[1]); predv=np.where(pv[:,pos]>=threshold,"1.0","0.0"); predt=np.where(pt[:,pos]>=threshold,"1.0","0.0")
             default=cls_scores(yt,np.where(pt[:,pos]>=.5,"1.0","0.0"))
         val,test=cls_scores(yv,predv),cls_scores(yt,predt)
-        record={"task":task,"algorithm":name,"features":{"numeric":numeric,"categorical":categorical},"split_dates":DATES,"validation":val,"test":test,"threshold":threshold,"test_default_threshold":default if task=="crowding_flag" else None,"model_scope":"independent pandas/PyArrow clean-Parquet pipeline"}
-        save_json(task,name,record); results[name]=(record,m,pt,predt,labels if name=="xgboost" else list(m.classes_),encoder); chosen.append((val["macro_f1"],name))
+        record={"task":task,"algorithm":name,"version":version,"feature_set":"enhanced_strict_prior_route_hour_history" if task=="delay_severity" and enhanced_delay else "baseline_safe_features","features":{"numeric":numeric,"categorical":categorical},"split_dates":DATES,"validation":val,"test":test,"threshold":threshold,"test_default_threshold":default if task=="crowding_flag" else None,"model_scope":"independent pandas/PyArrow clean-Parquet pipeline"}
+        metric_name = f"{name}_{version}" if version != "v1" else name
+        save_json(task,metric_name,record); results[name]=(record,m,pt,predt,labels if name=="xgboost" else list(m.classes_),encoder); chosen.append((val["macro_f1"],name))
     _,name=max(chosen); record,m,probs,preds,classes,encoder=results[name]
-    out=MODEL/task; out.mkdir(parents=True,exist_ok=True); joblib.dump(m,out/f"{name}_v1.pkl"); joblib.dump(encoder,out/f"{name}_preprocessor_v1.pkl")
-    posprob=probs.max(1); sample=te[["trip_id","route_id","service_date",target]].copy(); sample["predicted"]=preds; sample["probability"]=posprob; sample["split"]="test"; SAMPLES.mkdir(parents=True,exist_ok=True); sample.head(20).to_csv(SAMPLES/f"{task}_best.csv",index=False)
+    out=MODEL/task; out.mkdir(parents=True,exist_ok=True); joblib.dump(m,out/f"{name}_{version}.pkl"); joblib.dump(encoder,out/f"{name}_preprocessor_{version}.pkl")
+    posprob=probs.max(1); sample=te[["trip_id","route_id","service_date",target]].copy(); sample["predicted"]=preds; sample["probability"]=posprob; sample["split"]="test"; SAMPLES.mkdir(parents=True,exist_ok=True); sample.head(20).to_csv(SAMPLES/f"{task}_{version}_best.csv",index=False)
     return results
 
 def demand_frame():
@@ -184,8 +194,8 @@ def write_docs(results):
     REPORT.write_text("\n".join(lines),encoding="utf-8")
 
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--task",choices=["a","b","c","d","all"],default="all"); a=p.parse_args(); results={}
-    if a.task in ("a","all"): results["delay_severity"]=run_classification("delay_severity","delay_severity","prior_route_delay_mean",4)
+    p=argparse.ArgumentParser(); p.add_argument("--task",choices=["a","b","c","d","all"],default="all"); p.add_argument("--version", default="v1"); p.add_argument("--enhanced-delay", action="store_true", help="Use only strictly-prior route-hour delay history for Task A."); p.add_argument("--full-train", action="store_true", help="Train classifiers on every chronological training-split row instead of the deterministic 400k-row cap."); a=p.parse_args(); results={}
+    if a.task in ("a","all"): results["delay_severity"]=run_classification("delay_severity","delay_severity","prior_route_delay_mean",4,a.version,a.enhanced_delay,a.full_train)
     if a.task in ("b","all"): results["crowding_flag"]=run_classification("crowding_flag","crowding_flag","prior_route_crowding_rate",2)
     if a.task in ("c","all"): results["daily_boardings"]=run_demand()
     if a.task in ("d","all"):
