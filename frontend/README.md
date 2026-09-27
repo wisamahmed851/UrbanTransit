@@ -35,6 +35,16 @@ Sign in with an account made by `flask users create <name> --role admin`.
 No page uses sample data since CMD-024 (the sample module was deleted). The API client still
 recognises the backend's explicit 503 stub response, should a new endpoint start as one.
 
+## Tables, motion, public page (CMD-026)
+
+- **Tables** use DataTables (`datatables.net` core + `datatables.net-react`, no default CSS;
+  theme in `styles/app.css`). Local tables sort, and above 10 rows search and page; server
+  tables (Data explorer, O-D) send header clicks to the API sort. See `components/DataTable.tsx`.
+- **Motion**: transform/opacity only; reduced motion keeps short fades and drops movement.
+- **Public page** `/welcome` (signed-out visitors to `/` land there) with figures from
+  `GET /api/public/summary`. Product shots in `public/site/` are screenshots of this app;
+  retake them after major UI changes.
+
 ## Structure
 
 | path | role |

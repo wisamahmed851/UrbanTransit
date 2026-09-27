@@ -1070,3 +1070,48 @@ and fix this 2 and 3 okay and there are ui issue like
 **Result:** Success for items 2 and 3. Tests: new 4 training tests and the follow-the-clock test pass; the 6 failing serving tests are pre-existing (delay model file v1 on this laptop vs v2 metadata from main) and need the new model files. Build and lint clean.
 
 **Git commit:** see `git log` on `fix/train-access-and-replay-label`.
+
+---
+
+## CMD-026 | 2026-09-27 (UTC+05:00) | Animation, DataTables, UI fixes, public site (branch `frontend/motion-datatables-site`)
+**My command (verbatim):**
+```text
+Using the web-animation-skills skill (and following our existing theme from 
+design-taste-frontend and docyrus-dashboard-design), update the analytics 
+dashboard with the following changes:
+
+1. Add smooth enter/load animations for dashboard cards and widgets 
+   (fade + slight slide-up, staggered).
+2. Animate chart transitions when data updates (no jarring re-renders).
+3. Add hover/press micro-interactions on buttons, toggles, and cards.
+4. Respect prefers-reduced-motion for accessibility.
+5. Keep all animations on transform/opacity only for 60fps performance.
+6. Replace the existing plain HTML tables with DataTables (https://datatables.net) 
+   for sorting, search/filter, and pagination — match the current theme's 
+   colors/typography instead of using DataTables' default styling.
+7. And in this page recommendations there is a critical and othr tabs where number are shoing while refreshing its satring from some number whcih is going outside its box
+8. in the sidebar there is a scroll showing whcih is not looking good becasue its the default one so design it according to the other ui styles
+9:and in the model results page ther eis this tab Stop-period demand in wchih two filter are not working
+spark+stop-period demand and spark + occupency are both showing No rows matching these filters and python and occu[acy is also not working
+10:In the login page the sigin part should be in the middle alligned its not alligned on the left section 
+11: Add this logo C:\Users\AKL\Downloads\WhatsApp Image 2026-09-27 at 4.53.59 PM.jpeg and make a propper public website page for the users according to the SRS
+add some cursor animations also whcih looks good in my theme and ui 
+
+Do not change existing functionality or layout structure — only add animation 
+and table behavior on top of what's already built. and after this check all the functinolaty and tell me is there anything wrong
+```
+
+**Understood as:** Motion and table behaviour on top of the existing app (skills: 60fps-animation, accessible-animation, micro-interaction; theme rules from design-taste-frontend and docyrus-dashboard-design): staggered fade/slide-up enter, animated chart updates, hover/press feedback, reduced-motion tiers, transform/opacity only; DataTables (core only, themed with our tokens) for sorting, search and paging; fix the Recommendations counters overflowing, the default sidebar scrollbar, the empty Model results combinations, the login form alignment; add the supplied logo, a public website page based on the SRS, and a cursor effect; then check every feature and report problems. Existing functionality and layout stay as they are.
+
+**Actions taken:**
+1. Read the skills: 60fps-animation, accessible-animation, micro-interaction; landing rules from design-taste-frontend (split hero, real images, one CTA label, no repeated layouts).
+2. DataTables (core 3.1.2 + react wrapper 1.0.2) behind the existing `DataTable` props; theme in `app.css`; own cell renderer (see DEV_LOG problem 3).
+3. Motion layer and tiered reduced motion in `app.css`, `motion.tsx`, `charts.tsx`.
+4. Fixes: Recommendations counters, sidebar scrollbar, Model results (migration `927e64bd1e92` applied, `load_model_metrics.py` rerun: 546 rows; Spark-only-empty message; decimals; Served badge), login alignment, Train page job id.
+5. Logo cut to a transparent circle (`logo-64/192.png`); `/welcome` public page from the SRS with `GET /api/public/summary`; cursor follower.
+
+**Result:** Success for all 11 items. Functional check: 22 pages, no console errors or overflow; table sort/search/paging/links and server sort work; model combinations return results or an explanation.
+
+**Found and not fixed (needs the teammate's new model files):** `POST /api/predictions/delay` and `POST /api/whatif` return HTTP 500 (`KeyError: prior_route_hour_delay_mean`); occupancy and stop-period predictions return 503 `model_unavailable`. pytest: 124 passed, 6 failed, all this cause.
+
+**Git commit:** `588a749`, `1a3c3d2`, `a087065` and the docs commit on `frontend/motion-datatables-site`.

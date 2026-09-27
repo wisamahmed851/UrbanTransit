@@ -53,6 +53,12 @@ python -m pytest                                  # 107 tests, in-memory SQLite
 
 ## Endpoints
 
+### Public (no sign-in; CMD-026)
+
+| method | path | notes |
+|---|---|---|
+| GET | `/api/public/summary` | network size, service window, route classes, recommendation counts, served-model scores, pipeline agreement; network-level totals only, cached 10 min. Feeds the public page `/welcome` |
+
 ### Health and auth
 
 | method | path | access | notes |
