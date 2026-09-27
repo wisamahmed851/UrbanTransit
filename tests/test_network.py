@@ -65,3 +65,20 @@ def test_vehicles_rejects_bad_or_outside_times(client, auth, replay):
     assert client.get("/api/network/vehicles?at=yesterday", headers=h).status_code == 400
     assert client.get("/api/network/vehicles?at=2025-11-12T08:00:00&window=5", headers=h).status_code == 400
     assert client.get("/api/network/geometry").status_code == 401
+
+
+class _WednesdayAt0802(datetime):
+    """A clock frozen on a Wednesday at 08:02:10 (the fixture's day, 2025-11-12, is a Wednesday)."""
+
+    @classmethod
+    def now(cls, tz=None):
+        return cls(2026, 9, 30, 8, 2, 10)
+
+
+def test_follow_the_clock_is_a_labelled_replay(client, auth, replay, monkeypatch):
+    # CMD-025: replaces "/live_vehicles"; same weekday and time of day, still named a replay.
+    monkeypatch.setattr(network, "datetime", _WednesdayAt0802)
+    body = client.get("/api/network/vehicles/now", headers=auth("analyst")).get_json()
+    assert body["at"] == "2025-11-12T08:02:10" and body["mode"] == "follow_clock"
+    assert body["active"] == 1 and "Not real-time" in body["source"]
+    assert client.get("/api/network/live_vehicles", headers=auth("analyst")).status_code == 404

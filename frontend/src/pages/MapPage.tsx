@@ -70,39 +70,21 @@ export function MapPage() {
   return () => clearInterval(id)
  }, [playing, speed, setMinute])
 
- const [isLive, setIsLive] = useState(true)
- const [liveVehicles, setLiveVehicles] = useState<VehiclesResponse | null>(null)
- const [liveError, setLiveError] = useState<Error | null>(null)
- const [lastFetch, setLastFetch] = useState<Date | null>(null)
-
+ // "Follow the clock": the replay week at today's weekday and the current time, refreshed every
+ // 15 s. It is still the recorded 2025 sample, and the pill below names the replayed moment.
+ const [followClock, setFollowClock] = useState(false)
+ const [clockTick, setClockTick] = useState(0)
  useEffect(() => {
-  if (!isLive) return
-  const fetchLive = async () => {
-   try {
-    const token = localStorage.getItem('utiq.token')
-    const res = await fetch('/api/network/live_vehicles', {
-     headers: { Authorization: `Bearer ${token}` }
-    })
-    if (!res.ok) throw new Error('Failed to fetch live feed')
-    setLiveVehicles(await res.json())
-    setLiveError(null)
-    setLastFetch(new Date())
-   } catch (e: any) {
-    setLiveError(e)
-   }
-  }
-  fetchLive()
-  const id = setInterval(fetchLive, 5000)
+  if (!followClock) return
+  const id = setInterval(() => setClockTick((t) => t + 1), 15_000)
   return () => clearInterval(id)
- }, [isLive])
+ }, [followClock])
+ const clockVehicles = useApi<VehiclesResponse>(followClock ? '/network/vehicles/now' : null, { _: clockTick })
 
  const at = day ? `${day}T${hhmm(minute)}:00` : null
- const historyVehicles = useApi<VehiclesResponse>(!isLive && at ? '/network/vehicles' : null, { at: at ?? undefined })
- const vehicles = {
-  data: isLive ? liveVehicles : historyVehicles.data,
-  error: isLive ? liveError : historyVehicles.error,
-  loading: isLive ? !liveVehicles && !liveError : historyVehicles.loading
- }
+ const replayVehicles = useApi<VehiclesResponse>(!followClock && at ? '/network/vehicles' : null, { at: at ?? undefined })
+ const vehicles = followClock ? clockVehicles : replayVehicles
+ const clockAt = followClock && clockVehicles.data ? clockVehicles.data.at : null
 
  const routeOptions = useMemo(() => {
   const seen = new Map<string, { id: string; code: string; name: string; type: string }>()
@@ -172,14 +154,11 @@ export function MapPage() {
 
      <div className="map-overlay map-replay" aria-label="GPS replay">
       <div style={{ padding: '0 1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-       <label className="check"><input type="checkbox" checked={isLive} onChange={e => setIsLive(e.target.checked)} /> Live Feed</label>
-       {isLive && (
-        <span style={{ color: liveError ? 'var(--red)' : 'var(--green)', fontSize: '0.85rem' }}>
-         {liveError ? 'Disconnected' : lastFetch ? `Live (Updated ${lastFetch.toLocaleTimeString()})` : 'Connecting...'}
-        </span>
-       )}
+       <label className="check" title="Shows the recorded sample at today's weekday and the current time. Not real-time.">
+        <input type="checkbox" checked={followClock} onChange={(e) => { setFollowClock(e.target.checked); setPlaying(false) }} /> Follow the clock (replay)
+       </label>
       </div>
-      {!isLive && (
+      {!followClock && (
        <>
         <button type="button" className="btn" onClick={() => setPlaying((p) => !p)} disabled={!day}
          aria-label={playing ? 'Pause replay' : 'Play replay'}>
@@ -202,10 +181,12 @@ export function MapPage() {
        </>
       )}
       <div className="replay-pill" aria-live="polite">
-       <span className="pulse" data-paused={(!isLive && !playing) || (isLive && liveError) ? true : undefined} aria-hidden="true" />
+       <span className="pulse" data-paused={(!followClock && !playing) || (followClock && vehicles.error) ? true : undefined} aria-hidden="true" />
        <span>
         {active ?? '-'} buses active
-        <small>{isLive ? 'Live tracking' : `Replay of ${day ? dayLabel(day) : '…'}, ${hhmm(minute)}`}</small>
+        <small>{followClock
+          ? (clockAt ? `Replay of ${dayLabel(clockAt.slice(0, 10))}, ${clockAt.slice(11, 16)} (matched to now)` : 'Replay matched to now…')
+          : `Replay of ${day ? dayLabel(day) : '…'}, ${hhmm(minute)}`}</small>
        </span>
       </div>
      </div>

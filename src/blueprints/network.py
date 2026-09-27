@@ -3,13 +3,14 @@
 GET /api/network/geometry            routes (LineStrings) and stops (Points) as GeoJSON
 GET /api/network/replay              the replay window: first/last ping, days, vehicles
 GET /api/network/vehicles?at=...     bus positions at a moment of the replay window
+GET /api/network/vehicles/now        the replay at the current weekday and time of day ("follow the clock")
 
 The GPS data are simulated AVL pings covering 10-16 Nov 2025 only. There is no real-time
 feed, so every response names itself a replay of that sample. Nothing here is "live".
 """
 
 import time
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from flask import Blueprint, jsonify, request
 from sqlalchemy import and_, func, select
@@ -137,7 +138,12 @@ def vehicles():
         raise ApiError(400, "outside_replay_window", "The replay only covers the GPS sample window.",
                        {"start": window["start"], "end": window["end"]})
     seconds = int_arg("window", 180, 30, 900)
+    out = _positions(at, seconds)
+    return jsonify(at=at.isoformat(), window_seconds=seconds, active=len(out), vehicles=out, source=REPLAY_SOURCE)
 
+
+def _positions(at: datetime, seconds: int) -> list[dict]:
+    """Latest ping of each bus in the `seconds` before `at`."""
     latest = (select(GpsEvent.vehicle_id, func.max(GpsEvent.event_time).label("t"))
               .where(GpsEvent.event_time > at - timedelta(seconds=seconds), GpsEvent.event_time <= at)
               .group_by(GpsEvent.vehicle_id).subquery())
@@ -158,41 +164,28 @@ def vehicles():
             "event_type": ev.event_type, "event_time": ev.event_time.isoformat(),
             "longitude": ev.longitude, "latitude": ev.latitude, "speed_kmh": ev.speed_kmh,
         })
-    return jsonify(at=at.isoformat(), window_seconds=seconds, active=len(out), vehicles=out, source=REPLAY_SOURCE)
+    return out
 
-@bp.get("/live_vehicles")
+
+@bp.get("/vehicles/now")
 @permission_required("analytics:read")
-def live_vehicles():
-    """Simulate a live feed by mapping current real-world time into the replay window."""
+def vehicles_now():
+    """The replay at the current weekday and time of day ("follow the clock").
+
+    The GPS sample covers one week, so every weekday occurs once: a Tuesday at 14:05 shows the
+    sample's Tuesday at 14:05. It is still a replay of recorded 2025 data, never real-time;
+    the response names the replayed moment. (Replaces CMD-024-era `/live_vehicles`, which
+    mapped the clock arbitrarily and called the result a "live feed".)
+    """
     window = _cached("replay", _replay_window)
     if not window["start"]:
-        raise ApiError(404, "no_replay_data", "No GPS data loaded.")
-    start_dt = datetime.fromisoformat(window["start"])
-    end_dt = datetime.fromisoformat(window["end"])
-    duration = end_dt - start_dt
+        raise ApiError(404, "no_replay_data", "No GPS replay data is loaded.")
+    days = {date.fromisoformat(d["date"]).weekday(): d["date"] for d in window["days"]}
     now = datetime.now()
-    offset_seconds = now.timestamp() % duration.total_seconds()
-    at = start_dt + timedelta(seconds=offset_seconds)
-    seconds = int_arg("window", 30, 10, 300)
-
-    latest = (select(GpsEvent.vehicle_id, func.max(GpsEvent.event_time).label("t"))
-              .where(GpsEvent.event_time > at - timedelta(seconds=seconds), GpsEvent.event_time <= at)
-              .group_by(GpsEvent.vehicle_id).subquery())
-    rows = db.session.execute(
-        select(GpsEvent, Route.route_code, Route.route_type)
-        .join(latest, and_(latest.c.vehicle_id == GpsEvent.vehicle_id, latest.c.t == GpsEvent.event_time))
-        .outerjoin(Route, Route.route_id == GpsEvent.route_id)
-        .order_by(GpsEvent.vehicle_id, GpsEvent.event_id)).all()
-
-    seen, out = set(), []
-    for ev, route_code, route_type in rows:
-        if ev.vehicle_id in seen:
-            continue
-        seen.add(ev.vehicle_id)
-        out.append({
-            "vehicle_id": ev.vehicle_id, "trip_id": ev.trip_id, "route_id": ev.route_id,
-            "route_code": route_code, "route_type": route_type, "stop_id": ev.stop_id,
-            "event_type": ev.event_type, "event_time": ev.event_time.isoformat(),
-            "longitude": ev.longitude, "latitude": ev.latitude, "speed_kmh": ev.speed_kmh,
-        })
-    return jsonify(at=at.isoformat(), window_seconds=seconds, active=len(out), vehicles=out, source="Simulated Live Feed")
+    if now.weekday() not in days:
+        raise ApiError(404, "no_replay_data", "The replay has no day matching today's weekday.")
+    at = datetime.fromisoformat(f"{days[now.weekday()]}T{now:%H:%M:%S}")
+    seconds = int_arg("window", 180, 30, 900)
+    out = _positions(at, seconds)
+    return jsonify(at=at.isoformat(), window_seconds=seconds, active=len(out), vehicles=out,
+                   mode="follow_clock", source=REPLAY_SOURCE)
