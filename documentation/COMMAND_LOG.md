@@ -1047,3 +1047,26 @@ DO regeneration
 **Result:** PASS for actionability volume: 140 recommendations, within the requested 50-150 range. Counts are 12 ANOMALY, 14 CAPACITY, 1 FREQUENCY, 37 RELIABILITY, 38 SCHEDULE, and 38 STOP. Every generated entry includes its specific subject and numerical evidence.
 
 **Git commit:** pending.
+
+---
+
+## CMD-025 | 2026-09-27 (UTC+05:00) | Restrict model training to admins; stop calling the replay "live" (branch `fix/train-access-and-replay-label`)
+**My command (verbatim):**
+```text
+don't change the 1 just continue the logs from you side 
+and fix this 2 and 3 okay and there are ui issue like
+```
+
+**Understood as:** Leave the log damage from the last `main` pull as it is (item 1) and continue the logs from here. Fix item 2: any logged-in role could start full model training through `POST /api/train` (permission `models:read`). Fix item 3: the map's "Simulated Live Feed" presents the 7-day GPS replay as live, against the standing rule "replay map, never live". The UI issues were cut off in the message and are still to be described.
+
+**Numbering note:** this log currently ends at CMD-019 because CMD-019 (backend) to CMD-024 were removed in the pull; they remain in git history (e.g. commit `d07f912`). Numbering continues at CMD-025 so no number is reused.
+
+**Actions taken:**
+1. `POST /api/train`: new permission `models:train` (admin only; `config/rbac.yaml`, seeded), one run at a time (409 `training_running`), `pipeline` validated, audit entry `models.train`.
+2. Train page rewritten on the shared API client (the old page sent `Bearer undefined`), confirmation before starting, honest text: training overwrites the model files whatever their scores. Menu item needs `models:train`.
+3. `/api/network/live_vehicles` replaced by `/api/network/vehicles/now` (replay at today's weekday and current time, `source` says it is a replay). Map: "Live Feed" (on by default, broken token lookup) replaced by an opt-in "Follow the clock (replay)"; the pill names the replayed day and time. `add_live.py` removed.
+4. Logs continued in UTF-8 (DEV_LOG section, AI_USAGE row 15); earlier damage left as is, as asked.
+
+**Result:** Success for items 2 and 3. Tests: new 4 training tests and the follow-the-clock test pass; the 6 failing serving tests are pre-existing (delay model file v1 on this laptop vs v2 metadata from main) and need the new model files. Build and lint clean.
+
+**Git commit:** see `git log` on `fix/train-access-and-replay-label`.
