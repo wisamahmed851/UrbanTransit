@@ -45,7 +45,8 @@ export function ForecastPage() {
    <div className="filters">
     <Segmented label="Forecast horizon" value={horizon} onChange={setHorizon}
      options={HORIZONS.map((h) => ({ value: h, label: `${h} days` }))} />
-    <EstimateTag>Forecast values are estimates</EstimateTag>
+    <EstimateTag>
+     values are estimates</EstimateTag>
    </div>
 
    {network.error && <ErrorNotice error={network.error} />}
