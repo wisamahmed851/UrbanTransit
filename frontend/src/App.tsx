@@ -8,6 +8,7 @@ import { LoginPage } from './pages/LoginPage'
 
 // Pages load on first visit, so the charts library is not in the sign-in bundle.
 const AuditPage = lazy(() => import('./pages/admin/AuditPage').then((m) => ({ default: m.AuditPage })))
+const JobRunsPage = lazy(() => import('./pages/admin/JobRunsPage').then((m) => ({ default: m.JobRunsPage })))
 const ReferencePage = lazy(() => import('./pages/admin/ReferencePage').then((m) => ({ default: m.ReferencePage })))
 const UsersPage = lazy(() => import('./pages/admin/UsersPage').then((m) => ({ default: m.UsersPage })))
 const ComparisonPage = lazy(() => import('./pages/ComparisonPage').then((m) => ({ default: m.ComparisonPage })))
@@ -63,6 +64,7 @@ export function App() {
               <Route path="admin/reference" element={<ReferencePage />} />
               <Route path="admin/users" element={<UsersPage />} />
               <Route path="admin/audit" element={<AuditPage />} />
+              <Route path="admin/jobs" element={<JobRunsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

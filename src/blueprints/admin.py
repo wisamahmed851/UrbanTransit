@@ -212,7 +212,6 @@ def update_user(user_id: int):
 
 
 # ---- audit log -------------------------------------------------------------------------
-
 @bp.get("/audit-log")
 @permission_required("audit:read")
 def audit_log():

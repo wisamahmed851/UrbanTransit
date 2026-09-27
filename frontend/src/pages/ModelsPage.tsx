@@ -13,7 +13,7 @@ type Pipeline = 'python' | 'spark'
 const TASKS: { value: Task; label: string; about: string; metrics: [string, string][] }[] = [
   { value: 'crowding_flag', label: 'Crowding', about: 'Predicts whether a trip will run above 90% of capacity.',
     metrics: [['accuracy', 'Accuracy'], ['macro_f1', 'Macro F1'], ['weighted_f1', 'Weighted F1']] },
-  { value: 'delay_severity', label: 'Delay severity', about: 'Predicts whether a trip will be on time, or minor, moderate or severely late.',
+  { value: 'delay_severity', label: 'Delay severity', about: 'Four generated-data labels: On Time (<5 min), Minor (5–10), Moderate (10–20), or Severe (20+). Major is not a generated class.',
     metrics: [['accuracy', 'Accuracy'], ['macro_f1', 'Macro F1'], ['weighted_f1', 'Weighted F1']] },
   { value: 'daily_boardings', label: 'Daily demand', about: 'Forecasts boardings per route per day from earlier days only.',
     metrics: [['mae', 'MAE'], ['rmse', 'RMSE'], ['r2', 'R²'], ['mape', 'MAPE %']] },

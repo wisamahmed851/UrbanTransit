@@ -174,9 +174,19 @@ def predict_crowding(route_id: str, direction: int, day: date, hour: int, vehicl
 
 
 def delay_bands_match_model() -> bool:
-    """True when config/thresholds.yaml still uses the 5/10/20-minute bands the model was trained on."""
-    bands = [b["below_minutes"] for b in settings.load_thresholds()["delay_severity"]]
-    return bands == [5, 10, 20, None]
+    """True when the configured four labels retain the model's 5/10/20-minute contract."""
+    contract = settings.delay_severity_contract()
+    return contract["labels"] == ["On Time", "Minor", "Moderate", "Severe"] and contract["cutpoints_minutes"] == [5, 10, 20]
+
+
+def delay_band_description() -> str:
+    """Human-readable API wording generated from the configured label contract."""
+    contract = settings.delay_severity_contract()
+    labels, cuts = contract["labels"], contract["cutpoints_minutes"]
+    pieces = [f"{labels[0]} < {cuts[0]} min"]
+    pieces.extend(f"{labels[index]} {cuts[index - 1]}-{cuts[index]} min" for index in range(1, len(cuts)))
+    pieces.append(f"{labels[-1]} >= {cuts[-1]} min")
+    return "mean trip delay: " + ", ".join(pieces) + f" ({contract['excluded_label']} is not a generated label)"
 
 
 def predict_delay(route_id: str, direction: int, day: date, hour: int, vehicle_id: str | None = None) -> dict:
@@ -184,7 +194,7 @@ def predict_delay(route_id: str, direction: int, day: date, hour: int, vehicle_i
     row = feature_row("delay_severity", ctx, day, vehicle_id)
     m = load_classifier("delay_severity")
     proba = predict_proba("delay_severity", [row])[0]
-    order = ["On Time", "Minor", "Moderate", "Severe"]
+    order = settings.delay_severity_contract()["labels"]
     probabilities = [{"severity": s, "probability": round(float(proba[m["labels"].index(s)]), 4)} for s in order]
     card = model_card("delay_severity")
     warnings = []
@@ -200,7 +210,7 @@ def predict_delay(route_id: str, direction: int, day: date, hour: int, vehicle_i
                  "hour": hour, "day_type": day_type_of(day)},
         "prediction": {"severity": max(probabilities, key=lambda p: p["probability"])["severity"],
                        "probabilities": probabilities,
-                       "bands": "mean trip delay: On Time < 5 min, Minor 5-10, Moderate 10-20, Severe >= 20"},
+                       "bands": delay_band_description()},
         "inputs": row, "observed": observed(ctx), "model": card, "warnings": warnings,
     }
 

@@ -2,6 +2,15 @@ bunching:
   gap_ratio_threshold: 1.5
   headway_ratio_threshold: 0.5
   min_scheduled_headway_minutes: 3
+# This is the complete, generated-data taxonomy for the delay_severity target.
+# "Major" is deliberately not a label: delays of 20 minutes or more are Severe.
+# Keep this contract in sync with the bands below before retraining any delay model.
+delay_severity_contract:
+  version: v1
+  labels: [On Time, Minor, Moderate, Severe]
+  model_training_cutpoints_minutes: [5, 10, 20]
+  excluded_label: Major
+  rationale: "The generated source data has four delay classes; it does not generate a Major class."
 delay_severity:
 - below_minutes: 5
   name: On Time

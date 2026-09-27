@@ -92,12 +92,18 @@ flask users create <name> --role admin                   # first account
 python database/load_analytics_to_mysql.py --reference   # HDFS -> MySQL (HDFS must be running)
 python database/verify_mysql_load.py                     # value-level check of the load
 python database/load_model_metrics.py                    # Phase 6 metrics + cluster profiles
+# Track a future Spark command in the dashboard (name, log path, then command):
+bash scripts/run_tracked_job.sh phase5_analytics reports/processing_logs/phase5.log -- \
+  python spark_jobs/phase5_analytics.py
 flask run                                                # API on http://127.0.0.1:5000/api
 python -m pytest                                         # backend tests (in-memory SQLite)
 ```
 
 See [documentation/backend_api.md](documentation/backend_api.md) and
 [documentation/database_schema.md](documentation/database_schema.md).
+
+Tracked runs appear in **Administration → Spark job monitor**. The web application only
+reads their state; it never starts Spark jobs or assumes that a terminal command succeeded.
 
 ### Web dashboard (React)
 

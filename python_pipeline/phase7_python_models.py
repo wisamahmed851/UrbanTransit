@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse, json, math
 from datetime import date
 from pathlib import Path
+import sys
 
 import joblib
 import numpy as np
@@ -28,6 +29,11 @@ from sklearn.utils.class_weight import compute_sample_weight
 from xgboost import XGBClassifier, XGBRegressor
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from config import settings
+
 LOCAL = ROOT / "python_pipeline" / "local_clean"
 MODEL = ROOT / "models" / "python"
 METRICS = MODEL / "metrics"
@@ -35,6 +41,12 @@ SAMPLES = ROOT / "reports" / "python_sample_predictions"
 REPORT = ROOT / "reports" / "python_model_metrics.md"
 DATES = {"train": ("2025-09-01", "2026-05-01"), "validation": ("2026-05-02", "2026-07-01"), "test": ("2026-07-02", "2026-08-31")}
 RNG = 42
+
+
+def delay_taxonomy() -> tuple[list[str], list[float]]:
+    """The Phase 7 target is derived from the same declared four-class contract as Spark."""
+    contract = settings.delay_severity_contract()
+    return contract["labels"], contract["cutpoints_minutes"]
 
 def read(name: str) -> pd.DataFrame:
     files = list((LOCAL / name).rglob("*.parquet"))
@@ -72,7 +84,8 @@ def base_trip() -> pd.DataFrame:
     x["scheduled_runtime_min"] = (pd.to_datetime(x.scheduled_arrival)-pd.to_datetime(x.scheduled_departure)).dt.total_seconds()/60
     # Clean delay logs contain exceptions; no clean record means within the documented 5-minute tolerance.
     x["delay_minutes"] = x.delay_minutes.fillna(0.0)
-    x["delay_severity"] = pd.cut(x.delay_minutes, [-np.inf,5,10,20,np.inf], labels=["On Time","Minor","Moderate","Severe"], right=False).astype(str)
+    labels, cutpoints = delay_taxonomy()
+    x["delay_severity"] = pd.cut(x.delay_minutes, [-np.inf, *cutpoints, np.inf], labels=labels, right=False).astype(str)
     x["crowding_flag"] = ((x.max_load / x.capacity_total) > .9).astype("float")
     x.loc[x.max_load.isna() | x.capacity_total.isna() | (x.capacity_total <= 0), "crowding_flag"] = np.nan
     x = x.sort_values(["route_id","direction","scheduled_departure","trip_id"])

@@ -78,3 +78,37 @@ def hdfs_path(*parts: str) -> str:
 def load_thresholds() -> dict:
     with open(THRESHOLDS_FILE, encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def delay_severity_contract() -> dict:
+    """Return and validate the single explicit delay-label taxonomy.
+
+    The generated UrbanTransit data has exactly four classes.  Keeping the declared
+    labels, band definitions, and Python-model cut-points together prevents a
+    historical/assumed ``Major`` class from silently entering a feature or API path.
+    """
+    config = load_thresholds()
+    contract = config.get("delay_severity_contract", {})
+    bands = config.get("delay_severity", [])
+    labels = [band.get("name") for band in bands]
+    bounds = [band.get("below_minutes") for band in bands]
+    declared_labels = contract.get("labels")
+    cutpoints = contract.get("model_training_cutpoints_minutes")
+
+    if not labels or labels != declared_labels:
+        raise ValueError("delay_severity bands must exactly match delay_severity_contract.labels")
+    if "Major" in labels or contract.get("excluded_label") != "Major":
+        raise ValueError("UrbanTransit delay_severity uses four classes and explicitly excludes Major")
+    if bounds[-1] is not None or bounds[:-1] != cutpoints:
+        raise ValueError("delay_severity bounds must match the declared training cut-points and end with null")
+    if any(not isinstance(value, (int, float)) for value in cutpoints) or list(cutpoints) != sorted(cutpoints):
+        raise ValueError("delay_severity training cut-points must be increasing numeric values")
+
+    return {
+        "version": contract.get("version"),
+        "labels": labels,
+        "cutpoints_minutes": list(cutpoints),
+        "bands": bands,
+        "excluded_label": contract["excluded_label"],
+        "rationale": contract.get("rationale", ""),
+    }

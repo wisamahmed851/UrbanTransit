@@ -49,7 +49,7 @@ class ModelVersion(db.Model):
 
 
 class JobRun(db.Model):
-    """History of pipeline/loader runs. Empty until a job is wired to record itself."""
+    """History of pipeline and loader runs shown by the operational monitor."""
 
     __tablename__ = "job_runs"
 
@@ -59,3 +59,18 @@ class JobRun(db.Model):
     started_at = db.Column(db.DateTime, nullable=False, default=utcnow)
     finished_at = db.Column(db.DateTime)
     log_path = db.Column(db.String(512))
+
+    def to_dict(self) -> dict:
+        """A stable API shape, including a duration only after the job has ended."""
+        duration_seconds = None
+        if self.finished_at is not None:
+            duration_seconds = round((self.finished_at - self.started_at).total_seconds(), 1)
+        return {
+            "id": self.id,
+            "job_name": self.job_name,
+            "status": self.status,
+            "started_at": self.started_at.isoformat(),
+            "finished_at": self.finished_at.isoformat() if self.finished_at else None,
+            "duration_seconds": duration_seconds,
+            "log_path": self.log_path,
+        }

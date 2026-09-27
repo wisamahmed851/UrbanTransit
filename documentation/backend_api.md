@@ -123,6 +123,21 @@ the API cannot say which routes belong to a cluster.
 
 ### Admin
 
+| method | path | permission | notes |
+|---|---|---|---|
+| GET | `/api/jobs` | audit:read | Tracked Spark/loader job history: `{entries, total, limit, offset}`. Supports `status=running|success|failed`. |
+
+Use the tracked runner for Spark work so the monitor has an accurate start, finish and log path:
+
+```bash
+bash scripts/run_tracked_job.sh phase5_analytics reports/processing_logs/phase5.log -- \
+  python spark_jobs/phase5_analytics.py
+```
+
+It records `running` before the command starts and changes it to `success` or `failed` from
+the command's true exit code. It does not fabricate a completion state after a terminal or
+WSL failure.
+
 | method | path | permission |
 |---|---|---|
 | GET | `/api/admin/{routes,stops,vehicles}` | reference:read. `?q=` searches id and name; paged |

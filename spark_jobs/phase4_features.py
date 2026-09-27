@@ -20,6 +20,7 @@ from pyspark.sql.window import Window
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from config import settings
 from spark_jobs.common import PROJECT_ROOT, get_logger, get_spark, hdfs_file_count, hdfs_uri
 
 CFG = PROJECT_ROOT / "config" / "phase4.yaml"
@@ -55,8 +56,8 @@ def day_idx(col="service_date"):
 
 
 def severity_bands():
-    """Delay-severity bands from config/thresholds.yaml (single source of truth)."""
-    return yaml.safe_load((PROJECT_ROOT / "config" / "thresholds.yaml").read_text(encoding="utf-8"))["delay_severity"]
+    """Validated four-label delay taxonomy from config/thresholds.yaml."""
+    return settings.delay_severity_contract()["bands"]
 
 
 def severity(delay, cfg):

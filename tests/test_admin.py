@@ -62,3 +62,21 @@ def test_user_management(client, auth):
     res = client.patch(f"/api/admin/users/{user_id}", json={"roles": ["operator"], "is_active": False}, headers=h)
     assert res.get_json()["user"]["roles"] == ["operator"] and res.get_json()["user"]["is_active"] is False
     assert client.post("/api/auth/login", json={"username": "newbie", "password": "longenough"}).status_code == 401
+
+
+def test_job_monitor_is_read_only_and_evaluator_visible(app, client, auth):
+    from src.extensions import db
+    from src.models.ops import JobRun
+    from src.models.rbac import utcnow
+
+    with app.app_context():
+        db.session.add(JobRun(job_name="phase5_analytics", status="success", log_path="reports/phase5.log",
+                              finished_at=utcnow()))
+        db.session.commit()
+    res = client.get("/api/jobs", headers=auth("evaluator"))
+    assert res.status_code == 200
+    row = res.get_json()["entries"][0]
+    assert row["job_name"] == "phase5_analytics"
+    assert row["status"] == "success"
+    assert row["duration_seconds"] is not None
+    assert client.get("/api/jobs").status_code == 401

@@ -87,6 +87,16 @@ export interface AuditEntry {
   details: Record<string, unknown> | null
 }
 
+export interface JobRun {
+  id: number
+  job_name: string
+  status: 'running' | 'success' | 'failed'
+  started_at: string
+  finished_at: string | null
+  duration_seconds: number | null
+  log_path: string | null
+}
+
 // ---- Model serving (CMD-024) ----------------------------------------------------------
 
 export interface MetricRowWithPipeline extends MetricRow { pipeline: 'spark' | 'python' }
