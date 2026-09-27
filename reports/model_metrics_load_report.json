@@ -1,6 +1,6 @@
 {
-  "metric_files": 51,
-  "model_metrics_rows": 506,
+  "metric_files": 56,
+  "model_metrics_rows": 546,
   "rows_per_file": {
     "spark/crowding_flag_gbt_sample.json": 8,
     "spark/crowding_flag_logistic_regression_sample.json": 8,
@@ -43,7 +43,9 @@
     "python/delay_severity_random_forest_v2.json": 12,
     "python/delay_severity_xgboost.json": 12,
     "python/delay_severity_xgboost_v2.json": 12,
+    "python/occupancy_forecast_random_forest.json": 8,
     "python/occupancy_forecast_ridge.json": 8,
+    "python/occupancy_forecast_selected_v1.json": 8,
     "python/route_clustering_agglomerative_k3.json": 2,
     "python/route_clustering_agglomerative_k4.json": 2,
     "python/route_clustering_agglomerative_k5.json": 2,
@@ -52,26 +54,30 @@
     "python/route_clustering_dbscan_eps1.0.json": 2,
     "python/route_clustering_kmeans_k3.json": 2,
     "python/route_clustering_kmeans_k4.json": 2,
-    "python/route_clustering_kmeans_k5.json": 2
+    "python/route_clustering_kmeans_k5.json": 2,
+    "python/stop_period_demand_random_forest.json": 8,
+    "python/stop_period_demand_ridge.json": 8,
+    "python/stop_period_demand_selected_v1.json": 8
   },
   "rows_per_pipeline": {
     "spark": 340,
-    "python": 166
+    "python": 206
   },
   "rows_per_task": {
     "crowding_flag": 110,
     "daily_boardings": 120,
     "delay_severity": 241,
     "route_clustering": 27,
-    "occupancy_forecast": 8
+    "occupancy_forecast": 24,
+    "stop_period_demand": 24
   },
   "rows_per_split_type": {
     "validation_sample": 10,
     "test_full": 10,
     "validation_trial": 121,
     "train": 85,
-    "validation": 130,
-    "test": 132,
+    "validation": 150,
+    "test": 152,
     "validation_tuning": 4,
     "validation_selection": 2,
     "test_default_threshold": 12

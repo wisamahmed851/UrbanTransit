@@ -67,7 +67,7 @@ export function ChartFrame<R extends Record<string, string | number | boolean | 
     <Segmented label="View as" value={view} onChange={setView}
      options={[{ value: 'chart', label: 'Chart' }, { value: 'table', label: 'Table' }]} />
    </div>
-   {view === 'chart' ? chart : <DataTable rows={rows} columns={columns} />}
+   <div key={view} className="chart-view">{view === 'chart' ? chart : <DataTable rows={rows} columns={columns} />}</div>
   </div>
  )
 }

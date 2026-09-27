@@ -14,6 +14,8 @@ const CATEGORY_LABEL: Record<string, string> = {
  CAPACITY: 'Capacity', FREQUENCY: 'Frequency', SCHEDULE: 'Schedule', RELIABILITY: 'Reliability', STOP: 'Stop', ANOMALY: 'Anomaly',
 }
 const PAGE = 24
+/** Counters show whole numbers only, also while they count up. */
+const whole = (n: number) => Math.round(n).toLocaleString()
 
 /** Route ids link to the route page; stop ids and others are shown as text. */
 function Subject({ id }: { id: string }) {
@@ -41,10 +43,10 @@ export function RecommendationsPage() {
    </PageHead>
 
    <Stats items={[
-    { label: 'Critical', icon: Siren, value: s?.by_priority.Critical ?? '…', format: String, sub: 'act first' },
-    { label: 'High', icon: WarningCircle, value: s?.by_priority.High ?? '…', format: String },
-    { label: 'Medium', icon: Warning, value: s?.by_priority.Medium ?? '…', format: String },
-    { label: 'Low', icon: Info, value: s?.by_priority.Low ?? '…', format: String, sub: s ? `${s.total} recommendations in all` : undefined },
+    { label: 'Critical', icon: Siren, value: s?.by_priority.Critical ?? '…', format: whole, sub: 'act first' },
+    { label: 'High', icon: WarningCircle, value: s?.by_priority.High ?? '…', format: whole },
+    { label: 'Medium', icon: Warning, value: s?.by_priority.Medium ?? '…', format: whole },
+    { label: 'Low', icon: Info, value: s?.by_priority.Low ?? '…', format: whole, sub: s ? `${s.total} recommendations in all` : undefined },
    ]} />
 
    <form className="filters" onSubmit={(e) => e.preventDefault()}>

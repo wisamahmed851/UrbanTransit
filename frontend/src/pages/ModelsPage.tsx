@@ -30,6 +30,8 @@ const TARGET = { accuracy: 0.85, macro_f1: 0.8 }
 /** Held-out results only: `test` for full runs, `test_full` for sample-trained runs, `train` for clustering. */
 const HEADLINE_SPLITS = new Set(['test', 'test_full'])
 const CLASSIFIERS = new Set<Task>(['delay_severity', 'crowding_flag'])
+/** Tasks that only the Python pipeline models (no Spark run exists for them). */
+const PYTHON_ONLY = new Set<Task>(['occupancy_forecast', 'stop_period_demand'])
 
 export function ModelsPage() {
  const [task, setTask] = useState<Task>('crowding_flag')
@@ -54,14 +56,17 @@ export function ModelsPage() {
   return [...byFile.values()].filter((r) => spec.metrics.some(([k]) => r[k] != null))
  }, [metrics.data, task, spec])
 
- const isServed = (r: Row) => pipeline === 'python' && served && r.algorithm === served.algorithm
+ // The served model's metrics are the file the API reads: <task>_<algorithm>.json (no version suffix).
+ const isServed = (r: Row) => pipeline === 'python' && served && r.source_file === `${task}_${served.algorithm}.json`
  const columns: Column[] = [
   { key: 'source_file', label: 'Run', render: (r) => (
    <>{String(r.source_file).replace(/\.json$/, '').replace(`${task}_`, '').replace(/_/g, ' ')}{isServed(r) && <> <Status tone="good">Served</Status></>}</>
   ) },
   ...spec.metrics.filter(([k]) => table.some((r) => r[k] != null)).map(([k, l]) => ({
    key: k, label: l, num: true,
-   render: (r: Row) => r[k] == null ? '-' : k === 'accuracy' ? pct(r[k], 1) : Number(r[k]).toFixed(['mae', 'rmse', 'mape'].includes(k) ? 1 : 3),
+   // Errors below 10 (occupancy shares, stop tap-ins) need 3 decimals; boardings per day need 1.
+   render: (r: Row) => r[k] == null ? '-' : k === 'accuracy' ? pct(r[k], 1)
+    : Number(r[k]).toFixed(['mae', 'rmse', 'mape'].includes(k) && Math.abs(Number(r[k])) >= 10 ? 1 : 3),
   } as Column)),
   { key: 'split', label: 'Evaluated on', render: (r) => (r.split === 'test_full' ? 'Full test set (trained on a 10% sample)' : r.split === 'train' ? 'Training-period routes' : 'Held-out test set') },
   CLASSIFIERS.has(task)
@@ -96,7 +101,10 @@ export function ModelsPage() {
      <Segmented label="Model" value={task} onChange={setTask} options={TASKS.map((t) => ({ value: t.value, label: t.label }))} />
     </div>}>
     {metrics.error ? <ErrorNotice error={metrics.error} /> : metrics.loading && !metrics.data ? <Loading what="metrics" /> : (
-     <DataTable rows={table} stale={metrics.loading} columns={columns} />
+     <DataTable rows={table} stale={metrics.loading} columns={columns}
+      empty={pipeline === 'spark' && PYTHON_ONLY.has(task)
+       ? `The Spark pipeline has no ${spec.label.toLowerCase()} model: this task was built only in the Python pipeline. Switch to Python to see its results.`
+       : `No ${pipeline === 'spark' ? 'Spark' : 'Python'} results are loaded for this model yet. Run database/load_model_metrics.py after new metric files arrive.`} />
     )}
     <p className="panel-note">SRS target for classifiers: test accuracy of at least 85% or macro F1 of at least 0.80. Macro F1 weighs every class
      equally, so it shows how well rare classes (severe delays, crowded trips) are caught. MAE and RMSE are boardings per route-day.</p>

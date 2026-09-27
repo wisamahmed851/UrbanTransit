@@ -5,7 +5,9 @@
  *  Uses Motion's `whileInView` (IntersectionObserver); no scroll listeners.
  * - <CountUp>: KPI values tick up to their number when first shown (draws the eye to the KPIs).
  *
- * Both render their final state immediately when the viewer prefers reduced motion.
+ * Reduced motion is tiered, not switched off (accessible-animation skill): <Reveal> keeps a
+ * short fade (no movement) and <CountUp> shows its final value at once. Only transform and
+ * opacity are animated (60fps-animation skill).
  */
 
 import { animate, motion, useInView, useReducedMotion } from 'motion/react'
@@ -31,10 +33,10 @@ export function Reveal({ children, className, as = 'div' }: {
  return (
   <Tag
    className={className}
-   initial={reduce ? false : { opacity: 0, y: 16 }}
+   initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
    whileInView={{ opacity: 1, y: 0 }}
    viewport={{ once: true, amount: 0.15 }}
-   transition={{ duration: 0.55, delay: Math.min(index, 8) * 0.06, ease: EASE }}
+   transition={reduce ? { duration: 0.15 } : { duration: 0.55, delay: Math.min(index, 8) * 0.06, ease: EASE }}
   >
    {children}
   </Tag>
@@ -55,9 +57,12 @@ export function CountUp({ value, format }: { value: number; format: (n: number) 
    if (reduce) { el.textContent = format(value); shown.current = value }
    return
   }
+  // Whole-number targets count in whole numbers: an in-between value such as 10.7382916
+  // would be wider than the card (CMD-026, Recommendations counters).
+  const step = Number.isInteger(value) ? Math.round : (v: number) => v
   const controls = animate(shown.current, value, {
    duration: 1.1, ease: EASE,
-   onUpdate: (v) => { el.textContent = format(v); shown.current = v },
+   onUpdate: (v) => { el.textContent = format(step(v)); shown.current = v },
    // Always end on the exact value, never on the last interpolated frame.
    onComplete: () => { el.textContent = format(value); shown.current = value },
   })

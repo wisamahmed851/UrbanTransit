@@ -3,7 +3,7 @@ import { api, ApiError } from '../../api/client'
 import { ErrorNotice, PageHead, Panel, Status } from '../../components/ui'
 import { useApi } from '../../lib/useApi'
 
-interface JobRun { job_id: number; job_name: string; status: string; duration_seconds?: number | null }
+interface JobRun { id: number; job_name: string; status: string; duration_seconds?: number | null }
 
 const TRAINING_JOBS = ['spark_models', 'python_models', 'evaluate_saved_models', 'load_model_outputs']
 
@@ -62,7 +62,7 @@ export function TrainPage() {
       <Panel title="Progress and logs" note="Recent training jobs, refreshed every 3 seconds.">
         {trainingJobs.length === 0 ? <p className="muted">No recent training jobs.</p> : (
           <div style={{ display: 'grid', gap: '1rem' }}>
-            {trainingJobs.map((j) => <JobLog key={j.job_id} job={j} tick={tick} />)}
+            {trainingJobs.map((j) => <JobLog key={j.id} job={j} tick={tick} />)}
           </div>
         )}
       </Panel>
@@ -73,7 +73,7 @@ export function TrainPage() {
 function JobLog({ job, tick }: { job: JobRun; tick: number }) {
   const running = job.status.toLowerCase() === 'running'
   // Poll the log while the job runs; once finished, fetch it once.
-  const log = useApi<{ log: string }>(`/jobs/${job.job_id}/log`, running ? { _: tick } : undefined)
+  const log = useApi<{ log: string }>(`/jobs/${job.id}/log`, running ? { _: tick } : undefined)
   const tone = job.status === 'success' ? 'good' : job.status === 'failed' ? 'critical' : 'neutral'
   return (
     <div>
