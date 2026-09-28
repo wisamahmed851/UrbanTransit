@@ -215,3 +215,19 @@ Disk: WSL disk `D:\WSL\Ubuntu-24.04\ext4.vhdx` = 8.70 GB; C: 13.3 GB free; D: 18
 - **Modals:** Users and Routes/stops/vehicles create forms moved unchanged into a native `<dialog>` modal behind "New user" / "New route|stop|vehicle"; editing stays inline.
 - **Problems found and fixed while testing:** a counter whose value first arrives as "…" never started (its element did not exist when the in-view observer attached); with a very slow network the loader could hand over while the page code was still downloading, leaving a blank area (now a block skeleton); skeletons were too faint on dark panels.
 - **Verification:** browser traces for the loader/entrance order, skeletons under 5-6 s simulated latency, counters mid-count and final, modal open/Escape/Cancel/server error (existing username, nothing written), inline edit unchanged; reduced motion (loader kept, counters final at once, no transforms, cursor off); all pages opened with no console errors or overflow; build and lint (no new warnings).
+
+
+## 2026-09-27/28 — Main merged, new model files, serving fixes, map theme (CMD-028)
+- Merged `origin/main` (Phase 7 retrain, 70/30 split, reporting fixes). Unpacked `models (1).zip` (1.7 GB; 28 metric files identical to main's).
+- **Delay prediction and every What-if scenario failed (HTTP 500)**: the retrained delay model takes `prior_route_hour_delay_mean` and `prior_route_hour_severe_rate`, which serving never supplied. Added both to `trip_context` (migration `14a50a4cc0a8`), the loader, serving rows, and shifted-hour what-if.
+- **Stop-period demand had no stops**: its history comes from `tickets`, never staged here. Staged it; full `load_model_outputs.py` PASS (stop_period_boardings 1,333,345 rows; registry 6 models). The full re-score (`evaluate_saved_models.py`) was killed for lack of memory on this 8 GB machine, so the registry uses the teammate's re-score report for these exact files; model cards now say so instead of "re-scored on this server".
+- **Duplicate model loads**: `functools.cache` let the startup warm-up and the first request each unpickle the same 622 MB forest; `load_once` makes concurrent callers wait for one load (tested). The 464 MB stop-period forest is now warmed at startup (first forecast took 16 s).
+- Login submit label centred; both network maps follow the active theme (CARTO Dark Matter / Positron, recoloured; themed offline fallback).
+- Verification: live answers for crowding, delay (61.9%, macro F1 0.413, labelled below target), occupancy, stop-period forecast and all 7 what-if scenarios; pytest 131 passed.
+
+## 2026-09-28 — Transit hero band, map reveal, smoother dashboard motion (CMD-029)
+- `HeroBand` on Overview and Map: metro-style lines, stations and buses gliding between stops (dwell at the middle stop), drifting light. Lines are static SVG; stations and buses are HTML moved with `transform` in container units, so the animation stays on the compositor. The band sits above the glass panels (moving content under `backdrop-filter` would re-blur every frame) and pauses off screen.
+- Map: layers fade in in sequence with MapLibre paint transitions (no per-frame JS), once per visit.
+- Charts remount on reveal so their draw-in is seen (they used to animate behind the loader); score bars and sparklines grow; table rows cascade; the current nav station pops.
+- New project skill `.agents/skills/urbantransit-motion/SKILL.md` records the motion system, rules and a pre-flight checklist.
+- Verification: buses measured moving and dwelling, paused off screen and resumed; reduced motion: nothing moves; all rows and bars end fully visible; dark and light screenshots; build and lint (no new warnings).

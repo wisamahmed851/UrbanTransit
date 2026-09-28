@@ -1199,3 +1199,25 @@ and the map thing is also the same as in the overview page
 6. Updated stale model-metric test snapshots to the values supplied by the current archive.
 
 **Result:** The production frontend build passes, the full backend suite passes, the focused model-serving/metric suite passes, and lint has only the existing warnings. The database is at migration head; a real MySQL-backed delay prediction includes both new inputs and returns probabilities summing to 1.0. `reports/trip_context_load_report.json` records the successful backfill.
+
+**Follow-up (2026-09-28, resumed session):** the full re-score (`evaluate_saved_models.py`) was killed for lack of memory; the served-model registry was rebuilt from `reports/saved_model_evaluation.json` (the teammate's re-score of these exact files) by a full `load_model_outputs.py` run after staging `tickets` (PASS; stop_period_boardings 1,333,345 rows). Fixed: concurrent duplicate model loads (`load_once`), stop-period model not warmed (16 s first call), model cards claiming a re-score "on this server". Live checks: crowding, delay (61.9% / macro F1 0.413, below target and labelled so), occupancy, stop-period forecast and all 7 what-if scenarios answer 200. pytest 131 passed. Commits `234ea38`, `b43933c`.
+
+---
+
+## CMD-029 | 2026-09-28 (UTC+05:00) | Transit-themed animated backgrounds and smoother dashboard motion (branch `frontend/motion-datatables-site`)
+**My command (verbatim):**
+```text
+can you make some anymation skill for the dashboard overview page and map page with animations and some background related to the project scope propper animations and inside the dashboard also add some animations whcih should looks smooth
+```
+
+**Understood as:** Give the Overview and Network map pages animated backgrounds drawn from the project's subject (a transit network: lines, stations, moving buses), add smooth animations inside the dashboard (map route reveal, chart and bar entrances), keep everything transform/opacity-only and reduced-motion aware, and write the rules down as a project animation skill so later work follows them.
+
+**Actions taken:**
+1. `components/TransitBackdrop.tsx` (`TransitBackdrop`, `HeroBand`) with two layouts; headers of Overview and Map wrapped in it; styles in `app.css` (CMD-029 block).
+2. `TransitMap`: `REVEAL` table and `reveal()` using `<prop>-transition` paint properties; layers start transparent only for the first reveal.
+3. `charts.tsx`: charts keyed on `revealed`; animation 650 ms. CSS: `grow-x` for score bars and sparklines, row cascade (30 ms steps), `stop-pop` for the current station.
+4. `.agents/skills/urbantransit-motion/SKILL.md`: the project's motion rules and checklist (left uncommitted with the rest of `.agents/`).
+
+**Result:** Success. Verified in headless Edge with motion on (bus positions change and dwell, pause off screen, resume, all rows and bars end visible) and with reduced motion (static). Build and lint pass with no new warnings.
+
+**Git commit:** `a59b099` and the docs commit on `frontend/motion-datatables-site`.
