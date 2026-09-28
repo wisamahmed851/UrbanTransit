@@ -1,3 +1,16 @@
+---
+title: UrbanTransit API
+emoji: 🚂
+colorFrom: blue
+colorTo: green
+sdk: gradio
+sdk_version: 4.0.0
+python_version: 3.12
+hardware: cpu-basic
+app_file: hf_app.py
+pinned: false
+---
+
 # UrbanTransit IQ
 
 Public transport analytics platform combining **Big Data** (Apache Spark, Spark SQL,
