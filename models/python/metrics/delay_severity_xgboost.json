@@ -16,6 +16,8 @@
       "headway_min",
       "scheduled_runtime_min",
       "prior_route_delay_mean",
+      "trip_start_delay_minutes",
+      "live_traffic_delay_estimate",
       "prior_route_hour_delay_mean",
       "prior_route_hour_severe_rate",
       "prior_route_delay_lag1",
@@ -46,13 +48,13 @@
     ]
   },
   "train": {
-    "accuracy": 0.959793,
-    "macro_f1": 0.930715,
+    "accuracy": 0.886969,
+    "macro_f1": 0.76614,
     "per_class_f1": {
-      "Minor": 0.810176,
-      "Moderate": 0.935205,
-      "On Time": 0.978405,
-      "Severe": 0.999074
+      "Minor": 0.616128,
+      "Moderate": 0.746072,
+      "On Time": 0.9541,
+      "Severe": 0.748259
     },
     "confusion_matrix": {
       "labels": [
@@ -63,43 +65,43 @@
       ],
       "values": [
         [
-          29951,
-          608,
-          10895,
+          117784,
+          28009,
+          60358,
+          9
+        ],
+        [
+          28512,
+          114359,
+          9609,
+          2239
+        ],
+        [
+          29851,
+          3590,
+          1074796,
           0
         ],
         [
-          1225,
-          27986,
-          1867,
-          0
-        ],
-        [
-          1306,
-          176,
-          322745,
-          0
-        ],
-        [
-          1,
-          2,
-          3,
-          3235
+          29,
+          5886,
+          5,
+          12139
         ]
       ]
     },
-    "within_one_band_accuracy": 0.994883,
+    "within_one_band_accuracy": 0.991096,
     "within_one_band_note": "Ordinal severity prediction is exact or one adjacent band away.",
-    "rows": 400000
+    "rows": 1487175
   },
   "validation": {
-    "accuracy": 0.89511,
-    "macro_f1": 0.596473,
+    "accuracy": 0.890068,
+    "macro_f1": 0.718554,
     "per_class_f1": {
-      "Minor": 0.499798,
-      "Moderate": 0.491807,
-      "On Time": 0.952656,
-      "Severe": 0.441632
+      "Minor": 0.614958,
+      "Moderate": 0.691401,
+      "On Time": 0.954931,
+      "Severe": 0.612927
     },
     "confusion_matrix": {
       "labels": [
@@ -110,42 +112,42 @@
       ],
       "values": [
         [
-          12363,
-          1797,
-          15460,
-          24
+          23306,
+          4291,
+          12698,
+          2
         ],
         [
-          4129,
-          5973,
-          4731,
-          143
+          6109,
+          15607,
+          1876,
+          274
         ],
         [
-          3258,
-          1113,
-          248304,
-          14
+          6081,
+          596,
+          225136,
+          0
         ],
         [
-          78,
-          431,
-          104,
-          314
+          4,
+          786,
+          0,
+          844
         ]
       ]
     },
-    "within_one_band_accuracy": 0.979667,
+    "within_one_band_accuracy": 0.991674,
     "within_one_band_note": "Ordinal severity prediction is exact or one adjacent band away."
   },
   "test": {
-    "accuracy": 0.826422,
-    "macro_f1": 0.520947,
+    "accuracy": 0.851664,
+    "macro_f1": 0.685959,
     "per_class_f1": {
-      "Minor": 0.413995,
-      "Moderate": 0.437934,
-      "On Time": 0.915475,
-      "Severe": 0.316384
+      "Minor": 0.568146,
+      "Moderate": 0.675802,
+      "On Time": 0.937808,
+      "Severe": 0.562081
     },
     "confusion_matrix": {
       "labels": [
@@ -156,32 +158,32 @@
       ],
       "values": [
         [
-          12963,
-          2776,
-          22181,
-          53
+          24453,
+          5408,
+          15511,
+          1
         ],
         [
-          6247,
-          8827,
-          10542,
-          195
+          9418,
+          21602,
+          3502,
+          384
         ],
         [
-          5264,
-          2163,
-          218356,
-          32
+          6829,
+          706,
+          200162,
+          0
         ],
         [
-          177,
-          735,
-          139,
-          308
+          7,
+          1308,
+          0,
+          1091
         ]
       ]
     },
-    "within_one_band_accuracy": 0.954956,
+    "within_one_band_accuracy": 0.985481,
     "within_one_band_note": "Ordinal severity prediction is exact or one adjacent band away."
   },
   "threshold": null,

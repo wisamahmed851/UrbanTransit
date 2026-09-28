@@ -203,6 +203,7 @@ def main():
             .withColumn("occupancy_pct", F.when(F.col("capacity_total") > 0, F.col("max_load") / F.col("capacity_total")))
             .withColumn("travel_time_min", (F.unix_timestamp("actual_arrival") - F.unix_timestamp("actual_departure")) / 60)
             .withColumn("schedule_deviation_min", (F.unix_timestamp("actual_departure") - F.unix_timestamp("scheduled_departure")) / 60)
+            .withColumn("trip_start_delay_minutes", (F.unix_timestamp("actual_departure") - F.unix_timestamp("scheduled_departure")) / 60)
             .withColumn("arrival_delay_min", (F.unix_timestamp("actual_arrival") - F.unix_timestamp("scheduled_arrival")) / 60)
             .withColumn("delay_source", F.when(F.col("trip_status") != "completed", "not_evaluated")
                         .when(F.col("delay_record_quarantined"), "not_evaluated")

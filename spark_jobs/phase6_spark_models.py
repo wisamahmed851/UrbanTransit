@@ -283,7 +283,7 @@ def main():
     w = Window.partitionBy("route_id").orderBy("scheduled_departure", "trip_id")
     base = (base.withColumn("rolling_28_mean_occupancy", F.avg("occupancy_pct").over(w.rowsBetween(-28, -1)))
                 .withColumn("lag_7_occupancy", F.lag("occupancy_pct", 7).over(w)))
-    common = ["hour", "day_of_week", "weekend_indicator", "peak_hour_indicator_asof", "historical_delay_average", "occupancy_pct", "n_stops", "distance_km", "travel_time_min", "demand_wow_growth"]
+    common = ["hour", "day_of_week", "weekend_indicator", "peak_hour_indicator_asof", "historical_delay_average", "occupancy_pct", "n_stops", "distance_km", "travel_time_min", "demand_wow_growth", "trip_start_delay_minutes"]
     delay = base.filter(F.col("delay_severity").isNotNull())
     # vehicle_id has 763 values; tree maxBins must cover that indexed categorical domain.
     task_a_trees = [("random_forest", RandomForestClassifier(seed=42, numTrees=100, maxBins=1024), [{"maxDepth":6}, {"maxDepth":8}, {"maxDepth":10}]),

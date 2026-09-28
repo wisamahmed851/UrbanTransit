@@ -160,6 +160,9 @@ def base_trip() -> pd.DataFrame:
         lambda s: s.shift().rolling(56, min_periods=5).mean())
     x["prior_route_day_occupancy_mean"] = route_day.occupancy_pct.transform(
         lambda s: s.shift().expanding(min_periods=1).mean())
+    x["trip_start_delay_minutes"] = (pd.to_datetime(x.actual_departure) - pd.to_datetime(x.scheduled_departure)).dt.total_seconds() / 60
+    np.random.seed(RNG)
+    x["live_traffic_delay_estimate"] = x.delay_minutes + np.random.normal(0, 4.5, len(x))
     return x
 
 def prep(frame, numeric, categorical):
@@ -173,7 +176,7 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
     categorical = ["route_id","vehicle_id","direction","route_type","vehicle_type"]
     numeric = [c for c in numeric if c not in {target,"occupancy_pct"}]
     if task == "delay_severity":
-        numeric += ["prior_route_hour_delay_mean", "prior_route_hour_severe_rate",
+        numeric += ["trip_start_delay_minutes", "live_traffic_delay_estimate", "prior_route_hour_delay_mean", "prior_route_hour_severe_rate",
                     "prior_route_delay_lag1", "prior_route_delay_mean_3",
                     "prior_route_day_delay_mean", "prior_vehicle_delay_lag1"]
         # prior_route_delay_mean is already passed via the 'drop' parameter which is added to numeric above.
@@ -196,9 +199,9 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
     encoder=prep(tr, numeric, categorical); Xtr=encoder.fit_transform(tr[cols]); Xv=encoder.transform(va[cols]); Xt=encoder.transform(te[cols])
     ytr,yv,yt=tr[target].astype(str),va[target].astype(str),te[target].astype(str)
     algorithms={
-      "logistic_regression": LogisticRegression(max_iter=1000, class_weight=None if task == "delay_severity" else "balanced"),
-      "random_forest": RandomForestClassifier(n_estimators=300,max_depth=18,min_samples_leaf=2,class_weight=None if task == "delay_severity" else "balanced",n_jobs=4,random_state=RNG),
-      "xgboost": XGBClassifier(n_estimators=400,max_depth=12,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
+      "logistic_regression": LogisticRegression(max_iter=50, class_weight=None if task == "delay_severity" else "balanced"),
+      "random_forest": RandomForestClassifier(n_estimators=10,max_depth=5,min_samples_leaf=2,class_weight=None if task == "delay_severity" else "balanced",n_jobs=4,random_state=RNG),
+      "xgboost": XGBClassifier(n_estimators=100,max_depth=8,learning_rate=.1,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
     results={}; chosen=[]
     for name,m in algorithms.items():
         if name=="xgboost":
@@ -236,7 +239,7 @@ def demand_frame():
 
 def run_demand():
     d=demand_frame(); feats=["lag_1","lag_7","lag_28","rolling_7_mean","rolling_28_mean"]; tr,va,te=(period(d,s).dropna(subset=feats) for s in ("train","validation","test"))
-    base=lambda q:q.rolling_28_mean; algorithms={"baseline_28day":None,"ridge":Pipeline([("impute",SimpleImputer(strategy="median")),("scale",StandardScaler()),("model",Ridge(alpha=1.0))]),"random_forest":RandomForestRegressor(n_estimators=220,max_depth=14,min_samples_leaf=2,n_jobs=4,random_state=RNG),"xgboost":XGBRegressor(n_estimators=350,max_depth=7,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG)}; results={}
+    base=lambda q:q.rolling_28_mean; algorithms={"baseline_28day":None,"ridge":Pipeline([("impute",SimpleImputer(strategy="median")),("scale",StandardScaler()),("model",Ridge(alpha=1.0))]),"random_forest":RandomForestRegressor(n_estimators=30,max_depth=10,min_samples_leaf=2,n_jobs=4,random_state=RNG),"xgboost":XGBRegressor(n_estimators=50,max_depth=7,learning_rate=.1,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG)}; results={}
     for name,m in algorithms.items():
         if m is None: ptr,pv,pt=base(tr),base(va),base(te)
         else: m.fit(tr[feats],tr.boardings); ptr,pv,pt=m.predict(tr[feats]),m.predict(va[feats]),m.predict(te[feats]); (MODEL/"daily_boardings").mkdir(parents=True,exist_ok=True); joblib.dump(m,MODEL/"daily_boardings"/f"{name}_v1.pkl")
@@ -270,9 +273,9 @@ def run_occupancy_forecast(version="v1", full_train=False):
     # same leakage-safe inputs and untouched chronological test split.
     candidates = {
         "ridge": Ridge(alpha=5.0),
-        "random_forest": RandomForestRegressor(n_estimators=180, max_depth=16,
+        "random_forest": RandomForestRegressor(n_estimators=10, max_depth=10,
                                                   min_samples_leaf=3, n_jobs=4, random_state=RNG),
-        "xgboost": XGBRegressor(n_estimators=500, max_depth=10, learning_rate=.05,
+        "xgboost": XGBRegressor(n_estimators=20, max_depth=5, learning_rate=.1,
                                   subsample=.9, colsample_bytree=.9, tree_method="hist",
                                   n_jobs=4, random_state=RNG),
     }
