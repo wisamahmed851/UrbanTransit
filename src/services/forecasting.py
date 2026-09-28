@@ -18,7 +18,7 @@ The model is the one Phase 7 selected (lowest validation MAE): see config/servin
 """
 
 from datetime import date, timedelta
-from functools import cache, lru_cache
+from functools import lru_cache
 
 import joblib
 import numpy as np
@@ -30,14 +30,14 @@ from src.errors import ApiError
 from src.extensions import db
 from src.models.ops import ModelVersion
 from src.models.serving import RouteDailyBoardings, StopPeriodBoardings
-from src.services.model_serving import models_dir, serving_config
+from src.services.model_serving import load_once, models_dir, serving_config
 
 FEATURES = ["lag_1", "lag_7", "lag_28", "rolling_7_mean", "rolling_28_mean"]
 STOP_PERIOD_FEATURES = ["day_of_week", "weekend", *FEATURES, "entry_stop_id", "time_period"]
 TEST_PERIOD = (date(2026, 7, 2), date(2026, 8, 31))   # Phase 7 DATES["test"]
 
 
-@cache
+@load_once
 def load_regressor():
     spec = serving_config()["served"]["daily_boardings"]
     path = models_dir() / "daily_boardings" / f"{spec['algorithm']}_{spec['version']}.pkl"
@@ -154,7 +154,7 @@ def network_forecast(horizon: int) -> dict:
     return _network_forecast(horizon, data_version())
 
 
-@cache
+@load_once
 def load_stop_period_regressor():
     """Load the independent ticket tap-in model and its fitted preprocessor."""
     spec = serving_config()["served"].get("stop_period_demand")

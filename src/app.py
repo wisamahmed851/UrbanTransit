@@ -68,6 +68,10 @@ def warm_models(app: Flask) -> None:
         except Exception:  # noqa: BLE001  (reported by the endpoint instead)
             pass
         try:
+            forecasting.load_stop_period_regressor()   # 464 MB forest: 16 s on first use otherwise
+        except Exception:  # noqa: BLE001
+            pass
+        try:
             forecasting.load_regressor()
             with app.app_context():
                 forecasting.network_forecast(model_serving.serving_config()["forecast"]["default_horizon_days"])

@@ -80,7 +80,7 @@ export function ModelsPage() {
   <div className="page">
    <PageHead title="Model results">
     Held-out results of both pipelines: Spark MLlib and Python . The Python models marked
-    "Served" answer the Predictions, Forecast and What-if pages. Their files were re-scored on this server and
+    "Served" answer the Predictions, Forecast and What-if pages. Their files were re-scored on the chronological test split and
     reproduce the recorded numbers.
    </PageHead>
 
@@ -134,13 +134,13 @@ function ServedModels({ versions }: { versions: ApiState<{ rows: ModelVersionRow
   }
  })
  return (
-  <Panel title="Served models" note="The model registry: which saved model answers each task, with its score on unseen data (re-scored on this server).">
+  <Panel title="Served models" note="The model registry: which saved model answers each task, with its score on unseen data (from the re-score report, reports/saved_model_evaluation.json).">
    <DataTable rows={rows} columns={[
     { key: 'task', label: 'Task' },
     { key: 'model', label: 'Model' },
     { key: 'score', label: 'Test score' },
     { key: 'target', label: 'SRS target', render: (r) => r.target === 'met' ? <Status tone="good">Met</Status> : r.target === 'not met' ? <Status tone="serious">Not met</Status> : <Status tone="neutral">n/a</Status> },
-    { key: 'verified', label: 'Re-scored here', render: (r) => r.verified === 'PASS' ? <Status tone="good">Reproduced</Status> : r.verified },
+    { key: 'verified', label: 'Re-score check', render: (r) => r.verified === 'PASS' ? <Status tone="good">Reproduced</Status> : r.verified },
    ]} />
   </Panel>
  )

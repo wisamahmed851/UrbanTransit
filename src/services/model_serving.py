@@ -12,12 +12,13 @@ route/direction/day type/hour over the last weeks of data (`database/load_model_
 The response lists every input, so a reviewer can see exactly what the model was given.
 
 Laravel analogy: a service class the controller calls; the loaded models are cached like a
-singleton in the container (`functools.cache`, once per worker process).
+singleton in the container (`load_once`: once per worker process, also under concurrent calls).
 """
 
 import json
 from datetime import date
-from functools import cache
+import threading
+from functools import cache, wraps
 from pathlib import Path
 
 import joblib
@@ -49,7 +50,29 @@ def models_dir() -> Path:
     return settings.PROJECT_ROOT / serving_config()["models_dir"]
 
 
-@cache
+def load_once(fn):
+    """Cache a model loader, and make concurrent callers wait for a load already in progress.
+
+    `functools.cache` alone lets two threads miss the cache together: the startup warm-up and
+    the first request each unpickled their own copy (the 622 MB occupancy forest twice, on an
+    8 GB machine). Failed loads are not cached, so a missing file is reported on every call.
+    """
+    lock, results = threading.Lock(), {}
+
+    @wraps(fn)
+    def wrapper(*args):
+        if args in results:
+            return results[args]
+        with lock:
+            if args not in results:
+                results[args] = fn(*args)
+        return results[args]
+
+    wrapper.cache_clear = results.clear
+    return wrapper
+
+
+@load_once
 def load_classifier(task: str) -> dict:
     """The served model for `task`, its preprocessor and its recorded training metadata."""
     spec = serving_config()["served"][task]
@@ -76,7 +99,7 @@ def load_classifier(task: str) -> dict:
     }
 
 
-@cache
+@load_once
 def load_regressor(task: str) -> dict:
     """Load a numeric Phase 7 predictor and its fitted feature preprocessor."""
     spec = serving_config()["served"][task]
@@ -116,7 +139,7 @@ def model_card(task: str) -> dict:
         "task": task, "algorithm": m["algorithm"], "version": m["version"], "file": m["file"],
         "pipeline": "python (Phase 7)", "trained_on": "2025-09-01..2026-05-01, chronological split",
         "test_accuracy": test["accuracy"], "test_macro_f1": test["macro_f1"],
-        "metrics_source": "model_versions (re-scored on this server)" if row else "training record",
+        "metrics_source": "model_versions (re-score report: reports/saved_model_evaluation.json)" if row else "training record",
         "meets_srs_target": test["accuracy"] >= targets["classification_accuracy"]
         or test["macro_f1"] >= targets["classification_macro_f1"],
         "srs_target": f"accuracy >= {targets['classification_accuracy']} or macro F1 >= {targets['classification_macro_f1']} (SRS NFR 4)",
@@ -133,7 +156,7 @@ def regression_model_card(task: str) -> dict:
         "task": task, "algorithm": m["algorithm"], "version": m["version"], "file": m["file"],
         "pipeline": "python (Phase 7)", "trained_on": "2025-09-01..2026-05-01, chronological split",
         "test_mae": test["mae"], "test_rmse": test["rmse"], "test_r2": test["r2"],
-        "metrics_source": "model_versions (re-scored on this server)" if row else "training record",
+        "metrics_source": "model_versions (re-score report: reports/saved_model_evaluation.json)" if row else "training record",
         "target": m["target"], "target_definition": m["target_definition"],
     }
 

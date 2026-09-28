@@ -1,4 +1,5 @@
 {
+  "mode": "all",
   "tables": {
     "route_daily_boardings": 41451,
     "stop_period_boardings": 1333345,
