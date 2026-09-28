@@ -1,6 +1,6 @@
 {
-  "metric_files": 56,
-  "model_metrics_rows": 546,
+  "metric_files": 57,
+  "model_metrics_rows": 568,
   "rows_per_file": {
     "spark/crowding_flag_gbt_sample.json": 8,
     "spark/crowding_flag_logistic_regression_sample.json": 8,
@@ -37,15 +37,16 @@
     "python/daily_boardings_random_forest.json": 8,
     "python/daily_boardings_ridge.json": 8,
     "python/daily_boardings_xgboost.json": 8,
-    "python/delay_severity_logistic_regression.json": 12,
+    "python/delay_severity_logistic_regression.json": 14,
     "python/delay_severity_logistic_regression_v2.json": 12,
-    "python/delay_severity_random_forest.json": 12,
+    "python/delay_severity_random_forest.json": 14,
     "python/delay_severity_random_forest_v2.json": 12,
-    "python/delay_severity_xgboost.json": 12,
+    "python/delay_severity_xgboost.json": 14,
     "python/delay_severity_xgboost_v2.json": 12,
-    "python/occupancy_forecast_random_forest.json": 8,
-    "python/occupancy_forecast_ridge.json": 8,
-    "python/occupancy_forecast_selected_v1.json": 8,
+    "python/occupancy_forecast_random_forest.json": 10,
+    "python/occupancy_forecast_ridge.json": 10,
+    "python/occupancy_forecast_selected_v1.json": 10,
+    "python/occupancy_forecast_xgboost.json": 10,
     "python/route_clustering_agglomerative_k3.json": 2,
     "python/route_clustering_agglomerative_k4.json": 2,
     "python/route_clustering_agglomerative_k5.json": 2,
@@ -61,14 +62,14 @@
   },
   "rows_per_pipeline": {
     "spark": 340,
-    "python": 206
+    "python": 228
   },
   "rows_per_task": {
     "crowding_flag": 110,
     "daily_boardings": 120,
-    "delay_severity": 241,
+    "delay_severity": 247,
     "route_clustering": 27,
-    "occupancy_forecast": 24,
+    "occupancy_forecast": 40,
     "stop_period_demand": 24
   },
   "rows_per_split_type": {
@@ -76,8 +77,8 @@
     "test_full": 10,
     "validation_trial": 121,
     "train": 85,
-    "validation": 150,
-    "test": 152,
+    "validation": 161,
+    "test": 163,
     "validation_tuning": 4,
     "validation_selection": 2,
     "test_default_threshold": 12

@@ -166,7 +166,9 @@ def build_model_versions() -> list[dict]:
     for task, spec in SERVING["served"].items():
         if task in classifiers:
             c = classifiers[task]
-            metrics = {"test": {k: c["splits"]["test"][k] for k in ("rows", "accuracy", "macro_f1", "per_class_f1")},
+            classifier_keys = ("rows", "accuracy", "macro_f1", "per_class_f1",
+                               "within_one_band_accuracy", "within_one_band_note")
+            metrics = {"test": {k: c["splits"]["test"][k] for k in classifier_keys if k in c["splits"]["test"]},
                        "validation": {k: c["splits"]["validation"][k] for k in ("rows", "accuracy", "macro_f1")},
                        "train": {k: c["splits"]["train"][k] for k in ("rows", "accuracy", "macro_f1")},
                        "train_vs_test": c["train_vs_test"],
@@ -198,10 +200,47 @@ def build_model_versions() -> list[dict]:
                        "srs_target": {"met": record["test"]["mae"] < base_mae, "baseline_test_mae": base_mae,
                                       "selected_test_mae": record["test"]["mae"]}}
         else:
-            metrics = ev["clustering"][spec["algorithm"]]
+            cluster = ev["clustering"]
+            if cluster["selected"] != spec["algorithm"]:
+                raise ValueError(
+                    f"Serving selects {spec['algorithm']}, but evaluation selected {cluster['selected']}"
+                )
+            metrics = cluster
+        test = metrics.get("test", {})
+        if task in classifiers:
+            score_95 = max(test.get("accuracy", 0.0), test.get("macro_f1", 0.0))
+            gate_95 = {"applicable": True, "metric": "max(test accuracy, test macro F1)",
+                       "score": score_95, "threshold": 0.95, "met": score_95 >= 0.95}
+            target_met = bool(metrics["srs_target"].get("accuracy_met")
+                              or metrics["srs_target"].get("macro_f1_met"))
+            operational_score = test.get("accuracy")
+            gate_80 = {"applicable": True,
+                       "metric": "test exact accuracy",
+                       "score": operational_score, "threshold": 0.80,
+                       "met": operational_score is not None and operational_score >= 0.80}
+        elif task in {"daily_boardings", "occupancy_forecast", "stop_period_demand"}:
+            score_95 = test.get("r2")
+            gate_95 = {"applicable": True, "metric": "test R2", "score": score_95,
+                       "threshold": 0.95, "met": score_95 is not None and score_95 >= 0.95}
+            target_met = metrics.get("srs_target", {}).get("met") is not False
+            operational_score = test.get("r2")
+            gate_80 = {"applicable": True,
+                       "metric": "test R2",
+                       "score": operational_score, "threshold": 0.80,
+                       "met": operational_score is not None and operational_score >= 0.80}
+        else:
+            gate_95 = {"applicable": False, "metric": "silhouette",
+                       "score": metrics.get("silhouette"),
+                       "note": "Silhouette is a clustering separation index, not prediction accuracy."}
+            target_met = bool(metrics.get("metric_match"))
+            score = metrics.get("silhouette")
+            gate_80 = {"applicable": True, "metric": "silhouette", "score": score,
+                       "threshold": 0.25, "met": score is not None and score >= 0.25,
+                       "note": "Clustering uses silhouette, not percentage accuracy."}
+        metrics = {**metrics, "operational_quality_gate": gate_80, "quality_gate_95": gate_95,
+                   "verified_on_this_machine": ev["result"], "source": "reports/saved_model_evaluation.json"}
         out.append({"task": task, "algorithm": spec["algorithm"], "version": spec["version"],
-                    "metrics_json": {**metrics, "verified_on_this_machine": ev["result"], "source": "reports/saved_model_evaluation.json"},
-                    "is_active": True})
+                    "metrics_json": metrics, "is_active": bool(gate_80["met"])})
     return out
 
 
@@ -256,6 +295,15 @@ def main(argv: list[str] | None = None) -> int:
             report = {"mode": "trip_context_only" if args.trip_context_only else "all",
                       "tables": counts, "expected": expected, "trip_context_window": window,
                       "result": "PASS" if counts == expected else "FAIL"}
+            if not args.trip_context_only:
+                report["quality_gate_95"] = {
+                    row["task"]: row["metrics_json"]["quality_gate_95"]
+                    for row in tables[ModelVersion]
+                }
+                report["operational_quality_gate"] = {
+                    row["task"]: row["metrics_json"]["operational_quality_gate"]
+                    for row in tables[ModelVersion]
+                }
             job.status = "success" if report["result"] == "PASS" else "failed"
         except Exception as exc:
             job.status, job.finished_at = "failed", utcnow()

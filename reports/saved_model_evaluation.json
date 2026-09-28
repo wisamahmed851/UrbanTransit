@@ -22,8 +22,11 @@
       "model_file": "models/python/crowding_flag/random_forest_v1.pkl",
       "features": [
         "hour",
+        "minute_of_day",
         "day_of_week",
         "weekend",
+        "month",
+        "day_of_year",
         "distance_km",
         "planned_runtime_min",
         "headway_min",
@@ -37,13 +40,13 @@
       ],
       "threshold": 0.7000000000000002,
       "splits": {
-        "validation": {
-          "rows": 276855,
-          "accuracy": 0.913829,
-          "macro_f1": 0.769356,
+        "train": {
+          "rows": 1390978,
+          "accuracy": 0.963654,
+          "macro_f1": 0.903371,
           "per_class_f1": {
-            "0.0": 0.951898,
-            "1.0": 0.586813
+            "0.0": 0.979693,
+            "1.0": 0.827049
           },
           "confusion_matrix": {
             "labels": [
@@ -52,35 +55,60 @@
             ],
             "values": [
               [
-                236057,
-                18828
+                1219540,
+                42524
               ],
               [
-                5029,
-                16941
+                8033,
+                120881
+              ]
+            ]
+          }
+        },
+        "validation": {
+          "rows": 278324,
+          "accuracy": 0.955631,
+          "macro_f1": 0.85388,
+          "per_class_f1": {
+            "0.0": 0.975814,
+            "1.0": 0.731946
+          },
+          "confusion_matrix": {
+            "labels": [
+              "0.0",
+              "1.0"
+            ],
+            "values": [
+              [
+                249115,
+                8856
+              ],
+              [
+                3493,
+                16860
               ]
             ]
           },
           "vs_recorded": {
             "accuracy": {
-              "recorded": 0.913829,
-              "recomputed": 0.913829,
+              "recorded": 0.955631,
+              "recomputed": 0.955631,
               "match": true
             },
             "macro_f1": {
-              "recorded": 0.769356,
-              "recomputed": 0.769356,
+              "recorded": 0.85388,
+              "recomputed": 0.85388,
               "match": true
             }
           }
         },
         "test": {
-          "rows": 270231,
-          "accuracy": 0.905003,
-          "macro_f1": 0.762332,
+          "rows": 271614,
+          "accuracy": 0.939712,
+          "macro_f1": 0.825686,
           "per_class_f1": {
-            "0.0": 0.946474,
-            "1.0": 0.578189
+            "0.0": 0.96667,
+            "1.0": 0.684702
           },
           "confusion_matrix": {
             "labels": [
@@ -89,33 +117,47 @@
             ],
             "values": [
               [
-                226966,
-                20326
+                237459,
+                12943
               ],
               [
-                5345,
-                17594
+                3432,
+                17780
               ]
             ]
           },
           "vs_recorded": {
             "accuracy": {
-              "recorded": 0.905003,
-              "recomputed": 0.905003,
+              "recorded": 0.939712,
+              "recomputed": 0.939712,
               "match": true
             },
             "macro_f1": {
-              "recorded": 0.762332,
-              "recomputed": 0.762332,
+              "recorded": 0.825686,
+              "recomputed": 0.825686,
               "match": true
             }
           }
         }
       },
+      "train_vs_test": {
+        "accuracy": {
+          "train": 0.963654,
+          "test": 0.939712,
+          "gap": 0.023942,
+          "relative_gap_pct": 2.48
+        },
+        "macro_f1": {
+          "train": 0.903371,
+          "test": 0.825686,
+          "gap": 0.077685,
+          "relative_gap_pct": 8.6
+        }
+      },
       "srs_target": {
         "rule": "accuracy >= 0.85 or macro F1 >= 0.8 (SRS NFR 4)",
         "accuracy_met": true,
-        "macro_f1_met": false
+        "macro_f1_met": true
       }
     },
     {
@@ -124,8 +166,11 @@
       "model_file": "models/python/delay_severity/xgboost_v1.pkl",
       "features": [
         "hour",
+        "minute_of_day",
         "day_of_week",
         "weekend",
+        "month",
+        "day_of_year",
         "distance_km",
         "planned_runtime_min",
         "headway_min",
@@ -133,6 +178,10 @@
         "prior_route_delay_mean",
         "prior_route_hour_delay_mean",
         "prior_route_hour_severe_rate",
+        "prior_route_delay_lag1",
+        "prior_route_delay_mean_3",
+        "prior_route_day_delay_mean",
+        "prior_vehicle_delay_lag1",
         "route_id",
         "vehicle_id",
         "direction",
@@ -141,15 +190,15 @@
       ],
       "threshold": null,
       "splits": {
-        "validation": {
-          "rows": 297610,
-          "accuracy": 0.685696,
-          "macro_f1": 0.445751,
+        "train": {
+          "rows": 1490176,
+          "accuracy": 0.905945,
+          "macro_f1": 0.736193,
           "per_class_f1": {
-            "Minor": 0.338411,
-            "Moderate": 0.41396,
-            "On Time": 0.819629,
-            "Severe": 0.211006
+            "Minor": 0.585624,
+            "Moderate": 0.725445,
+            "On Time": 0.957549,
+            "Severe": 0.676154
           },
           "confusion_matrix": {
             "labels": [
@@ -160,53 +209,102 @@
             ],
             "values": [
               [
-                17572,
-                7935,
-                14022,
-                768
+                75893,
+                13979,
+                64003,
+                130
               ],
               [
-                6577,
-                13540,
-                2388,
-                1361
+                14720,
+                80277,
+                19048,
+                1697
               ],
               [
-                39172,
-                19288,
-                172402,
-                951
+                14327,
+                7140,
+                1186602,
+                77
               ],
               [
-                232,
-                788,
-                58,
-                556
+                242,
+                4180,
+                615,
+                7246
               ]
             ]
           },
+          "within_one_band_accuracy": 0.981712,
+          "within_one_band_note": "Ordinal severity prediction is exact or one adjacent band away."
+        },
+        "validation": {
+          "rows": 298236,
+          "accuracy": 0.89511,
+          "macro_f1": 0.596473,
+          "per_class_f1": {
+            "Minor": 0.499798,
+            "Moderate": 0.491807,
+            "On Time": 0.952656,
+            "Severe": 0.441632
+          },
+          "confusion_matrix": {
+            "labels": [
+              "Minor",
+              "Moderate",
+              "On Time",
+              "Severe"
+            ],
+            "values": [
+              [
+                12363,
+                1797,
+                15460,
+                24
+              ],
+              [
+                4129,
+                5973,
+                4731,
+                143
+              ],
+              [
+                3258,
+                1113,
+                248304,
+                14
+              ],
+              [
+                78,
+                431,
+                104,
+                314
+              ]
+            ]
+          },
+          "within_one_band_accuracy": 0.979667,
+          "within_one_band_note": "Ordinal severity prediction is exact or one adjacent band away.",
           "vs_recorded": {
             "accuracy": {
-              "recorded": 0.685696,
-              "recomputed": 0.685696,
+              "recorded": 0.89511,
+              "recomputed": 0.89511,
               "match": true
             },
             "macro_f1": {
-              "recorded": 0.445751,
-              "recomputed": 0.445751,
+              "recorded": 0.596473,
+              "recomputed": 0.596473,
               "match": true
             }
           }
         },
         "test": {
-          "rows": 290382,
-          "accuracy": 0.61916,
-          "macro_f1": 0.412576,
+          "rows": 290958,
+          "accuracy": 0.826422,
+          "macro_f1": 0.520947,
           "per_class_f1": {
-            "Minor": 0.322858,
-            "Moderate": 0.409494,
-            "On Time": 0.76847,
-            "Severe": 0.149484
+            "Minor": 0.413995,
+            "Moderate": 0.437934,
+            "On Time": 0.915475,
+            "Severe": 0.316384
           },
           "confusion_matrix": {
             "labels": [
@@ -217,49 +315,65 @@
             ],
             "values": [
               [
-                17912,
-                10626,
-                15579,
-                1256
+                12963,
+                2776,
+                22181,
+                53
               ],
               [
-                8999,
-                18555,
-                5396,
-                1956
+                6247,
+                8827,
+                10542,
+                195
               ],
               [
-                38243,
-                25237,
-                142754,
-                1463
+                5264,
+                2163,
+                218356,
+                32
               ],
               [
-                432,
-                1300,
-                102,
-                572
+                177,
+                735,
+                139,
+                308
               ]
             ]
           },
+          "within_one_band_accuracy": 0.954956,
+          "within_one_band_note": "Ordinal severity prediction is exact or one adjacent band away.",
           "vs_recorded": {
             "accuracy": {
-              "recorded": 0.61916,
-              "recomputed": 0.61916,
+              "recorded": 0.826422,
+              "recomputed": 0.826422,
               "match": true
             },
             "macro_f1": {
-              "recorded": 0.412576,
-              "recomputed": 0.412576,
+              "recorded": 0.520947,
+              "recomputed": 0.520947,
               "match": true
             }
           }
         }
       },
+      "train_vs_test": {
+        "accuracy": {
+          "train": 0.905945,
+          "test": 0.826422,
+          "gap": 0.079523,
+          "relative_gap_pct": 8.78
+        },
+        "macro_f1": {
+          "train": 0.736193,
+          "test": 0.520947,
+          "gap": 0.215246,
+          "relative_gap_pct": 29.24
+        }
+      },
       "srs_target": {
-        "rule": "accuracy >= 0.6 or macro F1 >= 0.4 (SRS NFR 4)",
-        "accuracy_met": true,
-        "macro_f1_met": true
+        "rule": "accuracy >= 0.85 or macro F1 >= 0.8 (SRS NFR 4)",
+        "accuracy_met": false,
+        "macro_f1_met": false
       }
     }
   ],
@@ -274,287 +388,468 @@
     ],
     "algorithms": {
       "baseline_28day": {
-        "validation": {
-          "rows": 6365,
-          "mae": 474.295287,
-          "rmse": 927.138142,
-          "mape": 47.83125,
-          "r2": 0.826249,
+        "train": {
+          "rows": 25318,
+          "mae": 479.745792,
+          "rmse": 921.673958,
+          "mape": 31.931186,
+          "r2": 0.88957,
           "vs_recorded": {
             "mae": {
-              "recorded": 474.295287,
-              "recomputed": 474.295287,
+              "recorded": 479.745792,
+              "recomputed": 479.745792,
               "match": true
             },
             "rmse": {
-              "recorded": 927.138142,
-              "recomputed": 927.138142,
+              "recorded": 921.673958,
+              "recomputed": 921.673958,
               "match": true
             },
             "r2": {
-              "recorded": 0.826249,
-              "recomputed": 0.826249,
+              "recorded": 0.88957,
+              "recomputed": 0.88957,
+              "match": true
+            }
+          }
+        },
+        "validation": {
+          "rows": 6365,
+          "mae": 478.372439,
+          "rmse": 935.138124,
+          "mape": 47.23088,
+          "r2": 0.829465,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 478.372439,
+              "recomputed": 478.372439,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 935.138124,
+              "recomputed": 935.138124,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.829465,
+              "recomputed": 0.829465,
               "match": true
             }
           }
         },
         "test": {
           "rows": 6464,
-          "mae": 401.403731,
-          "rmse": 737.173292,
-          "mape": 33.205756,
-          "r2": 0.879103,
+          "mae": 401.755282,
+          "rmse": 733.194846,
+          "mape": 32.403096,
+          "r2": 0.884266,
           "vs_recorded": {
             "mae": {
-              "recorded": 401.403731,
-              "recomputed": 401.403731,
+              "recorded": 401.755282,
+              "recomputed": 401.755282,
               "match": true
             },
             "rmse": {
-              "recorded": 737.173292,
-              "recomputed": 737.173292,
+              "recorded": 733.194846,
+              "recomputed": 733.194846,
               "match": true
             },
             "r2": {
-              "recorded": 0.879103,
-              "recomputed": 0.879103,
+              "recorded": 0.884266,
+              "recomputed": 0.884266,
               "match": true
             }
+          }
+        },
+        "train_vs_test": {
+          "r2": {
+            "train": 0.88957,
+            "test": 0.884266,
+            "gap": 0.005304,
+            "relative_gap_pct": 0.6
+          },
+          "mae": {
+            "train": 479.745792,
+            "test": 401.755282,
+            "gap": -77.99051,
+            "relative_gap_pct": -16.26
           }
         }
       },
       "ridge": {
-        "validation": {
-          "rows": 6365,
-          "mae": 318.280842,
-          "rmse": 741.875186,
-          "mape": 32.931067,
-          "r2": 0.88875,
+        "train": {
+          "rows": 25318,
+          "mae": 218.344183,
+          "rmse": 549.255146,
+          "mape": 14.492852,
+          "r2": 0.960782,
           "vs_recorded": {
             "mae": {
-              "recorded": 318.280842,
-              "recomputed": 318.280842,
+              "recorded": 218.344183,
+              "recomputed": 218.344183,
               "match": true
             },
             "rmse": {
-              "recorded": 741.875186,
-              "recomputed": 741.875186,
+              "recorded": 549.255146,
+              "recomputed": 549.255146,
               "match": true
             },
             "r2": {
-              "recorded": 0.88875,
-              "recomputed": 0.88875,
+              "recorded": 0.960782,
+              "recomputed": 0.960782,
+              "match": true
+            }
+          }
+        },
+        "validation": {
+          "rows": 6365,
+          "mae": 298.584994,
+          "rmse": 739.233876,
+          "mape": 30.692859,
+          "r2": 0.893432,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 298.584994,
+              "recomputed": 298.584994,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 739.233876,
+              "recomputed": 739.233876,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.893432,
+              "recomputed": 0.893432,
               "match": true
             }
           }
         },
         "test": {
           "rows": 6464,
-          "mae": 206.306104,
-          "rmse": 422.258187,
-          "mape": 16.413577,
-          "r2": 0.960333,
+          "mae": 174.220117,
+          "rmse": 383.726948,
+          "mape": 13.374548,
+          "r2": 0.9683,
           "vs_recorded": {
             "mae": {
-              "recorded": 206.306104,
-              "recomputed": 206.306104,
+              "recorded": 174.220117,
+              "recomputed": 174.220117,
               "match": true
             },
             "rmse": {
-              "recorded": 422.258187,
-              "recomputed": 422.258187,
+              "recorded": 383.726948,
+              "recomputed": 383.726948,
               "match": true
             },
             "r2": {
-              "recorded": 0.960333,
-              "recomputed": 0.960333,
+              "recorded": 0.9683,
+              "recomputed": 0.9683,
               "match": true
             }
+          }
+        },
+        "train_vs_test": {
+          "r2": {
+            "train": 0.960782,
+            "test": 0.9683,
+            "gap": -0.007518,
+            "relative_gap_pct": -0.78
+          },
+          "mae": {
+            "train": 218.344183,
+            "test": 174.220117,
+            "gap": -44.124066,
+            "relative_gap_pct": -20.21
           }
         }
       },
       "random_forest": {
-        "validation": {
-          "rows": 6365,
-          "mae": 276.266027,
-          "rmse": 683.193224,
-          "mape": 31.438675,
-          "r2": 0.905653,
+        "train": {
+          "rows": 25318,
+          "mae": 115.987306,
+          "rmse": 282.111342,
+          "mape": 8.652321,
+          "r2": 0.989654,
           "vs_recorded": {
             "mae": {
-              "recorded": 276.266027,
-              "recomputed": 276.266027,
+              "recorded": 115.987306,
+              "recomputed": 115.987306,
               "match": true
             },
             "rmse": {
-              "recorded": 683.193224,
-              "recomputed": 683.193224,
+              "recorded": 282.111342,
+              "recomputed": 282.111342,
               "match": true
             },
             "r2": {
-              "recorded": 0.905653,
-              "recomputed": 0.905653,
+              "recorded": 0.989654,
+              "recomputed": 0.989654,
+              "match": true
+            }
+          }
+        },
+        "validation": {
+          "rows": 6365,
+          "mae": 250.967864,
+          "rmse": 687.318159,
+          "mape": 28.799758,
+          "r2": 0.907875,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 250.967864,
+              "recomputed": 250.967864,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 687.318159,
+              "recomputed": 687.318159,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.907875,
+              "recomputed": 0.907875,
               "match": true
             }
           }
         },
         "test": {
           "rows": 6464,
-          "mae": 195.300047,
-          "rmse": 426.707724,
-          "mape": 14.977334,
-          "r2": 0.959492,
+          "mae": 168.092488,
+          "rmse": 393.811994,
+          "mape": 12.024627,
+          "r2": 0.966611,
           "vs_recorded": {
             "mae": {
-              "recorded": 195.300047,
-              "recomputed": 195.300047,
+              "recorded": 168.092488,
+              "recomputed": 168.092488,
               "match": true
             },
             "rmse": {
-              "recorded": 426.707724,
-              "recomputed": 426.707724,
+              "recorded": 393.811994,
+              "recomputed": 393.811994,
               "match": true
             },
             "r2": {
-              "recorded": 0.959492,
-              "recomputed": 0.959492,
+              "recorded": 0.966611,
+              "recomputed": 0.966611,
               "match": true
             }
+          }
+        },
+        "train_vs_test": {
+          "r2": {
+            "train": 0.989654,
+            "test": 0.966611,
+            "gap": 0.023043,
+            "relative_gap_pct": 2.33
+          },
+          "mae": {
+            "train": 115.987306,
+            "test": 168.092488,
+            "gap": 52.105182,
+            "relative_gap_pct": 44.92
           }
         }
       },
       "xgboost": {
-        "validation": {
-          "rows": 6365,
-          "mae": 278.077271,
-          "rmse": 684.900517,
-          "mape": 31.327835,
-          "r2": 0.905181,
+        "train": {
+          "rows": 25318,
+          "mae": 142.795822,
+          "rmse": 321.690505,
+          "mape": 11.769433,
+          "r2": 0.986547,
           "vs_recorded": {
             "mae": {
-              "recorded": 278.077271,
-              "recomputed": 278.077271,
+              "recorded": 142.795822,
+              "recomputed": 142.795822,
               "match": true
             },
             "rmse": {
-              "recorded": 684.900517,
-              "recomputed": 684.900517,
+              "recorded": 321.690505,
+              "recomputed": 321.690505,
               "match": true
             },
             "r2": {
-              "recorded": 0.905181,
-              "recomputed": 0.905181,
+              "recorded": 0.986547,
+              "recomputed": 0.986547,
+              "match": true
+            }
+          }
+        },
+        "validation": {
+          "rows": 6365,
+          "mae": 249.254517,
+          "rmse": 681.612564,
+          "mape": 28.390521,
+          "r2": 0.909398,
+          "vs_recorded": {
+            "mae": {
+              "recorded": 249.254517,
+              "recomputed": 249.254517,
+              "match": true
+            },
+            "rmse": {
+              "recorded": 681.612564,
+              "recomputed": 681.612564,
+              "match": true
+            },
+            "r2": {
+              "recorded": 0.909398,
+              "recomputed": 0.909398,
               "match": true
             }
           }
         },
         "test": {
           "rows": 6464,
-          "mae": 201.640427,
-          "rmse": 451.868067,
-          "mape": 15.701938,
-          "r2": 0.954575,
+          "mae": 169.07872,
+          "rmse": 405.546468,
+          "mape": 12.515956,
+          "r2": 0.964592,
           "vs_recorded": {
             "mae": {
-              "recorded": 201.640427,
-              "recomputed": 201.640427,
+              "recorded": 169.07872,
+              "recomputed": 169.07872,
               "match": true
             },
             "rmse": {
-              "recorded": 451.868067,
-              "recomputed": 451.868067,
+              "recorded": 405.546468,
+              "recomputed": 405.546468,
               "match": true
             },
             "r2": {
-              "recorded": 0.954575,
-              "recomputed": 0.954575,
+              "recorded": 0.964592,
+              "recomputed": 0.964592,
               "match": true
             }
+          }
+        },
+        "train_vs_test": {
+          "r2": {
+            "train": 0.986547,
+            "test": 0.964592,
+            "gap": 0.021955,
+            "relative_gap_pct": 2.23
+          },
+          "mae": {
+            "train": 142.795822,
+            "test": 169.07872,
+            "gap": 26.282898,
+            "relative_gap_pct": 18.41
           }
         }
       }
     },
-    "selected": "random_forest",
+    "selected": "xgboost",
     "srs_target": {
       "rule": "selected model beats the documented 28-day baseline (SRS step 24)",
-      "baseline_test_mae": 401.403731,
-      "selected_test_mae": 195.300047,
-      "improvement_pct": 51.35,
+      "baseline_test_mae": 401.755282,
+      "selected_test_mae": 169.07872,
+      "improvement_pct": 57.91,
       "met": true
     }
   },
   "occupancy_forecast": {
     "task": "occupancy_forecast",
-    "algorithm": "random_forest",
+    "algorithm": "xgboost",
     "target": "occupancy_pct",
     "splits": {
-      "validation": {
-        "rows": 276835,
-        "mae": 0.120633,
-        "rmse": 0.176191,
-        "r2": 0.695322,
-        "mape_nonzero_pct": 61.415821,
+      "train": {
+        "rows": 1370421,
+        "mae": 0.05271,
+        "rmse": 0.08253,
+        "r2": 0.934275,
+        "mape_nonzero_pct": 18.187926,
         "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
+        "within_20pp_accuracy": 0.966796,
+        "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy."
+      },
+      "validation": {
+        "rows": 277929,
+        "mae": 0.06775,
+        "rmse": 0.104971,
+        "r2": 0.88223,
+        "mape_nonzero_pct": 29.213444,
+        "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
+        "within_20pp_accuracy": 0.934091,
+        "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy.",
         "vs_recorded": {
           "mae": {
-            "recorded": 0.120535,
-            "recomputed": 0.120633,
+            "recorded": 0.06775,
+            "recomputed": 0.06775,
             "match": true
           },
           "rmse": {
-            "recorded": 0.176105,
-            "recomputed": 0.176191,
+            "recorded": 0.104971,
+            "recomputed": 0.104971,
             "match": true
           },
           "r2": {
-            "recorded": 0.69578,
-            "recomputed": 0.695322,
+            "recorded": 0.88223,
+            "recomputed": 0.88223,
             "match": true
           }
         }
       },
       "test": {
-        "rows": 270226,
-        "mae": 0.118501,
-        "rmse": 0.174096,
-        "r2": 0.714027,
-        "mape_nonzero_pct": 54.70907,
+        "rows": 271513,
+        "mae": 0.06537,
+        "rmse": 0.102369,
+        "r2": 0.892518,
+        "mape_nonzero_pct": 24.185066,
         "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
+        "within_20pp_accuracy": 0.938132,
+        "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy.",
         "vs_recorded": {
           "mae": {
-            "recorded": 0.118475,
-            "recomputed": 0.118501,
+            "recorded": 0.06537,
+            "recomputed": 0.06537,
             "match": true
           },
           "rmse": {
-            "recorded": 0.174079,
-            "recomputed": 0.174096,
+            "recorded": 0.102369,
+            "recomputed": 0.102369,
             "match": true
           },
           "r2": {
-            "recorded": 0.714109,
-            "recomputed": 0.714027,
+            "recorded": 0.892518,
+            "recomputed": 0.892518,
             "match": true
           }
         }
       }
+    },
+    "train_vs_test": {
+      "r2": {
+        "train": 0.934275,
+        "test": 0.892518,
+        "gap": 0.041757,
+        "relative_gap_pct": 4.47
+      },
+      "mae": {
+        "train": 0.05271,
+        "test": 0.06537,
+        "gap": 0.01266,
+        "relative_gap_pct": 24.02
+      }
+    },
+    "srs_target": {
+      "rule": "model beats the prior route-hour mean occupancy baseline on test MAE (SRS step 24)",
+      "baseline_test_mae": 0.098658,
+      "selected_test_mae": 0.06537,
+      "improvement_pct": 33.74,
+      "met": true
     }
   },
   "clustering": {
     "task": "route_clustering",
     "routes": 116,
     "selected": "agglomerative_k5",
-    "agglomerative_k5": {
-      "silhouette": 0.324512,
-      "recorded_silhouette": 0.312627,
-      "labels_identical_to_saved_model": true,
-      "clusters": 5
-    },
-    "kmeans_k5_v1.pkl": {
-      "expects_features": 8,
-      "current_features": 8,
-      "status": "compatible"
-    }
+    "model_file": "models/python/route_clustering/agglomerative_k5_v1.pkl",
+    "silhouette": 0.336286,
+    "recorded_silhouette": 0.336286,
+    "metric_match": true,
+    "clusters": 5
   },
   "result": "PASS"
 }

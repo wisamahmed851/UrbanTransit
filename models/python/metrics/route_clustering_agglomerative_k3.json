@@ -11,6 +11,6 @@
     "avg_travel_time",
     "demand_mom_growth"
   ],
-  "silhouette": 0.271916,
+  "silhouette": 0.2966,
   "clusters": 3
 }

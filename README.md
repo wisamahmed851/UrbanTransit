@@ -83,6 +83,36 @@ python src/app.py                      # Flask on http://127.0.0.1:5000/health
 bash hdfs_scripts/stop_hdfs.sh         # stop HDFS
 ```
 
+### Windows + XAMPP local run
+
+For a local XAMPP database, set `MYSQL_HOST=127.0.0.1`, `MYSQL_PORT=3306`,
+`MYSQL_DATABASE=urbantransit_iq`, and the XAMPP credentials in `.env`, then run:
+
+```powershell
+python -m flask --app src.app db upgrade
+python -m flask --app src.app rbac seed
+python -m data_generator.generate --mode full --clean-out python_pipeline/local_clean
+python python_pipeline/phase7_python_models.py --task all --enhanced-delay --full-train
+python database/evaluate_saved_models.py
+python database/load_local_reference.py
+python database/load_model_metrics.py
+python database/load_model_outputs.py
+python src/app.py
+```
+
+In a second terminal:
+
+```powershell
+cd frontend
+npm.cmd ci
+npm.cmd run dev
+```
+
+The local clean-Parquet output is pristine simulator data written before deliberate
+data-quality defects are injected into `raw_data/full`; it allows the independent Python
+pipeline to run without HDFS. The Spark/HDFS route remains the authoritative data-quality
+pipeline described below.
+
 ### Backend API (Flask + MySQL)
 
 ```bash

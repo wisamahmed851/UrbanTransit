@@ -75,38 +75,5 @@
     "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy."
   },
   "leakage_guard": "Current-trip max_load, boardings, occupancy_pct and crowding_flag are excluded; every occupancy-history feature ends at the preceding trip.",
-  "model_scope": "independent pandas/PyArrow clean-Parquet pipeline",
-  "selection": {
-    "selected_algorithm": "xgboost",
-    "criterion": "lowest validation MAE",
-    "candidates": {
-      "ridge": {
-        "mae": 0.099956,
-        "rmse": 0.147061,
-        "r2": 0.768853,
-        "mape_nonzero_pct": 51.595067,
-        "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
-        "within_20pp_accuracy": 0.862857,
-        "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy."
-      },
-      "random_forest": {
-        "mae": 0.06969,
-        "rmse": 0.11056,
-        "r2": 0.869356,
-        "mape_nonzero_pct": 28.679733,
-        "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
-        "within_20pp_accuracy": 0.926917,
-        "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy."
-      },
-      "xgboost": {
-        "mae": 0.06775,
-        "rmse": 0.104971,
-        "r2": 0.88223,
-        "mape_nonzero_pct": 29.213444,
-        "mape_note": "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined.",
-        "within_20pp_accuracy": 0.934091,
-        "within_20pp_note": "Share of trips predicted within 20 percentage points of peak occupancy."
-      }
-    }
-  }
+  "model_scope": "independent pandas/PyArrow clean-Parquet pipeline"
 }

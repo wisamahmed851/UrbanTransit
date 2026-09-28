@@ -89,16 +89,19 @@ def test_every_python_file_normalises(path):
 
 
 def test_python_layout():
+    crowding = json.loads((PY_METRICS_DIR / "crowding_flag_xgboost.json").read_text(encoding="utf-8"))
     rows = {(r["split_type"], r["metric_name"]): r for r in normalise_python(
-        "crowding_flag_xgboost.json", json.loads((PY_METRICS_DIR / "crowding_flag_xgboost.json").read_text(encoding="utf-8")))}
-    assert rows[("test", "macro_f1")]["metric_value"] == 0.749294
-    assert rows[("test", "per_class_f1[1.0]")]["metric_value"] == 0.558748
+        "crowding_flag_xgboost.json", crowding)}
+    assert rows[("test", "macro_f1")]["metric_value"] == crowding["test"]["macro_f1"]
+    assert rows[("test", "per_class_f1[1.0]")]["metric_value"] == crowding["test"]["per_class_f1"]["1.0"]
     assert ("test_default_threshold", "accuracy") in rows
     assert rows[("test", "accuracy")]["extra_json"]["threshold"] == pytest.approx(0.70)
     assert "confusion_matrix" in rows[("test", "accuracy")]["extra_json"]
-    (sil, k) = normalise_python("route_clustering_agglomerative_k5.json", json.loads(
-        (PY_METRICS_DIR / "route_clustering_agglomerative_k5.json").read_text(encoding="utf-8")))
-    assert (sil["metric_name"], sil["metric_value"], k["metric_value"]) == ("silhouette", 0.312627, 5.0)
+    cluster = json.loads((PY_METRICS_DIR / "route_clustering_agglomerative_k5.json").read_text(encoding="utf-8"))
+    (sil, k) = normalise_python("route_clustering_agglomerative_k5.json", cluster)
+    assert (sil["metric_name"], sil["metric_value"], k["metric_value"]) == (
+        "silhouette", cluster["silhouette"], float(cluster["clusters"])
+    )
 
 
 def test_pipeline_filter(client, auth, loaded):

@@ -2,28 +2,116 @@
   "mode": "all",
   "tables": {
     "route_daily_boardings": 41451,
-    "stop_period_boardings": 1333345,
+    "stop_period_boardings": 1334440,
     "trip_context": 7051,
     "route_clusters": 116,
     "python_cluster_profiles": 5,
     "recommendations": 140,
-    "pipeline_comparison": 1455,
+    "pipeline_comparison": 997,
     "model_versions": 6
   },
   "expected": {
     "route_daily_boardings": 41451,
-    "stop_period_boardings": 1333345,
+    "stop_period_boardings": 1334440,
     "trip_context": 7051,
     "route_clusters": 116,
     "python_cluster_profiles": 5,
     "recommendations": 140,
-    "pipeline_comparison": 1455,
+    "pipeline_comparison": 997,
     "model_versions": 6
   },
   "trip_context_window": {
     "window_start": "2026-07-07",
     "window_end": "2026-08-31",
-    "trips_in_window": 296100
+    "trips_in_window": 296685
   },
-  "result": "PASS"
+  "result": "PASS",
+  "quality_gate_95": {
+    "crowding_flag": {
+      "applicable": true,
+      "metric": "max(test accuracy, test macro F1)",
+      "score": 0.939712,
+      "threshold": 0.95,
+      "met": false
+    },
+    "occupancy_forecast": {
+      "applicable": true,
+      "metric": "test R2",
+      "score": 0.892518,
+      "threshold": 0.95,
+      "met": false
+    },
+    "stop_period_demand": {
+      "applicable": true,
+      "metric": "test R2",
+      "score": 0.849463,
+      "threshold": 0.95,
+      "met": false
+    },
+    "delay_severity": {
+      "applicable": true,
+      "metric": "max(test accuracy, test macro F1)",
+      "score": 0.826422,
+      "threshold": 0.95,
+      "met": false
+    },
+    "daily_boardings": {
+      "applicable": true,
+      "metric": "test R2",
+      "score": 0.964592,
+      "threshold": 0.95,
+      "met": true
+    },
+    "route_clustering": {
+      "applicable": false,
+      "metric": "silhouette",
+      "score": 0.336286,
+      "note": "Silhouette is a clustering separation index, not prediction accuracy."
+    }
+  },
+  "operational_quality_gate": {
+    "crowding_flag": {
+      "applicable": true,
+      "metric": "test exact accuracy",
+      "score": 0.939712,
+      "threshold": 0.8,
+      "met": true
+    },
+    "occupancy_forecast": {
+      "applicable": true,
+      "metric": "test R2",
+      "score": 0.892518,
+      "threshold": 0.8,
+      "met": true
+    },
+    "stop_period_demand": {
+      "applicable": true,
+      "metric": "test R2",
+      "score": 0.849463,
+      "threshold": 0.8,
+      "met": true
+    },
+    "delay_severity": {
+      "applicable": true,
+      "metric": "test exact accuracy",
+      "score": 0.826422,
+      "threshold": 0.8,
+      "met": true
+    },
+    "daily_boardings": {
+      "applicable": true,
+      "metric": "test R2",
+      "score": 0.964592,
+      "threshold": 0.8,
+      "met": true
+    },
+    "route_clustering": {
+      "applicable": true,
+      "metric": "silhouette",
+      "score": 0.336286,
+      "threshold": 0.25,
+      "met": true,
+      "note": "Clustering uses silhouette, not percentage accuracy."
+    }
+  }
 }

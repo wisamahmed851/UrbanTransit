@@ -7,11 +7,11 @@ models_dir: models/python          # relative to the repository root
 # Which saved model answers each task. The algorithm is the one Phase 7 selected
 # (best validation score); `version` is the file suffix (<algorithm>_v1.pkl).
 served:
-  crowding_flag:   {algorithm: xgboost, version: v1}
-  occupancy_forecast: {algorithm: random_forest, version: v1}
+  crowding_flag:   {algorithm: random_forest, version: v1}
+  occupancy_forecast: {algorithm: xgboost, version: v1}
   stop_period_demand: {algorithm: random_forest, version: v1}
   delay_severity:  {algorithm: xgboost, version: v1}
-  daily_boardings: {algorithm: random_forest, version: v1}
+  daily_boardings: {algorithm: xgboost, version: v1}
   route_clustering: {algorithm: agglomerative_k5, version: v1}
 
 # SRS 1.7 NFR 4. Every prediction response says whether its model meets these.

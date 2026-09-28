@@ -37,6 +37,13 @@ from .writers import write_csv, write_json, write_jsonl
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
+def _write_clean_parquet(frame: pd.DataFrame, root: Path, table: str, part: str = "part-00000") -> None:
+    """Write pristine simulator output for the independent local model pipeline."""
+    folder = root / table
+    folder.mkdir(parents=True, exist_ok=True)
+    frame.to_parquet(folder / f"{part}.parquet", index=False, compression="snappy")
+
+
 def _dir_summary(root: Path) -> dict:
     """Per-file size and SHA-256 (used for the determinism check)."""
     files = {}
@@ -49,7 +56,8 @@ def _dir_summary(root: Path) -> dict:
     return files
 
 
-def generate(mode: str, out_dir: Path, manifest_dir: Path, seed: int | None = None) -> dict:
+def generate(mode: str, out_dir: Path, manifest_dir: Path, seed: int | None = None,
+             clean_out: Path | None = None) -> dict:
     log = get_logger()
     t0 = time.time()
     cfg = load_config(mode)
@@ -60,6 +68,10 @@ def generate(mode: str, out_dir: Path, manifest_dir: Path, seed: int | None = No
     if out_dir.exists():
         shutil.rmtree(out_dir)                  # generated data only: always start from an empty folder
     out_dir.mkdir(parents=True)
+    if clean_out is not None:
+        if clean_out.exists():
+            shutil.rmtree(clean_out)
+        clean_out.mkdir(parents=True)
 
     # 1) network, fleet, calendars, schedules, passengers
     net = build_network(cfg)
@@ -69,6 +81,18 @@ def generate(mode: str, out_dir: Path, manifest_dir: Path, seed: int | None = No
     passengers, habits = build_passengers(cfg, net)
     log.info(f"network: {len(net.stops)} stops, {len(net.routes)} routes, {len(net.vehicles)} vehicles, "
              f"{len(calendar)} service calendars, {len(schedule_rows)} schedules, {len(passengers)} passengers")
+
+    if clean_out is not None:
+        for table, frame in {
+            "stops": net.stops,
+            "routes": net.routes,
+            "route_stops": net.route_stops,
+            "vehicles": net.vehicles,
+            "passengers": passengers,
+            "schedules": pd.DataFrame(schedule_rows),
+            "service_calendar": pd.DataFrame(calendar),
+        }.items():
+            _write_clean_parquet(frame, clean_out, table)
 
     # 2) reference tables (+ reference defects)
     injector = DefectInjector(cfg, net.vehicles)
@@ -90,8 +114,11 @@ def generate(mode: str, out_dir: Path, manifest_dir: Path, seed: int | None = No
     for year, month in month_range(cfg["start_date"], cfg["end_date"]):
         tm = time.time()
         res = simulate_month(ctx, year, month, log)
-        res = injector.inject_month(res, year, month, vehicle_ids)
         tag = f"{year}-{month:02d}"
+        if clean_out is not None:
+            for table in ("trips", "passenger_counts", "tickets", "delays"):
+                _write_clean_parquet(getattr(res, table), clean_out, table, tag)
+        res = injector.inject_month(res, year, month, vehicle_ids)
         counts["trips"] += write_csv(res.trips, out_dir / "trips" / f"trips_{tag}.csv", "trips")
         counts["passenger_counts"] += write_csv(res.passenger_counts, out_dir / "passenger_counts" / f"passenger_counts_{tag}.csv", "passenger_counts")
         counts["tickets"] += write_csv(res.tickets, out_dir / "tickets" / f"tickets_{tag}.csv", "tickets")
@@ -108,7 +135,7 @@ def generate(mode: str, out_dir: Path, manifest_dir: Path, seed: int | None = No
     summary = {
         "mode": mode, "seed": cfg["seed"], "network_seed": cfg["network_seed"],
         "start_date": cfg["start_date"].isoformat(), "end_date": cfg["end_date"].isoformat(),
-        "output_dir": str(out_dir.relative_to(PROJECT_ROOT)) if out_dir.is_relative_to(PROJECT_ROOT) else str(out_dir),
+        "output_dir": out_dir.relative_to(PROJECT_ROOT).as_posix() if out_dir.is_relative_to(PROJECT_ROOT) else str(out_dir),
         "row_counts": counts, "files": len(files),
         "total_bytes": sum(f["bytes"] for f in files.values()),
         "elapsed_seconds": round(time.time() - t0, 1),
@@ -129,13 +156,16 @@ def main() -> None:
     parser.add_argument("--out", type=Path, help="output folder (default raw_data/<mode>)")
     parser.add_argument("--manifest-dir", type=Path, help="default data_generator/manifests/<mode>")
     parser.add_argument("--seed", type=int, help="override the simulation seed")
+    parser.add_argument("--clean-out", type=Path,
+                        help="also write pristine Parquet before defect injection (for the local Python models)")
     parser.add_argument("--publish-sample", action="store_true",
                         help="sample mode: also copy the files to sample_data/ (committed to Git)")
     args = parser.parse_args()
 
     out = args.out or PROJECT_ROOT / "raw_data" / args.mode
     manifest_dir = args.manifest_dir or PROJECT_ROOT / "data_generator" / "manifests" / args.mode
-    generate(args.mode, out.resolve(), manifest_dir.resolve(), args.seed)
+    generate(args.mode, out.resolve(), manifest_dir.resolve(), args.seed,
+             args.clean_out.resolve() if args.clean_out else None)
 
     if args.publish_sample:
         if args.mode != "sample":

@@ -18,11 +18,11 @@ from src.models.serving import (PipelineComparison, PythonClusterProfile, Recomm
 
 MODELS = Path(__file__).resolve().parent.parent / "models" / "python"
 needs_models = pytest.mark.skipif(
-    not all((MODELS / f).exists() for f in ("crowding_flag/xgboost_v1.pkl", "delay_severity/xgboost_v1.pkl",
-                                            "daily_boardings/random_forest_v1.pkl")),
+    not all((MODELS / f).exists() for f in ("crowding_flag/random_forest_v1.pkl", "delay_severity/xgboost_v1.pkl",
+                                            "daily_boardings/xgboost_v1.pkl")),
     reason="saved Phase 7 model binaries are not present (unzip models.zip into models/)")
 needs_occupancy_model = pytest.mark.skipif(
-    not all((MODELS / f).exists() for f in ("occupancy_forecast/random_forest_v1.pkl", "occupancy_forecast/random_forest_preprocessor_v1.pkl")),
+    not all((MODELS / f).exists() for f in ("occupancy_forecast/xgboost_v1.pkl", "occupancy_forecast/xgboost_preprocessor_v1.pkl")),
     reason="saved numeric occupancy model is not present (run Phase 7 task e or unzip models.zip into models/)")
 needs_stop_period_model = pytest.mark.skipif(
     not all((MODELS / f).exists() for f in ("stop_period_demand/random_forest_v1.pkl", "stop_period_demand/random_forest_preprocessor_v1.pkl")),
@@ -72,9 +72,9 @@ def served(app):
             PipelineComparison(task="daily_boardings", case_id="R001_2026-07-02", actual="100", spark_prediction="95",
                                python_prediction="97", absolute_difference=2.0, match=True, agreement_status="BothCorrect"),
         ])
-        db.session.add_all([RouteCluster(route_id="R001", algorithm="agglomerative_k5", cluster=4),
+        db.session.add_all([RouteCluster(route_id="R001", algorithm="kmeans_k5", cluster=4),
                             PythonClusterProfile(cluster=4, avg_occupancy=0.43, profile_label="Very-high-demand trunk routes", routes=1)])
-        db.session.add(ModelVersion(task="crowding_flag", algorithm="xgboost", version="v1", is_active=True,
+        db.session.add(ModelVersion(task="crowding_flag", algorithm="random_forest", version="v1", is_active=True,
                                     metrics_json={"test": {"accuracy": 0.9027, "macro_f1": 0.7613}}))
         db.session.commit()
     return app
@@ -103,7 +103,8 @@ def test_crowding_prediction(client, auth, served):
     assert 0 <= p["probability"] <= 1 and p["crowded"] == (p["probability"] >= p["threshold"])
     assert p["threshold"] == pytest.approx(0.70)
     assert body["estimate"] is True and body["trip"]["day_type"] == "weekday"
-    assert set(body["inputs"]) == {"hour", "day_of_week", "weekend", "distance_km", "planned_runtime_min", "headway_min",
+    assert set(body["inputs"]) == {"hour", "minute_of_day", "day_of_week", "weekend", "month", "day_of_year",
+                                   "distance_km", "planned_runtime_min", "headway_min",
                                    "scheduled_runtime_min", "prior_route_crowding_rate", "route_id", "vehicle_id",
                                    "direction", "route_type", "vehicle_type"}
     assert body["inputs"]["day_of_week"] == 1 and body["inputs"]["weekend"] == 0
@@ -266,4 +267,4 @@ def test_registry_and_python_clusters(client, auth, served):
     rows = client.get("/api/models/versions", headers=h).get_json()["rows"]
     assert rows[0]["task"] == "crowding_flag" and rows[0]["is_active"] is True
     body = client.get("/api/models/clusters/python", headers=h).get_json()
-    assert body["clusters"][0]["route_ids"] == ["R001"] and body["algorithm"] == "agglomerative_k5"
+    assert body["clusters"][0]["route_ids"] == ["R001"] and body["algorithm"] == "kmeans_k5"

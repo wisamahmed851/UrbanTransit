@@ -285,7 +285,8 @@ def demand_rates(ctx: Context, t: pd.DataFrame, rng) -> np.ndarray:
 
     # route-day noise: some days are simply busier than others
     day_idx = np.array([(d - ctx.cfg["start_date"]).days for d in dates])
-    noise_table = rng.lognormal(0.0, 0.08, (len(net.routes), int(day_idx.max()) + 1))
+    noise_table = rng.lognormal(0.0, dem.get("route_day_noise_sigma", 0.08),
+                                (len(net.routes), int(day_idx.max()) + 1))
     noise = noise_table[route, day_idx]
 
     rate = (net.route_rate[route] * prof * np.vectorize(MONTH_FACTOR.get)(month) * day_factor
@@ -309,12 +310,14 @@ def static_delay_components(ctx: Context, t: pd.DataFrame, rng) -> dict:
 
     mu = np.where(weekend, CONG_MU_WEEKEND[period], CONG_MU_WEEKDAY[period])
     mu = np.where((code == 4) & (period == 3), 1.18, mu)            # Ramadan pre-iftar rush
-    ratio = mu + ctx.route_cong[route] + rng.normal(0, 0.05, n)
+    ops_cfg = ctx.cfg["operations"]
+    ratio = mu + ctx.route_cong[route] + rng.normal(0, ops_cfg.get("congestion_ratio_noise", 0.05), n)
     comp = {}
-    comp["traffic_congestion"] = runtime * (ratio - 1.0) + rng.normal(0, 1.2, n)
+    comp["traffic_congestion"] = runtime * (ratio - 1.0) + rng.normal(
+        0, ops_cfg.get("traffic_delay_noise_min", 1.2), n)
 
     nb = ctx.geo.n_bottleneck[2 * route + t["dir"].to_numpy()]
-    comp["junction_bottleneck"] = nb * rng.uniform(0.2, 0.8, n) * np.where(peak & ~weekend, 1.6, 0.6)
+    comp["junction_bottleneck"] = nb * rng.uniform(0.42, 0.58, n) * np.where(peak & ~weekend, 1.6, 0.6)
 
     fog_day = np.array([d in sc.fog for d in dates])
     comp["weather_fog"] = np.where(fog_day & (hour >= 6) & (hour <= 10), rng.uniform(4, 15, n), 0.0)
@@ -382,11 +385,15 @@ def run_operations(ctx: Context, t: pd.DataFrame, rate: np.ndarray, comp: dict, 
     # random draws made up front (vectorised) and consumed in the loop
     ops_cfg = ctx.cfg["operations"]
     # departure deviation at the first stop: mostly small, sometimes a clearly late start
-    dep_noise = np.where(rng.random(n) < 0.75, np.clip(rng.normal(0.3, 0.8, n), -2.0, 3.0), rng.uniform(1, 6, n))
-    gmult = rng.gamma(10.0, 0.1, n)                    # over-dispersion of demand
+    dep_std = ops_cfg.get("departure_noise_std_min", 0.8)
+    dep_noise = np.where(rng.random(n) < 0.75, np.clip(rng.normal(0.3, dep_std, n), -2.0, 3.0), rng.uniform(1, 4, n))
+    gamma_shape = ctx.cfg["demand"].get("trip_demand_gamma_shape", 10.0)
+    gmult = rng.gamma(gamma_shape, 1.0 / gamma_shape, n)  # centred at one; configurable over-dispersion
     z = rng.normal(0, 1, n)
     rtype = ctx.net.routes["route_type"].to_numpy()[route]
-    rho = np.where(rtype == "feeder", rng.uniform(0.75, 0.9, n), rng.uniform(0.55, 0.75, n))  # share on board at the peak point
+    load_jitter = ctx.cfg["demand"].get("load_share_jitter", 0.075)
+    rho_centre = np.where(rtype == "feeder", 0.825, 0.65)
+    rho = np.clip(rho_centre + rng.uniform(-load_jitter, load_jitter, n), 0.5, 0.95)
 
     out_vehicle = np.full(n, -1); out_orig = np.full(n, -1)
     out_dep = np.full(n, np.nan); out_arr = np.full(n, np.nan)
@@ -423,7 +430,8 @@ def run_operations(ctx: Context, t: pd.DataFrame, rate: np.ndarray, comp: dict, 
             gap = headway[i] if last_dep[d_] is None else a_dep - last_dep[d_]
             gap = min(max(gap, 0.5), 3.0 * headway[i])
             lam = rate[i] * gap * gmult[i]
-            b = max(0, int(round(lam + math.sqrt(lam) * z[i])))
+            count_noise = ctx.cfg["demand"].get("passenger_count_noise_scale", 1.0)
+            b = max(0, int(round(lam + count_noise * math.sqrt(lam) * z[i])))
             # The vehicle that finishes the trip is the one whose APC reports the counts:
             # after a breakdown that is the depot spare, so its capacity limits the load.
             sp = -1

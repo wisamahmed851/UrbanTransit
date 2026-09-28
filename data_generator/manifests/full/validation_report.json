@@ -5,27 +5,27 @@
     {
       "check": "row counts match generation summary",
       "status": "PASS",
-      "detail": "files={'stops': 756, 'routes': 118, 'route_stops': 3210, 'vehicles': 775, 'passengers': 58000, 'schedules': 12670, 'service_calendar': 11, 'trips': 2103460, 'passenger_counts': 1940979, 'tickets': 3030615, 'delays': 990810, 'gps_events': 1139087}"
+      "detail": "files={'stops': 756, 'routes': 118, 'route_stops': 3210, 'vehicles': 775, 'passengers': 58000, 'schedules': 12670, 'service_calendar': 11, 'trips': 2103460, 'passenger_counts': 1940916, 'tickets': 3073151, 'delays': 689110, 'gps_events': 1139087}"
     },
     {
       "check": "volume tickets_rows >= 2,400,000",
       "status": "PASS",
-      "detail": "actual 3,030,615"
+      "detail": "actual 3,073,151"
     },
     {
       "check": "volume tickets_distinct_ids >= 2,000,000",
       "status": "PASS",
-      "detail": "actual 2,985,827"
+      "detail": "actual 3,027,734"
     },
     {
       "check": "volume passenger_counts >= 600,000",
       "status": "PASS",
-      "detail": "actual 1,940,979"
+      "detail": "actual 1,940,916"
     },
     {
       "check": "volume delays >= 300,000",
       "status": "PASS",
-      "detail": "actual 990,810"
+      "detail": "actual 689,110"
     },
     {
       "check": "volume routes >= 110",
@@ -110,7 +110,7 @@
     {
       "check": "PK unique: tickets (ticket_id)",
       "status": "PASS",
-      "detail": "duplicate rows found=44,788, injected=44,788"
+      "detail": "duplicate rows found=45,417, injected=45,417"
     },
     {
       "check": "PK unique: delays (delay_id)",
@@ -125,7 +125,7 @@
     {
       "check": "FK tickets -> trips (trip_id)",
       "status": "PASS",
-      "detail": "violations found=6,083, expected from manifest=6,083"
+      "detail": "violations found=6,124, expected from manifest=6,124"
     },
     {
       "check": "FK passenger_counts -> trips (trip_id)",
@@ -135,27 +135,27 @@
     {
       "check": "FK delays -> trips (trip_id)",
       "status": "PASS",
-      "detail": "violations found=2,038, expected from manifest=2,038"
+      "detail": "violations found=1,437, expected from manifest=1,437"
     },
     {
       "check": "FK gps_events -> trips (trip_id)",
       "status": "PASS",
-      "detail": "violations found=1,778, expected from manifest=1,778"
+      "detail": "violations found=1,984, expected from manifest=1,984"
     },
     {
       "check": "FK tickets -> passengers (passenger_id)",
       "status": "PASS",
-      "detail": "violations found=5,973, expected from manifest=5,973"
+      "detail": "violations found=6,056, expected from manifest=6,056"
     },
     {
       "check": "FK tickets -> stops (entry/exit_stop_id)",
       "status": "PASS",
-      "detail": "violations found=5,973, expected from manifest=5,973"
+      "detail": "violations found=6,056, expected from manifest=6,056"
     },
     {
       "check": "FK delays -> stops (stop_id)",
       "status": "PASS",
-      "detail": "violations found=1,982, expected from manifest=1,982"
+      "detail": "violations found=1,378, expected from manifest=1,378"
     },
     {
       "check": "FK trips -> vehicles (vehicle_id)",
@@ -215,12 +215,12 @@
     {
       "check": "defect departure_before_arrival [delays]",
       "status": "PASS",
-      "detail": "detected=2,971, manifest=2,971"
+      "detail": "detected=2,066, manifest=2,066"
     },
     {
       "check": "defect duplicate_tickets [tickets]",
       "status": "PASS",
-      "detail": "detected=44,788, manifest=44,788"
+      "detail": "detected=45,417, manifest=45,417"
     },
     {
       "check": "defect duplicate_trips [trips]",
@@ -230,12 +230,12 @@
     {
       "check": "defect impossible_arrival_times [delays]",
       "status": "PASS",
-      "detail": "detected=1,982, manifest=1,982"
+      "detail": "detected=1,378, manifest=1,378"
     },
     {
       "check": "defect invalid_delay_values [delays]",
       "status": "PASS",
-      "detail": "detected=1,982, manifest=1,982"
+      "detail": "detected=1,378, manifest=1,378"
     },
     {
       "check": "defect invalid_route_distances [routes]",
@@ -245,22 +245,22 @@
     {
       "check": "defect invalid_stop_ids [delays]",
       "status": "PASS",
-      "detail": "detected=1,982, manifest=1,982"
+      "detail": "detected=1,378, manifest=1,378"
     },
     {
       "check": "defect invalid_stop_ids [tickets]",
       "status": "PASS",
-      "detail": "detected=5,973, manifest=5,973"
+      "detail": "detected=6,056, manifest=6,056"
     },
     {
       "check": "defect invalid_timestamps [tickets]",
       "status": "PASS",
-      "detail": "detected=2,986, manifest=2,986"
+      "detail": "detected=3,029, manifest=3,029"
     },
     {
       "check": "defect missing_route_ids [tickets]",
       "status": "PASS",
-      "detail": "detected=5,973, manifest=5,973"
+      "detail": "detected=6,056, manifest=6,056"
     },
     {
       "check": "defect missing_route_ids [trips]",
@@ -270,7 +270,7 @@
     {
       "check": "defect missing_ticket_records [tickets]",
       "status": "PASS",
-      "detail": "detected=11,991, manifest=11,991"
+      "detail": "detected=12,160, manifest=12,160"
     },
     {
       "check": "defect missing_trip_records [trips]",
@@ -285,12 +285,12 @@
     {
       "check": "defect negative_passenger_counts [passenger_counts]",
       "status": "PASS",
-      "detail": "detected=3,881, manifest=3,881"
+      "detail": "detected=3,880, manifest=3,880"
     },
     {
       "check": "defect unknown_passengers [tickets]",
       "status": "PASS",
-      "detail": "detected=5,973, manifest=5,973"
+      "detail": "detected=6,056, manifest=6,056"
     },
     {
       "check": "defect vehicle_capacity_violations [passenger_counts]",

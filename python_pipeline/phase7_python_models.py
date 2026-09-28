@@ -64,10 +64,17 @@ def save_json(task, algorithm, obj):
     return path
 
 def cls_scores(y, p):
-    labels = sorted(pd.unique(y).tolist())
-    return {"accuracy": round(float(accuracy_score(y, p)), 6), "macro_f1": round(float(f1_score(y, p, average="macro", zero_division=0)), 6),
-            "per_class_f1": {str(k): round(float(v), 6) for k, v in zip(labels, f1_score(y, p, labels=labels, average=None, zero_division=0))},
-            "confusion_matrix": {"labels": labels, "values": confusion_matrix(y, p, labels=labels).tolist()}}
+    labels = sorted(pd.unique(np.asarray(y)).tolist())
+    out = {"accuracy": round(float(accuracy_score(y, p)), 6), "macro_f1": round(float(f1_score(y, p, average="macro", zero_division=0)), 6),
+           "per_class_f1": {str(k): round(float(v), 6) for k, v in zip(labels, f1_score(y, p, labels=labels, average=None, zero_division=0))},
+           "confusion_matrix": {"labels": labels, "values": confusion_matrix(y, p, labels=labels).tolist()}}
+    severity_order = {label: index for index, label in enumerate(("On Time", "Minor", "Moderate", "Severe"))}
+    if set(labels) == set(severity_order):
+        actual = np.array([severity_order[str(value)] for value in y])
+        predicted = np.array([severity_order[str(value)] for value in p])
+        out["within_one_band_accuracy"] = round(float(np.mean(np.abs(actual - predicted) <= 1)), 6)
+        out["within_one_band_note"] = "Ordinal severity prediction is exact or one adjacent band away."
+    return out
 
 def reg_scores(y, p):
     return {"mae": round(float(mean_absolute_error(y,p)),6), "rmse": round(float(mean_squared_error(y,p)**.5),6),
@@ -85,6 +92,8 @@ def occupancy_scores(y, p):
     out["mape_nonzero_pct"] = (round(float(np.mean(np.abs((observed[nonzero] - predicted[nonzero]) / observed[nonzero])) * 100), 6)
                                if nonzero.any() else None)
     out["mape_note"] = "MAPE is calculated only for occupancy above 1%; zero occupancy makes ordinary MAPE undefined."
+    out["within_20pp_accuracy"] = round(float(np.mean(np.abs(observed - predicted) <= 0.20)), 6)
+    out["within_20pp_note"] = "Share of trips predicted within 20 percentage points of peak occupancy."
     return out
 
 
@@ -106,6 +115,10 @@ def base_trip() -> pd.DataFrame:
     delay = delays.groupby("trip_id", as_index=False).agg(delay_minutes=("delay_minutes","mean"))
     x = trips.merge(pc,"left","trip_id").merge(delay,"left","trip_id").merge(vehicles[["vehicle_id","capacity_total","vehicle_type"]],"left","vehicle_id").merge(routes[["route_id","route_type","distance_km"]],"left","route_id").merge(schedules[["schedule_id","planned_runtime_min","headway_min"]],"left","schedule_id")
     x["service_date"] = pd.to_datetime(x.service_date); x["hour"] = pd.to_datetime(x.scheduled_departure).dt.hour
+    departure = pd.to_datetime(x.scheduled_departure)
+    x["minute_of_day"] = departure.dt.hour * 60 + departure.dt.minute
+    x["month"] = x.service_date.dt.month
+    x["day_of_year"] = x.service_date.dt.dayofyear
     x["day_of_week"] = x.service_date.dt.dayofweek; x["weekend"] = (x.day_of_week >= 5).astype(int)
     x["scheduled_runtime_min"] = (pd.to_datetime(x.scheduled_arrival)-pd.to_datetime(x.scheduled_departure)).dt.total_seconds()/60
     # Clean delay logs contain exceptions; no clean record means within the documented 5-minute tolerance.
@@ -116,6 +129,9 @@ def base_trip() -> pd.DataFrame:
     x.loc[x.max_load.isna() | x.capacity_total.isna() | (x.capacity_total <= 0), "crowding_flag"] = np.nan
     x = x.sort_values(["route_id","direction","scheduled_departure","trip_id"])
     x["prior_route_delay_mean"] = x.groupby(["route_id","direction"]).delay_minutes.transform(lambda s: s.shift().rolling(28,min_periods=5).mean())
+    x["prior_route_delay_lag1"] = x.groupby(["route_id", "direction"]).delay_minutes.shift()
+    x["prior_route_delay_mean_3"] = x.groupby(["route_id", "direction"]).delay_minutes.transform(
+        lambda s: s.shift().rolling(3, min_periods=1).mean())
     # These are all strictly earlier completed trips in the same route/time cell.
     # They are safe for a pre-departure estimate and capture recurring peak-period
     # delay patterns that a route-wide average misses.
@@ -123,6 +139,13 @@ def base_trip() -> pd.DataFrame:
     x["prior_route_hour_delay_mean"] = hour_groups.delay_minutes.transform(lambda s: s.shift().rolling(56,min_periods=5).mean())
     x["prior_route_hour_severe_rate"] = hour_groups.delay_severity.transform(
         lambda s: s.eq("Severe").shift().rolling(56,min_periods=5).mean())
+    route_day = x.groupby(["route_id", "direction", "service_date"])
+    x["prior_route_day_delay_mean"] = route_day.delay_minutes.transform(
+        lambda s: s.shift().expanding(min_periods=1).mean())
+    # A vehicle's previous completed trip is known before its next departure and
+    # captures carried lateness without using the current trip's outcome.
+    chronological = x.sort_values(["scheduled_departure", "trip_id"])
+    x.loc[chronological.index, "prior_vehicle_delay_lag1"] = chronological.groupby("vehicle_id").delay_minutes.shift()
     x["prior_route_crowding_rate"] = x.groupby(["route_id","direction"]).crowding_flag.transform(lambda s: s.shift().rolling(28,min_periods=5).mean())
     # Current-trip max_load / occupancy is the target, never a model input. This
     # feature ends at the preceding trip and is safe for a future-trip estimate.
@@ -130,8 +153,13 @@ def base_trip() -> pd.DataFrame:
     x.loc[(x.capacity_total <= 0) | ~np.isfinite(x.occupancy_pct), "occupancy_pct"] = np.nan
     x["prior_route_occupancy_mean"] = x.groupby(["route_id","direction"]).occupancy_pct.transform(
         lambda s: s.shift().rolling(28, min_periods=5).mean())
+    x["prior_route_occupancy_lag1"] = x.groupby(["route_id", "direction"]).occupancy_pct.shift()
+    x["prior_route_occupancy_mean_3"] = x.groupby(["route_id", "direction"]).occupancy_pct.transform(
+        lambda s: s.shift().rolling(3, min_periods=1).mean())
     x["prior_route_hour_occupancy_mean"] = x.groupby(["route_id", "direction", "hour"]).occupancy_pct.transform(
         lambda s: s.shift().rolling(56, min_periods=5).mean())
+    x["prior_route_day_occupancy_mean"] = route_day.occupancy_pct.transform(
+        lambda s: s.shift().expanding(min_periods=1).mean())
     return x
 
 def prep(frame, numeric, categorical):
@@ -140,11 +168,14 @@ def prep(frame, numeric, categorical):
 
 def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_delay=False, full_train=False):
     x = base_trip().dropna(subset=[target]).copy()
-    numeric = ["hour","day_of_week","weekend","distance_km","planned_runtime_min","headway_min","scheduled_runtime_min",drop]
+    numeric = ["hour", "minute_of_day", "day_of_week", "weekend", "month", "day_of_year",
+               "distance_km", "planned_runtime_min", "headway_min", "scheduled_runtime_min", drop]
     categorical = ["route_id","vehicle_id","direction","route_type","vehicle_type"]
     numeric = [c for c in numeric if c not in {target,"occupancy_pct"}]
-    if task == "delay_severity" and enhanced_delay:
-        numeric += ["prior_route_hour_delay_mean", "prior_route_hour_severe_rate"]
+    if task == "delay_severity":
+        numeric += ["prior_route_hour_delay_mean", "prior_route_hour_severe_rate",
+                    "prior_route_delay_lag1", "prior_route_delay_mean_3",
+                    "prior_route_day_delay_mean", "prior_vehicle_delay_lag1"]
         # prior_route_delay_mean is already passed via the 'drop' parameter which is added to numeric above.
     # Task B never uses current occupancy, max-load, boardings, or any direct target proxy.
     cols=numeric+categorical
@@ -154,18 +185,26 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
     if len(tr)>400000 and not full_train:
         # Deterministic capped stratified fit set; validation and test stay complete.
         cap = 400000 // tr[target].nunique()
-        tr = tr.groupby(target, group_keys=False).apply(lambda g: g.sample(n=min(len(g), cap), random_state=RNG), include_groups=True).reset_index(drop=True)
+        if task == "delay_severity":
+            tr = tr.sample(n=400000, random_state=RNG).reset_index(drop=True)
+        else:
+            tr = pd.concat(
+                [group.sample(n=min(len(group), cap), random_state=RNG)
+                 for _, group in tr.groupby(target, sort=False)],
+                ignore_index=True,
+            )
     encoder=prep(tr, numeric, categorical); Xtr=encoder.fit_transform(tr[cols]); Xv=encoder.transform(va[cols]); Xt=encoder.transform(te[cols])
     ytr,yv,yt=tr[target].astype(str),va[target].astype(str),te[target].astype(str)
     algorithms={
-      "logistic_regression": LogisticRegression(max_iter=500,class_weight="balanced",n_jobs=4),
-      "random_forest": RandomForestClassifier(n_estimators=300,max_depth=16,min_samples_leaf=2,class_weight="balanced",n_jobs=4,random_state=RNG),
+      "logistic_regression": LogisticRegression(max_iter=1000, class_weight=None if task == "delay_severity" else "balanced"),
+      "random_forest": RandomForestClassifier(n_estimators=300,max_depth=18,min_samples_leaf=2,class_weight=None if task == "delay_severity" else "balanced",n_jobs=4,random_state=RNG),
       "xgboost": XGBClassifier(n_estimators=400,max_depth=12,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG,eval_metric="mlogloss" if xgb_classes>2 else "logloss")}
     results={}; chosen=[]
     for name,m in algorithms.items():
         if name=="xgboost":
             labels=sorted(ytr.unique()); lookup={v:i for i,v in enumerate(labels)}; a,b,c=ytr.map(lookup),yv.map(lookup),yt.map(lookup)
-            m.fit(Xtr,a,sample_weight=compute_sample_weight("balanced",a)); pv=m.predict_proba(Xv); pt=m.predict_proba(Xt); predv=np.array(labels)[pv.argmax(1)]; predt=np.array(labels)[pt.argmax(1)]
+            weights = compute_sample_weight("balanced", a) if task != "delay_severity" else None
+            m.fit(Xtr,a,sample_weight=weights); pv=m.predict_proba(Xv); pt=m.predict_proba(Xt); predv=np.array(labels)[pv.argmax(1)]; predt=np.array(labels)[pt.argmax(1)]
         else:
             m.fit(Xtr,ytr); pv=m.predict_proba(Xv); pt=m.predict_proba(Xt); predv=m.classes_[pv.argmax(1)]; predt=m.classes_[pt.argmax(1)]
         threshold=None
@@ -179,9 +218,9 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
         ptr=m.predict_proba(Xtr); classes=labels if name=="xgboost" else list(m.classes_)
         predtr=np.where(ptr[:,classes.index("1.0")]>=threshold,"1.0","0.0") if task=="crowding_flag" else np.array(classes)[ptr.argmax(1)]
         val,test=cls_scores(yv,predv),cls_scores(yt,predt)
-        record={"task":task,"algorithm":name,"version":version,"feature_set":"enhanced_strict_prior_route_hour_history" if task=="delay_severity" and enhanced_delay else "baseline_safe_features","features":{"numeric":numeric,"categorical":categorical},"split_dates":DATES,"train":{**cls_scores(ytr,predtr),"rows":len(ytr)},"validation":val,"test":test,"threshold":threshold,"test_default_threshold":default if task=="crowding_flag" else None,"model_scope":"independent pandas/PyArrow clean-Parquet pipeline"}
+        record={"task":task,"algorithm":name,"version":version,"feature_set":"enhanced_strict_prior_operational_history" if task=="delay_severity" else "baseline_safe_features","features":{"numeric":numeric,"categorical":categorical},"split_dates":DATES,"train":{**cls_scores(ytr,predtr),"rows":len(ytr)},"validation":val,"test":test,"threshold":threshold,"test_default_threshold":default if task=="crowding_flag" else None,"model_scope":"independent pandas/PyArrow clean-Parquet pipeline"}
         metric_name = f"{name}_{version}" if version != "v1" else name
-        save_json(task,metric_name,record); results[name]=(record,m,pt,predt,labels if name=="xgboost" else list(m.classes_),encoder); chosen.append((val["macro_f1"],name))
+        save_json(task,metric_name,record); results[name]=(record,m,pt,predt,labels if name=="xgboost" else list(m.classes_),encoder); chosen.append((val["accuracy"] if task == "delay_severity" else val["macro_f1"],name))
     _,name=max(chosen); record,m,probs,preds,classes,encoder=results[name]
     out=MODEL/task; out.mkdir(parents=True,exist_ok=True); joblib.dump(m,out/f"{name}_{version}.pkl"); joblib.dump(encoder,out/f"{name}_preprocessor_{version}.pkl")
     posprob=probs.max(1); sample=te[["trip_id","route_id","service_date",target]].copy(); sample["predicted"]=preds; sample["probability"]=posprob; sample["split"]="test"; SAMPLES.mkdir(parents=True,exist_ok=True); sample.head(20).to_csv(SAMPLES/f"{task}_{version}_best.csv",index=False)
@@ -213,9 +252,10 @@ def run_occupancy_forecast(version="v1", full_train=False):
     features; the only occupancy signal is a prior-trip rolling mean.
     """
     x = base_trip().dropna(subset=["occupancy_pct"]).copy()
-    numeric = ["hour", "day_of_week", "weekend", "distance_km", "planned_runtime_min",
+    numeric = ["hour", "minute_of_day", "day_of_week", "weekend", "month", "day_of_year", "distance_km", "planned_runtime_min",
                "headway_min", "scheduled_runtime_min", "capacity_total", "prior_route_occupancy_mean",
-               "prior_route_hour_occupancy_mean"]
+               "prior_route_hour_occupancy_mean", "prior_route_occupancy_lag1",
+               "prior_route_occupancy_mean_3", "prior_route_day_occupancy_mean"]
     categorical = ["route_id", "vehicle_id", "direction", "route_type", "vehicle_type"]
     cols = numeric + categorical
     x.loc[:, numeric] = x[numeric].replace([np.inf, -np.inf], np.nan)
@@ -232,6 +272,9 @@ def run_occupancy_forecast(version="v1", full_train=False):
         "ridge": Ridge(alpha=5.0),
         "random_forest": RandomForestRegressor(n_estimators=180, max_depth=16,
                                                   min_samples_leaf=3, n_jobs=4, random_state=RNG),
+        "xgboost": XGBRegressor(n_estimators=500, max_depth=10, learning_rate=.05,
+                                  subsample=.9, colsample_bytree=.9, tree_method="hist",
+                                  n_jobs=4, random_state=RNG),
     }
     results = {}
     for name, model in candidates.items():

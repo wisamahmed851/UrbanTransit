@@ -23,29 +23,36 @@
   "split_dates": {
     "train": [
       "2025-09-29",
-      "2026-06-30"
+      "2026-05-13"
     ],
     "validation": [
-      "2026-07-01",
-      "2026-07-31"
+      "2026-05-14",
+      "2026-07-07"
     ],
     "test": [
-      "2026-08-01",
+      "2026-07-08",
       "2026-08-31"
     ]
   },
+  "train": {
+    "mae": 0.867354,
+    "rmse": 1.466525,
+    "r2": 0.88858,
+    "mape_nonzero_pct": 45.614856,
+    "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
+  },
   "validation": {
-    "mae": 0.960824,
-    "rmse": 1.641187,
-    "r2": 0.843946,
-    "mape_nonzero_pct": 47.892583,
+    "mae": 1.093548,
+    "rmse": 2.055696,
+    "r2": 0.777738,
+    "mape_nonzero_pct": 58.274817,
     "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
   },
   "test": {
-    "mae": 1.021776,
-    "rmse": 1.804427,
-    "r2": 0.844115,
-    "mape_nonzero_pct": 49.173845,
+    "mae": 0.997778,
+    "rmse": 1.733447,
+    "r2": 0.849463,
+    "mape_nonzero_pct": 48.410796,
     "mape_note": "MAPE is calculated only where observed tap-ins are above zero; ordinary MAPE is undefined at zero."
   },
   "leakage_guard": "Lag and rolling features use only earlier same stop-period days.",

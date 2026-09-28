@@ -93,9 +93,10 @@ def evaluate_classifier(trips: pd.DataFrame, task: str, algorithm: str = "xgboos
         else:
             pred = np.array(labels)[proba.argmax(1)]
         scores = p7.cls_scores(part[task].astype(str), pred)
-        result["splits"][split] = {"rows": len(part), "accuracy": scores["accuracy"], "macro_f1": scores["macro_f1"],
-                                   "per_class_f1": scores["per_class_f1"], "confusion_matrix": scores["confusion_matrix"]}
-        if split in rec:
+        result["splits"][split] = {"rows": len(part), **scores}
+        # Training can use a deterministic cap/stratified sample; validation and test
+        # are always the complete chronological splits and are the reproducibility gate.
+        if split != "train" and split in rec:
             result["splits"][split]["vs_recorded"] = compare(rec[split], scores, ("accuracy", "macro_f1"))
     s = result["splits"]
     result["train_vs_test"] = {m: generalisation(s["train"][m], s["test"][m]) for m in ("accuracy", "macro_f1")}
@@ -136,19 +137,21 @@ def evaluate_demand() -> dict:
 
 def evaluate_occupancy(trips: pd.DataFrame) -> dict:
     """Re-score the numeric occupancy model without retraining it."""
-    task, algorithm = "occupancy_forecast", "random_forest"
+    task = "occupancy_forecast"
+    algorithm = served_algorithm(task)
     rec = recorded(task, algorithm)
     numeric, categorical = rec["features"]["numeric"], rec["features"]["categorical"]
     model = joblib.load(MODELS / task / f"{algorithm}_v1.pkl")
     prep = joblib.load(MODELS / task / f"{algorithm}_preprocessor_v1.pkl")
-    frame = trips.dropna(subset=["occupancy_pct", "prior_route_occupancy_mean"]).copy()
+    frame = trips.dropna(subset=["occupancy_pct", "prior_route_occupancy_mean",
+                                 "prior_route_hour_occupancy_mean"]).copy()
     frame.loc[:, numeric] = frame[numeric].replace([np.inf, -np.inf], np.nan)
     result = {"task": task, "algorithm": algorithm, "target": rec["target"], "splits": {}}
     for split in ("train", "validation", "test"):
         part = p7.period(frame, split)
         scores = p7.occupancy_scores(part.occupancy_pct, model.predict(prep.transform(part[numeric + categorical])))
         result["splits"][split] = {"rows": len(part), **scores}
-        if split in rec:
+        if split != "train" and split in rec:
             result["splits"][split]["vs_recorded"] = compare(rec[split], scores, ("mae", "rmse", "r2"))
     s = result["splits"]
     result["train_vs_test"] = {"r2": generalisation(s["train"]["r2"], s["test"]["r2"]),
@@ -184,25 +187,21 @@ def route_profiles(trips: pd.DataFrame) -> pd.DataFrame:
 
 
 def evaluate_clustering(trips: pd.DataFrame) -> dict:
-    """Agglomerative clustering cannot score new points, so it is refitted (deterministic) and its
-    labels are compared with the saved model's `labels_`; K-Means k=5 is scored with `predict`."""
-    rec = recorded("route_clustering", "agglomerative_k5")
+    """Re-score the clustering algorithm selected in the serving configuration."""
+    algorithm = served_algorithm("route_clustering")
+    rec = recorded("route_clustering", algorithm)
     r = route_profiles(p7.period(trips, "train"))
     X = joblib.load(MODELS / "route_clustering" / "scaler_v1.pkl").transform(
         SimpleImputer(strategy="median").fit_transform(r[rec["features"]]))
-    saved = joblib.load(MODELS / "route_clustering" / "agglomerative_k5_v1.pkl")
-    refit = AgglomerativeClustering(n_clusters=5).fit_predict(X)
-    kmeans = joblib.load(MODELS / "route_clustering" / "kmeans_k5_v1.pkl")
+    saved = joblib.load(MODELS / "route_clustering" / f"{algorithm}_v1.pkl")
+    labels = saved.predict(X) if hasattr(saved, "predict") else saved.labels_
+    score = round(float(silhouette_score(X, labels)), 6)
     return {
-        "task": "route_clustering", "routes": len(r), "selected": "agglomerative_k5",
-        "agglomerative_k5": {"silhouette": round(float(silhouette_score(X, saved.labels_)), 6),
-                             "recorded_silhouette": rec["silhouette"],
-                             "labels_identical_to_saved_model": True,
-                             "clusters": int(len(set(saved.labels_)))},
-        # run_clusters saves only the best model; this file is left over from an older run.
-        "kmeans_k5_v1.pkl": {"expects_features": int(kmeans.n_features_in_), "current_features": X.shape[1],
-                             "status": "stale file from an earlier 9-feature run; not scored, not served"
-                             if kmeans.n_features_in_ != X.shape[1] else "compatible"},
+        "task": "route_clustering", "routes": len(r), "selected": algorithm,
+        "model_file": f"models/python/route_clustering/{algorithm}_v1.pkl",
+        "silhouette": score, "recorded_silhouette": rec["silhouette"],
+        "metric_match": abs(score - rec["silhouette"]) <= TOLERANCE,
+        "clusters": int(len(set(labels))),
     }
 
 
@@ -213,6 +212,8 @@ def print_summary(report: dict) -> None:
             recorded_note = f"recorded={'MATCH' if ok else 'DIFFERS'}" if "vs_recorded" in s else "(not recorded)"
             print(f"{c['task']:16s} {c['algorithm']:8s} {split:10s} rows={s['rows']:>8,d} "
                   f"acc={s['accuracy']:.4f} macroF1={s['macro_f1']:.4f}  {recorded_note}")
+            if "within_one_band_accuracy" in s:
+                print(f"{'':16s} ordinal within-one-band accuracy={s['within_one_band_accuracy']:.4f}")
         g = c["train_vs_test"]
         print(f"{'':16s} train->test gap: accuracy {g['accuracy']['gap']:+.4f}, macro F1 {g['macro_f1']['gap']:+.4f}")
         print(f"{'':16s} SRS target: accuracy met={c['srs_target']['accuracy_met']}, macro F1 met={c['srs_target']['macro_f1_met']}")
@@ -226,10 +227,11 @@ def print_summary(report: dict) -> None:
     test, g = occupancy["splits"]["test"], occupancy["train_vs_test"]["r2"]
     ok = all(v["match"] for s in occupancy["splits"].values() for v in s.get("vs_recorded", {}).values())
     print(f"occupancy_forecast {occupancy['algorithm']:8s} train R2={g['train']:.3f} test MAE={test['mae']:.4f} "
-          f"RMSE={test['rmse']:.4f} R2={test['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
-    c = report["clustering"]["agglomerative_k5"]
-    print(f"route_clustering agglomerative_k5 silhouette={c['silhouette']} (recorded {c['recorded_silhouette']}), "
-          f"labels identical={c['labels_identical_to_saved_model']}")
+          f"RMSE={test['rmse']:.4f} R2={test['r2']:.3f} within20pp={test['within_20pp_accuracy']:.3f}  "
+          f"recorded={'MATCH' if ok else 'DIFFERS'}")
+    c = report["clustering"]
+    print(f"route_clustering {c['selected']} silhouette={c['silhouette']} "
+          f"(recorded {c['recorded_silhouette']}), match={c['metric_match']}")
 
 
 def main() -> int:
@@ -249,7 +251,7 @@ def main() -> int:
                for s in ("validation", "test") for v in a[s]["vs_recorded"].values()]
     checks += [v["match"] for s in report["occupancy_forecast"]["splits"].values()
                for v in s.get("vs_recorded", {}).values()]
-    checks.append(report["clustering"]["agglomerative_k5"]["labels_identical_to_saved_model"])
+    checks.append(report["clustering"]["metric_match"])
     report["result"] = "PASS" if all(checks) else "DIFFERS"
     REPORT_PATH.write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")
     print_summary(report)

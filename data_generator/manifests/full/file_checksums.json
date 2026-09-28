@@ -1,250 +1,250 @@
 {
   "delays/delays_2025-09.csv": {
-    "bytes": 10821111,
-    "sha256": "ac3e2af6865017915f6e75632d15f54916564d1960d69fd61be4dc75c442b57b"
+    "bytes": 6716148,
+    "sha256": "211af6b6fd75ece9b6ca2520f3a1a78c5eaac479e795ae9e3524c5a68f40c14c"
   },
   "delays/delays_2025-10.csv": {
-    "bytes": 11676337,
-    "sha256": "78e7516238afe0fe1776aaac2ad95307467f30dca9eef508e6fb626e5373f7f4"
+    "bytes": 7299146,
+    "sha256": "e61df8440289bd62c15c5a9cf258afc33a8027d5704eb5f159888bc4055016f7"
   },
   "delays/delays_2025-11.csv": {
-    "bytes": 10731581,
-    "sha256": "0298416c674d14c43f74ebf64ad754c408de22a66e462e5cdfc24495d8f3a3a9"
+    "bytes": 6730465,
+    "sha256": "5bfea791ac38e31060aef3304e788f077d7b4b75984075c03fde97fd3c71a698"
   },
   "delays/delays_2025-12.csv": {
-    "bytes": 13959800,
-    "sha256": "b2958de3f13c90dd79b0eebb55a00688d5b386af5776f387947140df10404b7c"
+    "bytes": 10216203,
+    "sha256": "b8c06d3d587e63868992e683f66492778620c7c0908157d950e4a0f03125633b"
   },
   "delays/delays_2026-01.csv": {
-    "bytes": 16553318,
-    "sha256": "e52607aa566389775f23b24d0c6340aea1c6dcc303ae1097c8936022fc3176ff"
+    "bytes": 12710310,
+    "sha256": "aa13221ae26031560622a83efe4bc42926a3a4c3bd51cc5d93d5f2b63bdb971f"
   },
   "delays/delays_2026-02.csv": {
-    "bytes": 13562768,
-    "sha256": "90d42dd96d35f60da1d8a06a713d57d3c1024702466412adee5e55fafd663914"
+    "bytes": 10241404,
+    "sha256": "0a3de1aaee6b741daaf8ee651d3656639f0e2b9a3d69fb299cd09c4c155d7cbc"
   },
   "delays/delays_2026-03.csv": {
-    "bytes": 13996508,
-    "sha256": "181aa19419bde84b60b2fd84ee0184235dcb318afdd3e29ddae19ae65d3bd252"
+    "bytes": 10557821,
+    "sha256": "9be4a9f2aeb1933552944479224d2f9ddec319f2ad0e6e948773ab2aacc4b708"
   },
   "delays/delays_2026-04.csv": {
-    "bytes": 13072426,
-    "sha256": "28f0b7ff0e98492b432e1653feb0a767bf6b258526a1a9405cb996eda6c34d7d"
+    "bytes": 8557755,
+    "sha256": "a533a8b2f800bd974c8e085a4ac848e030ab25394a68d69e106ca1af7c592746"
   },
   "delays/delays_2026-05.csv": {
-    "bytes": 11977134,
-    "sha256": "a43ca7da9edd785b538ed7d1b4db399295c8e586e508e9523ed4d66bb9a37845"
+    "bytes": 7668320,
+    "sha256": "5781d5cc0e7f5434419aeb5fa38c7570487950f65098b088c8f83f9f69daa7dc"
   },
   "delays/delays_2026-06.csv": {
-    "bytes": 10550312,
-    "sha256": "ffe47c8c757228f44da22aaf1953b15da64c321b9fa7790ac6540b1dc3dd104d"
+    "bytes": 7099304,
+    "sha256": "7cb5d231daf0719610d79f32819625c8b566d36f419e45e0af84ef71a56cba30"
   },
   "delays/delays_2026-07.csv": {
-    "bytes": 13180376,
-    "sha256": "b90d9c3ac092962c457573eb2224ebfa35901c12bf434c10ba8679feea1d28ae"
+    "bytes": 9799220,
+    "sha256": "48f896fb13740011eabc7ed9b3bd83ef0b20cbac32237e8a283b866415c9325a"
   },
   "delays/delays_2026-08.csv": {
-    "bytes": 12364585,
-    "sha256": "478dec7b678b1ce1c73f943cd9a01442b8a78daa75c5f062e58f2ee26e22a594"
+    "bytes": 8991398,
+    "sha256": "d46df9e8d08a558a2ebbf030aad972704b27f605ed8243f06b262e57d115df4e"
   },
   "gps_events/gps_events_2025-11-10.jsonl": {
-    "bytes": 38657241,
-    "sha256": "06ed2b6a0cda711da07fe45c91049044710ea442bece6c530e33d896dfb5fc26"
+    "bytes": 38657459,
+    "sha256": "af9aa879d8ccf4e549f420184b704c6ea6b1351db2443db0d66c91fab16179b1"
   },
   "gps_events/gps_events_2025-11-11.jsonl": {
-    "bytes": 40731354,
-    "sha256": "2eed4ff854c935256550f11c8a67dd78ac234d790d8d8ffd7b663e2fa4736c87"
+    "bytes": 40731597,
+    "sha256": "f4516618e397507e910951b72713a8de4e8cfb485eef91ad56132615986f6c04"
   },
   "gps_events/gps_events_2025-11-12.jsonl": {
-    "bytes": 40850246,
-    "sha256": "5ece488627eee69b78435932e186484c20e7ae02c9b56f683e19ff565246e676"
+    "bytes": 40850456,
+    "sha256": "f95774722af6798877fa84e015534016072ac33cf767e4cbb1cf94a04ba2c37c"
   },
   "gps_events/gps_events_2025-11-13.jsonl": {
-    "bytes": 40804054,
-    "sha256": "d3b8bbea11c865e6556f426284315a96e65f9fa2956bc625dda45f9d2c04ebca"
+    "bytes": 40804286,
+    "sha256": "08e18628a5e0d9afda2084bea4d6a40771d3318997f04e103d911974d93d0510"
   },
   "gps_events/gps_events_2025-11-14.jsonl": {
-    "bytes": 40892947,
-    "sha256": "ad1e1e5d66c9e96cfa1a33f812992ff532c1ec6b46c3af48f23c10501831c262"
+    "bytes": 40893174,
+    "sha256": "d198102751720c1724dac22c07c6f0ae222eb052f9f3d56d1da74eb46d0e4c05"
   },
   "gps_events/gps_events_2025-11-15.jsonl": {
-    "bytes": 33398510,
-    "sha256": "344069bca2143775f1181be7720c5f67c06fc3d91b4f7afcef499a802d407677"
+    "bytes": 33398529,
+    "sha256": "e2b2430620d9d2fac05827d91553c1ad3779edaf9cd764843fd78d5bb0e00b0c"
   },
   "gps_events/gps_events_2025-11-16.jsonl": {
-    "bytes": 27698647,
-    "sha256": "85ffbe154d9bf1f0b0367a664cb801c6c226f8c3c0c41a7fe9ed866d688106bb"
+    "bytes": 27698663,
+    "sha256": "959c36c03e7bb01e3291247133b1486d6a7ce3483aa4124f35e5753fdf826a84"
   },
   "passenger_counts/passenger_counts_2025-09.csv": {
-    "bytes": 10417445,
-    "sha256": "92f4d545296af2e1253345e60102bf2ce800938f648aef35f7acdee859cc275a"
+    "bytes": 10586389,
+    "sha256": "563502d3c79646d9e581d63e59448561399832a78d84ffd67dc0debf3a182e1c"
   },
   "passenger_counts/passenger_counts_2025-10.csv": {
-    "bytes": 10976121,
-    "sha256": "bcd635566cb0f2a05428a65153a7bcb45ddd5b6d9842a63e2b6c41832348e2dc"
+    "bytes": 11153999,
+    "sha256": "e13ed508b7c5d0a9c2263bbf9f4b488ac35ef557a916dd9c2be4c0611be48959"
   },
   "passenger_counts/passenger_counts_2025-11.csv": {
-    "bytes": 10367610,
-    "sha256": "76a2c250ec4ff3fce643005040d88650c841a1d556da884a8a619821e6414c84"
+    "bytes": 10537730,
+    "sha256": "d54a6e7479f01d356f8d5b13cb795392c952d9b0311c6e0a2d43f24cf1e3ca24"
   },
   "passenger_counts/passenger_counts_2025-12.csv": {
-    "bytes": 10902959,
-    "sha256": "448c6b642a35e5d3af0880f8f483cb0e0378b8f6cea3fceabb7f748af993c9dd"
+    "bytes": 11080380,
+    "sha256": "6d33f54ce68ccbefff4ac6ddec7913c788fdfd9cd3233f1717d642461a465eea"
   },
   "passenger_counts/passenger_counts_2026-01.csv": {
-    "bytes": 11621794,
-    "sha256": "eda7de47411a627f7b72378b7515e71b990cada41590042c17eb8dd71db3cb5c"
+    "bytes": 11815278,
+    "sha256": "45b9e90e79313ca758a33b7b39ebb812b2e71503ed4b2425ac7103a8337d621f"
   },
   "passenger_counts/passenger_counts_2026-02.csv": {
-    "bytes": 10032728,
-    "sha256": "ac6bf6a0653a29da372e1f0c3bedb07570ceed69410f00d0e228fc6feb54167e"
+    "bytes": 10195610,
+    "sha256": "4198d525066a73ebbe90dca449c3f4320fb789e1ffd370591568778ccb365bd5"
   },
   "passenger_counts/passenger_counts_2026-03.csv": {
-    "bytes": 10603639,
-    "sha256": "d13871e46d198548e362d9e957005f08173ceb32c32865e514b0765b40cf32c2"
+    "bytes": 10775255,
+    "sha256": "6447521553828400551300b9f9bd7da9eaed6a53ce4a867099bd6263137d8546"
   },
   "passenger_counts/passenger_counts_2026-04.csv": {
-    "bytes": 11606942,
-    "sha256": "6e487d74b2ae1964e0249041a6bde0067b3b96a5b5bdb8bd62dda9e435c85d8b"
+    "bytes": 11797146,
+    "sha256": "37b7fb047d6c58be13e355a8fc085d876642cf7e808ab7a6a32bcae40654b9d7"
   },
   "passenger_counts/passenger_counts_2026-05.csv": {
-    "bytes": 11227525,
-    "sha256": "752e6a549c7dc7dc74bae5d229317ca5a436eaad7bf08f7ef75aafea75d290e7"
+    "bytes": 11411744,
+    "sha256": "42a1c1a17e12ca1ecd8150edcc6ea2f7759ce29e559b0e46dfb88bcbdd126078"
   },
   "passenger_counts/passenger_counts_2026-06.csv": {
-    "bytes": 9541547,
-    "sha256": "389af68b9a3863b32d7857c3a0c1abcdd9e580bdb8d673e8a20d697636faa915"
+    "bytes": 9698767,
+    "sha256": "9983bfdf395b48c47d762d025c68b31e3d45cbfa06da30df06c919c8b4c62d81"
   },
   "passenger_counts/passenger_counts_2026-07.csv": {
-    "bytes": 10160409,
-    "sha256": "9ba720bee9205297506bc8e7280a7eb327e34ecc2de5256a82eac16d15ebc328"
+    "bytes": 10328552,
+    "sha256": "084fde1c34472888b52cd5d19d156f61a996acaec05a7bdf263ed46baa962a24"
   },
   "passenger_counts/passenger_counts_2026-08.csv": {
-    "bytes": 9909622,
-    "sha256": "4b13e8669f2c53719110f5e8607700e46c0e0a94883b38ecba56a84c6792821f"
+    "bytes": 10072696,
+    "sha256": "4250c2a59df814f7e2289748f9a4530e33317604204bfc1ffec26063184b6ba1"
   },
   "passengers/passengers.csv": {
-    "bytes": 3797139,
-    "sha256": "709442386cd3abceecd77d4232b2405d01601bf1b53f202eddb438247b66b467"
+    "bytes": 3855140,
+    "sha256": "0b9075042c0f6dc6e1b2f96900f96650cb2bc0c4a75e2f113adf48827358ae18"
   },
   "route_stops/route_stops.csv": {
-    "bytes": 101698,
-    "sha256": "acfe0d764bf6d5630ba127b9fcb02bd78e819021ae31d35ad65458ee49fcffca"
+    "bytes": 104909,
+    "sha256": "b9d259cf8ab2645210386a8666d982a090ef0f9f3075bb91f63108c320343587"
   },
   "routes/routes.csv": {
-    "bytes": 10870,
-    "sha256": "648260a90efe04450a6080d9da1a2084ae1086f4b6df5382a63ddee95ea02da9"
+    "bytes": 10989,
+    "sha256": "182c8d64fcc5ce46935e8e33944c9e5edcad309b00c5a9fd57e4ceefa17b9b9f"
   },
   "schedules/schedules.csv": {
-    "bytes": 968005,
-    "sha256": "e04d2e410174d380d8200c2f156e7b88632e896c43aa0c107ead89ba321b00e1"
+    "bytes": 980676,
+    "sha256": "c90c09b5ddd2d9f9fa4ad6010c9b6434e89392ecf760c824080488359c5cbb85"
   },
   "service_calendar/service_calendar.json": {
-    "bytes": 9473,
-    "sha256": "c06c1193d2d7456f52fb87df924e6030665341090efe10bfaa19d25b7b627420"
+    "bytes": 9887,
+    "sha256": "c49cdc2fa4f517c47836c7bc5f11bebd79748845050f6c1c19cd21e67421da54"
   },
   "stops/stops.csv": {
-    "bytes": 51672,
-    "sha256": "31452e2ad405b672d6a42d637261867f31f1c8da38eade261b914522c23def28"
+    "bytes": 52429,
+    "sha256": "49ef0001baacfac482992cc16de103d513ee80452cb265b0bb36618f2bf3d903"
   },
   "tickets/tickets_2025-09.csv": {
-    "bytes": 29949909,
-    "sha256": "3a0e9a6a064b7e58b1f08c0caf3a832a76beeb60e350032e4518f70912d49c5d"
+    "bytes": 30549494,
+    "sha256": "a169cd1b6e94f835f585210b6e34eb8ad3d25fe7a7921ff671c5b47ca4d83778"
   },
   "tickets/tickets_2025-10.csv": {
-    "bytes": 34568384,
-    "sha256": "457cf45da4cb1d030ad78f7b215d027409d3aa11b737b6c6bec497070f023925"
+    "bytes": 35509797,
+    "sha256": "d9eee810e688b7ef91a88d951bbe5b8c7ee657c7c31d49ab8d4633a1af89adff"
   },
   "tickets/tickets_2025-11.csv": {
-    "bytes": 33327251,
-    "sha256": "aa3a72c58ffee07c5819ab0d4fcb4a16caaf57d520abf1e0fd1c0aec957b9fd6"
+    "bytes": 34117091,
+    "sha256": "56ef09f4e242c586b3e9b1a454c8dceae6f81efc56113521f125831063d2a474"
   },
   "tickets/tickets_2025-12.csv": {
-    "bytes": 34006995,
-    "sha256": "a80342867d3fe1ae672f6e6c26da8dc6fdd1dcb4dfaadd04fe806cb3c1a8622f"
+    "bytes": 34790517,
+    "sha256": "75f6247a05ddbb551d20ebb1e07f473928dc63efddd6d52f66bd56279b4cd7ee"
   },
   "tickets/tickets_2026-01.csv": {
-    "bytes": 34245279,
-    "sha256": "a54b20ca2274fb129f0fe3265a77093311587429c3f9b407c6df3bdf38342325"
+    "bytes": 34865764,
+    "sha256": "77ad7b4c28e27b265074847ca7daa03f0e9d8ef7c737b590490fed3320d02de7"
   },
   "tickets/tickets_2026-02.csv": {
-    "bytes": 31329638,
-    "sha256": "0a164b1b4c6b8c35f8f2903bb585232f1d9e39d585768f93f0f8ca389405790c"
+    "bytes": 32014136,
+    "sha256": "80187c78449da676fad5cb097ecf076adbf480a05ff73c13aef1bb69284b84ad"
   },
   "tickets/tickets_2026-03.csv": {
-    "bytes": 30437916,
-    "sha256": "b16fa3817e808d8a475ce20b4213db1848e8e8d623f7844ea8ee640f0f0085c5"
+    "bytes": 31062551,
+    "sha256": "586ce0ce74fa0d4207cb5eaaafd8ead981395622abeb75125aa08a343b5ce492"
   },
   "tickets/tickets_2026-04.csv": {
-    "bytes": 42055094,
-    "sha256": "bc178f5df67b5db08ea4a5d7236faf4a8605ade4f504ada5e9556ac03e3cc644"
+    "bytes": 43039406,
+    "sha256": "9d4cd40905761c9849589ec11fd6d10e7f7cab3fef08cedc78491d104981e695"
   },
   "tickets/tickets_2026-05.csv": {
-    "bytes": 35470678,
-    "sha256": "3bc0537d913656998918ba01c65cce54f580f8a733991d0807b50f6aedb8ed84"
+    "bytes": 36218059,
+    "sha256": "82c435410bf5294eaf9a94e9ae8f9a9adaf1f93b222c4d1e76f74126141e50cc"
   },
   "tickets/tickets_2026-06.csv": {
-    "bytes": 33427675,
-    "sha256": "79c417fd006430e3fe5e3e27942c413008acc2450f173d3be2cdbd1a9ed321c1"
+    "bytes": 34116129,
+    "sha256": "bad14dcdada6a366a3b3ba185c38a9bb7313cf5f37d34cc8a01008ddafcb451c"
   },
   "tickets/tickets_2026-07.csv": {
-    "bytes": 35015685,
-    "sha256": "e2d40048fc07f4ff481c374254b72d8a3947f48ca77da1b2580e5f5e34a27fb0"
+    "bytes": 35732815,
+    "sha256": "846a306c59f1340b786f7eea0aec7ca48cad6ac5100fd97531a7337f09a4a470"
   },
   "tickets/tickets_2026-08.csv": {
-    "bytes": 37598322,
-    "sha256": "1a7b06e31eb79d83e24d1b01e93ef8ecedc7f08d27a1e790f69b005ebf660b39"
+    "bytes": 38267618,
+    "sha256": "c89646d342ca8759842e98b7da655216fb087c50531fb769388fd03e8c0421a8"
   },
   "trips/trips_2025-09.csv": {
-    "bytes": 26865308,
-    "sha256": "ff15bd8c392bcfef5c31af6f1ae15fb9ed0f68821e238759e1e20e3dc44bb57d"
+    "bytes": 27037148,
+    "sha256": "1e18bf6f07e954728dade15e70cfdabe1abad908e884746268ef55cefa2b39bb"
   },
   "trips/trips_2025-10.csv": {
-    "bytes": 28233680,
-    "sha256": "d31a1bb7e6baf8e0c81f52b0b052e306106622df390fad56d52b85f43f30688f"
+    "bytes": 28413985,
+    "sha256": "dfc46ba58b934d8fe7ad8fcdf6db2a1ed1d4be7c5c6dd905659775fe332d9fac"
   },
   "trips/trips_2025-11.csv": {
-    "bytes": 26696700,
-    "sha256": "79a035cabb952fd1451a8fd68be441ee036ba9a892c0a2c9e151ea68aaa580d3"
+    "bytes": 26867476,
+    "sha256": "274465be9f81a4bc823dbaa76b97faebf8a7a0975ef29dec25cdc0d1ff41c413"
   },
   "trips/trips_2025-12.csv": {
-    "bytes": 28094787,
-    "sha256": "9f78c8f5e94bd31060ac703729225ffefb370793fa703a871146c9f2128bd678"
+    "bytes": 28274461,
+    "sha256": "fc97ad2e3fd922aacb6cd16ca73525f092011072b06e252696d1f70b9231c9ec"
   },
   "trips/trips_2026-01.csv": {
-    "bytes": 30044209,
-    "sha256": "229da991a0740b4d48bb248f3516d0cbae2c7d9346e2132a86a7e249c8b97db8"
+    "bytes": 30236153,
+    "sha256": "7b83c0fbcd6807e182e2e74433ac7cbfab1c10468d6693332ba9eeb5a44f7b52"
   },
   "trips/trips_2026-02.csv": {
-    "bytes": 26011642,
-    "sha256": "e09a31bdadd3fecb5af4c6e8001f1ce365209d5e3f84af7d6f5f5f307aab2d77"
+    "bytes": 26177778,
+    "sha256": "18011aedae33f95fb5d9c8cd76a2b19ca58ce0a262e57863bfc2d34e810793b7"
   },
   "trips/trips_2026-03.csv": {
-    "bytes": 27506012,
-    "sha256": "071795b0fe018b79b882e9e93da6df069a3ba9ce4ef9ef78ee39919cb87baf15"
+    "bytes": 27681972,
+    "sha256": "91c2ced949f38f4e773138f378d3d770b71226fa0115399fdc13c6fd7c33879d"
   },
   "trips/trips_2026-04.csv": {
-    "bytes": 29945921,
-    "sha256": "45eabf9bfa60e477e263804df1d7261e5797637a012e231c121c5dde7b6babff"
+    "bytes": 30137114,
+    "sha256": "25fd9ebe8c6d308f4810d9650e14e4db4031bebb7bee10bbccef5a649b97955b"
   },
   "trips/trips_2026-05.csv": {
-    "bytes": 28982896,
-    "sha256": "0ae7cd53cdb6b775a1f3354f752173e5c4efdfb36814b68a3afc5c772522e7e6"
+    "bytes": 29169062,
+    "sha256": "8ffbc6098697103c67c28464e59a19932e5b9935e92546d09b34bb46932602ff"
   },
   "trips/trips_2026-06.csv": {
-    "bytes": 24650051,
-    "sha256": "9fec79aa2fa5118cdd62fc75bcebd96f33ebc40e092c4bb691d44851ca3429c4"
+    "bytes": 24807914,
+    "sha256": "264a2a4a8a8af23123b1d0627cdff941d14cf20714365a34abdbe0b9c2888055"
   },
   "trips/trips_2026-07.csv": {
-    "bytes": 26295914,
-    "sha256": "609d9c224437953d2fcbf177f9d7a9e271638d60425d3792614371ddece720fd"
+    "bytes": 26463841,
+    "sha256": "276cfe96a01a28320c99913a41e46f0a862a324bd0263c7118b8aee4e070ee99"
   },
   "trips/trips_2026-08.csv": {
-    "bytes": 25608207,
-    "sha256": "b5fbac2a1e34724b09f39613ffb9c41a678f32c01d7a1f6a56dbfca703f93d85"
+    "bytes": 25772044,
+    "sha256": "6a1be77adbaf9d2ea48c7118919b8591b273c2e251a2c931b863fbabd576f4b6"
   },
   "vehicles/vehicles.csv": {
-    "bytes": 57079,
-    "sha256": "973fc9ad554da0283dc68e9774935d817a7fc0293a7ae1984df4b9dde859824f"
+    "bytes": 57855,
+    "sha256": "3611db17f0f5d7dad6014a5de17490c98f270e28f6d597a80cb70cb9ac6d50e2"
   }
 }

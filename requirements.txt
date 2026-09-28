@@ -22,6 +22,7 @@ pyspark==4.2.0
 
 # ---- Data science ----
 pandas==2.3.3          # PySpark 4.2 warns pandas >= 3.0 is not fully supported
+pyarrow==23.0.1        # pandas Parquet staging for the independent Python pipeline
 numpy==2.5.3
 scikit-learn==1.9.1
 xgboost==3.4.1

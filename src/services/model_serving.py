@@ -139,6 +139,7 @@ def model_card(task: str) -> dict:
         "task": task, "algorithm": m["algorithm"], "version": m["version"], "file": m["file"],
         "pipeline": "python (Phase 7)", "trained_on": "2025-09-01..2026-05-01, chronological split",
         "test_accuracy": test["accuracy"], "test_macro_f1": test["macro_f1"],
+        "test_within_one_band_accuracy": test.get("within_one_band_accuracy"),
         "metrics_source": "model_versions (re-score report: reports/saved_model_evaluation.json)" if row else "training record",
         "meets_srs_target": test["accuracy"] >= targets["classification_accuracy"]
         or test["macro_f1"] >= targets["classification_macro_f1"],
@@ -187,7 +188,9 @@ def feature_row(task: str, ctx: TripContext, day: date, vehicle_id: str | None =
             raise ApiError(404, "not_found", f"Vehicle {vehicle_id} does not exist.")
         vehicle_type = vehicle.vehicle_type
     row = {
-        "hour": ctx.hour, "day_of_week": day.weekday(), "weekend": int(day.weekday() >= 5),
+        "hour": ctx.hour, "minute_of_day": ctx.hour * 60 + 30,
+        "day_of_week": day.weekday(), "weekend": int(day.weekday() >= 5),
+        "month": day.month, "day_of_year": day.timetuple().tm_yday,
         "distance_km": ctx.distance_km, "planned_runtime_min": ctx.planned_runtime_min,
         "headway_min": ctx.headway_min, "scheduled_runtime_min": ctx.scheduled_runtime_min,
         "capacity_total": ctx.capacity_total,
@@ -201,10 +204,17 @@ def feature_row(task: str, ctx: TripContext, day: date, vehicle_id: str | None =
     row[history] = getattr(ctx, history)
     if task == "occupancy_forecast":
         row["prior_route_hour_occupancy_mean"] = ctx.prior_route_hour_occupancy_mean
+        row["prior_route_occupancy_lag1"] = ctx.prior_route_occupancy_mean
+        row["prior_route_occupancy_mean_3"] = ctx.prior_route_occupancy_mean
+        row["prior_route_day_occupancy_mean"] = ctx.prior_route_hour_occupancy_mean
     if task == "delay_severity":
         # The delay model's route-hour history (CMD-028; the served v1 file was retrained with it).
         row["prior_route_hour_delay_mean"] = ctx.prior_route_hour_delay_mean
         row["prior_route_hour_severe_rate"] = ctx.prior_route_hour_severe_rate
+        row["prior_route_delay_lag1"] = ctx.prior_route_delay_mean
+        row["prior_route_delay_mean_3"] = ctx.prior_route_delay_mean
+        row["prior_route_day_delay_mean"] = ctx.prior_route_hour_delay_mean
+        row["prior_vehicle_delay_lag1"] = ctx.prior_route_delay_mean
     m = load_regressor(task) if task == "occupancy_forecast" else load_classifier(task)
     return {k: row[k] for k in m["numeric"] + m["categorical"]}
 
