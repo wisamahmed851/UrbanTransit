@@ -168,32 +168,35 @@ def build_model_versions() -> list[dict]:
             c = classifiers[task]
             metrics = {"test": {k: c["splits"]["test"][k] for k in ("rows", "accuracy", "macro_f1", "per_class_f1")},
                        "validation": {k: c["splits"]["validation"][k] for k in ("rows", "accuracy", "macro_f1")},
+                       "train": {k: c["splits"]["train"][k] for k in ("rows", "accuracy", "macro_f1")},
+                       "train_vs_test": c["train_vs_test"],
                        "threshold": c["threshold"], "srs_target": c["srs_target"]}
         elif task == "daily_boardings":
             a = ev["demand"]["algorithms"][spec["algorithm"]]
-            metrics = {"test": {k: v for k, v in a["test"].items() if k != "vs_recorded"},
-                       "validation": {k: v for k, v in a["validation"].items() if k != "vs_recorded"},
-                       "srs_target": ev["demand"]["srs_target"]}
+            metrics = {split: {k: v for k, v in a[split].items() if k != "vs_recorded"}
+                       for split in ("test", "validation", "train")}
+            metrics.update(train_vs_test=a["train_vs_test"], srs_target=ev["demand"]["srs_target"])
         elif task == "occupancy_forecast":
             a = ev.get("occupancy_forecast")
             if a:
-                metrics = {"test": {k: v for k, v in a["splits"]["test"].items() if k not in {"vs_recorded", "rows"}},
-                           "validation": {k: v for k, v in a["splits"]["validation"].items() if k not in {"vs_recorded", "rows"}},
-                           "target": a["target"],
-                           "srs_target": {"met": True, "baseline_test_mae": 0.2}}
+                metrics = {split: {k: v for k, v in a["splits"][split].items() if k not in {"vs_recorded", "rows"}}
+                           for split in ("test", "validation", "train")}
+                metrics.update(target=a["target"], train_vs_test=a["train_vs_test"], srs_target=a["srs_target"])
             else:
                 # The serving endpoint can be enabled before the optional full
                 # re-scoring job is next run; retain the recorded split evidence.
                 record = json.loads((MODELS / "metrics" / f"{task}_{spec['algorithm']}.json").read_text(encoding="utf-8"))
                 metrics = {"test": record["test"], "validation": record["validation"],
                            "target": record["target"], "verification": "training record; re-score pending",
-                           "srs_target": {"met": True, "baseline_test_mae": record.get("baseline_test_mae", 0.2)}}
+                           "srs_target": {"met": None, "note": "baseline not yet computed; run database/evaluate_saved_models.py"}}
         elif task == "stop_period_demand":
             record = json.loads((MODELS / "metrics" / f"{task}_selected_{spec['version']}.json").read_text(encoding="utf-8"))
+            base_mae = record["baseline_28day"]["test"]["mae"]
             metrics = {"test": record["test"], "validation": record["validation"],
                        "baseline_28day": record["baseline_28day"], "target": record["target"],
                        "coverage_note": record["coverage_note"], "verification": "training record; independent re-score pending",
-                       "srs_target": {"met": True, "baseline_test_mae": record["baseline_28day"]["test"]["mae"]}}
+                       "srs_target": {"met": record["test"]["mae"] < base_mae, "baseline_test_mae": base_mae,
+                                      "selected_test_mae": record["test"]["mae"]}}
         else:
             metrics = ev["clustering"][spec["algorithm"]]
         out.append({"task": task, "algorithm": spec["algorithm"], "version": spec["version"],

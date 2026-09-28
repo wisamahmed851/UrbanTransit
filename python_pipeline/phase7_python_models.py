@@ -175,8 +175,11 @@ def run_classification(task, target, drop, xgb_classes, version="v1", enhanced_d
             for t in np.arange(.15,.71,.05): trials.append((float(t),cls_scores(yv,np.where(pv[:,pos]>=t,"1.0","0.0"))["macro_f1"]))
             threshold,maxf=max(trials,key=lambda z:z[1]); predv=np.where(pv[:,pos]>=threshold,"1.0","0.0"); predt=np.where(pt[:,pos]>=threshold,"1.0","0.0")
             default=cls_scores(yt,np.where(pt[:,pos]>=.5,"1.0","0.0"))
+        # Score the rows the model was fitted on as well, so train vs test shows the generalisation gap.
+        ptr=m.predict_proba(Xtr); classes=labels if name=="xgboost" else list(m.classes_)
+        predtr=np.where(ptr[:,classes.index("1.0")]>=threshold,"1.0","0.0") if task=="crowding_flag" else np.array(classes)[ptr.argmax(1)]
         val,test=cls_scores(yv,predv),cls_scores(yt,predt)
-        record={"task":task,"algorithm":name,"version":version,"feature_set":"enhanced_strict_prior_route_hour_history" if task=="delay_severity" and enhanced_delay else "baseline_safe_features","features":{"numeric":numeric,"categorical":categorical},"split_dates":DATES,"validation":val,"test":test,"threshold":threshold,"test_default_threshold":default if task=="crowding_flag" else None,"model_scope":"independent pandas/PyArrow clean-Parquet pipeline"}
+        record={"task":task,"algorithm":name,"version":version,"feature_set":"enhanced_strict_prior_route_hour_history" if task=="delay_severity" and enhanced_delay else "baseline_safe_features","features":{"numeric":numeric,"categorical":categorical},"split_dates":DATES,"train":{**cls_scores(ytr,predtr),"rows":len(ytr)},"validation":val,"test":test,"threshold":threshold,"test_default_threshold":default if task=="crowding_flag" else None,"model_scope":"independent pandas/PyArrow clean-Parquet pipeline"}
         metric_name = f"{name}_{version}" if version != "v1" else name
         save_json(task,metric_name,record); results[name]=(record,m,pt,predt,labels if name=="xgboost" else list(m.classes_),encoder); chosen.append((val["macro_f1"],name))
     _,name=max(chosen); record,m,probs,preds,classes,encoder=results[name]
@@ -196,9 +199,9 @@ def run_demand():
     d=demand_frame(); feats=["lag_1","lag_7","lag_28","rolling_7_mean","rolling_28_mean"]; tr,va,te=(period(d,s).dropna(subset=feats) for s in ("train","validation","test"))
     base=lambda q:q.rolling_28_mean; algorithms={"baseline_28day":None,"ridge":Pipeline([("impute",SimpleImputer(strategy="median")),("scale",StandardScaler()),("model",Ridge(alpha=1.0))]),"random_forest":RandomForestRegressor(n_estimators=220,max_depth=14,min_samples_leaf=2,n_jobs=4,random_state=RNG),"xgboost":XGBRegressor(n_estimators=350,max_depth=7,learning_rate=.05,subsample=.85,colsample_bytree=.9,tree_method="hist",n_jobs=4,random_state=RNG)}; results={}
     for name,m in algorithms.items():
-        if m is None: pv,pt=base(va),base(te)
-        else: m.fit(tr[feats],tr.boardings); pv,pt=m.predict(va[feats]),m.predict(te[feats]); (MODEL/"daily_boardings").mkdir(parents=True,exist_ok=True); joblib.dump(m,MODEL/"daily_boardings"/f"{name}_v1.pkl")
-        rec={"task":"daily_boardings","algorithm":name,"features":feats,"split_dates":DATES,"validation":reg_scores(va.boardings,pv),"test":reg_scores(te.boardings,pt),"lag_rule":"pandas shift() before every rolling aggregate; no current/future value"}; save_json("daily_boardings",name,rec); results[name]=(rec,pt)
+        if m is None: ptr,pv,pt=base(tr),base(va),base(te)
+        else: m.fit(tr[feats],tr.boardings); ptr,pv,pt=m.predict(tr[feats]),m.predict(va[feats]),m.predict(te[feats]); (MODEL/"daily_boardings").mkdir(parents=True,exist_ok=True); joblib.dump(m,MODEL/"daily_boardings"/f"{name}_v1.pkl")
+        rec={"task":"daily_boardings","algorithm":name,"features":feats,"split_dates":DATES,"train":reg_scores(tr.boardings,ptr),"validation":reg_scores(va.boardings,pv),"test":reg_scores(te.boardings,pt),"lag_rule":"pandas shift() before every rolling aggregate; no current/future value"}; save_json("daily_boardings",name,rec); results[name]=(rec,pt)
     best=min((v[0]["validation"]["mae"],k) for k,v in results.items() if k!="baseline_28day")[1]; sm=te[["route_id","service_date","boardings"]].copy(); sm["predicted"]=results[best][1]; sm["split"]="test"; SAMPLES.mkdir(parents=True,exist_ok=True); sm.head(20).to_csv(SAMPLES/"daily_boardings_best.csv",index=False); return results
 
 
@@ -238,6 +241,7 @@ def run_occupancy_forecast(version="v1", full_train=False):
             "target": "occupancy_pct", "target_definition": "trip max_load / vehicle capacity_total",
             "target_unit": "ratio of assigned vehicle capacity", "feature_set": "strict_prior_route_and_route_hour_history",
             "features": {"numeric": numeric, "categorical": categorical}, "split_dates": DATES,
+            "train": occupancy_scores(tr.occupancy_pct, model.predict(Xtr)),
             "validation": occupancy_scores(va.occupancy_pct, model.predict(Xv)),
             "test": occupancy_scores(te.occupancy_pct, model.predict(Xt)),
             "leakage_guard": "Current-trip max_load, boardings, occupancy_pct and crowding_flag are excluded; every occupancy-history feature ends at the preceding trip.",
@@ -298,19 +302,12 @@ def stop_period_demand_frame() -> pd.DataFrame:
 
 
 def stop_period_splits(d: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict]:
-    """Use the latest available ticket months without pretending they extend to August.
+    """The same chronological DATES (70% train / 15% validation / 15% test) as every other task.
 
-    The staged ticket source ends in January 2026, unlike the APC source used for
-    route-day demand.  A 31-day validation month and untouched final 31-day test
-    month preserve chronological evaluation while keeping enough prior history.
+    Rows without 28 days of prior history are dropped, so train starts a few weeks after DATES.
     """
-    end = pd.Timestamp(d.service_date.max()).normalize()
-    test_start = end - pd.Timedelta(days=30)
-    validation_start = test_start - pd.Timedelta(days=31)
     ready = d.dropna(subset=["lag_1", "lag_7", "lag_28"]).copy()
-    train = ready[ready.service_date < validation_start].copy()
-    validation = ready[(ready.service_date >= validation_start) & (ready.service_date < test_start)].copy()
-    test = ready[ready.service_date >= test_start].copy()
+    train, validation, test = (period(ready, split) for split in ("train", "validation", "test"))
     if min(len(train), len(validation), len(test)) == 0:
         raise ValueError("Ticket history cannot form chronological train/validation/test splits.")
     dates = {
@@ -340,16 +337,17 @@ def run_stop_period_demand(version="v1"):
     output = MODEL / "stop_period_demand"; output.mkdir(parents=True, exist_ok=True)
     for name, model in candidates.items():
         model.fit(Xtr, tr.tap_ins)
+        train = count_scores(tr.tap_ins, np.clip(model.predict(Xtr), 0, None))
         validation = count_scores(va.tap_ins, np.clip(model.predict(Xv), 0, None))
         test = count_scores(te.tap_ins, np.clip(model.predict(Xt), 0, None))
-        results[name] = (validation, test, model)
+        results[name] = (validation, test, model, train)
         save_json("stop_period_demand", name if version == "v1" else f"{name}_{version}", {
             "task": "stop_period_demand", "algorithm": name, "version": version,
             "target": "daily_smart_card_tap_ins",
             "target_definition": "ticket entry tap-ins per entry_stop_id × service_date × time_period",
             "coverage_note": "Smart-card and mobile-QR transactions only; cash riders are not observed.",
             "features": {"numeric": numeric, "categorical": categorical}, "split_dates": split_dates,
-            "validation": validation, "test": test,
+            "train": train, "validation": validation, "test": test,
             "leakage_guard": "Lag and rolling features use only earlier same stop-period days.",
             "model_scope": "independent pandas/PyArrow clean-Parquet pipeline",
         })
@@ -361,7 +359,7 @@ def run_stop_period_demand(version="v1"):
         "target_definition": "ticket entry tap-ins per entry_stop_id × service_date × time_period",
         "coverage_note": "Smart-card and mobile-QR transactions only; cash riders are not observed.",
         "features": {"numeric": numeric, "categorical": categorical}, "split_dates": split_dates,
-        "validation": results[selected][0], "test": results[selected][1],
+        "train": results[selected][3], "validation": results[selected][0], "test": results[selected][1],
         "baseline_28day": {"validation": results["baseline_28day"][0], "test": results["baseline_28day"][1]},
         "selection": {"selected_algorithm": selected, "criterion": "lowest validation MAE"},
         "leakage_guard": "Lag and rolling features use only earlier same stop-period days.",

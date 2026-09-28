@@ -509,6 +509,8 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
 
 .site-shot { margin: 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--glass-border); box-shadow: var(--float-shadow); transition: transform 0.4s var(--ease-out); }
 .site-shot img { display: block; width: 100%; height: auto; }
+/* aspect-ratio reserves the box before metadata loads, so the hero never jumps. */
+.site-shot video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--bg-0); }
 .site-shot:hover { transform: translateY(-4px); }
 
 .site-strip {

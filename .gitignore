@@ -82,3 +82,9 @@ data_generator/manifests/full/injection_keys.jsonl.gz
 data_generator/manifests/hidden_like/injection_keys.jsonl.gz
 
 .npm-cache
+
+# ---- Local agent skills ----
+.agents/
+
+# ---- Local-only documentation ----
+documentation/UrbanTransit IQ - Complete Diagrams.docx

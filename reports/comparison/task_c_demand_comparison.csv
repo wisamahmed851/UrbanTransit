@@ -1,493 +1,498 @@
-case_id,actual,spark_prediction,python_prediction,spark_value,python_value,absolute_difference,match,agreement_status,disagreement_explanation
-R001_2026-07-02,16829.706896551725,13831.603063190854,13183.092932900428,13831.603063190854,13183.092932900428,648.5101302904259,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R002_2026-07-02,13683.234782608695,13085.158557100194,10698.499558080812,13085.158557100194,10698.499558080812,2386.6589990193825,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R003_2026-07-02,13525.076923076924,13267.441659859582,11236.170189393944,13267.441659859582,11236.170189393944,2031.2714704656373,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R004_2026-07-02,14822.692913385828,13832.873643182116,14324.408217893211,13832.873643182116,14324.408217893211,491.53457471109505,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R005_2026-07-02,3315.0,3024.1654833031453,2900.5262919782213,3024.1654833031453,2900.5262919782213,123.63919132492401,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R006_2026-07-02,1060.0,731.6748989334224,791.9938732238087,731.6748989334224,791.9938732238087,60.318974290386336,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R007_2026-07-02,1987.0,1530.9768729637158,1594.4613998923223,1530.9768729637158,1594.4613998923223,63.484526928606556,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R008_2026-07-02,2761.0,2593.051361152888,2397.5227316825567,2593.051361152888,2397.5227316825567,195.52862947033145,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R009_2026-07-02,2138.6315789473683,1803.6949362560688,1729.5564476789382,1803.6949362560688,1729.5564476789382,74.1384885771306,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R010_2026-07-02,2332.0,2202.7200062807706,1953.587759829378,2202.7200062807706,1953.587759829378,249.13224645139258,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R011_2026-07-02,6108.968253968254,5711.514896734392,5822.55110602781,5711.514896734392,5822.55110602781,111.03620929341832,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R012_2026-07-02,2822.7692307692305,2150.474346383145,2049.203032433404,2150.474346383145,2049.203032433404,101.27131394974094,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R013_2026-07-02,1200.1,1142.5853510468098,1019.6284576626288,1142.5853510468098,1019.6284576626288,122.95689338418106,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R014_2026-07-02,2099.0,1512.3414823324724,1657.0733928702705,1512.3414823324724,1657.0733928702705,144.73191053779806,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R015_2026-07-02,2161.125,1560.1488513260647,1450.1619069283563,1560.1488513260647,1450.1619069283563,109.98694439770838,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R016_2026-07-02,5106.0,4069.990443377557,4578.665021645023,4069.990443377557,4578.665021645023,508.6745782674666,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R017_2026-07-02,2889.0,2705.6858335643087,2574.4372532816456,2705.6858335643087,2574.4372532816456,131.24858028266317,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R018_2026-07-02,1864.3902439024391,1832.668178169035,1286.6046543188186,1832.668178169035,1286.6046543188186,546.0635238502164,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R019_2026-07-02,3057.8360655737706,2612.691402580862,2316.07097750974,2612.691402580862,2316.07097750974,296.6204250711221,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R020_2026-07-02,5149.9807692307695,4850.580124010524,3556.0433931894145,4850.580124010524,3556.0433931894145,1294.5367308211094,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R021_2026-07-02,954.75,871.2593269837276,840.3809965706354,871.2593269837276,840.3809965706354,30.87833041309227,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R022_2026-07-02,884.8888888888888,653.5225788731975,582.2843781183168,653.5225788731975,582.2843781183168,71.23820075488072,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R023_2026-07-02,3656.25,3093.654791722537,3262.286063643958,3093.654791722537,3262.286063643958,168.6312719214211,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R024_2026-07-02,6105.0,5646.159509174936,5167.666621572871,5646.159509174936,5167.666621572871,478.4928876020649,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R025_2026-07-02,2926.769230769231,2753.006699774898,2280.50910172131,2753.006699774898,2280.50910172131,472.49759805358826,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R026_2026-07-02,2890.0,2758.2356809313515,2587.118348302782,2758.2356809313515,2587.118348302782,171.11733262856933,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R027_2026-07-02,1668.4313725490197,1551.9321765942557,1217.3139811689648,1551.9321765942557,1217.3139811689648,334.6181954252909,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R028_2026-07-02,4021.0,3637.964956742112,3611.577653651176,3637.964956742112,3611.577653651176,26.387303090935802,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R029_2026-07-02,2238.75,2219.1900824569097,1907.0444900561288,2219.1900824569097,1907.0444900561288,312.14559240078097,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R030_2026-07-02,511.0,508.78814322554905,496.4944643115746,508.78814322554905,496.4944643115746,12.293678913974475,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R031_2026-07-02,6282.0,5626.907486049342,5769.828267086448,5626.907486049342,5769.828267086448,142.92078103710628,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R032_2026-07-02,3377.0,2983.3336010381904,2978.495049572075,2983.3336010381904,2978.495049572075,4.838551466115405,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R033_2026-07-02,3604.0,3747.18990300836,3251.233770743146,3747.18990300836,3251.233770743146,495.9561322652139,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R034_2026-07-02,5304.610169491526,4600.358254433218,4532.59601010101,4600.358254433218,4532.59601010101,67.76224433220796,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R035_2026-07-02,1485.3658536585367,1416.878269146154,1526.1876851539853,1416.878269146154,1526.1876851539853,109.30941600783126,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R036_2026-07-02,3528.0,3491.319453282329,2519.992568495029,3491.319453282329,2519.992568495029,971.3268847873001,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R037_2026-07-02,2767.0,2097.8936572106627,1685.6234682947384,2097.8936572106627,1685.6234682947384,412.27018891592434,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R038_2026-07-02,1730.9090909090908,1559.227584037134,1388.199295463255,1559.227584037134,1388.199295463255,171.02828857387885,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R039_2026-07-02,1215.0,989.3010458030938,1001.2582127702784,989.3010458030938,1001.2582127702784,11.957166967184662,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R040_2026-07-02,1161.3793103448277,918.6306864112642,603.8694730136475,918.6306864112642,603.8694730136475,314.76121339761664,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R041_2026-07-02,1393.0,1310.187841773768,1420.7059993020848,1310.187841773768,1420.7059993020848,110.5181575283168,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R042_2026-07-02,1422.0,1389.3406528296234,1445.809059157984,1389.3406528296234,1445.809059157984,56.468406328360516,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R043_2026-07-02,882.0,848.918221285996,881.9482607434853,848.918221285996,881.9482607434853,33.03003945748935,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R044_2026-07-02,1598.0,1208.6014829430935,1383.6646634698916,1208.6014829430935,1383.6646634698916,175.06318052679808,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R045_2026-07-02,662.0,592.0586972043747,582.0099937142337,592.0586972043747,582.0099937142337,10.048703490140952,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R046_2026-07-02,1558.0,1198.369832242546,1252.1773730200027,1198.369832242546,1252.1773730200027,53.80754077745678,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R047_2026-07-02,1334.516129032258,1377.0496438325229,944.4623515695056,1377.0496438325229,944.4623515695056,432.5872922630173,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R048_2026-07-02,250.0,269.0356847774982,225.72002439372184,269.0356847774982,225.72002439372184,43.31566038377636,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R049_2026-07-02,1242.0,1417.5399933018462,1455.5632489672378,1417.5399933018462,1455.5632489672378,38.023255665391616,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R050_2026-07-02,944.0,826.9750113795893,856.2223229194129,826.9750113795893,856.2223229194129,29.247311539823613,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R051_2026-07-02,789.25,611.7746659259044,611.3536346675843,611.7746659259044,611.3536346675843,0.421031258320113,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R052_2026-07-02,1201.0,1029.014997510933,1023.6280560838296,1029.014997510933,1023.6280560838296,5.386941427103352,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R053_2026-07-02,1230.25,1051.9886102491066,622.2796920639827,1051.9886102491066,622.2796920639827,429.70891818512393,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R054_2026-07-02,2816.5454545454545,2265.59947048632,1920.8132973047868,2265.59947048632,1920.8132973047868,344.7861731815333,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R055_2026-07-02,621.0,621.7150988548491,655.7351401142719,621.7150988548491,655.7351401142719,34.02004125942278,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R056_2026-07-02,1346.6666666666663,1123.4263161285833,864.2986125755729,1123.4263161285833,864.2986125755729,259.1277035530104,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R057_2026-07-02,580.5882352941177,502.26592756690616,477.1248430600405,502.26592756690616,477.1248430600405,25.14108450686564,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R058_2026-07-02,1428.0,1223.599884404036,1217.5780841068329,1223.599884404036,1217.5780841068329,6.021800297203072,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R059_2026-07-02,439.0,438.5079003182072,464.3536351870082,438.5079003182072,464.3536351870082,25.845734868801003,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R060_2026-07-02,2296.875,1744.749593900841,1250.5977096514362,1744.749593900841,1250.5977096514362,494.15188424940493,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R061_2026-07-02,2962.0,2546.019693459169,2488.306640782526,2546.019693459169,2488.306640782526,57.7130526766432,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R062_2026-07-02,1673.9999999999998,1437.5309657217983,1528.6444965453072,1437.5309657217983,1528.6444965453072,91.11353082350888,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R063_2026-07-02,481.0,522.1619224322809,551.6998389430253,522.1619224322809,551.6998389430253,29.537916510744367,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R064_2026-07-02,524.0,614.8119467801995,627.2860822624277,614.8119467801995,627.2860822624277,12.474135482228235,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R065_2026-07-02,1808.0,1628.5224640144047,1772.6479908379797,1628.5224640144047,1772.6479908379797,144.125526823575,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R066_2026-07-02,1135.0,850.2588754577463,862.7414050399144,850.2588754577463,862.7414050399144,12.482529582168127,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R067_2026-07-02,515.0,435.5106777864037,471.7842497244912,435.5106777864037,471.7842497244912,36.273571938087514,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R068_2026-07-02,1784.0,1300.734670672699,1480.8408379562322,1300.734670672699,1480.8408379562322,180.1061672835333,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R069_2026-07-02,843.7058823529412,748.942724319885,629.774910341486,748.942724319885,629.774910341486,119.16781397839895,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R070_2026-07-02,2066.0,1945.7191383239144,1887.0932127584651,1945.7191383239144,1887.0932127584651,58.62592556544928,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R071_2026-07-02,1490.0,1080.0572273029068,988.241132372868,1080.0572273029068,988.241132372868,91.81609493003873,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R072_2026-07-02,625.0,572.9797349495159,586.1070554614795,572.9797349495159,586.1070554614795,13.127320511963603,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R073_2026-07-02,1867.6875,1535.8610936990567,1237.3198569501078,1535.8610936990567,1237.3198569501078,298.5412367489489,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R074_2026-07-02,1777.0,1479.4195935742257,1437.4668392093772,1479.4195935742257,1437.4668392093772,41.95275436484849,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R075_2026-07-02,1144.0,1026.5237788551358,956.3609248810452,1026.5237788551358,956.3609248810452,70.16285397409058,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R076_2026-07-02,1159.0,885.157617156764,872.142772384165,885.157617156764,872.142772384165,13.014844772598963,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R077_2026-07-02,653.0,594.3795270100167,621.7649081556052,594.3795270100167,621.7649081556052,27.385381145588553,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R078_2026-07-02,396.675,301.5610380762432,310.7553154949656,301.5610380762432,310.7553154949656,9.194277418722379,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R079_2026-07-02,1121.09375,841.9148490353239,637.5557645450602,841.9148490353239,637.5557645450602,204.35908449026363,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R080_2026-07-02,799.0,967.8766480412193,948.488794672525,967.8766480412193,948.488794672525,19.38785336869421,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R081_2026-07-02,2907.0,2954.002513707164,2962.894044250337,2954.002513707164,2962.894044250337,8.891530543173303,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R082_2026-07-02,344.99999999999994,381.33713243979895,423.9104569238952,381.33713243979895,423.9104569238952,42.57332448409625,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R083_2026-07-02,603.0,583.2168612488471,611.0481939947674,583.2168612488471,611.0481939947674,27.83133274592035,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R084_2026-07-02,1047.076923076923,886.0036730283765,875.3270507862462,886.0036730283765,875.3270507862462,10.676622242130293,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R085_2026-07-02,741.6585365853659,636.5019306695445,588.6948903824582,636.5019306695445,588.6948903824582,47.80704028708635,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R086_2026-07-02,1590.0,1302.892785895545,1234.6925449141297,1302.892785895545,1234.6925449141297,68.20024098141539,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R087_2026-07-02,574.0,540.4592712555991,540.892155138147,540.4592712555991,540.892155138147,0.43288388254791244,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R088_2026-07-02,318.8571428571429,292.2705137760641,182.16186027327325,292.2705137760641,182.16186027327325,110.10865350279084,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R089_2026-07-02,797.9354838709677,628.1045472530054,602.8280936651411,628.1045472530054,602.8280936651411,25.276453587864353,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R090_2026-07-02,586.0,528.172761704143,517.7722820392945,528.172761704143,517.7722820392945,10.40047966484849,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R091_2026-07-02,366.0,392.6715613271039,139.37414502753407,392.6715613271039,139.37414502753407,253.29741629956985,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R092_2026-07-02,232.00000000000003,255.4763338141501,229.26526609227,255.4763338141501,229.26526609227,26.211067721880113,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R093_2026-07-02,233.0,267.2471672214912,244.8487148484842,267.2471672214912,244.8487148484842,22.398452373007018,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R094_2026-07-02,513.0,427.49027974983727,435.1303631073485,427.49027974983727,435.1303631073485,7.64008335751123,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R095_2026-07-02,501.0,437.8842116474573,459.80425737208685,437.8842116474573,459.80425737208685,21.920045724629574,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R096_2026-07-02,677.0,633.9479025764762,566.2694606164196,633.9479025764762,566.2694606164196,67.6784419600566,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R097_2026-07-02,952.0,843.8880139234788,880.4757869168955,843.8880139234788,880.4757869168955,36.587772993416706,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R098_2026-07-02,200.68965517241375,291.4254224013998,261.4631431182582,291.4254224013998,261.4631431182582,29.96227928314164,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R099_2026-07-02,511.00000000000006,336.86761235011903,369.0594173401721,336.86761235011903,369.0594173401721,32.19180499005307,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R100_2026-07-02,554.0,524.056428212535,568.0121445372886,524.056428212535,568.0121445372886,43.95571632475355,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R101_2026-07-02,300.0,292.2705137760641,262.867084120846,292.2705137760641,262.867084120846,29.403429655218076,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R102_2026-07-02,307.0,292.2705137760641,263.2221453075372,292.2705137760641,263.2221453075372,29.048368468526917,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R103_2026-07-02,678.0,576.9952010200664,595.0380654737943,576.9952010200664,595.0380654737943,18.04286445372793,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R104_2026-07-02,407.0,389.7287588486754,400.0209090387502,389.7287588486754,400.0209090387502,10.292150190074778,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R105_2026-07-02,656.516129032258,601.4896901998961,620.8707854252307,601.4896901998961,620.8707854252307,19.381095225334548,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R106_2026-07-02,819.8095238095239,698.6052028549935,502.6407167364819,698.6052028549935,502.6407167364819,195.96448611851162,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R107_2026-07-02,987.0,772.0223797098521,805.2484957216197,772.0223797098521,805.2484957216197,33.22611601176766,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R108_2026-07-02,705.5172413793103,578.6056216156308,556.9615314794004,578.6056216156308,556.9615314794004,21.644090136230375,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R109_2026-07-02,709.0,576.6376132244535,613.0134480725993,576.6376132244535,613.0134480725993,36.375834848145814,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R110_2026-07-02,740.0,627.6788954576718,509.9018378456711,627.6788954576718,509.9018378456711,117.77705761200076,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R111_2026-07-02,1754.0,1316.94123130022,1434.5072341697708,1316.94123130022,1434.5072341697708,117.56600286955086,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R112_2026-07-02,687.0,513.0022388513,555.1924298967767,513.0022388513,555.1924298967767,42.190191045476695,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R113_2026-07-02,1881.6949152542372,1468.0373259327137,1558.8699815697655,1468.0373259327137,1558.8699815697655,90.83265563705186,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R114_2026-07-02,748.0,604.6442082529647,564.07514303204,604.6442082529647,564.07514303204,40.5690652209247,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R115_2026-07-02,494.54545454545456,447.4029307872654,331.5487103310051,447.4029307872654,331.5487103310051,115.8542204562603,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R116_2026-07-02,1799.0,1460.3511815786896,1666.8890899299258,1460.3511815786896,1666.8890899299258,206.53790835123618,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R001_2026-07-03,12122.491379310346,13085.2750777744,12031.163652597406,13085.2750777744,12031.163652597406,1054.111425176994,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R002_2026-07-03,10937.606837606838,11888.883353161897,8216.351298701302,11888.883353161897,8216.351298701302,3672.5320544605947,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R003_2026-07-03,11377.752136752137,11374.415187033735,10010.004146825397,11374.415187033735,10010.004146825397,1364.4110402083388,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R004_2026-07-03,14039.852459016394,13273.264026625404,14174.205739538234,13273.264026625404,14174.205739538234,900.9417129128306,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R005_2026-07-03,2745.0,3012.325537222242,3021.718111504655,3012.325537222242,3021.718111504655,9.39257428241308,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R006_2026-07-03,789.0,832.6895733795855,814.9548931639748,832.6895733795855,814.9548931639748,17.734680215610638,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R007_2026-07-03,1758.046875,1539.6192461717117,1692.6906832864197,1539.6192461717117,1692.6906832864197,153.07143711470803,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R008_2026-07-03,2145.0,2461.621179241164,2361.0229203023555,2461.621179241164,2361.0229203023555,100.59825893880861,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R009_2026-07-03,2115.35593220339,1817.3362909792331,1936.496873994064,1817.3362909792331,1936.496873994064,119.16058301483076,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R010_2026-07-03,2487.0,2211.773858471215,2497.461357168395,2211.773858471215,2497.461357168395,285.68749869717976,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R011_2026-07-03,5750.0,5472.783522328886,3433.401209332696,5472.783522328886,3433.401209332696,2039.3823129961897,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R012_2026-07-03,2490.0,2247.652352029003,2418.8393818630825,2247.652352029003,2418.8393818630825,171.18702983407957,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R013_2026-07-03,1065.9,1105.0604875037488,960.3688766912334,1105.0604875037488,960.3688766912334,144.69161081251548,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R014_2026-07-03,1560.0,1555.798544736189,1749.554442574428,1555.798544736189,1749.554442574428,193.7558978382392,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R015_2026-07-03,1644.2105263157896,1664.1713125101348,1760.427394815667,1664.1713125101348,1760.427394815667,96.25608230553212,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R016_2026-07-03,4169.0,4458.564402512485,3787.711058802307,4458.564402512485,3787.711058802307,670.8533437101778,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R017_2026-07-03,2955.0,2593.9031761984547,2403.702416925636,2593.9031761984547,2403.702416925636,190.2007592728187,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R018_2026-07-03,1727.142857142857,1772.7236712121703,1200.2343514282304,1772.7236712121703,1200.2343514282304,572.4893197839399,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R019_2026-07-03,3038.065573770492,2585.652150873165,2302.039902223489,2585.652150873165,2302.039902223489,283.6122486496756,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R020_2026-07-03,5128.96,4784.963376103648,4036.768861263007,4784.963376103648,4036.768861263007,748.1945148406417,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R021_2026-07-03,833.3898305084746,846.5171820877374,869.8057118424051,846.5171820877374,869.8057118424051,23.288529754667707,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R022_2026-07-03,782.9074074074074,710.1352389461033,649.499641881409,710.1352389461033,649.499641881409,60.63559706469425,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R023_2026-07-03,2540.0,3092.348275524223,2525.550020335884,3092.348275524223,2525.550020335884,566.7982551883392,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R024_2026-07-03,6099.862068965517,5690.880078612202,5237.029853896106,5690.880078612202,5237.029853896106,453.8502247160959,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R025_2026-07-03,2650.3529411764707,2672.3502879712973,2234.097099771005,2672.3502879712973,2234.097099771005,438.25318820029224,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R026_2026-07-03,2459.0,2826.0164024829005,3212.635683162797,2826.0164024829005,3212.635683162797,386.6192806798963,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R027_2026-07-03,1538.2040816326532,1484.481100008079,1158.463854691294,1484.481100008079,1158.463854691294,326.01724531678497,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R028_2026-07-03,3177.0,3691.579473218809,4008.945968045113,3691.579473218809,4008.945968045113,317.366494826304,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R029_2026-07-03,2205.943396226415,2075.282993543213,1791.5814784750517,2075.282993543213,1791.5814784750517,283.70151506816114,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R030_2026-07-03,554.0,479.70500247914026,520.1805536887367,479.70500247914026,520.1805536887367,40.47555120959646,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R031_2026-07-03,5790.0,5987.02492983453,5613.058768172282,5987.02492983453,5613.058768172282,373.96616166224794,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R032_2026-07-03,2937.0,2834.896070509692,2511.242481190232,2834.896070509692,2511.242481190232,323.65358931946,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R033_2026-07-03,3843.125,3299.858275334012,2446.28215648638,3299.858275334012,2446.28215648638,853.5761188476322,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R034_2026-07-03,5566.46551724138,4566.271719404392,3675.40234651712,4566.271719404392,3675.40234651712,890.8693728872718,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R035_2026-07-03,1093.0,1283.6694018351204,1257.7281965470982,1283.6694018351204,1257.7281965470982,25.941205288022275,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R036_2026-07-03,3472.0,3477.791841750137,3009.26494083694,3477.791841750137,3009.26494083694,468.5269009131971,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R037_2026-07-03,2091.0,2151.6026776488948,2253.678696365909,2151.6026776488948,2253.678696365909,102.07601871701445,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R038_2026-07-03,1755.5454545454547,1507.4870815542577,1233.090808916276,1507.4870815542577,1233.090808916276,274.3962726379816,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R039_2026-07-03,855.0,1011.3727245205596,945.36638360364,1011.3727245205596,945.36638360364,66.00634091691961,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R040_2026-07-03,973.1470588235294,966.5505443286004,591.752220349217,966.5505443286004,591.752220349217,374.7983239793833,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R041_2026-07-03,1452.0,1352.357444505044,1249.3536923056247,1352.357444505044,1249.3536923056247,103.0037521994193,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R042_2026-07-03,1259.0,1342.4366205274484,1388.7148784095916,1342.4366205274484,1388.7148784095916,46.27825788214318,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R043_2026-07-03,1057.0,829.6412978832394,830.3517809872146,829.6412978832394,830.3517809872146,0.7104831039752071,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R044_2026-07-03,1373.0,1262.948480228016,1180.0852801147062,1262.948480228016,1180.0852801147062,82.86320011330986,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R045_2026-07-03,594.0,560.0995796508798,567.5859256286734,560.0995796508798,567.5859256286734,7.486345977793576,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R046_2026-07-03,1211.8536585365855,1267.513782993191,1312.7682971897598,1267.513782993191,1312.7682971897598,45.254514196568834,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R047_2026-07-03,1311.483870967742,1377.7737291023805,849.3532089913665,1377.7737291023805,849.3532089913665,528.420520111014,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R048_2026-07-03,262.0,252.5255347068425,214.57850271596357,252.5255347068425,214.57850271596357,37.94703199087894,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R049_2026-07-03,1225.0,1308.59168658331,1134.6191270608665,1308.59168658331,1134.6191270608665,173.9725595224436,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R050_2026-07-03,846.0,808.6876108360822,825.9715050764564,808.6876108360822,825.9715050764564,17.283894240374252,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R051_2026-07-03,602.5757575757576,617.3459459961399,457.9336858540247,617.3459459961399,457.9336858540247,159.4122601421152,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R052_2026-07-03,1109.0,1103.1001946957635,1166.0208117363131,1103.1001946957635,1166.0208117363131,62.92061704054959,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R053_2026-07-03,1339.88,1080.1096204270702,543.7711193674473,1080.1096204270702,543.7711193674473,536.3385010596229,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R054_2026-07-03,2248.909090909091,2249.5705333712126,1999.389053099672,2249.5705333712126,1999.389053099672,250.18148027154052,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R055_2026-07-03,600.0,571.8525973245485,601.4853394418815,571.8525973245485,601.4853394418815,29.63274211733301,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R056_2026-07-03,1066.5454545454545,1182.8796945948095,888.1584629586521,1182.8796945948095,888.1584629586521,294.7212316361574,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R057_2026-07-03,557.1176470588235,533.7673569681375,451.7718374484389,533.7673569681375,451.7718374484389,81.99551951969863,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R058_2026-07-03,1238.0,1307.0222381711778,1265.753250510232,1307.0222381711778,1265.753250510232,41.26898766094587,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R059_2026-07-03,466.375,442.9499095369873,461.9443313930045,442.9499095369873,461.9443313930045,18.994421856017198,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R060_2026-07-03,1562.1,1807.3188103475816,1249.687016751409,1807.3188103475816,1249.687016751409,557.6317935961727,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R061_2026-07-03,2439.0,2513.394115391107,2904.656676349965,2513.394115391107,2904.656676349965,391.2625609588581,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R062_2026-07-03,1814.0,1457.1073816006292,1625.517190337124,1457.1073816006292,1625.517190337124,168.40980873649482,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R063_2026-07-03,592.0975609756098,506.8788444070522,528.2317080265411,506.8788444070522,528.2317080265411,21.352863619488915,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R064_2026-07-03,597.5749999999999,533.1666408676747,515.453104805276,533.1666408676747,515.453104805276,17.713536062398703,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R065_2026-07-03,1544.0,1554.5870603353435,1730.1857528375808,1554.5870603353435,1730.1857528375808,175.59869250223733,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R066_2026-07-03,889.0,964.9481475201349,956.7158403187112,964.9481475201349,956.7158403187112,8.232307201423623,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R067_2026-07-03,517.0,379.9192002431293,440.8958584163953,379.9192002431293,440.8958584163953,60.976658173266,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R068_2026-07-03,1176.4102564102564,1357.0155710390886,1286.3363239063156,1357.0155710390886,1286.3363239063156,70.67924713277307,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R069_2026-07-03,810.0,736.6161585097386,621.575719088998,736.6161585097386,621.575719088998,115.04043942074065,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R070_2026-07-03,1827.0,1898.5721363474224,2003.819301700276,1898.5721363474224,2003.819301700276,105.24716535285347,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R071_2026-07-03,1136.0,1157.7116615093746,1192.598509376141,1157.7116615093746,1192.598509376141,34.8868478667664,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R072_2026-07-03,594.0,527.4106840351071,512.5373978167302,527.4106840351071,512.5373978167302,14.873286218376961,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R073_2026-07-03,1861.703703703704,1573.3847829764134,1268.6957996449507,1573.3847829764134,1268.6957996449507,304.6889833314626,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R074_2026-07-03,1844.0,1503.4392761566771,1277.5457219761788,1503.4392761566771,1277.5457219761788,225.8935541804983,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R075_2026-07-03,1183.0,1026.966565482654,1048.5228177468643,1026.966565482654,1048.5228177468643,21.556252264210343,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R076_2026-07-03,976.0,950.1870738230704,915.5670131172247,950.1870738230704,915.5670131172247,34.62006070584562,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R077_2026-07-03,548.0,593.4170447644507,602.8279118134602,593.4170447644507,602.8279118134602,9.41086704900954,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R078_2026-07-03,341.0,315.1986402105024,332.3733175042479,315.1986402105024,332.3733175042479,17.174677293745503,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R079_2026-07-03,900.5294117647059,968.929566677174,803.1698417363376,968.929566677174,803.1698417363376,165.75972494083635,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R080_2026-07-03,933.0,805.7734418705949,842.4839765071974,805.7734418705949,842.4839765071974,36.710534636602574,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R081_2026-07-03,2377.0,2804.8228910340536,3201.6719144046933,2804.8228910340536,3201.6719144046933,396.84902337063977,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R082_2026-07-03,363.0,327.4617609041172,278.189422666618,327.4617609041172,278.189422666618,49.27233823749924,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R083_2026-07-03,545.3000000000001,588.247804190172,619.0689317199093,588.247804190172,619.0689317199093,30.821127529737282,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R084_2026-07-03,954.0,965.26903077462,868.8839010229842,965.26903077462,868.8839010229842,96.38512975163576,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R085_2026-07-03,710.0,625.9722671037891,631.5536634137756,625.9722671037891,631.5536634137756,5.581396309986417,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R086_2026-07-03,1270.0,1353.9771931554333,1436.4011788925436,1353.9771931554333,1436.4011788925436,82.42398573711034,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R087_2026-07-03,496.0,527.5862535117731,538.9520754904955,527.5862535117731,538.9520754904955,11.365821978722465,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R088_2026-07-03,274.5,290.91183241076635,195.8436428948612,290.91183241076635,195.8436428948612,95.06818951590515,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R089_2026-07-03,520.0,630.616319821407,556.5618375451729,630.616319821407,556.5618375451729,74.05448227623413,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R090_2026-07-03,529.0,527.0194698115902,557.8906441653912,527.0194698115902,557.8906441653912,30.871174353801052,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R091_2026-07-03,416.8888888888889,348.16124871628455,124.71706418932114,348.16124871628455,124.71706418932114,223.4441845269634,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R092_2026-07-03,189.0,252.5255347068425,199.06213702057823,252.5255347068425,199.06213702057823,53.46339768626427,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R093_2026-07-03,259.0,252.5255347068425,223.62809672457965,252.5255347068425,223.62809672457965,28.897437982262858,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R094_2026-07-03,452.0,408.8100494653237,459.2011382194205,408.8100494653237,459.2011382194205,50.39108875409681,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R095_2026-07-03,376.0,443.323150681724,414.6488131169856,443.323150681724,414.6488131169856,28.67433756473838,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R096_2026-07-03,695.0,626.0029798002191,575.1082547942491,626.0029798002191,575.1082547942491,50.89472500597003,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R097_2026-07-03,905.0,816.2699748610356,848.5337907075819,816.2699748610356,848.5337907075819,32.26381584654632,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R098_2026-07-03,202.0,252.5255347068425,232.6793305133498,252.5255347068425,232.6793305133498,19.846204193492696,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R099_2026-07-03,315.0,335.4305971784865,366.2425025772732,335.4305971784865,366.2425025772732,30.811905398786735,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R100_2026-07-03,453.0,498.01333237515325,545.9119735220848,498.01333237515325,545.9119735220848,47.898641146931595,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R101_2026-07-03,302.0,289.3197146687565,293.3852769459314,289.3197146687565,293.3852769459314,4.065562277174934,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R102_2026-07-03,235.0,261.2082150833748,224.12848623138288,261.2082150833748,224.12848623138288,37.079728851991916,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R103_2026-07-03,583.0,552.977057769458,576.4469440537614,552.977057769458,576.4469440537614,23.469886284303357,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R104_2026-07-03,362.0,389.1814130311176,427.5890355285763,389.1814130311176,427.5890355285763,38.4076224974587,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R105_2026-07-03,520.0,594.3718144614028,595.0675766135547,594.3718144614028,595.0675766135547,0.6957621521519286,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R106_2026-07-03,799.8000000000001,706.7334034693575,519.3433578065033,706.7334034693575,519.3433578065033,187.39004566285428,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R107_2026-07-03,869.0,788.6226540940532,928.211982067546,788.6226540940532,928.211982067546,139.5893279734928,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R108_2026-07-03,577.0,574.930230188489,556.9586702243362,574.930230188489,556.9586702243362,17.97155996415279,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R109_2026-07-03,604.0,608.976009770926,664.0537821783382,608.976009770926,664.0537821783382,55.077772407412226,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R110_2026-07-03,621.0,599.6992890631427,557.4282556458922,599.6992890631427,557.4282556458922,42.271033417250464,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R111_2026-07-03,1484.3414634146343,1289.3953317368907,1208.847742260996,1289.3953317368907,1208.847742260996,80.54758947589471,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R112_2026-07-03,538.0,554.0011165762108,587.7342774537772,554.0011165762108,587.7342774537772,33.73316087756632,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R113_2026-07-03,1908.3833333333332,1517.4243248705702,1339.7966177131743,1517.4243248705702,1339.7966177131743,177.6277071573959,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R114_2026-07-03,615.0,629.7929578780385,712.1842922727817,629.7929578780385,712.1842922727817,82.39133439474324,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R115_2026-07-03,493.09090909090907,471.9045554040501,307.33317032385804,471.9045554040501,307.33317032385804,164.57138508019204,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R116_2026-07-03,1687.0,1461.6544506980374,1388.774004750269,1461.6544506980374,1388.774004750269,72.88044594776852,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R001_2026-07-04,9908.752577319588,10507.2169379943,8659.021992846525,10507.2169379943,8659.021992846525,1848.1949451477758,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R002_2026-07-04,7947.913978494624,8506.996919343666,6503.526027943751,8506.996919343666,6503.526027943751,2003.4708913999157,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R003_2026-07-04,6695.096774193548,8995.93181097206,7100.826933399771,8995.93181097206,7100.826933399771,1895.1048775722893,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R004_2026-07-04,9959.21359223301,10759.216503480247,9123.280409830502,10759.216503480247,9123.280409830502,1635.936093649745,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R005_2026-07-04,1775.5,2071.1956763969424,2106.4008302975185,2071.1956763969424,2106.4008302975185,35.20515390057608,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R006_2026-07-04,651.0,575.3827200825418,587.7897773245837,575.3827200825418,587.7897773245837,12.407057242041901,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R007_2026-07-04,947.0,1313.8751550455045,1173.023169623774,1313.8751550455045,1173.023169623774,140.85198542173043,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R008_2026-07-04,1594.0,1855.697072960951,1669.1852531726645,1855.697072960951,1669.1852531726645,186.5118197882864,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R009_2026-07-04,1462.72,1386.2373007737394,1181.194211533486,1386.2373007737394,1181.194211533486,205.0430892402535,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R010_2026-07-04,1348.0,1674.9553496135843,1495.6921707379774,1674.9553496135843,1495.6921707379774,179.26317887560685,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R011_2026-07-04,4099.0,4271.942101995434,4217.878752863186,4271.942101995434,4217.878752863186,54.06334913224873,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R012_2026-07-04,1372.0,1655.8563739137253,1539.4279485245029,1655.8563739137253,1539.4279485245029,116.42842538922241,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R013_2026-07-04,756.6666666666666,792.4903639279636,673.8468818815953,792.4903639279636,673.8468818815953,118.64348204636826,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R014_2026-07-04,1204.62,1076.4277527222084,1069.7204525536224,1076.4277527222084,1069.7204525536224,6.707300168586016,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R015_2026-07-04,1018.8888888888888,1247.9825029146664,1065.8800442727131,1247.9825029146664,1065.8800442727131,182.10245864195326,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R016_2026-07-04,2905.0,3245.2568223076537,3295.7047653898026,3245.2568223076537,3295.7047653898026,50.44794308214887,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R017_2026-07-04,2230.0,2025.4184355848563,1981.7781726574208,2025.4184355848563,1981.7781726574208,43.640262927435515,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R018_2026-07-04,1498.5,1237.0713634218023,799.7636439279576,1237.0713634218023,799.7636439279576,437.30771949384473,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R019_2026-07-04,1918.4,2070.4544360561576,1945.4653915608608,2070.4544360561576,1945.4653915608608,124.98904449529687,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R020_2026-07-04,3583.076923076924,3710.3376999684656,2410.1123960616105,3710.3376999684656,2410.1123960616105,1300.225303906855,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R021_2026-07-04,637.5652173913043,768.1838373547849,717.4522360714133,768.1838373547849,717.4522360714133,50.731601283371674,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R022_2026-07-04,557.2682926829269,540.6541217476698,431.9775086068996,540.6541217476698,431.9775086068996,108.6766131407702,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R023_2026-07-04,1822.0392156862745,2343.961581588432,2314.035010497174,2343.961581588432,2314.035010497174,29.92657109125821,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R024_2026-07-04,4807.541666666666,4374.252317131266,4131.421656493473,4374.252317131266,4131.421656493473,242.8306606377928,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R025_2026-07-04,2352.3809523809523,1978.720791017776,1628.360768858418,1978.720791017776,1628.360768858418,350.3600221593581,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R026_2026-07-04,2239.0,2194.8108482271286,2180.441829196104,2194.8108482271286,2180.441829196104,14.369019031024436,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R027_2026-07-04,1083.0,1279.711360302252,944.2835481656812,1279.711360302252,944.2835481656812,335.42781213657076,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R028_2026-07-04,2704.1666666666665,2699.727279653377,2716.7248530722354,2699.727279653377,2716.7248530722354,16.997573418858337,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R029_2026-07-04,1352.0,1632.7976286527287,1166.0548206582405,1632.7976286527287,1166.0548206582405,466.7428079944882,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R030_2026-07-04,371.0,391.8627545465913,391.9248079879535,391.8627545465913,391.9248079879535,0.06205344136219537,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R031_2026-07-04,4765.0,4364.64051302112,4064.619838259975,4364.64051302112,4064.619838259975,300.0206747611446,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R032_2026-07-04,1936.0,2063.919934427269,2063.731470251622,2063.919934427269,2063.731470251622,0.18846417564691365,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R033_2026-07-04,2591.0,2741.65548479012,2567.574631565248,2741.65548479012,2567.574631565248,174.08085322487204,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R034_2026-07-04,3585.9615384615386,3820.379553071159,3389.6372425331715,3820.379553071159,3389.6372425331715,430.7423105379876,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R035_2026-07-04,697.3714285714285,929.7170084527108,860.5534949099325,929.7170084527108,860.5534949099325,69.16351354277833,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R036_2026-07-04,2649.965517241379,2625.397156918896,1942.100135488154,2625.397156918896,1942.100135488154,683.2970214307422,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R037_2026-07-04,1395.9999999999998,1619.9573799336315,1525.7063672061806,1619.9573799336315,1525.7063672061806,94.25101272745087,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R038_2026-07-04,1358.75,1114.7704095385195,923.2933483399244,1114.7704095385195,923.2933483399244,191.47706119859515,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R039_2026-07-04,855.0,677.2054511274464,597.0141423870803,677.2054511274464,597.0141423870803,80.19130874036614,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R040_2026-07-04,767.25,770.240720434032,523.0763652333043,770.240720434032,523.0763652333043,247.16435520072775,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R041_2026-07-04,846.0,988.7031756019308,953.1367332817543,988.7031756019308,953.1367332817543,35.56644232017641,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R042_2026-07-04,853.0,925.0534432642676,896.1311414872654,925.0534432642676,896.1311414872654,28.92230177700219,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R043_2026-07-04,630.0,752.8233757112395,774.5578172451773,752.8233757112395,774.5578172451773,21.734441533937797,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R044_2026-07-04,894.0,926.6003584102106,924.7408273412296,926.6003584102106,924.7408273412296,1.859531068980914,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R045_2026-07-04,360.0,405.1556711600399,382.7311410387579,405.1556711600399,382.7311410387579,22.424530121281975,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R046_2026-07-04,731.0,897.7110867084323,836.7129537157142,897.7110867084323,836.7129537157142,60.99813299271807,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R047_2026-07-04,995.52,1012.5895943621424,809.933401175234,1012.5895943621424,809.933401175234,202.65619318690835,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R048_2026-07-04,130.0,202.19979059932749,195.1036010002478,202.19979059932749,195.1036010002478,7.096189599079679,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R049_2026-07-04,835.0,955.86549127159,997.8074349305429,955.86549127159,997.8074349305429,41.94194365895282,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R050_2026-07-04,671.0,644.8098134348936,621.5939747403206,644.8098134348936,621.5939747403206,23.215838694572994,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R051_2026-07-04,374.8965517241379,449.8046698026428,369.6810807891068,449.8046698026428,369.6810807891068,80.12358901353605,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R052_2026-07-04,882.9999999999999,857.9206735775754,843.7713905233815,857.9206735775754,843.7713905233815,14.149283054193916,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R053_2026-07-04,546.5909090909091,824.8924171080433,513.0231645201604,824.8924171080433,513.0231645201604,311.8692525878829,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R054_2026-07-04,1407.2758620689656,1681.9691450108198,1286.9435986893898,1681.9691450108198,1286.9435986893898,395.02554632143006,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R055_2026-07-04,392.0,441.851727268324,423.5177060990984,441.851727268324,423.5177060990984,18.334021169225593,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R056_2026-07-04,843.52,886.8620594500081,734.9478166587484,886.8620594500081,734.9478166587484,151.91424279125977,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R057_2026-07-04,319.0,383.24861162348594,283.11889579725755,383.24861162348594,283.11889579725755,100.12971582622839,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R058_2026-07-04,819.0,991.2204233318917,1144.887889720006,991.2204233318917,1144.887889720006,153.66746638811424,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R059_2026-07-04,334.0,311.61860741851655,310.94990402739705,311.61860741851655,310.94990402739705,0.6687033911194931,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R060_2026-07-04,1352.8846153846157,1360.9556482153369,894.3961277515291,1360.9556482153369,894.3961277515291,466.55952046380776,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R061_2026-07-04,1562.9999999999998,1859.0607304513303,1775.6385740133107,1859.0607304513303,1775.6385740133107,83.42215643801956,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R062_2026-07-04,1025.0,1136.2137205481424,1186.3498388054425,1136.2137205481424,1186.3498388054425,50.13611825730004,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R063_2026-07-04,369.0,408.1022919517301,385.8738179927665,408.1022919517301,385.8738179927665,22.228473958963605,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R064_2026-07-04,373.0,446.363216544955,429.3551891089224,446.363216544955,429.3551891089224,17.00802743603259,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R065_2026-07-04,1177.0,1235.6158573171542,1161.9948613554086,1235.6158573171542,1161.9948613554086,73.62099596174562,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R066_2026-07-04,723.0,692.4032265135822,670.9180680415412,692.4032265135822,670.9180680415412,21.485158472041007,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R067_2026-07-04,249.0,339.7996707313039,317.1567780234833,339.7996707313039,317.1567780234833,22.64289270782058,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R068_2026-07-04,777.0,905.4478198905832,857.4928064947192,905.4478198905832,857.4928064947192,47.95501339586406,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R069_2026-07-04,508.4516129032258,607.3133198064824,518.8268091999278,607.3133198064824,518.8268091999278,88.48651060655459,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R070_2026-07-04,1220.9999999999998,1450.8408657340226,1328.8115224898816,1450.8408657340226,1328.8115224898816,122.02934324414105,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R071_2026-07-04,673.0,859.5886305791117,840.4763238938061,859.5886305791117,840.4763238938061,19.11230668530561,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R072_2026-07-04,438.0,482.3776997556228,445.8192147545809,482.3776997556228,445.8192147545809,36.5584850010419,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R073_2026-07-04,1012.0,1212.6637335356866,840.3773731532431,1212.6637335356866,840.3773731532431,372.2863603824435,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R074_2026-07-04,944.0,1104.7685268640216,1151.672365308818,1104.7685268640216,1151.672365308818,46.90383844479629,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R075_2026-07-04,846.0,816.6989772926219,813.81746308828,816.6989772926219,813.81746308828,2.8815142043418973,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R076_2026-07-04,643.0,743.0345950706795,652.5535395003812,743.0345950706795,652.5535395003812,90.48105557029828,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R077_2026-07-04,356.0,407.37498669653775,407.7563753362439,407.37498669653775,407.7563753362439,0.381388639706131,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R078_2026-07-04,286.0,269.7529572316484,275.3655064647905,269.7529572316484,275.3655064647905,5.61254923314209,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R079_2026-07-04,686.5333333333333,737.8155517785827,536.3669188932029,737.8155517785827,536.3669188932029,201.44863288537988,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R080_2026-07-04,629.0,620.8193728424363,570.8343273309387,620.8193728424363,570.8343273309387,49.985045511497674,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R081_2026-07-04,2261.0,1937.0381043801283,1953.2379251925329,1937.0381043801283,1953.2379251925329,16.199820812404596,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R082_2026-07-04,310.0,264.8916056720359,241.23456143837944,264.8916056720359,241.23456143837944,23.65704423365645,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R083_2026-07-04,450.0,411.1184899031863,421.6293474718864,411.1184899031863,421.6293474718864,10.51085756870009,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R084_2026-07-04,676.909090909091,716.5101466980778,680.478498337569,716.5101466980778,680.478498337569,36.031648360508825,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R085_2026-07-04,446.0,538.9908325395828,520.7598295923933,538.9908325395828,520.7598295923933,18.231002947189495,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R086_2026-07-04,917.0,917.0923777557804,888.4845547397142,917.0923777557804,888.4845547397142,28.607823016066163,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R087_2026-07-04,374.3703703703704,403.6715938219204,388.40910260523634,403.6715938219204,388.40910260523634,15.262491216684055,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R088_2026-07-04,163.5,204.9978276302458,129.3454762343028,204.9978276302458,129.3454762343028,75.65235139594301,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R089_2026-07-04,406.0,456.4355573249517,450.495948434277,456.4355573249517,450.495948434277,5.939608890674663,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R090_2026-07-04,314.0,372.287046511154,368.0728614437288,372.287046511154,368.0728614437288,4.2141850674252055,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R091_2026-07-04,267.1428571428571,257.820866655034,79.20013186379819,257.820866655034,79.20013186379819,178.62073479123583,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R092_2026-07-04,117.0,199.41597416017737,137.29957978593248,199.41597416017737,137.29957978593248,62.11639437424489,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R093_2026-07-04,168.0,202.19979059932749,159.20220059019445,202.19979059932749,159.20220059019445,42.997590009133035,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R094_2026-07-04,350.0,319.14241999918653,329.79360583097383,319.14241999918653,329.79360583097383,10.651185831787302,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R095_2026-07-04,331.0,334.2990616027984,327.576433522294,334.2990616027984,327.576433522294,6.722628080504421,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R096_2026-07-04,484.00000000000006,493.9641286044391,459.9567327319432,493.9641286044391,459.9567327319432,34.00739587249592,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R097_2026-07-04,604.0,669.7280756767171,677.9432044601286,669.7280756767171,677.9432044601286,8.215128783411501,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R098_2026-07-04,159.0,199.41597416017737,151.66061180549357,199.41597416017737,151.66061180549357,47.7553623546838,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R099_2026-07-04,256.0,233.37077126041268,223.01953393192468,233.37077126041268,223.01953393192468,10.351237328487997,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R100_2026-07-04,323.0,382.4194945658992,367.318456903089,382.4194945658992,367.318456903089,15.1010376628102,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R101_2026-07-04,113.0,207.13012333627776,200.09158587098145,207.13012333627776,200.09158587098145,7.038537465296315,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R102_2026-07-04,138.0,200.4112730433204,165.3258646834149,200.4112730433204,165.3258646834149,35.0854083599055,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R103_2026-07-04,353.0,425.1140776194809,426.9414182074074,425.1140776194809,426.9414182074074,1.8273405879265283,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R104_2026-07-04,283.0,256.7325200552216,243.62117348152185,256.7325200552216,243.62117348152185,13.111346573699734,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R105_2026-07-04,445.0,470.6528749697499,443.34003114973774,470.6528749697499,443.34003114973774,27.312843820012176,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R106_2026-07-04,483.0,551.4342050278212,352.8987491480692,551.4342050278212,352.8987491480692,198.53545587975202,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R107_2026-07-04,509.0,627.1815525900458,595.4341902110276,627.1815525900458,595.4341902110276,31.747362379018227,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R108_2026-07-04,329.0,419.5028276506303,399.95515518363806,419.5028276506303,399.95515518363806,19.547672466992253,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R109_2026-07-04,318.0,418.63939376947184,409.9390630564261,418.63939376947184,409.9390630564261,8.70033071304573,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R110_2026-07-04,448.0,468.06839523243815,445.83565230399904,468.06839523243815,445.83565230399904,22.23274292843911,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R111_2026-07-04,879.0,990.7700874445228,900.8646946065878,990.7700874445228,900.8646946065878,89.90539283793498,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R112_2026-07-04,435.0,404.2495839941252,394.12630678969896,404.2495839941252,394.12630678969896,10.123277204426245,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R113_2026-07-04,1180.3921568627452,1247.256372248679,1150.5424929229964,1247.256372248679,1150.5424929229964,96.71387932568268,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R114_2026-07-04,390.0,519.6061990206977,529.9689903798048,519.6061990206977,529.9689903798048,10.362791359107177,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R115_2026-07-04,294.8,341.85567466713894,207.5812467168653,341.85567466713894,207.5812467168653,134.27442795027363,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R116_2026-07-04,1102.0,1070.962116717975,1073.0924557009212,1070.962116717975,1073.0924557009212,2.130338982946114,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R001_2026-07-05,6887.307692307692,7459.38959952899,6317.001686606124,7459.38959952899,6317.001686606124,1142.3879129228662,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R002_2026-07-05,5573.164556962026,6782.073925885942,4639.962449060259,6782.073925885942,4639.962449060259,2142.111476825683,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R003_2026-07-05,5115.282051282052,6488.650382344698,4903.920291023338,6488.650382344698,4903.920291023338,1584.7300913213603,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R004_2026-07-05,6819.170731707318,7507.587073194317,6479.065134904226,7507.587073194317,6479.065134904226,1028.5219382900905,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R005_2026-07-05,1474.0,1571.8456877514045,1328.3150654562223,1571.8456877514045,1328.3150654562223,243.53062229518218,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R006_2026-07-05,479.1428571428571,471.9329537297326,465.2974170666394,471.9329537297326,465.2974170666394,6.635536663093205,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R007_2026-07-05,717.0,806.9191753735422,703.0914737680944,806.9191753735422,703.0914737680944,103.82770160544783,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R008_2026-07-05,1335.6818181818182,1422.276704494298,1312.482482984885,1422.276704494298,1312.482482984885,109.79422150941286,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R009_2026-07-05,992.8205128205128,1118.6119437212838,925.7493416494528,1118.6119437212838,925.7493416494528,192.8626020718309,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R010_2026-07-05,876.0,1118.0772741586054,1041.134304439895,1118.0772741586054,1041.134304439895,76.9429697187104,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R011_2026-07-05,3028.0,3232.1405311947224,3288.168046866852,3232.1405311947224,3288.168046866852,56.02751567212954,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R012_2026-07-05,1060.0,1081.2117169476387,1021.8105499469696,1081.2117169476387,1021.8105499469696,59.40116700066915,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R013_2026-07-05,492.84615384615387,577.8464606835944,466.9448829705751,577.8464606835944,466.9448829705751,110.90157771301926,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R014_2026-07-05,873.0,918.8437887585776,870.2678895573498,918.8437887585776,870.2678895573498,48.5758992012278,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R015_2026-07-05,810.051282051282,862.2795881314779,673.9275532100777,862.2795881314779,673.9275532100777,188.35203492140022,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R016_2026-07-05,2012.0,2412.2815732038525,2346.4542869337592,2412.2815732038525,2346.4542869337592,65.82728627009328,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R017_2026-07-05,1127.0,1509.0311952109228,1414.3523811959988,1509.0311952109228,1414.3523811959988,94.678814014924,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R018_2026-07-05,1045.7333333333331,983.833802056528,567.0819046099882,983.833802056528,567.0819046099882,416.75189744653983,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R019_2026-07-05,1172.439024390244,1432.4488703844863,1170.5773098035074,1432.4488703844863,1170.5773098035074,261.8715605809789,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R020_2026-07-05,2360.5714285714284,2691.706242248166,1926.985692325601,2691.706242248166,1926.985692325601,764.7205499225649,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R021_2026-07-05,406.1538461538461,510.67791691863744,406.78518435187743,510.67791691863744,406.78518435187743,103.89273256676,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R022_2026-07-05,356.88888888888886,398.3302089189511,333.4702652380093,398.3302089189511,333.4702652380093,64.8599436809418,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R023_2026-07-05,1416.9523809523807,1679.3589136356102,1537.8135565435914,1679.3589136356102,1537.8135565435914,141.54535709201878,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R024_2026-07-05,3289.0,3510.1456239598274,2950.1780070670184,3510.1456239598274,2950.1780070670184,559.967616892809,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R025_2026-07-05,1202.235294117647,1520.4078176916048,1142.6084403081595,1520.4078176916048,1142.6084403081595,377.7993773834453,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R026_2026-07-05,1336.0,1600.489963263784,1541.2903058159793,1600.489963263784,1541.2903058159793,59.19965744780461,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R027_2026-07-05,725.4857142857143,876.1096258707644,622.0141514685427,876.1096258707644,622.0141514685427,254.09547440222173,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R028_2026-07-05,1857.0,2153.931272802348,2013.87156525242,2153.931272802348,2013.87156525242,140.0597075499279,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R029_2026-07-05,1238.2857142857142,1113.9522459224793,814.9909969022739,1113.9522459224793,814.9909969022739,298.9612490202054,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R030_2026-07-05,240.0,284.57712578337936,246.76785158882603,284.57712578337936,246.76785158882603,37.809274194553325,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R031_2026-07-05,3708.279069767442,3514.2015599467145,3296.188372478166,3514.2015599467145,3296.188372478166,218.0131874685485,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R032_2026-07-05,1405.0000000000002,1554.884372877205,1370.0696434841095,1554.884372877205,1370.0696434841095,184.81472939309538,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R033_2026-07-05,1798.0000000000002,2011.313520230296,1893.6276041757487,2011.313520230296,1893.6276041757487,117.6859160545473,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R034_2026-07-05,2868.75,2877.7054534159256,2455.3188349902007,2877.7054534159256,2455.3188349902007,422.3866184257249,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R035_2026-07-05,734.0,653.7495531565561,606.3852326471684,653.7495531565561,606.3852326471684,47.36432050938765,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R036_2026-07-05,2018.56,1973.95214309575,1429.6551736914955,1973.95214309575,1429.6551736914955,544.2969694042545,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R037_2026-07-05,1114.0,1103.0191346410104,1019.9084576371826,1103.0191346410104,1019.9084576371826,83.11067700382785,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R038_2026-07-05,776.25,881.6345189872267,619.0261625163387,881.6345189872267,619.0261625163387,262.608356470888,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R039_2026-07-05,344.0,585.4209943558168,546.4425023785848,585.4209943558168,546.4425023785848,38.97849197723201,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R040_2026-07-05,534.6666666666666,582.8360320851533,409.40845486868096,582.8360320851533,409.40845486868096,173.42757721647234,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R041_2026-07-05,659.0,781.2472488327905,714.181135318081,781.2472488327905,714.181135318081,67.06611351470951,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R042_2026-07-05,647.0,708.8171476034784,617.232877391429,708.8171476034784,617.232877391429,91.58427021204932,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R043_2026-07-05,318.0,490.1556963080629,429.628023996995,490.1556963080629,429.628023996995,60.527672311067874,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R044_2026-07-05,672.0,720.5408295779457,656.8749512043464,720.5408295779457,656.8749512043464,63.6658783735993,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R045_2026-07-05,268.0,311.4707578750304,273.3049636537411,311.4707578750304,273.3049636537411,38.16579422128933,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R046_2026-07-05,594.8275862068965,674.4061091032024,606.3880491971814,674.4061091032024,606.3880491971814,68.018059906021,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R047_2026-07-05,562.6666666666666,759.5425591679605,510.0266783224843,759.5425591679605,510.0266783224843,249.51588084547615,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R048_2026-07-05,155.0,183.80628484818425,113.79001508456524,183.80628484818425,113.79001508456524,70.01626976361901,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R049_2026-07-05,549.0,670.7482033516305,596.6734146809077,670.7482033516305,596.6734146809077,74.0747886707228,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R050_2026-07-05,450.00000000000006,489.1494594607125,437.40314529795097,489.1494594607125,437.40314529795097,51.74631416276151,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R051_2026-07-05,281.25,343.25555510042926,262.641358769018,343.25555510042926,262.641358769018,80.61419633141128,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R052_2026-07-05,443.0,645.9076894792695,633.7203071661409,645.9076894792695,633.7203071661409,12.187382313128637,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R053_2026-07-05,494.3684210526316,560.4020391182274,270.81483601387833,560.4020391182274,270.81483601387833,289.5872031043491,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R054_2026-07-05,1245.0,1197.2872388239543,845.7712583987768,1197.2872388239543,845.7712583987768,351.51598042517753,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R055_2026-07-05,283.0,339.1932357922379,336.4929412191157,339.1932357922379,336.4929412191157,2.7002945731221644,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R056_2026-07-05,645.5652173913044,678.8595098067714,501.8411503342558,678.8595098067714,501.8411503342558,177.01835947251556,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R057_2026-07-05,194.78260869565216,284.6982888355306,180.88450746619588,284.6982888355306,180.88450746619588,103.81378136933472,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R058_2026-07-05,719.0,695.9983125505319,633.4026567875859,695.9983125505319,633.4026567875859,62.59565576294597,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R059_2026-07-05,159.0,260.95440116368246,237.5660266779805,260.95440116368246,237.5660266779805,23.388374485701974,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R060_2026-07-05,793.6363636363636,938.4190957608032,654.2729288288994,938.4190957608032,654.2729288288994,284.14616693190385,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R061_2026-07-05,1314.0,1383.1615646456637,1243.4372124281565,1383.1615646456637,1243.4372124281565,139.7243522175072,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R062_2026-07-05,842.0,827.4518985160219,727.7537987112221,827.4518985160219,727.7537987112221,99.69809980479977,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R063_2026-07-05,217.0,341.2042989370594,336.3445489600375,341.2042989370594,336.3445489600375,4.859749977021863,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R064_2026-07-05,312.1481481481481,317.75021905869625,282.1519430421764,317.75021905869625,282.1519430421764,35.59827601651983,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R065_2026-07-05,863.0,886.9387530775589,846.8482957312993,886.9387530775589,846.8482957312993,40.09045734625954,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R066_2026-07-05,444.0,533.5383281201662,489.307840989492,533.5383281201662,489.307840989492,44.23048713067419,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R067_2026-07-05,229.0,242.14383321422537,201.76591419962853,242.14383321422537,201.76591419962853,40.37791901459684,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R068_2026-07-05,697.0,708.2136984959225,638.784164313627,708.2136984959225,638.784164313627,69.42953418229547,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R069_2026-07-05,358.0,396.81213437865057,350.6880332947848,396.81213437865057,350.6880332947848,46.12410108386575,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R070_2026-07-05,1006.9333333333332,1009.9446783056504,913.2578907938648,1009.9446783056504,913.2578907938648,96.68678751178561,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R071_2026-07-05,536.0,585.2092983820374,529.2070582882468,585.2092983820374,529.2070582882468,56.00224009379065,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R072_2026-07-05,289.0,335.8777639406129,320.4609222275494,335.8777639406129,320.4609222275494,15.41684171306349,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R073_2026-07-05,812.0,852.1009168856014,579.9729730857878,852.1009168856014,579.9729730857878,272.1279437998136,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R074_2026-07-05,804.0,827.2286267750877,763.0962144062279,827.2286267750877,763.0962144062279,64.13241236885983,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R075_2026-07-05,498.0,592.9167382009108,546.6777293437244,592.9167382009108,546.6777293437244,46.23900885718638,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R076_2026-07-05,387.0,503.568081549288,451.7761750364815,503.568081549288,451.7761750364815,51.79190651280652,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R077_2026-07-05,209.0,323.8557781961924,285.3074092479234,323.8557781961924,285.3074092479234,38.548368948269,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R078_2026-07-05,182.0,196.5606301308345,160.21355445633338,196.5606301308345,160.21355445633338,36.34707567450113,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R079_2026-07-05,427.0769230769231,537.6557318582968,382.395064213254,537.6557318582968,382.395064213254,155.26066764504282,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R080_2026-07-05,373.0,452.3461470161248,421.64939981993774,452.3461470161248,421.64939981993774,30.69674719618706,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R081_2026-07-05,1736.0,1611.917774521493,1495.244747413709,1611.917774521493,1495.244747413709,116.67302710778381,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R082_2026-07-05,210.0,233.285865198129,225.05016255175076,233.285865198129,225.05016255175076,8.235702646378229,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R083_2026-07-05,276.0,349.1833948626936,339.9743758156865,349.1833948626936,339.9743758156865,9.209019047007075,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R084_2026-07-05,534.0,535.3944127131538,462.34351324141136,535.3944127131538,462.34351324141136,73.05089947174241,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R085_2026-07-05,310.0,347.4532050695471,319.3836272718991,347.4532050695471,319.3836272718991,28.06957779764798,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R086_2026-07-05,750.0,780.8751952729733,770.6929216467778,780.8751952729733,770.6929216467778,10.182273626195524,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R087_2026-07-05,260.0,302.7327447250929,258.79296563918825,302.7327447250929,258.79296563918825,43.93977908590466,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R088_2026-07-05,98.57142857142858,183.80628484818425,96.8362211199093,183.80628484818425,96.8362211199093,86.97006372827495,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R089_2026-07-05,374.0,370.9432510154522,354.4399418443165,370.9432510154522,354.4399418443165,16.503309171135697,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R090_2026-07-05,223.0,284.9571227439173,233.5637686880352,284.9571227439173,233.5637686880352,51.3933540558821,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R091_2026-07-05,110.0,213.0395189473696,70.58477071545542,213.0395189473696,70.58477071545542,142.45474823191418,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R092_2026-07-05,89.0,183.80628484818425,97.17741634815738,183.80628484818425,97.17741634815738,86.62886850002687,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R093_2026-07-05,81.0,183.80628484818425,108.2472593115201,183.80628484818425,108.2472593115201,75.55902553666415,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R094_2026-07-05,178.94736842105263,261.207649131124,236.7564039683977,261.207649131124,236.7564039683977,24.45124516272631,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R095_2026-07-05,223.0,266.8832853158893,237.1214111620328,266.8832853158893,237.1214111620328,29.761874153856468,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R096_2026-07-05,380.0,372.2170138280943,344.61174449171017,372.2170138280943,344.61174449171017,27.60526933638414,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R097_2026-07-05,534.0,516.5928672413279,469.9020005183809,516.5928672413279,469.9020005183809,46.69086672294702,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R098_2026-07-05,86.99999999999999,183.80628484818425,124.51790268662684,183.80628484818425,124.51790268662684,59.28838216155741,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R099_2026-07-05,173.99999999999997,198.29813437226767,164.93103232529393,198.29813437226767,164.93103232529393,33.36710204697374,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R100_2026-07-05,257.0,297.00909268214923,259.2834683841664,297.00909268214923,259.2834683841664,37.72562429798285,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R101_2026-07-05,140.0,183.80628484818425,123.48924111547666,183.80628484818425,123.48924111547666,60.31704373270759,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R102_2026-07-05,118.0,183.80628484818425,111.31921363182543,183.80628484818425,111.31921363182543,72.48707121635881,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R103_2026-07-05,235.38888888888889,321.8266254722178,282.9716213639472,321.8266254722178,282.9716213639472,38.855004108270634,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R104_2026-07-05,216.84210526315792,220.8475908329469,166.71642720147352,220.8475908329469,166.71642720147352,54.131163631473385,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R105_2026-07-05,314.7368421052631,360.1103022422846,352.83125322915834,360.1103022422846,352.83125322915834,7.279049013126269,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R106_2026-07-05,347.6923076923077,377.6229738515675,223.86807898523372,377.6229738515675,223.86807898523372,153.75489486633379,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R107_2026-07-05,478.0,450.72526831797535,410.5946793636351,450.72526831797535,410.5946793636351,40.130588954340226,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R108_2026-07-05,215.0,320.52387629625593,269.9563911251499,320.52387629625593,269.9563911251499,50.56748517110606,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R109_2026-07-05,284.0,317.5951515223109,271.6549586539176,317.5951515223109,271.6549586539176,45.9401928683933,False,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R110_2026-07-05,299.0,350.1300864438888,343.0447443520573,350.1300864438888,343.0447443520573,7.085342091831478,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R111_2026-07-05,715.0,734.8920293167408,695.1786919886028,734.8920293167408,695.1786919886028,39.71333732813798,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R112_2026-07-05,285.0,322.9460584406847,298.11893588930724,322.9460584406847,298.11893588930724,24.827122551377443,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R113_2026-07-05,623.4146341463414,855.1931341895063,797.3744758259662,855.1931341895063,797.3744758259662,57.81865836354007,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R114_2026-07-05,318.0,343.6684046245871,340.2543020313739,343.6684046245871,340.2543020313739,3.4141025932131583,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R115_2026-07-05,228.57142857142856,279.55281706552256,164.38406238053224,279.55281706552256,164.38406238053224,115.16875468499032,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R116_2026-07-05,926.0,834.201215981553,826.8915506321129,834.201215981553,826.8915506321129,7.309665349440138,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R001_2026-07-06,14612.899159663864,15735.614234846857,13347.42290125631,15735.614234846857,13347.42290125631,2388.1913335905465,False,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R002_2026-07-06,15835.368421052632,13031.780841773469,10249.62996392496,13031.780841773469,10249.62996392496,2782.1508778485095,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R003_2026-07-06,13289.76923076923,11638.401172877284,12329.441658487443,11638.401172877284,12329.441658487443,691.0404856101595,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R004_2026-07-06,16456.67716535433,16862.636535032205,15385.172705627698,16862.636535032205,15385.172705627698,1477.4638294045071,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R005_2026-07-06,3772.0,3320.521090702497,3354.6576092600017,3320.521090702497,3354.6576092600017,34.13651855750459,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R006_2026-07-06,971.0,974.0826296742482,962.9318010623788,974.0826296742482,962.9318010623788,11.150828611869429,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R007_2026-07-06,1903.0,1722.722971244873,1751.328699557822,1722.722971244873,1751.328699557822,28.60572831294894,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R008_2026-07-06,2767.0,2861.0792929995705,2731.6369648732143,2861.0792929995705,2731.6369648732143,129.4423281263562,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R009_2026-07-06,2524.779661016949,2203.2935093265096,1931.589506161475,2203.2935093265096,1931.589506161475,271.7040031650347,False,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R010_2026-07-06,2502.0,2372.506243905388,2559.934469756574,2372.506243905388,2559.934469756574,187.42822585118574,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R011_2026-07-06,6372.106060606061,5871.750002489934,6119.542386723212,5871.750002489934,6119.542386723212,247.79238423327843,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R012_2026-07-06,2504.0,2449.6547484922794,2482.8280273593077,2449.6547484922794,2482.8280273593077,33.17327886702833,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R013_2026-07-06,1162.065573770492,1334.2426391883346,1258.232006102521,1334.2426391883346,1258.232006102521,76.01063308581365,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R014_2026-07-06,1881.0,1875.8986003186417,1936.6746540248444,1875.8986003186417,1936.6746540248444,60.776053706202674,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R015_2026-07-06,2047.1186440677968,1850.965995934193,1726.0551774618991,1850.965995934193,1726.0551774618991,124.91081847229384,True,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R016_2026-07-06,5197.0,4623.756135912149,4808.058256533167,4623.756135912149,4808.058256533167,184.30212062101782,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R017_2026-07-06,2871.0,2736.6094762201164,2994.84878735426,2736.6094762201164,2994.84878735426,258.23931113414346,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R018_2026-07-06,2311.0243902439024,2093.049045770683,1333.0997750983147,2093.049045770683,1333.0997750983147,759.9492706723681,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R019_2026-07-06,3009.103448275862,2807.102684532581,2711.4729030642475,2807.102684532581,2711.4729030642475,95.62978146833348,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R020_2026-07-06,5304.596153846153,5458.137165268473,4489.159977223943,5458.137165268473,4489.159977223943,968.9771880445296,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R021_2026-07-06,1173.6166666666666,948.2471642806696,894.001230606481,948.2471642806696,894.001230606481,54.245933674188564,True,BothWrong,"Both models missed within 10% tolerance, but Python captured recent lags better."
-R022_2026-07-06,805.2641509433962,830.8068891942258,669.3740523904914,830.8068891942258,669.3740523904914,161.4328368037344,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R023_2026-07-06,3303.0,3446.1597170746404,3545.3445736463723,3446.1597170746404,3545.3445736463723,99.18485657173187,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R024_2026-07-06,6377.8,6146.790916011473,5431.878488012595,6146.790916011473,5431.878488012595,714.9124279988782,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R025_2026-07-06,3003.75,3036.8256244689355,2523.728846672083,3036.8256244689355,2523.728846672083,513.0967777968526,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R026_2026-07-06,3270.3125,3194.7952026138723,3154.4216617812795,3194.7952026138723,3154.4216617812795,40.37354083259288,True,BothCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R027_2026-07-06,1851.96,1904.283111716944,1366.1311498239118,1904.283111716944,1366.1311498239118,538.1519618930322,False,SparkOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
-R028_2026-07-06,4023.0,4447.591487818833,4283.4384873401,4447.591487818833,4283.4384873401,164.1530004787328,True,PyOnlyCorrect,Spark's window functions struggled on the small dataset size compared to pandas shift() logic.
+case_id,actual,spark_actual,spark_prediction,python_prediction,spark_value,python_value,spark_probability,python_probability,absolute_difference,match,agreement_status,disagreement_explanation
+R037_2026-07-29,2295.0,2295.0,2195.4982199413257,2104.8414252041343,2195.498,2104.841,,,90.657,True,BothCorrect,Pipelines agree.
+R052_2026-07-09,1249.0,1249.0,1244.853440743282,1137.5605621832303,1244.853,1137.561,,,107.293,True,BothCorrect,Pipelines agree.
+R015_2026-08-15,927.0,1047.9130434782608,1160.6105840536484,868.8001915699823,1160.611,868.8,,,291.81,False,PyOnlyCorrect,"Spark off by 10.8%, Python off by 6.3% of their actuals"
+R003_2026-07-19,4185.0,4721.538461538462,6252.550725366862,5434.288818166076,6252.551,5434.289,,,818.262,False,BothWrong,"Spark off by 32.4%, Python off by 29.9% of their actuals"
+R009_2026-07-15,1516.0,1728.7719298245613,1963.1296069387856,1716.0895049690835,1963.13,1716.09,,,247.04,False,BothWrong,"Spark off by 13.6%, Python off by 13.2% of their actuals"
+R051_2026-08-11,743.0,923.1212121212121,682.2666462900544,535.8735478872084,682.267,535.874,,,146.393,False,BothWrong,"Spark off by 26.1%, Python off by 27.9% of their actuals"
+R088_2026-07-20,226.0,328.72727272727275,302.2604423516657,187.6789762453823,302.26,187.679,,,114.581,False,SparkOnlyCorrect,"Spark off by 8.1%, Python off by 17.0% of their actuals"
+R020_2026-07-29,3845.0,5051.274509803921,4587.649112839284,3632.7778639116623,4587.649,3632.778,,,954.871,False,BothCorrect,"Spark off by 9.2%, Python off by 5.5% of their actuals"
+R051_2026-07-08,458.0,569.030303030303,638.7319529074945,495.54932373135523,638.732,495.549,,,143.183,False,PyOnlyCorrect,"Spark off by 12.2%, Python off by 8.2% of their actuals"
+R108_2026-07-15,522.0,522.0,646.4239400753972,637.331740104129,646.424,637.332,,,9.092,True,BothWrong,Pipelines agree.
+R030_2026-07-13,477.0,477.0,546.4595740624725,529.8635356689203,546.46,529.864,,,16.596,True,BothWrong,Pipelines agree.
+R041_2026-07-09,1660.0,1660.0,1396.580765854621,1403.2578286951368,1396.581,1403.258,,,6.677,True,BothWrong,Pipelines agree.
+R050_2026-07-10,759.0,759.0,868.0688529568838,856.949096957419,868.069,856.949,,,11.12,True,BothWrong,Pipelines agree.
+R024_2026-08-20,5028.0,5539.322033898306,5813.385335411374,4976.630533051907,5813.385,4976.631,,,836.755,False,BothCorrect,"Spark off by 4.9%, Python off by 1.0% of their actuals"
+R018_2026-07-21,1392.0,2121.1428571428573,2000.9886304687666,1259.469644115043,2000.989,1259.47,,,741.519,False,BothCorrect,"Spark off by 5.7%, Python off by 9.5% of their actuals"
+R104_2026-07-15,451.0,451.0,432.5070597057191,414.5910074106355,432.507,414.591,,,17.916,True,BothCorrect,Pipelines agree.
+R052_2026-07-23,1216.0,1216.0,1179.7896294666657,1187.9362974510802,1179.79,1187.936,,,8.147,True,BothCorrect,Pipelines agree.
+R090_2026-08-29,426.0,426.0,437.0205601971838,410.81339130753656,437.021,410.813,,,26.207,True,BothCorrect,Pipelines agree.
+R106_2026-08-03,592.0,917.6,802.4744338711677,538.0529612332874,802.474,538.053,,,264.421,False,PyOnlyCorrect,"Spark off by 12.5%, Python off by 9.1% of their actuals"
+R029_2026-08-03,2197.0,2788.5,2436.0124315717358,2067.5837809822347,2436.012,2067.584,,,368.429,False,PyOnlyCorrect,"Spark off by 12.6%, Python off by 5.9% of their actuals"
+R080_2026-08-23,490.0,490.0,516.0018722441205,508.18407515603747,516.002,508.184,,,7.818,True,BothCorrect,Pipelines agree.
+R007_2026-08-22,1045.0,1045.0,1071.2099094800242,1102.2627217314955,1071.21,1102.263,,,31.053,True,BothCorrect,Pipelines agree.
+R067_2026-08-11,581.0,581.0,518.1220270037326,545.5636449276594,518.122,545.564,,,27.442,True,PyOnlyCorrect,Pipelines agree.
+R103_2026-08-17,716.0,716.0,637.9373606035836,602.0138980757966,637.937,602.014,,,35.923,True,BothWrong,Pipelines agree.
+R051_2026-07-31,677.0,861.6363636363636,550.1308496155535,431.55833980114716,550.131,431.558,,,118.573,False,BothWrong,"Spark off by 36.2%, Python off by 36.3% of their actuals"
+R008_2026-08-03,3314.0,3365.78125,2512.7447725397224,2418.9679677562467,2512.745,2418.968,,,93.777,True,BothWrong,Pipelines agree.
+R003_2026-07-30,11360.0,13010.59829059829,13028.426537812264,11134.455636724386,13028.427,11134.456,,,1893.971,False,BothCorrect,"Spark off by 0.1%, Python off by 2.0% of their actuals"
+R111_2026-08-14,497.0,497.0,1490.0944277343174,1443.9189257802925,1490.094,1443.919,,,46.176,True,BothWrong,Pipelines agree.
+R032_2026-08-13,2535.0,2535.0,3302.644560040827,3239.967108189556,3302.645,3239.967,,,62.677,True,BothWrong,Pipelines agree.
+R053_2026-08-03,742.0,1246.56,1173.0770955115693,675.8441318837222,1173.077,675.844,,,497.233,False,BothCorrect,"Spark off by 5.9%, Python off by 8.9% of their actuals"
+R007_2026-08-26,2026.0,2026.0,1836.002940483669,1779.1417474198531,1836.003,1779.142,,,56.861,True,SparkOnlyCorrect,Pipelines agree.
+R108_2026-08-03,687.0,687.0,589.3356925687171,619.6611221508024,589.336,619.661,,,30.325,True,PyOnlyCorrect,Pipelines agree.
+R118_2026-08-13,285.0,285.0,2989.544798490142,302.46316646719026,2989.545,302.463,,,2687.082,False,PyOnlyCorrect,"Spark off by 949.0%, Python off by 6.1% of their actuals"
+R047_2026-07-19,421.0,581.3809523809524,782.2252829090831,520.7454310929903,782.225,520.745,,,261.48,False,BothWrong,"Spark off by 34.5%, Python off by 23.7% of their actuals"
+R046_2026-08-26,1505.0,1542.625,1484.0241587695464,1383.1572396438924,1484.024,1383.157,,,100.867,True,BothCorrect,Pipelines agree.
+R015_2026-08-19,1430.0,1599.6610169491526,1917.9962855484237,1825.5698155702144,1917.996,1825.57,,,92.426,True,BothWrong,Pipelines agree.
+R089_2026-08-20,721.0,721.0,731.8324047270584,717.8327095029338,731.832,717.833,,,14.0,True,BothCorrect,Pipelines agree.
+R111_2026-07-31,1170.0,1198.5365853658536,1367.8311055629863,1279.7593280398708,1367.831,1279.759,,,88.072,True,PyOnlyCorrect,Pipelines agree.
+R109_2026-08-08,406.0,406.0,440.44034507310477,410.0388640064418,440.44,410.039,,,30.401,True,BothCorrect,Pipelines agree.
+R104_2026-08-13,491.0,491.0,516.9821408659889,460.46808169580186,516.982,460.468,,,56.514,False,BothCorrect,"Spark off by 5.3%, Python off by 6.2% of their actuals"
+R059_2026-08-15,398.0,398.0,289.23147184884175,268.1832739529646,289.231,268.183,,,21.048,True,BothWrong,Pipelines agree.
+R030_2026-07-25,333.0,333.0,341.62185780365536,338.25272129497296,341.622,338.253,,,3.369,True,BothCorrect,Pipelines agree.
+R048_2026-08-20,272.0,272.0,267.37411515222016,250.63964014884826,267.374,250.64,,,16.734,True,BothCorrect,Pipelines agree.
+R002_2026-08-25,12701.0,14578.539130434783,13468.607662669378,12576.932240056658,13468.608,12576.932,,,891.675,True,BothCorrect,Pipelines agree.
+R062_2026-08-03,2072.0,2072.0,1796.1884074493219,1833.989357007021,1796.188,1833.989,,,37.801,True,BothWrong,Pipelines agree.
+R018_2026-08-31,1441.0,2230.1190476190477,2249.65349664043,1346.462763186768,2249.653,1346.463,,,903.191,False,BothCorrect,"Spark off by 0.9%, Python off by 6.6% of their actuals"
+R086_2026-07-17,997.0,1021.3170731707316,1252.6073787490182,1301.293843718097,1252.607,1301.294,,,48.686,True,BothWrong,Pipelines agree.
+R055_2026-08-12,673.0,673.0000000000001,728.5136292058532,731.9144284615608,728.514,731.914,,,3.401,True,BothCorrect,Pipelines agree.
+R108_2026-08-09,272.0,272.0,324.79456751822454,309.97736829668776,324.795,309.977,,,14.817,True,BothWrong,Pipelines agree.
+R072_2026-07-18,288.0,288.0,404.9291619124653,384.2937547667638,404.929,384.294,,,20.635,True,BothWrong,Pipelines agree.
+R025_2026-07-16,2451.0,3063.75,2738.1574172749947,2164.639525349169,2738.157,2164.64,,,573.518,False,BothWrong,"Spark off by 10.6%, Python off by 11.7% of their actuals"
+R016_2026-08-21,4512.0,4512.0,3998.635029036647,2707.5034908083803,3998.635,2707.503,,,1291.132,False,BothWrong,"Spark off by 11.4%, Python off by 40.0% of their actuals"
+R026_2026-08-31,3618.0,3618.0,3533.2867266829835,3739.1470887648206,3533.287,3739.147,,,205.86,True,BothCorrect,Pipelines agree.
+R035_2026-08-22,936.0,936.0,967.1057368711503,969.0576882961952,967.106,969.058,,,1.952,True,BothCorrect,Pipelines agree.
+R045_2026-08-31,812.0,831.8048780487804,749.9800432597558,795.250645776157,749.98,795.251,,,45.271,True,BothCorrect,Pipelines agree.
+R088_2026-08-16,101.0,144.28571428571428,183.80628484818422,80.63429653973304,183.806,80.634,,,103.172,False,BothWrong,"Spark off by 27.4%, Python off by 20.2% of their actuals"
+R113_2026-08-31,2108.0,2393.830508474576,1932.2398034126682,1797.7293148206068,1932.24,1797.729,,,134.51,True,BothWrong,Pipelines agree.
+R037_2026-08-05,2288.0,2288.0,2292.299976095433,2224.402740564874,2292.3,2224.403,,,67.897,True,BothCorrect,Pipelines agree.
+R095_2026-08-16,174.0,173.99999999999997,266.91051536774967,230.44876022804647,266.911,230.449,,,36.462,False,BothWrong,"Spark off by 53.4%, Python off by 32.4% of their actuals"
+R065_2026-07-12,898.0,898.0,872.7822520553068,797.7902138117179,872.782,797.79,,,74.992,True,SparkOnlyCorrect,Pipelines agree.
+R096_2026-08-24,873.0,873.0,771.0947431037671,780.0799713138749,771.095,780.08,,,8.985,True,BothWrong,Pipelines agree.
+R042_2026-08-31,1434.0,1434.0000000000002,1673.3186258410583,1749.6312366468742,1673.319,1749.631,,,76.313,True,BothWrong,Pipelines agree.
+R086_2026-07-12,618.0,618.0,770.676909432409,766.8819418066469,770.677,766.882,,,3.795,True,BothWrong,Pipelines agree.
+R064_2026-07-21,652.0,652.0,712.6585871805203,674.1961259454386,712.659,674.196,,,38.462,True,BothCorrect,Pipelines agree.
+R113_2026-08-25,1678.0,1877.084745762712,2075.8299226113795,1874.813240650037,2075.83,1874.813,,,201.017,False,BothWrong,"Spark off by 10.6%, Python off by 11.7% of their actuals"
+R007_2026-07-20,1833.0,1833.0,1595.9845551039302,1522.8475288451368,1595.985,1522.848,,,73.137,True,BothWrong,Pipelines agree.
+R039_2026-08-15,884.0,884.0,551.6202910623721,511.48339674566614,551.62,511.483,,,40.137,True,BothWrong,Pipelines agree.
+R040_2026-07-11,520.0,723.4782608695652,765.62951564115,507.4284667433364,765.63,507.428,,,258.201,False,BothCorrect,"Spark off by 5.8%, Python off by 2.4% of their actuals"
+R005_2026-07-18,1695.0,1695.0,2110.5801591653626,2053.1703414786584,2110.58,2053.17,,,57.41,True,BothWrong,Pipelines agree.
+R010_2026-08-25,2626.0,2626.0,2562.201636841911,2573.272577362601,2562.202,2573.273,,,11.071,True,BothCorrect,Pipelines agree.
+R036_2026-08-12,3047.0,3878.0,3721.677167436755,2922.9220504210493,3721.677,2922.922,,,798.755,False,BothCorrect,"Spark off by 4.0%, Python off by 4.1% of their actuals"
+R054_2026-08-16,1025.0,1271.0,1138.1299491427253,962.1320501380542,1138.13,962.132,,,175.998,False,PyOnlyCorrect,"Spark off by 10.5%, Python off by 6.1% of their actuals"
+R071_2026-07-29,1171.0,1171.0,1278.0109987485077,1209.4097644766023,1278.011,1209.41,,,68.601,True,BothCorrect,Pipelines agree.
+R016_2026-07-19,1859.0,1858.9999999999998,2283.709707634026,2227.8435425683724,2283.71,2227.844,,,55.866,True,BothWrong,Pipelines agree.
+R008_2026-08-27,2925.0,2925.0,2766.2776796047046,2811.485356862646,2766.278,2811.485,,,45.208,True,BothCorrect,Pipelines agree.
+R112_2026-07-24,482.0,499.85185185185185,471.6814432128881,494.7245067373558,471.681,494.725,,,23.043,True,BothCorrect,Pipelines agree.
+R030_2026-07-20,498.0,498.0,530.31251881854,516.1126175564457,530.313,516.113,,,14.2,True,BothCorrect,Pipelines agree.
+R031_2026-08-04,6269.0,6269.0,6418.748723728973,6444.948501154993,6418.749,6444.949,,,26.2,True,BothCorrect,Pipelines agree.
+R117_2026-08-09,650.0,733.3333333333334,849.527863884909,759.5047682505343,849.528,759.505,,,90.023,False,BothWrong,"Spark off by 15.8%, Python off by 16.8% of their actuals"
+R060_2026-08-10,1724.0,2280.1290322580644,1910.7760758080924,1463.3381900849292,1910.776,1463.338,,,447.438,False,BothWrong,"Spark off by 16.2%, Python off by 15.1% of their actuals"
+R036_2026-08-17,3235.0,4117.272727272727,3852.8617666827677,3046.697423964915,3852.862,3046.697,,,806.164,False,BothCorrect,"Spark off by 6.4%, Python off by 5.8% of their actuals"
+R044_2026-08-13,1333.0,1333.0,1464.6902428987041,1379.5675236019188,1464.69,1379.568,,,85.123,True,BothCorrect,Pipelines agree.
+R110_2026-08-04,678.0,678.0,719.7115440187433,739.3070382688022,719.712,739.307,,,19.595,True,BothCorrect,Pipelines agree.
+R113_2026-07-14,1910.0,2097.8688524590166,1765.6270651506075,1450.8802108444368,1765.627,1450.88,,,314.747,False,BothWrong,"Spark off by 15.8%, Python off by 24.0% of their actuals"
+R084_2026-07-12,426.0,426.0,536.208786550122,495.3358645755818,536.209,495.336,,,40.873,True,BothWrong,Pipelines agree.
+R001_2026-08-06,14779.0,17242.166666666668,14030.858169945746,13196.265413389934,14030.858,13196.265,,,834.593,True,BothWrong,Pipelines agree.
+R072_2026-07-19,275.0,275.0,318.9317585542461,262.86560158434366,318.932,262.866,,,56.066,False,PyOnlyCorrect,"Spark off by 16.0%, Python off by 4.4% of their actuals"
+R108_2026-07-18,310.0,324.76190476190476,427.8204326943021,421.77215385601295,427.82,421.772,,,6.048,True,BothWrong,Pipelines agree.
+R021_2026-08-24,1028.0,1147.9333333333334,1061.733728528681,972.374189921965,1061.734,972.374,,,89.36,True,BothCorrect,Pipelines agree.
+R011_2026-08-19,6801.0,6801.0,5937.159601700666,5864.911771477496,5937.16,5864.912,,,72.248,True,BothWrong,Pipelines agree.
+R011_2026-07-21,6687.0,6687.0,6138.311963519496,5699.610177882689,6138.312,5699.61,,,438.702,True,SparkOnlyCorrect,Pipelines agree.
+R013_2026-07-24,797.0,889.9833333333333,1018.6643923897568,774.5918771852524,1018.664,774.592,,,244.073,False,PyOnlyCorrect,"Spark off by 14.5%, Python off by 2.8% of their actuals"
+R043_2026-08-13,908.0,954.5641025641025,1049.0935656392023,1052.2393923112606,1049.094,1052.239,,,3.146,True,SparkOnlyCorrect,Pipelines agree.
+R022_2026-07-25,407.0,503.90476190476187,529.9242367290128,415.9481098122354,529.924,415.948,,,113.976,False,BothCorrect,"Spark off by 5.2%, Python off by 2.2% of their actuals"
+R024_2026-08-02,3251.0,3576.1000000000004,3362.1856442633893,2952.1633013397022,3362.186,2952.163,,,410.022,False,BothCorrect,"Spark off by 6.0%, Python off by 9.2% of their actuals"
+R088_2026-07-13,199.0,289.45454545454544,298.7496725126656,158.84863835804472,298.75,158.849,,,139.901,False,SparkOnlyCorrect,"Spark off by 3.2%, Python off by 20.2% of their actuals"
+R078_2026-08-23,226.0,226.0,204.34235373466305,164.43841242850706,204.342,164.438,,,39.904,False,SparkOnlyCorrect,"Spark off by 9.6%, Python off by 27.2% of their actuals"
+R073_2026-08-19,1721.0,2258.8125,1774.349295078498,1379.1649838990227,1774.349,1379.165,,,395.184,False,BothWrong,"Spark off by 21.4%, Python off by 19.9% of their actuals"
+R092_2026-08-21,200.0,200.0,252.5255347068425,151.9031858814405,252.526,151.903,,,100.622,False,BothWrong,"Spark off by 26.3%, Python off by 24.0% of their actuals"
+R109_2026-08-25,672.0,696.8888888888889,648.9813485617791,650.4661996460175,648.981,650.466,,,1.485,True,BothCorrect,Pipelines agree.
+R023_2026-08-09,1177.0,1205.0238095238096,1780.142972656752,1622.0222904895068,1780.143,1622.022,,,158.121,True,BothWrong,Pipelines agree.
+R082_2026-07-18,199.0,199.0,270.43410690450355,256.35793618034444,270.434,256.358,,,14.076,True,BothWrong,Pipelines agree.
+R060_2026-08-20,1488.0,1968.0,1925.2550600282887,1437.5764895371672,1925.255,1437.576,,,487.679,False,BothCorrect,"Spark off by 2.2%, Python off by 3.4% of their actuals"
+R035_2026-07-10,1273.0,1273.0,1319.9126937304477,1218.228634957949,1319.913,1218.229,,,101.684,True,BothCorrect,Pipelines agree.
+R003_2026-08-09,4159.0,4692.205128205128,6750.872492866013,5882.1338854616215,6750.872,5882.134,,,868.739,False,BothWrong,"Spark off by 43.9%, Python off by 41.4% of their actuals"
+R064_2026-07-30,650.0,665.8536585365854,611.6815425336409,597.4073613544728,611.682,597.407,,,14.274,True,BothCorrect,Pipelines agree.
+R037_2026-08-30,1077.0,1114.1379310344828,1200.7877456515478,1173.3292896502776,1200.788,1173.329,,,27.458,True,BothCorrect,Pipelines agree.
+R057_2026-07-18,177.0,217.84615384615384,346.8047803222719,252.6045335999702,346.805,252.605,,,94.2,False,BothWrong,"Spark off by 59.2%, Python off by 42.7% of their actuals"
+R037_2026-08-29,1516.0,1516.0,1797.9993616329164,1685.6109250724496,1797.999,1685.611,,,112.388,True,BothWrong,Pipelines agree.
+R067_2026-08-28,515.0,515.0,464.89543387428444,400.7601128664437,464.895,400.76,,,64.135,False,SparkOnlyCorrect,"Spark off by 9.7%, Python off by 22.2% of their actuals"
+R060_2026-08-30,504.0,687.2727272727273,960.7594344914532,664.5955902237399,960.759,664.596,,,296.164,False,BothWrong,"Spark off by 39.8%, Python off by 31.9% of their actuals"
+R095_2026-07-10,363.0,363.0,461.8114466317569,453.39918339993113,461.811,453.399,,,8.412,True,BothWrong,Pipelines agree.
+R011_2026-08-24,6557.0,6657.876923076923,6307.519599020981,6204.882426140732,6307.52,6204.882,,,102.637,True,BothCorrect,Pipelines agree.
+R058_2026-08-21,1305.0,1305.0,1353.878572782547,1198.3104197330638,1353.879,1198.31,,,155.568,False,BothCorrect,"Spark off by 3.7%, Python off by 8.2% of their actuals"
+R064_2026-07-15,574.0,574.0,677.6366766851579,691.8743914235906,677.637,691.874,,,14.238,True,BothWrong,Pipelines agree.
+R005_2026-08-10,3701.0,3701.0,3446.905476278179,3331.747576942027,3446.905,3331.748,,,115.158,True,BothCorrect,Pipelines agree.
+R034_2026-07-24,3998.0,4472.338983050848,4370.45864254839,3754.1570043784695,4370.459,3754.157,,,616.302,False,BothCorrect,"Spark off by 2.3%, Python off by 6.1% of their actuals"
+R092_2026-08-28,203.0,203.0,252.5255347068425,189.62174473719352,252.526,189.622,,,62.904,False,PyOnlyCorrect,"Spark off by 24.4%, Python off by 6.6% of their actuals"
+R035_2026-07-08,991.0,1015.775,1383.4274509054112,1269.1749680570852,1383.427,1269.175,,,114.252,True,BothWrong,Pipelines agree.
+R099_2026-08-01,182.0,182.0,260.42099179774937,259.1048593751655,260.421,259.105,,,1.316,True,BothWrong,Pipelines agree.
+R082_2026-07-28,485.0,485.0,430.20375859939736,395.84619189504974,430.204,395.846,,,34.358,True,BothWrong,Pipelines agree.
+R078_2026-07-30,366.0,365.99999999999994,350.3261711256905,358.37454210779214,350.326,358.375,,,8.048,True,BothCorrect,Pipelines agree.
+R055_2026-08-08,462.0,462.0,429.64991949611164,429.40490092164,429.65,429.405,,,0.245,True,BothCorrect,Pipelines agree.
+R051_2026-07-20,618.0,763.4117647058823,611.3217273185463,463.230708304784,611.322,463.231,,,148.091,False,BothWrong,"Spark off by 19.9%, Python off by 25.0% of their actuals"
+R078_2026-07-26,129.0,129.0,191.97407554390918,173.34811700078652,191.974,173.348,,,18.626,False,BothWrong,"Spark off by 48.8%, Python off by 34.4% of their actuals"
+R118_2026-08-08,153.0,153.0,1748.9482973522101,163.09129552857382,1748.948,163.091,,,1585.857,False,PyOnlyCorrect,"Spark off by 1043.1%, Python off by 6.6% of their actuals"
+R038_2026-07-28,1207.0,1491.0,1797.5716030842898,1403.9841287296622,1797.572,1403.984,,,393.587,False,BothWrong,"Spark off by 20.6%, Python off by 16.3% of their actuals"
+R032_2026-08-25,3203.0,3253.84126984127,3418.389152488931,3337.269305968129,3418.389,3337.269,,,81.12,True,BothCorrect,Pipelines agree.
+R099_2026-07-31,334.0,334.0,350.6630242801528,342.2084395056753,350.663,342.208,,,8.455,True,BothCorrect,Pipelines agree.
+R090_2026-07-29,573.0,592.7586206896551,545.4071585110997,540.7908268345415,545.407,540.791,,,4.616,True,BothCorrect,Pipelines agree.
+R114_2026-08-26,736.0,736.0000000000001,744.2648978269721,756.6839046302083,744.265,756.684,,,12.419,True,BothCorrect,Pipelines agree.
+R044_2026-08-10,1964.0,1964.0,1474.51882924061,1438.8365990151633,1474.519,1438.837,,,35.682,True,BothWrong,Pipelines agree.
+R096_2026-07-16,922.0,922.0,749.4838719769058,750.6904744361524,749.484,750.69,,,1.207,True,BothWrong,Pipelines agree.
+R084_2026-07-08,922.0,922.0,1052.9662433360788,993.2188860132497,1052.966,993.219,,,59.747,True,PyOnlyCorrect,Pipelines agree.
+R090_2026-07-13,519.0,519.0,595.4473442548665,597.5242237453318,595.447,597.524,,,2.077,True,BothWrong,Pipelines agree.
+R003_2026-08-19,10990.0,12467.64705882353,14298.000611482792,13433.369730937698,14298.001,13433.37,,,864.631,True,BothWrong,Pipelines agree.
+R074_2026-07-08,1455.0,1454.9999999999998,1516.675210175873,1175.1363501517271,1516.675,1175.136,,,341.539,False,SparkOnlyCorrect,"Spark off by 4.2%, Python off by 19.2% of their actuals"
+R037_2026-08-04,2278.0,2333.560975609756,2281.420456531441,2257.1538185818536,2281.42,2257.154,,,24.267,True,BothCorrect,Pipelines agree.
+R118_2026-08-07,325.0,325.0,2593.1554075834997,270.21912109446436,2593.155,270.219,,,2322.936,False,BothWrong,"Spark off by 697.9%, Python off by 16.9% of their actuals"
+R062_2026-07-15,1492.0,1492.0,1538.8748066725163,1455.7051197290166,1538.875,1455.705,,,83.17,True,BothCorrect,Pipelines agree.
+R017_2026-08-24,3145.0,3145.0,2880.409835658119,2993.8990634613333,2880.41,2993.899,,,113.489,True,BothCorrect,Pipelines agree.
+R051_2026-07-13,456.0,570.0,650.7552106158776,468.49370017782684,650.755,468.494,,,182.262,False,PyOnlyCorrect,"Spark off by 14.2%, Python off by 2.7% of their actuals"
+R073_2026-07-30,1207.0,1584.1875,1772.8874354073655,1301.8286240811265,1772.887,1301.829,,,471.059,False,PyOnlyCorrect,"Spark off by 11.9%, Python off by 7.9% of their actuals"
+R114_2026-07-23,842.0,842.0,707.1993766281864,732.588391512318,707.199,732.588,,,25.389,True,BothWrong,Pipelines agree.
+R047_2026-07-14,1170.0,1585.1612903225807,1483.746100946736,1084.6742933442692,1483.746,1084.674,,,399.072,False,BothCorrect,"Spark off by 6.4%, Python off by 7.3% of their actuals"
+R089_2026-07-15,640.0,640.0,762.3919211939381,732.401755773153,762.392,732.402,,,29.99,True,BothWrong,Pipelines agree.
+R072_2026-07-12,268.0,268.0,309.77801263504523,292.07156344724024,309.778,292.072,,,17.706,True,PyOnlyCorrect,Pipelines agree.
+R070_2026-08-17,2330.0,2330.0,2332.258001652824,2325.348078146715,2332.258,2325.348,,,6.91,True,BothCorrect,Pipelines agree.
+R042_2026-08-05,1526.0,1526.0,1606.0994166895125,1487.6617322152283,1606.099,1487.662,,,118.438,True,BothCorrect,Pipelines agree.
+R016_2026-08-28,4296.0,4296.0,4425.533332305263,4694.799215286219,4425.533,4694.799,,,269.266,True,BothCorrect,Pipelines agree.
+R098_2026-08-14,84.0,84.0,254.31405226284957,197.1511686831412,254.314,197.151,,,57.163,False,BothWrong,"Spark off by 202.8%, Python off by 134.7% of their actuals"
+R052_2026-07-30,1183.0,1183.0,1229.963389949939,1161.8058642016388,1229.963,1161.806,,,68.158,True,BothCorrect,Pipelines agree.
+R013_2026-08-09,365.0,411.7948717948718,594.8749630866936,503.4030163003872,594.875,503.403,,,91.472,False,BothWrong,"Spark off by 44.5%, Python off by 37.9% of their actuals"
+R092_2026-07-09,249.0,248.99999999999997,291.4254224013998,240.0361159944449,291.425,240.036,,,51.389,False,PyOnlyCorrect,"Spark off by 17.0%, Python off by 3.6% of their actuals"
+R039_2026-07-17,845.0,845.0,996.1760629645992,847.9883041536974,996.176,847.988,,,148.188,False,PyOnlyCorrect,"Spark off by 17.9%, Python off by 0.4% of their actuals"
+R011_2026-07-13,6114.0,6114.0,5999.76674972633,6023.176860997095,5999.767,6023.177,,,23.41,True,BothCorrect,Pipelines agree.
+R080_2026-07-19,517.0,517.0,468.31147555388384,487.7190135350632,468.311,487.719,,,19.408,True,BothCorrect,Pipelines agree.
+R082_2026-07-12,163.0,163.0,221.51743113950255,203.03490867139703,221.517,203.035,,,18.483,True,BothWrong,Pipelines agree.
+R103_2026-08-31,666.0,689.7857142857142,706.1986300347456,686.8853065955045,706.199,686.885,,,19.313,True,BothCorrect,Pipelines agree.
+R061_2026-08-25,2389.0,2389.0,2802.2912403144956,2750.977886751547,2802.291,2750.978,,,51.313,True,BothWrong,Pipelines agree.
+R103_2026-07-23,585.0,585.0,595.8403982008309,635.1695607696234,595.84,635.17,,,39.329,True,BothCorrect,Pipelines agree.
+R063_2026-07-28,578.0,578.0,576.9327186907235,561.3931854100113,576.933,561.393,,,15.54,True,BothCorrect,Pipelines agree.
+R013_2026-07-17,780.0,859.3220338983051,1108.4878679661883,991.4026949905291,1108.488,991.403,,,117.085,False,BothWrong,"Spark off by 29.0%, Python off by 27.1% of their actuals"
+R096_2026-08-10,770.0,770.0,802.6848898637238,832.2563392640658,802.685,832.256,,,29.571,True,BothCorrect,Pipelines agree.
+R067_2026-08-05,484.0,484.0,521.5152725019519,496.60862227209765,521.515,496.609,,,24.907,True,BothCorrect,Pipelines agree.
+R020_2026-08-31,4499.0,5938.68,5487.175575863257,4228.5005426375965,5487.176,4228.501,,,1258.675,False,BothCorrect,"Spark off by 7.6%, Python off by 6.0% of their actuals"
+R063_2026-07-14,705.0,705.0,590.8689312463971,545.6353095935001,590.869,545.635,,,45.234,True,BothWrong,Pipelines agree.
+R032_2026-07-31,3333.0,3333.0,2721.16334213887,2818.2963969863026,2721.163,2818.296,,,97.133,True,BothWrong,Pipelines agree.
+R027_2026-07-15,826.0,1068.9411764705883,1632.0609645795246,1284.2651056272466,1632.061,1284.265,,,347.796,False,BothWrong,"Spark off by 52.7%, Python off by 55.5% of their actuals"
+R046_2026-08-31,1620.0,1620.0,1531.0861421386599,1509.6122695724146,1531.086,1509.612,,,21.474,True,BothCorrect,Pipelines agree.
+R057_2026-07-17,363.0,448.4117647058823,515.1513635872155,403.6730644661652,515.151,403.673,,,111.478,False,BothWrong,"Spark off by 14.9%, Python off by 11.2% of their actuals"
+R016_2026-08-30,2510.0,2510.0,2567.268376005415,2551.117272599756,2567.268,2551.117,,,16.151,True,BothCorrect,Pipelines agree.
+R079_2026-08-27,765.0,945.0,1159.1651917608779,916.7386740774881,1159.165,916.739,,,242.427,False,BothWrong,"Spark off by 22.7%, Python off by 19.8% of their actuals"
+R048_2026-07-26,115.0,115.0,183.80628484818422,127.47735555605604,183.806,127.477,,,56.329,False,BothWrong,"Spark off by 59.8%, Python off by 10.8% of their actuals"
+R098_2026-08-11,227.0,227.0,280.0255987292142,275.34467221694274,280.026,275.345,,,4.681,True,BothWrong,Pipelines agree.
+R012_2026-08-04,2364.0,2364.0,2312.9886540646844,2200.092832761412,2312.989,2200.093,,,112.896,True,BothCorrect,Pipelines agree.
+R017_2026-08-31,3343.0,3394.4307692307693,2998.1824440133782,3229.3200456345726,2998.182,3229.32,,,231.138,True,PyOnlyCorrect,Pipelines agree.
+R025_2026-07-29,2574.0,3217.5,2691.022237414856,2201.87876023915,2691.022,2201.879,,,489.143,False,BothWrong,"Spark off by 16.4%, Python off by 14.5% of their actuals"
+R007_2026-07-28,2070.0,2070.0,1728.7674296813213,1650.4941558711048,1728.767,1650.494,,,78.273,True,BothWrong,Pipelines agree.
+R026_2026-08-29,2224.0,2224.0,2135.3135742012287,1976.083529614471,2135.314,1976.084,,,159.23,True,SparkOnlyCorrect,Pipelines agree.
+R050_2026-07-20,1030.0,1030.0,863.2063936870696,859.0492097149167,863.206,859.049,,,4.157,True,BothWrong,Pipelines agree.
+R094_2026-08-16,220.0,220.0,247.37029806974581,194.82790913995348,247.37,194.828,,,52.542,False,BothWrong,"Spark off by 12.4%, Python off by 11.4% of their actuals"
+R117_2026-08-25,1788.0,2003.7931034482758,2516.9992893182102,1519.1022290107028,2516.999,1519.102,,,997.897,False,BothWrong,"Spark off by 25.6%, Python off by 15.0% of their actuals"
+R037_2026-07-13,2127.0,2127.0,2260.703205078948,2345.870274249145,2260.703,2345.87,,,85.167,True,SparkOnlyCorrect,Pipelines agree.
+R037_2026-07-11,1408.0,1408.0,1520.54746260594,1390.5027157272814,1520.547,1390.503,,,130.045,True,BothCorrect,Pipelines agree.
+R024_2026-07-21,5277.0,5822.896551724138,6161.300831212796,5545.535251684672,6161.301,5545.535,,,615.766,False,BothCorrect,"Spark off by 5.8%, Python off by 5.1% of their actuals"
+R001_2026-07-31,10063.0,11525.145299145299,12622.88439957648,9039.18360930736,12622.884,9039.184,,,3583.701,False,SparkOnlyCorrect,"Spark off by 9.5%, Python off by 10.2% of their actuals"
+R078_2026-08-12,531.0,531.0,446.14970252926696,510.3836886812455,446.15,510.384,,,64.234,False,PyOnlyCorrect,"Spark off by 16.0%, Python off by 3.9% of their actuals"
+R076_2026-08-02,429.0,429.0,506.24791581225657,471.0582981235317,506.248,471.058,,,35.19,True,PyOnlyCorrect,Pipelines agree.
+R028_2026-08-02,1925.0,1925.0,2100.4945967671815,1727.4558112902337,2100.495,1727.456,,,373.039,False,SparkOnlyCorrect,"Spark off by 9.1%, Python off by 10.3% of their actuals"
+R043_2026-08-03,1266.0,1266.0,973.2466980481075,990.8802796304043,973.247,990.88,,,17.634,True,BothWrong,Pipelines agree.
+R036_2026-07-28,3070.0,3907.2727272727275,3903.7042908284416,2907.530692231777,3903.704,2907.531,,,996.174,False,BothCorrect,"Spark off by 0.1%, Python off by 5.3% of their actuals"
+R097_2026-08-15,728.0,728.0,620.0591713543137,555.1680449848334,620.059,555.168,,,64.891,False,BothWrong,"Spark off by 14.8%, Python off by 23.7% of their actuals"
+R091_2026-07-31,93.0,289.33333333333337,392.7002468518211,144.9760764550241,392.7,144.976,,,247.724,False,BothWrong,"Spark off by 35.7%, Python off by 55.9% of their actuals"
+R114_2026-08-21,663.0,663.0,558.7263845918478,517.6394779242903,558.726,517.639,,,41.087,True,BothWrong,Pipelines agree.
+R043_2026-08-29,687.0,687.0,625.3219127516765,591.8385838978693,625.322,591.839,,,33.483,True,SparkOnlyCorrect,Pipelines agree.
+R112_2026-08-23,258.0,258.0,305.47378293808356,284.4251163901064,305.474,284.425,,,21.049,True,BothWrong,Pipelines agree.
+R112_2026-07-23,622.0,622.0,499.21669699287196,542.3050087582611,499.217,542.305,,,43.088,True,BothWrong,Pipelines agree.
+R022_2026-08-12,856.0,1042.7636363636364,794.268529604915,648.8832885975374,794.269,648.883,,,145.385,False,BothWrong,"Spark off by 23.8%, Python off by 24.2% of their actuals"
+R055_2026-08-10,803.0,823.0749999999999,650.747327968998,689.3683174340159,650.747,689.368,,,38.621,True,BothWrong,Pipelines agree.
+R036_2026-08-10,3200.0,4072.7272727272725,3854.8889260100614,3251.3290849082077,3854.889,3251.329,,,603.56,False,BothCorrect,"Spark off by 5.3%, Python off by 1.6% of their actuals"
+R021_2026-08-19,961.0,1075.0169491525423,1025.935370134045,909.3422638431427,1025.935,909.342,,,116.593,False,BothCorrect,"Spark off by 4.6%, Python off by 5.4% of their actuals"
+R045_2026-08-16,289.0,289.0,321.8266254722178,272.63223103592884,321.827,272.632,,,49.194,False,PyOnlyCorrect,"Spark off by 11.4%, Python off by 5.7% of their actuals"
+R088_2026-07-29,189.0,336.0,317.76569911671896,186.2028271895012,317.766,186.203,,,131.563,False,BothCorrect,"Spark off by 5.4%, Python off by 1.5% of their actuals"
+R105_2026-08-13,656.0,656.0,727.0788716820738,714.5234791273347,727.079,714.523,,,12.555,True,PyOnlyCorrect,Pipelines agree.
+R075_2026-08-27,1212.0,1212.0,1181.2554551449573,1105.9751276075249,1181.255,1105.975,,,75.28,True,BothCorrect,Pipelines agree.
+R070_2026-08-15,1838.0,1838.0000000000002,1492.855291266192,1424.1888076285215,1492.855,1424.189,,,68.666,True,BothWrong,Pipelines agree.
+R025_2026-08-13,2190.0,2685.849056603774,2977.063855784078,2217.317197947068,2977.064,2217.317,,,759.747,False,PyOnlyCorrect,"Spark off by 10.8%, Python off by 1.2% of their actuals"
+R080_2026-08-09,462.0,462.0,506.19785577518763,485.0710664868175,506.198,485.071,,,21.127,True,BothCorrect,Pipelines agree.
+R097_2026-07-30,981.0,981.0,1001.8625641921784,942.0025757099079,1001.863,942.003,,,59.86,True,BothCorrect,Pipelines agree.
+R034_2026-08-16,2146.0,2421.128205128205,2524.8731419731907,2120.4414184617826,2524.873,2120.441,,,404.432,False,BothCorrect,"Spark off by 4.3%, Python off by 1.2% of their actuals"
+R024_2026-08-27,5393.0,5932.3,6038.5615197151365,5230.586640766349,6038.562,5230.587,,,807.975,False,BothCorrect,"Spark off by 1.8%, Python off by 3.0% of their actuals"
+R011_2026-08-09,2627.0,2627.0,3118.883746451863,2966.370289368946,3118.884,2966.37,,,152.513,True,BothWrong,Pipelines agree.
+R013_2026-07-13,968.0,1082.8474576271185,1091.9650088749931,1038.416032756342,1091.965,1038.416,,,53.549,True,BothCorrect,Pipelines agree.
+R047_2026-07-12,545.0,726.6666666666666,709.8172956559961,453.51706186457915,709.817,453.517,,,256.3,False,SparkOnlyCorrect,"Spark off by 2.3%, Python off by 16.8% of their actuals"
+R062_2026-08-31,1887.0,1887.0,1752.8487532482914,1733.4944636470095,1752.849,1733.494,,,19.354,True,BothCorrect,Pipelines agree.
+R014_2026-08-18,2734.0,2734.0,1869.1727994371076,1854.3279706948053,1869.173,1854.328,,,14.845,True,BothWrong,Pipelines agree.
+R032_2026-08-17,3400.0,3400.0,3089.8186007602662,3066.0537642091435,3089.819,3066.054,,,23.765,True,BothCorrect,Pipelines agree.
+R028_2026-07-14,4428.0,4428.0,4015.7489389972175,3976.7087402890165,4015.749,3976.709,,,39.04,True,SparkOnlyCorrect,Pipelines agree.
+R075_2026-07-19,575.0,575.0,620.4750659211539,565.739502509319,620.475,565.74,,,54.736,True,BothCorrect,Pipelines agree.
+R007_2026-07-17,1229.0,1229.0,1403.1213833224815,1364.0115618657344,1403.121,1364.012,,,39.11,True,BothWrong,Pipelines agree.
+R041_2026-08-26,1821.0,1821.0,1680.5189689274207,1632.6605685268084,1680.519,1632.661,,,47.858,True,SparkOnlyCorrect,Pipelines agree.
+R039_2026-08-19,1111.0,1138.0975609756097,1187.3153560617793,1129.0018889840032,1187.315,1129.002,,,58.313,True,BothCorrect,Pipelines agree.
+R022_2026-08-21,495.0,605.0,682.9956545899811,545.6569506357321,682.996,545.657,,,137.339,False,BothWrong,"Spark off by 12.9%, Python off by 10.2% of their actuals"
+R070_2026-07-12,1052.0,1052.0,1084.0157247444306,1031.9438734451269,1084.016,1031.944,,,52.072,True,BothCorrect,Pipelines agree.
+R054_2026-08-06,2140.0,2658.7878787878785,2372.0206673986504,1693.8073191600788,2372.021,1693.807,,,678.213,False,BothWrong,"Spark off by 10.8%, Python off by 20.9% of their actuals"
+R031_2026-08-19,6420.0,6420.0,6282.760058063796,6315.807004029661,6282.76,6315.807,,,33.047,True,BothCorrect,Pipelines agree.
+R004_2026-08-13,13772.0,14549.451612903225,15546.338258289898,15176.327919233265,15546.338,15176.328,,,370.01,True,SparkOnlyCorrect,Pipelines agree.
+R008_2026-08-12,2975.0,2975.0,2982.9466900788457,2869.0504186272096,2982.947,2869.05,,,113.896,True,BothCorrect,Pipelines agree.
+R075_2026-07-30,1158.0,1158.0,1297.4864495205081,1174.5322216622892,1297.486,1174.532,,,122.954,False,PyOnlyCorrect,"Spark off by 12.0%, Python off by 1.4% of their actuals"
+R061_2026-08-27,2202.0,2202.0,2630.8383940536364,2631.277910771723,2630.838,2631.278,,,0.44,True,BothWrong,Pipelines agree.
+R029_2026-07-16,1998.0,2488.075471698113,2470.4095388142505,1868.1727608887957,2470.41,1868.173,,,602.237,False,BothCorrect,"Spark off by 0.7%, Python off by 6.5% of their actuals"
+R056_2026-08-01,608.0,778.24,823.9613387603389,610.3768568380724,823.961,610.377,,,213.584,False,BothCorrect,"Spark off by 5.9%, Python off by 0.4% of their actuals"
+R075_2026-07-11,764.0,764.0,817.8580086600098,809.8553134352386,817.858,809.855,,,8.003,True,BothCorrect,Pipelines agree.
+R117_2026-08-12,1943.0,2169.6833333333334,2589.7962535001448,1396.1760478442995,2589.796,1396.176,,,1193.62,False,BothWrong,"Spark off by 19.4%, Python off by 28.1% of their actuals"
+R011_2026-07-11,3885.0,3885.0,4012.4970014495425,3693.2326644861414,4012.497,3693.233,,,319.264,True,BothCorrect,Pipelines agree.
+R072_2026-07-25,376.0,376.0,474.47288996328257,504.9324049503181,474.473,504.932,,,30.46,True,BothWrong,Pipelines agree.
+R042_2026-08-24,1774.0,1774.0,1661.9811762656907,1553.484333945092,1661.981,1553.484,,,108.497,True,SparkOnlyCorrect,Pipelines agree.
+R004_2026-08-21,13950.0,14603.90625,13982.726410997386,11296.158461071762,13982.726,11296.158,,,2686.568,False,SparkOnlyCorrect,"Spark off by 4.3%, Python off by 19.0% of their actuals"
+R070_2026-07-10,1547.0,1547.0,1920.378881526087,1891.243024006699,1920.379,1891.243,,,29.136,True,BothWrong,Pipelines agree.
+R059_2026-08-21,437.0,437.0,366.48512130291374,363.7596523658157,366.485,363.76,,,2.725,True,BothWrong,Pipelines agree.
+R025_2026-08-27,2346.0,2932.5,3196.9880321707233,2494.197735484848,3196.988,2494.198,,,702.79,False,BothCorrect,"Spark off by 9.0%, Python off by 6.3% of their actuals"
+R062_2026-08-22,1105.0,1105.0,1021.6198550496244,1015.1227209332244,1021.62,1015.123,,,6.497,True,BothCorrect,Pipelines agree.
+R106_2026-08-12,500.0,775.0,818.4171529825151,508.68592572983823,818.417,508.686,,,309.731,False,BothCorrect,"Spark off by 5.6%, Python off by 1.7% of their actuals"
+R061_2026-07-19,1338.0,1338.0,1245.1189482569666,1157.3012405607121,1245.119,1157.301,,,87.818,True,SparkOnlyCorrect,Pipelines agree.
+R024_2026-07-13,5389.0,5927.9,6314.195033293675,5645.785028023805,6314.195,5645.785,,,668.41,False,BothCorrect,"Spark off by 6.5%, Python off by 4.8% of their actuals"
+R042_2026-08-06,1784.0,1827.5121951219514,1572.7803452903183,1503.7795531519216,1572.78,1503.78,,,69.001,True,BothWrong,Pipelines agree.
+R076_2026-08-30,468.0,468.0,503.4966824192831,483.16964489681726,503.497,483.17,,,20.327,True,BothCorrect,Pipelines agree.
+R004_2026-07-27,12951.0,13670.5,16075.758331212299,15336.170134350416,16075.758,15336.17,,,739.588,True,BothWrong,Pipelines agree.
+R103_2026-08-23,277.0,277.0,311.28348342819635,291.1033508284772,311.283,291.103,,,20.18,True,PyOnlyCorrect,Pipelines agree.
+R055_2026-08-28,594.0,608.4878048780488,583.8829839279947,547.9199543190773,583.883,547.92,,,35.963,True,BothCorrect,Pipelines agree.
+R060_2026-07-19,461.0,628.6363636363636,917.009267305441,664.101676826749,917.009,664.102,,,252.908,False,BothWrong,"Spark off by 45.9%, Python off by 44.1% of their actuals"
+R093_2026-07-17,186.0,186.0,254.31405226284957,218.11186318882574,254.314,218.112,,,36.202,False,BothWrong,"Spark off by 36.7%, Python off by 17.3% of their actuals"
+R017_2026-08-28,2887.0,2887.0,2456.2043151515168,2252.765692991321,2456.204,2252.766,,,203.439,True,BothWrong,Pipelines agree.
+R086_2026-07-08,1284.0,1284.0,1417.5840853049451,1376.823140129338,1417.584,1376.823,,,40.761,True,PyOnlyCorrect,Pipelines agree.
+R080_2026-08-25,1179.0,1179.0,1160.9409431869722,1111.69567876404,1160.941,1111.696,,,49.245,True,BothCorrect,Pipelines agree.
+R066_2026-07-09,1300.0,1300.0,984.0867411108907,1015.3568604802582,984.087,1015.357,,,31.27,True,BothWrong,Pipelines agree.
+R011_2026-07-26,2470.0,2470.0,3370.5763492743213,3343.528321895283,3370.576,3343.528,,,27.048,True,BothWrong,Pipelines agree.
+R035_2026-07-15,1325.0,1325.0,1314.47182855914,1335.2983485217646,1314.472,1335.298,,,20.827,True,BothCorrect,Pipelines agree.
+R104_2026-07-10,327.0,327.0,383.2064671771342,363.59055913040686,383.206,363.591,,,19.616,True,BothWrong,Pipelines agree.
+R079_2026-08-04,865.0,1074.6969696969697,1149.4709320479667,876.264885592124,1149.471,876.265,,,273.206,False,BothCorrect,"Spark off by 7.0%, Python off by 1.3% of their actuals"
+R111_2026-08-20,1184.0,1184.0,1445.390901896218,1448.6494677476956,1445.391,1448.649,,,3.259,True,BothWrong,Pipelines agree.
+R086_2026-08-29,955.0,955.0,1147.8314820051894,1181.1458004775623,1147.831,1181.146,,,33.314,True,BothWrong,Pipelines agree.
+R112_2026-07-11,341.0,341.0,393.22691137337307,387.69581298305985,393.227,387.696,,,5.531,True,BothWrong,Pipelines agree.
+R014_2026-07-29,1880.0,1880.0,1725.223203419419,1561.0799013785668,1725.223,1561.08,,,164.143,False,SparkOnlyCorrect,"Spark off by 8.2%, Python off by 17.0% of their actuals"
+R061_2026-07-14,2633.0,2633.0,2606.2954099493204,2423.2973570740314,2606.295,2423.297,,,182.998,True,BothCorrect,Pipelines agree.
+R100_2026-08-25,632.0,632.0,570.1869106637431,578.903972471952,570.187,578.904,,,8.717,True,BothCorrect,Pipelines agree.
+R033_2026-08-28,4065.0,4065.0,3724.4230763900223,3905.1147319200513,3724.423,3905.115,,,180.692,True,BothCorrect,Pipelines agree.
+R061_2026-08-17,2819.0,2819.0,2700.043597140636,2661.640851337932,2700.044,2661.641,,,38.403,True,BothCorrect,Pipelines agree.
+R095_2026-07-09,586.0,586.0,505.35785889459277,474.4737015962836,505.358,474.474,,,30.884,True,BothWrong,Pipelines agree.
+R093_2026-08-26,240.0,239.99999999999997,289.0945820408778,283.70238136866294,289.095,283.702,,,5.392,True,BothWrong,Pipelines agree.
+R064_2026-08-12,756.0,756.0,684.4709595309505,667.0268347623582,684.471,667.027,,,17.444,True,SparkOnlyCorrect,Pipelines agree.
+R040_2026-08-29,590.0,811.25,866.5612051657743,588.7365069882983,866.561,588.737,,,277.825,False,BothCorrect,"Spark off by 6.8%, Python off by 0.2% of their actuals"
+R029_2026-07-27,1867.0,2360.1698113207544,2511.989675176775,1970.4543102193902,2511.99,1970.454,,,541.535,False,BothCorrect,"Spark off by 6.4%, Python off by 5.5% of their actuals"
+R011_2026-08-25,6258.0,6258.0,6329.5456438723595,6195.2933786886815,6329.546,6195.293,,,134.252,True,BothCorrect,Pipelines agree.
+R113_2026-08-22,1168.0,1284.8,1263.7028659920945,1113.836996946234,1263.703,1113.837,,,149.866,False,BothCorrect,"Spark off by 1.6%, Python off by 4.6% of their actuals"
+R108_2026-07-17,545.0,545.0,581.851430344075,562.4138999585797,581.851,562.414,,,19.438,True,BothCorrect,Pipelines agree.
+R086_2026-08-21,1266.0,1297.6499999999999,1314.3355177427811,1157.123532178735,1314.336,1157.124,,,157.212,False,BothCorrect,"Spark off by 1.3%, Python off by 8.6% of their actuals"
+R118_2026-08-15,203.0,214.2777777777778,1734.6344490423207,140.64807497160973,1734.634,140.648,,,1593.986,False,BothWrong,"Spark off by 709.5%, Python off by 30.7% of their actuals"
+R043_2026-08-27,983.0,983.0,976.0743904489543,887.1937459357958,976.074,887.194,,,88.881,False,BothCorrect,"Spark off by 0.7%, Python off by 9.7% of their actuals"
+R020_2026-08-14,1570.0,2065.7894736842104,4738.782336818846,3837.6491764411135,4738.782,3837.649,,,901.133,False,BothWrong,"Spark off by 129.4%, Python off by 144.4% of their actuals"
+R016_2026-07-30,4637.0,4637.0,4417.271526202967,4343.773260467194,4417.272,4343.773,,,73.498,True,BothCorrect,Pipelines agree.
+R013_2026-07-31,754.0,828.1639344262296,1027.9775141892164,877.3442089157656,1027.978,877.344,,,150.633,False,BothWrong,"Spark off by 24.1%, Python off by 16.4% of their actuals"
+R033_2026-07-21,4324.0,4391.5625,3942.1854173323045,3953.255578830777,3942.185,3953.256,,,11.07,True,PyOnlyCorrect,Pipelines agree.
+R062_2026-08-10,2062.0,2062.0,1782.2425492751527,1853.298688745838,1782.243,1853.299,,,71.056,True,BothWrong,Pipelines agree.
+R079_2026-08-12,1089.0,1345.235294117647,998.0093570472741,738.5567557759049,998.009,738.557,,,259.453,False,BothWrong,"Spark off by 25.8%, Python off by 32.2% of their actuals"
+R014_2026-07-19,834.0,834.0,815.1932248724264,749.2314521802831,815.193,749.231,,,65.962,True,SparkOnlyCorrect,Pipelines agree.
+R099_2026-07-19,170.0,170.0,189.6009691595611,153.09709332130436,189.601,153.097,,,36.504,False,PyOnlyCorrect,"Spark off by 11.5%, Python off by 9.9% of their actuals"
+R073_2026-07-28,1405.0,1844.0625,1798.2884172534732,1295.6507988142487,1798.288,1295.651,,,502.638,False,BothCorrect,"Spark off by 2.5%, Python off by 7.8% of their actuals"
+R085_2026-08-24,1111.0,1111.0,843.1232614051123,879.3857799945465,843.123,879.386,,,36.263,True,BothWrong,Pipelines agree.
+R068_2026-07-31,1050.0,1050.0,1335.7578077192923,1307.543381345205,1335.758,1307.543,,,28.214,True,BothWrong,Pipelines agree.
+R088_2026-08-13,132.0,192.0,302.0565029761164,183.86278222759447,302.057,183.863,,,118.194,False,BothWrong,"Spark off by 57.3%, Python off by 39.3% of their actuals"
+R005_2026-07-19,1329.0,1359.906976744186,1563.835270187144,1408.5655171244528,1563.835,1408.566,,,155.27,False,PyOnlyCorrect,"Spark off by 15.0%, Python off by 6.0% of their actuals"
+R022_2026-07-10,467.0,572.7358490566038,759.2483232658882,594.1197193563396,759.248,594.12,,,165.129,False,BothWrong,"Spark off by 32.6%, Python off by 27.2% of their actuals"
+R001_2026-07-14,14219.0,16163.478632478633,13989.734810192762,12508.832257895509,13989.735,12508.832,,,1480.903,False,BothWrong,"Spark off by 13.4%, Python off by 12.0% of their actuals"
+R007_2026-08-10,1840.0,1840.0,1848.971312120959,2020.1241637227306,1848.971,2020.124,,,171.153,True,BothCorrect,Pipelines agree.
+R070_2026-08-26,2476.0,2476.0,2236.7179192359813,2212.0002780649106,2236.718,2212.0,,,24.718,True,SparkOnlyCorrect,Pipelines agree.
+R091_2026-07-12,44.0,146.66666666666666,207.79473435416108,65.59611657167609,207.795,65.596,,,142.199,False,BothWrong,"Spark off by 41.7%, Python off by 49.1% of their actuals"
+R109_2026-08-31,630.0,630.0,674.7110093882709,664.144685285316,674.711,664.145,,,10.566,True,BothCorrect,Pipelines agree.
+R082_2026-07-14,397.0,397.0,443.54858901078774,459.0835111589916,443.549,459.084,,,15.535,True,BothWrong,Pipelines agree.
+R110_2026-08-05,670.0,670.0,742.2504398910309,704.5565308992632,742.25,704.557,,,37.694,True,PyOnlyCorrect,Pipelines agree.
+R060_2026-08-15,1105.0,1473.3333333333333,1300.4018429458517,768.0543890797766,1300.402,768.054,,,532.347,False,BothWrong,"Spark off by 11.7%, Python off by 30.5% of their actuals"
+R110_2026-08-12,782.0,782.0,720.5030438377532,714.7756377477807,720.503,714.776,,,5.727,True,BothCorrect,Pipelines agree.
+R092_2026-08-17,292.0,292.0,268.95977376596863,217.05733317587735,268.96,217.057,,,51.902,False,SparkOnlyCorrect,"Spark off by 7.9%, Python off by 25.7% of their actuals"
+R077_2026-07-29,698.0,698.0,613.2966343365271,609.3833225301388,613.297,609.383,,,3.913,True,BothWrong,Pipelines agree.
+R033_2026-07-29,4921.0,4921.0,3988.6453579301683,3968.806645087335,3988.645,3968.807,,,19.839,True,BothWrong,Pipelines agree.
+R115_2026-07-31,273.0,409.5,469.75679678384296,324.34712017612964,469.757,324.347,,,145.41,False,BothWrong,"Spark off by 14.7%, Python off by 18.8% of their actuals"
+R047_2026-07-15,826.0,1119.0967741935483,1437.8687066624218,1098.7854885153918,1437.869,1098.785,,,339.083,False,BothWrong,"Spark off by 28.5%, Python off by 33.0% of their actuals"
+R001_2026-07-30,12811.0,14548.084745762711,13984.438470780777,12502.985729850194,13984.438,12502.986,,,1481.453,False,BothCorrect,"Spark off by 3.9%, Python off by 2.4% of their actuals"
+R117_2026-08-17,1870.0,2123.5593220338983,2386.628524812382,1513.374083419756,2386.629,1513.374,,,873.254,False,BothWrong,"Spark off by 12.4%, Python off by 19.1% of their actuals"
+R013_2026-07-15,865.0,951.5,1087.085771031031,948.1293523022257,1087.086,948.129,,,138.956,False,PyOnlyCorrect,"Spark off by 14.2%, Python off by 9.6% of their actuals"
+R001_2026-08-07,11983.0,13739.129310344828,13508.32368558596,10280.089736652233,13508.324,10280.09,,,3228.234,False,SparkOnlyCorrect,"Spark off by 1.7%, Python off by 14.2% of their actuals"
+R091_2026-08-29,77.0,242.0,281.8687770702456,94.62575193949358,281.869,94.626,,,187.243,False,BothWrong,"Spark off by 16.5%, Python off by 22.9% of their actuals"
+R088_2026-08-02,118.0,168.57142857142858,183.80628484818422,69.78048557863185,183.806,69.78,,,114.026,False,SparkOnlyCorrect,"Spark off by 9.0%, Python off by 40.9% of their actuals"
+R106_2026-07-29,509.0,775.6190476190476,803.8179656112575,538.2323181081887,803.818,538.232,,,265.586,False,BothCorrect,"Spark off by 3.6%, Python off by 5.7% of their actuals"
+R038_2026-08-23,652.0,850.4347826086957,891.6550916991988,640.8422655791039,891.655,640.842,,,250.813,False,BothCorrect,"Spark off by 4.8%, Python off by 1.7% of their actuals"
+R037_2026-07-16,2588.0,2588.0,2303.022518452325,2072.899665403773,2303.023,2072.9,,,230.123,False,BothWrong,"Spark off by 11.0%, Python off by 19.9% of their actuals"
+R051_2026-08-13,560.0,691.7647058823529,738.1418086074519,557.7589487203059,738.142,557.759,,,180.383,False,BothCorrect,"Spark off by 6.7%, Python off by 0.4% of their actuals"
+R027_2026-08-04,1344.0,1774.08,1874.0541900653889,1368.726614413539,1874.054,1368.727,,,505.328,False,BothCorrect,"Spark off by 5.6%, Python off by 1.8% of their actuals"
+R097_2026-07-10,839.0,839.0,966.6263553859145,955.1936626525859,966.626,955.194,,,11.433,True,BothWrong,Pipelines agree.
+R071_2026-08-08,793.0,793.0,834.9314908575554,789.2500797181475,834.931,789.25,,,45.681,True,BothCorrect,Pipelines agree.
+R022_2026-08-20,590.0,718.7272727272726,788.6161179253123,653.8661745058522,788.616,653.866,,,134.75,False,SparkOnlyCorrect,"Spark off by 9.7%, Python off by 10.8% of their actuals"
+R018_2026-08-17,1676.0,2593.809523809524,1970.766354961302,1287.9978737445365,1970.766,1287.998,,,682.768,False,BothWrong,"Spark off by 24.0%, Python off by 23.2% of their actuals"
+R040_2026-07-10,624.0,845.4193548387096,981.7767793335535,746.456222797261,981.777,746.456,,,235.321,False,BothWrong,"Spark off by 16.1%, Python off by 19.6% of their actuals"
+R053_2026-08-07,663.0,1160.25,1164.1434681796918,752.8151049501064,1164.143,752.815,,,411.328,False,SparkOnlyCorrect,"Spark off by 0.3%, Python off by 13.5% of their actuals"
+R056_2026-08-18,1029.0,1394.1290322580646,1324.0136030243311,1023.1042435413148,1324.014,1023.104,,,300.909,False,BothCorrect,"Spark off by 5.0%, Python off by 0.6% of their actuals"
+R094_2026-07-25,254.0,254.0,285.0660068635469,254.49847529162952,285.066,254.498,,,30.568,False,PyOnlyCorrect,"Spark off by 12.2%, Python off by 0.2% of their actuals"
+R032_2026-07-12,1584.0,1584.0,1498.869646483532,1421.861728158179,1498.87,1421.862,,,77.008,True,SparkOnlyCorrect,Pipelines agree.
+R085_2026-07-16,775.0,775.0,762.6278924499231,740.6163161515095,762.628,740.616,,,22.012,True,BothCorrect,Pipelines agree.
+R004_2026-08-16,7094.0,7431.809523809524,7397.489488042316,5941.570610407327,7397.489,5941.571,,,1455.919,False,SparkOnlyCorrect,"Spark off by 0.5%, Python off by 16.2% of their actuals"
+R064_2026-07-09,669.0,669.0,603.5690211833829,549.499937612417,603.569,549.5,,,54.069,True,SparkOnlyCorrect,Pipelines agree.
+R108_2026-08-18,648.0,670.3448275862069,682.4516953002144,657.1486702741792,682.452,657.149,,,25.303,True,BothCorrect,Pipelines agree.
+R058_2026-08-12,1552.0,1552.0,1539.9619108416016,1509.8784848991543,1539.962,1509.878,,,30.083,True,BothCorrect,Pipelines agree.
+R080_2026-08-28,958.0,958.0,890.7713063575217,827.9401770706139,890.771,827.94,,,62.831,True,SparkOnlyCorrect,Pipelines agree.
+R041_2026-08-17,1733.0,1775.2682926829268,1673.3616597660587,1490.7417589723848,1673.362,1490.742,,,182.62,False,SparkOnlyCorrect,"Spark off by 5.7%, Python off by 14.0% of their actuals"
+R088_2026-08-18,242.0,352.0,302.2604423516657,191.5617525512448,302.26,191.562,,,110.699,False,BothWrong,"Spark off by 14.1%, Python off by 20.8% of their actuals"
+R055_2026-07-09,665.0,665.0,620.7536905052849,634.3024169077222,620.754,634.302,,,13.549,True,BothCorrect,Pipelines agree.
+R023_2026-07-16,3609.0,3609.0,3403.5425890118636,3354.5295427743263,3403.543,3354.53,,,49.013,True,BothCorrect,Pipelines agree.
+R022_2026-07-27,547.0,668.5555555555555,793.9840921790654,645.0210405024137,793.984,645.021,,,148.963,False,BothWrong,"Spark off by 18.8%, Python off by 17.9% of their actuals"
+R019_2026-08-13,2469.0,2715.9,2778.130995840602,2573.1284413940803,2778.131,2573.128,,,205.003,True,BothCorrect,Pipelines agree.
+R094_2026-07-28,476.0,476.0,456.251645569984,424.3382525514206,456.252,424.338,,,31.913,True,SparkOnlyCorrect,Pipelines agree.
+R105_2026-07-21,738.0,738.0,714.2688876700087,674.7006361937688,714.269,674.701,,,39.568,True,BothCorrect,Pipelines agree.
+R073_2026-08-29,934.0,1245.3333333333333,1382.3228173982498,1283.2442825123553,1382.323,1283.244,,,99.079,True,BothWrong,Pipelines agree.
+R015_2026-08-29,913.0,1032.0869565217392,1260.503518215118,1110.6519054463163,1260.504,1110.652,,,149.852,False,BothWrong,"Spark off by 22.1%, Python off by 21.6% of their actuals"
+R052_2026-07-14,1369.0,1369.0,1154.4636444833466,1100.6663910626623,1154.464,1100.666,,,53.797,True,BothWrong,Pipelines agree.
+R073_2026-08-03,1340.0,1831.3333333333333,1702.454291656954,1274.4568067226307,1702.454,1274.457,,,427.997,False,BothCorrect,"Spark off by 7.0%, Python off by 4.9% of their actuals"
+R012_2026-07-21,2322.0,2357.723076923077,2266.1261604414863,2256.5809420210676,2266.126,2256.581,,,9.545,True,BothCorrect,Pipelines agree.
+R076_2026-07-20,984.0,983.9999999999999,912.910518819938,937.1798706868017,912.911,937.18,,,24.269,True,BothCorrect,Pipelines agree.
+R014_2026-07-11,1143.0,1143.0,1191.2509930892263,1108.3559040384905,1191.251,1108.356,,,82.895,True,BothCorrect,Pipelines agree.
+R118_2026-08-03,292.0,292.0,2964.3747423410778,197.18130877535057,2964.375,197.181,,,2767.193,False,BothWrong,"Spark off by 915.2%, Python off by 32.5% of their actuals"
+R043_2026-08-30,413.0,413.0,539.5730886106601,512.895482911651,539.573,512.895,,,26.678,True,BothWrong,Pipelines agree.
+R098_2026-08-16,88.0,88.0,183.80628484818422,125.17381863885176,183.806,125.174,,,58.632,False,BothWrong,"Spark off by 108.9%, Python off by 42.2% of their actuals"
+R047_2026-07-10,888.0,1224.8275862068965,1419.8165558497133,986.2337581221856,1419.817,986.234,,,433.583,False,BothWrong,"Spark off by 15.9%, Python off by 11.1% of their actuals"
+R068_2026-08-19,1472.0,1472.0000000000002,1527.2399233322597,1565.101971550941,1527.24,1565.102,,,37.862,True,BothCorrect,Pipelines agree.
+R053_2026-07-19,327.0,550.7368421052631,548.4828757904229,291.5535094196926,548.483,291.554,,,256.929,False,SparkOnlyCorrect,"Spark off by 0.4%, Python off by 10.8% of their actuals"
+R023_2026-08-10,3661.0,3661.0,3576.173961173341,3581.7151751592023,3576.174,3581.715,,,5.541,True,BothCorrect,Pipelines agree.
+R069_2026-08-29,541.0,667.2333333333333,636.2930108399751,530.5659495343043,636.293,530.566,,,105.727,False,BothCorrect,"Spark off by 4.6%, Python off by 1.9% of their actuals"
+R052_2026-07-26,447.0,462.41379310344826,622.4345102914324,556.3153900830486,622.435,556.315,,,66.119,False,BothWrong,"Spark off by 34.6%, Python off by 24.5% of their actuals"
+R105_2026-07-27,615.0,615.0,670.7099511345223,691.9082424476472,670.71,691.908,,,21.198,True,SparkOnlyCorrect,Pipelines agree.
+R027_2026-08-17,1674.0,2209.68,1782.8069882884126,1408.7414872052664,1782.807,1408.741,,,374.066,False,BothWrong,"Spark off by 19.3%, Python off by 15.8% of their actuals"
+R105_2026-08-05,682.0,682.0,646.2271258404072,627.4506159378386,646.227,627.451,,,18.777,True,BothCorrect,Pipelines agree.
+R073_2026-07-24,1099.0,1442.4375,1497.2625271091695,1108.8815579084317,1497.263,1108.882,,,388.381,False,BothCorrect,"Spark off by 3.8%, Python off by 0.9% of their actuals"
+R103_2026-08-14,254.0,254.0,616.6144604219711,647.697273844976,616.614,647.697,,,31.083,True,BothWrong,Pipelines agree.
+R010_2026-08-11,2786.0,2786.0,2461.4620041100097,2474.115250013496,2461.462,2474.115,,,12.653,True,BothWrong,Pipelines agree.
+R073_2026-07-21,1465.0,1937.5806451612902,1844.6366378659957,1351.6953008563696,1844.637,1351.695,,,492.941,False,BothCorrect,"Spark off by 4.8%, Python off by 7.7% of their actuals"
+R104_2026-07-18,241.0,241.0,288.86233463759856,268.00644307846966,288.862,268.006,,,20.856,True,BothWrong,Pipelines agree.
+R014_2026-07-15,1308.0,1308.0,1718.7971515501144,1755.9564489783577,1718.797,1755.956,,,37.159,True,BothWrong,Pipelines agree.
+R019_2026-08-11,3452.0,3803.050847457627,2703.621137648265,2403.5258986698136,2703.621,2403.526,,,300.095,False,BothWrong,"Spark off by 28.9%, Python off by 30.4% of their actuals"
+R031_2026-07-13,5939.0,5939.0,6373.704797657177,6709.41972298521,6373.705,6709.42,,,335.715,True,SparkOnlyCorrect,Pipelines agree.
+R028_2026-08-15,2848.0,2900.740740740741,2683.2720836805743,2511.3724312064496,2683.272,2511.372,,,171.9,True,SparkOnlyCorrect,Pipelines agree.
+R039_2026-08-05,978.0,1004.4324324324324,1000.7640535616264,956.4227074853089,1000.764,956.423,,,44.341,True,BothCorrect,Pipelines agree.
+R118_2026-08-16,135.0,135.0,1722.7054459773335,126.76339910223356,1722.705,126.763,,,1595.942,False,PyOnlyCorrect,"Spark off by 1176.1%, Python off by 6.1% of their actuals"
+R113_2026-07-25,1006.0,1108.6530612244899,1186.3584029724773,1086.7828282553364,1186.358,1086.783,,,99.576,True,BothCorrect,Pipelines agree.
+R043_2026-07-28,1115.0,1142.1951219512196,1018.8161056638238,953.2332185894982,1018.816,953.233,,,65.583,True,BothWrong,Pipelines agree.
+R020_2026-08-01,2441.0,3192.0769230769233,3436.3249994371963,2542.7760814761155,3436.325,2542.776,,,893.549,False,BothCorrect,"Spark off by 7.7%, Python off by 4.2% of their actuals"
+R023_2026-07-25,2117.0,2117.0,2191.7158667943017,2239.091995884438,2191.716,2239.092,,,47.376,True,BothCorrect,Pipelines agree.
+R050_2026-08-31,1223.0,1253.575,1257.2233555814937,1243.349314452061,1257.223,1243.349,,,13.874,True,BothCorrect,Pipelines agree.
+R029_2026-07-08,1895.0,2395.566037735849,2258.136485862545,1832.6385690112386,2258.136,1832.639,,,425.498,False,BothCorrect,"Spark off by 5.7%, Python off by 3.3% of their actuals"
+R043_2026-08-17,1425.0,1425.0,993.2273495621365,1001.2411620875649,993.227,1001.241,,,8.014,True,BothWrong,Pipelines agree.
+R023_2026-08-16,1323.0,1323.0,2019.2965757675076,1452.532348984768,2019.297,1452.532,,,566.764,False,PyOnlyCorrect,"Spark off by 52.6%, Python off by 9.8% of their actuals"
+R022_2026-08-01,406.0,502.66666666666663,532.9979077315625,415.0433211175079,532.998,415.043,,,117.955,False,BothCorrect,"Spark off by 6.0%, Python off by 2.2% of their actuals"
+R096_2026-08-06,759.0,759.0,771.634692658587,758.7891162916011,771.635,758.789,,,12.846,True,BothCorrect,Pipelines agree.
+R108_2026-07-16,628.0,649.6551724137931,628.124196730912,609.9557741247926,628.124,609.956,,,18.168,True,BothCorrect,Pipelines agree.
+R093_2026-07-11,105.0,105.0,199.41597416017737,151.2846740965043,199.416,151.285,,,48.131,False,BothWrong,"Spark off by 89.9%, Python off by 44.1% of their actuals"
+R082_2026-07-21,426.0,436.390243902439,403.74474585773896,415.96159089566765,403.745,415.962,,,12.217,True,BothCorrect,Pipelines agree.
+R107_2026-08-11,955.0,955.0,921.9492167057771,908.122267259538,921.949,908.122,,,13.827,True,BothCorrect,Pipelines agree.
+R114_2026-08-06,880.0,880.0,776.8406037702229,805.9111522796109,776.841,805.911,,,29.071,True,PyOnlyCorrect,Pipelines agree.
+R106_2026-08-01,339.0,519.8000000000001,539.28342271546,342.361158339655,539.283,342.361,,,196.922,False,BothCorrect,"Spark off by 3.7%, Python off by 1.0% of their actuals"
+R091_2026-08-05,158.0,474.00000000000006,344.7956912748609,125.80215121916737,344.796,125.802,,,218.994,False,BothWrong,"Spark off by 27.3%, Python off by 20.4% of their actuals"
+R067_2026-07-15,594.0,594.0,518.8683545138927,482.71786192908513,518.868,482.718,,,36.15,True,BothWrong,Pipelines agree.
+R054_2026-08-05,2127.0,2675.9032258064517,2154.15105315017,1751.7867207040515,2154.151,1751.787,,,402.364,False,BothWrong,"Spark off by 19.5%, Python off by 17.6% of their actuals"
+R005_2026-07-08,2435.0,2472.4615384615386,3177.1453641484713,3085.5210636097063,3177.145,3085.521,,,91.624,True,BothWrong,Pipelines agree.
+R015_2026-08-30,715.0,806.6666666666666,899.9228621984928,765.4003245648265,899.923,765.4,,,134.523,False,PyOnlyCorrect,"Spark off by 11.6%, Python off by 7.0% of their actuals"
+R096_2026-08-05,744.0,770.5714285714287,729.2704158026709,722.0495004884459,729.27,722.05,,,7.221,True,BothCorrect,Pipelines agree.
+R075_2026-07-31,1209.0,1209.0,1063.1798309677056,1034.7066528680728,1063.18,1034.707,,,28.473,True,BothWrong,Pipelines agree.
+R037_2026-07-20,2734.0,2734.0,2171.1428667024334,2186.569150141423,2171.143,2186.569,,,15.426,True,BothWrong,Pipelines agree.
+R038_2026-08-19,1452.0,1793.6470588235293,1806.3366991324554,1493.0257737212664,1806.337,1493.026,,,313.311,False,BothCorrect,"Spark off by 0.7%, Python off by 2.8% of their actuals"
+R040_2026-07-13,866.0,1173.2903225806451,1064.4515721297387,818.1428098345683,1064.452,818.143,,,246.309,False,BothCorrect,"Spark off by 9.3%, Python off by 5.5% of their actuals"
+R052_2026-08-22,752.0,752.0,768.3839842239286,701.3593989885487,768.384,701.359,,,67.025,True,BothCorrect,Pipelines agree.
+R094_2026-07-27,502.0,502.0,444.58436861658896,397.3205225345215,444.584,397.321,,,47.264,False,BothWrong,"Spark off by 11.4%, Python off by 20.9% of their actuals"
+R104_2026-08-10,439.0,439.0,502.62207007912,509.6804309449758,502.622,509.68,,,7.058,True,BothWrong,Pipelines agree.
+R111_2026-08-04,1501.0,1501.0,1499.1821702498082,1470.5940230991753,1499.182,1470.594,,,28.588,True,BothCorrect,Pipelines agree.
+R038_2026-07-13,1531.0,1891.235294117647,1769.1618774105464,1368.4795460313499,1769.162,1368.48,,,400.682,False,SparkOnlyCorrect,"Spark off by 6.5%, Python off by 10.6% of their actuals"
+R049_2026-07-25,833.0,833.0,936.0036058512108,893.5690047301846,936.004,893.569,,,42.435,True,PyOnlyCorrect,Pipelines agree.
+R106_2026-07-23,612.0,948.6,756.3806766250751,510.22727773484667,756.381,510.227,,,246.153,False,BothWrong,"Spark off by 20.3%, Python off by 16.6% of their actuals"
+R086_2026-08-05,1859.0,1859.0,1483.3414998689022,1410.0721753856121,1483.341,1410.072,,,73.269,True,BothWrong,Pipelines agree.
+R115_2026-08-04,313.0,476.95238095238096,515.6127258803068,350.6947795489569,515.613,350.695,,,164.918,False,SparkOnlyCorrect,"Spark off by 8.1%, Python off by 12.0% of their actuals"
+R047_2026-07-26,447.0,617.2857142857142,720.9073689366046,493.0613480948531,720.907,493.061,,,227.846,False,BothWrong,"Spark off by 16.8%, Python off by 10.3% of their actuals"
+R112_2026-08-08,426.0,426.0,409.00647678070976,380.0493183361645,409.006,380.049,,,28.957,True,SparkOnlyCorrect,Pipelines agree.
+R011_2026-07-27,5555.0,5639.166666666667,5894.469658326419,6208.877956897591,5894.47,6208.878,,,314.408,True,SparkOnlyCorrect,Pipelines agree.
+R029_2026-07-29,1914.0,2383.471698113208,2198.8104120049575,1691.4320995948751,2198.81,1691.432,,,507.378,False,SparkOnlyCorrect,"Spark off by 7.7%, Python off by 11.6% of their actuals"
+R108_2026-07-10,571.0,571.0,593.8983814852779,603.1697598780264,593.898,603.17,,,9.271,True,BothCorrect,Pipelines agree.
+R035_2026-08-06,1562.0,1562.0,1499.6354547296153,1437.1433533059808,1499.635,1437.143,,,62.492,True,BothCorrect,Pipelines agree.
+R031_2026-07-18,3406.0,3406.0,4462.930958150078,4253.375195036113,4462.931,4253.375,,,209.556,True,BothWrong,Pipelines agree.
+R044_2026-07-19,562.0,562.0,703.302106432255,670.4418939159192,703.302,670.442,,,32.86,True,BothWrong,Pipelines agree.
+R044_2026-07-09,1561.0,1561.0,1508.7738507101928,1435.2759710813887,1508.774,1435.276,,,73.498,True,BothCorrect,Pipelines agree.
+R016_2026-07-22,4591.0,4591.0,4194.180871440854,4269.395726360608,4194.181,4269.396,,,75.215,True,BothCorrect,Pipelines agree.
+R031_2026-08-05,6369.0,6369.0,6015.960953033905,6097.174341499927,6015.961,6097.174,,,81.213,True,BothCorrect,Pipelines agree.
+R104_2026-07-26,206.0,206.0,230.644882563671,187.50380666596968,230.645,187.504,,,43.141,False,PyOnlyCorrect,"Spark off by 12.0%, Python off by 9.0% of their actuals"
+R013_2026-08-06,1125.0,1235.655737704918,1144.9211138397006,1032.305172996221,1144.921,1032.305,,,112.616,False,BothCorrect,"Spark off by 7.3%, Python off by 8.2% of their actuals"
+R084_2026-08-07,895.0,917.375,1040.927037014253,1049.9944247324026,1040.927,1049.994,,,9.067,True,BothWrong,Pipelines agree.
+R003_2026-08-31,12215.0,13871.271186440677,13081.556673912857,13003.182573953816,13081.557,13003.183,,,78.374,True,BothCorrect,Pipelines agree.
+R001_2026-07-15,11278.0,12807.22033898305,13961.969897496354,10700.663430111555,13961.97,10700.663,,,3261.306,False,BothCorrect,"Spark off by 9.0%, Python off by 5.1% of their actuals"
+R013_2026-08-01,652.0,726.0909090909091,763.3979264537661,643.5030271923213,763.398,643.503,,,119.895,False,BothCorrect,"Spark off by 5.1%, Python off by 1.3% of their actuals"
+R106_2026-08-30,314.0,483.0769230769231,400.0259226678426,262.1328887635658,400.026,262.133,,,137.893,False,BothWrong,"Spark off by 17.2%, Python off by 16.5% of their actuals"
+R007_2026-08-02,903.0,903.0,817.3950395558367,749.7763151136979,817.395,749.776,,,67.619,True,SparkOnlyCorrect,Pipelines agree.
+R106_2026-08-10,586.0,892.952380952381,801.6800843632485,564.7670437411381,801.68,564.767,,,236.913,False,PyOnlyCorrect,"Spark off by 10.2%, Python off by 3.6% of their actuals"
+R019_2026-08-01,1169.0,1285.8999999999999,1899.6035572757758,1622.3580095446266,1899.604,1622.358,,,277.246,False,BothWrong,"Spark off by 47.7%, Python off by 38.8% of their actuals"
+R033_2026-07-11,2623.0,2623.0,2605.4469023933425,2512.850756804614,2605.447,2512.851,,,92.596,True,BothCorrect,Pipelines agree.
+R101_2026-08-20,272.0,272.0,292.2705137760641,276.8392951016599,292.271,276.839,,,15.431,True,BothCorrect,Pipelines agree.
+R054_2026-07-20,2083.0,2651.090909090909,2306.241422978725,1780.1839258231423,2306.241,1780.184,,,526.057,False,BothWrong,"Spark off by 13.0%, Python off by 14.5% of their actuals"
+R002_2026-08-02,4311.0,4911.265822784811,6638.413308335112,4633.082903562546,6638.413,4633.083,,,2005.33,False,PyOnlyCorrect,"Spark off by 35.2%, Python off by 7.5% of their actuals"
+R002_2026-08-03,13012.0,14886.610169491525,13037.817946078523,10936.319565295824,13037.818,10936.32,,,2101.498,False,BothWrong,"Spark off by 12.4%, Python off by 16.0% of their actuals"
+R110_2026-07-26,318.0,318.0,347.0531530703323,328.8745547755894,347.053,328.875,,,18.179,True,BothCorrect,Pipelines agree.
+R024_2026-07-20,6088.0,6696.8,5921.4471749191,5323.8968008618895,5921.447,5323.897,,,597.55,False,BothWrong,"Spark off by 11.6%, Python off by 12.6% of their actuals"
+R022_2026-07-19,261.0,319.0,378.02960912781435,323.61215416216356,378.03,323.612,,,54.417,False,BothWrong,"Spark off by 18.5%, Python off by 24.0% of their actuals"
+R038_2026-08-04,1538.0,1899.8823529411764,1713.5784932204137,1297.878156135547,1713.578,1297.878,,,415.7,False,SparkOnlyCorrect,"Spark off by 9.8%, Python off by 15.6% of their actuals"
+R078_2026-08-09,145.0,145.0,216.89583139830137,198.11216359138209,216.896,198.112,,,18.784,True,BothWrong,Pipelines agree.
+R061_2026-07-24,2374.0,2374.0,2149.1822778254796,1734.4556470689658,2149.182,1734.456,,,414.727,False,SparkOnlyCorrect,"Spark off by 9.5%, Python off by 26.9% of their actuals"
+R116_2026-08-30,988.0,988.0,898.5770022695151,874.7940825308185,898.577,874.794,,,23.783,True,SparkOnlyCorrect,Pipelines agree.
+R013_2026-08-10,996.0,1112.2,1055.0847339995355,1047.3667858736842,1055.085,1047.367,,,7.718,True,BothCorrect,Pipelines agree.
+R081_2026-08-19,3528.0,3528.0,3096.9053643727534,3059.3942679625393,3096.905,3059.394,,,37.511,True,BothWrong,Pipelines agree.
+R026_2026-07-23,3664.0,3664.0,2786.8229621300998,2893.5408843194223,2786.823,2893.541,,,106.718,True,BothWrong,Pipelines agree.
+R104_2026-07-09,400.0,400.0,429.40694332963153,400.3586434099001,429.407,400.359,,,29.048,True,BothCorrect,Pipelines agree.
+R065_2026-08-17,2027.0,2027.0,1796.9250697797374,1824.5323466015802,1796.925,1824.532,,,27.607,True,PyOnlyCorrect,Pipelines agree.
+R006_2026-08-24,1046.0,1046.0,954.3147203637914,1006.8179228687104,954.315,1006.818,,,52.503,True,BothCorrect,Pipelines agree.
+R113_2026-07-17,1251.0,1376.1000000000001,1520.624911371059,1311.6399830352734,1520.625,1311.64,,,208.985,False,PyOnlyCorrect,"Spark off by 10.5%, Python off by 4.8% of their actuals"
+R118_2026-08-24,396.0,410.66666666666663,2993.6712266855,326.6333287899172,2993.671,326.633,,,2667.038,False,BothWrong,"Spark off by 629.0%, Python off by 17.5% of their actuals"
+R013_2026-08-21,774.0,864.3000000000001,1116.1513700360172,943.1349540020592,1116.151,943.135,,,173.016,False,BothWrong,"Spark off by 29.1%, Python off by 21.9% of their actuals"
+R086_2026-08-24,1674.0,1673.9999999999998,1609.7574267376008,1676.41284813245,1609.757,1676.413,,,66.655,True,BothCorrect,Pipelines agree.
+R106_2026-07-14,563.0,872.65,794.8410026658233,503.69219988109506,794.841,503.692,,,291.149,False,SparkOnlyCorrect,"Spark off by 8.9%, Python off by 10.5% of their actuals"
+R070_2026-08-19,2268.0,2268.0,2107.34824588688,2078.649419243135,2107.348,2078.649,,,28.699,True,BothCorrect,Pipelines agree.
+R052_2026-08-18,1287.0,1287.0,1284.8576930956128,1092.2163061677861,1284.858,1092.216,,,192.641,False,SparkOnlyCorrect,"Spark off by 0.2%, Python off by 15.1% of their actuals"
+R025_2026-07-30,2405.0,3006.25,2705.2636757454184,2246.727775237833,2705.264,2246.728,,,458.536,False,PyOnlyCorrect,"Spark off by 10.0%, Python off by 6.6% of their actuals"
+R096_2026-07-13,898.0,898.0,761.259192651815,766.3943112063024,761.259,766.394,,,5.135,True,BothWrong,Pipelines agree.
+R003_2026-07-18,5580.0,6335.625,8167.990476420797,6489.797132452245,8167.99,6489.797,,,1678.193,False,BothWrong,"Spark off by 28.9%, Python off by 16.3% of their actuals"
+R095_2026-08-25,644.0,644.0,529.8338686437509,508.93512222190344,529.834,508.935,,,20.899,True,BothWrong,Pipelines agree.
+R053_2026-08-16,331.0,557.4736842105264,559.8032743018209,291.32135144064193,559.803,291.321,,,268.482,False,SparkOnlyCorrect,"Spark off by 0.4%, Python off by 12.0% of their actuals"
+R061_2026-08-07,2317.0,2317.0,2446.3730293139656,2365.547866249977,2446.373,2365.548,,,80.825,True,BothCorrect,Pipelines agree.
+R109_2026-08-27,635.0,635.0,684.0690535926758,667.6609189081928,684.069,667.661,,,16.408,True,BothCorrect,Pipelines agree.
+R042_2026-07-11,990.0,990.0,876.676729831556,826.1949654547815,876.677,826.195,,,50.482,True,BothWrong,Pipelines agree.
+R039_2026-07-30,1030.0,1030.0,1014.5087279028457,995.645396550523,1014.509,995.645,,,18.863,True,BothCorrect,Pipelines agree.
+R078_2026-07-24,270.0,270.0,298.70080984457564,262.27478220005315,298.701,262.275,,,36.426,False,PyOnlyCorrect,"Spark off by 10.6%, Python off by 2.9% of their actuals"
+R012_2026-08-27,2351.0,2351.0,2361.254448160498,2277.5067416924558,2361.254,2277.507,,,83.748,True,BothCorrect,Pipelines agree.
+R064_2026-08-31,813.0,813.0,751.1540515751457,782.7327380127819,751.154,782.733,,,31.579,True,BothCorrect,Pipelines agree.
+R076_2026-07-25,690.0,690.0,683.6135020086871,672.0586993242074,683.614,672.059,,,11.555,True,BothCorrect,Pipelines agree.
+R027_2026-08-18,1471.0,1941.72,1953.9800165092397,1476.3206536944842,1953.98,1476.321,,,477.659,False,BothCorrect,"Spark off by 0.6%, Python off by 0.4% of their actuals"
+R089_2026-08-21,663.0,663.0,649.2715999127954,688.5929563689087,649.272,688.593,,,39.321,True,BothCorrect,Pipelines agree.
+R059_2026-07-31,377.0,377.0,451.65566846570096,394.2469056645565,451.656,394.247,,,57.409,False,PyOnlyCorrect,"Spark off by 19.8%, Python off by 4.6% of their actuals"
+R048_2026-08-21,238.0,238.0,254.31405226284957,201.95997186231617,254.314,201.96,,,52.354,False,SparkOnlyCorrect,"Spark off by 6.9%, Python off by 15.1% of their actuals"
+R007_2026-07-21,1738.0,1738.0,1637.8520021041518,1617.0262037064388,1637.852,1617.026,,,20.826,True,BothCorrect,Pipelines agree.
+R111_2026-08-25,1751.0,1751.0000000000002,1637.072041691787,1542.2277136410878,1637.072,1542.228,,,94.844,True,SparkOnlyCorrect,Pipelines agree.
+R100_2026-08-12,660.0,660.0,575.2101798421171,594.5885059240741,575.21,594.589,,,19.378,True,PyOnlyCorrect,Pipelines agree.
+R090_2026-07-25,303.0,303.0,340.2385223058489,300.44032792871457,340.239,300.44,,,39.798,False,PyOnlyCorrect,"Spark off by 12.3%, Python off by 0.8% of their actuals"
+R013_2026-08-29,734.0,815.5555555555555,838.9496861100785,678.948742236197,838.95,678.949,,,160.001,False,BothCorrect,"Spark off by 2.9%, Python off by 7.5% of their actuals"
+R032_2026-08-07,3189.0,3189.0,3084.3700568625836,3108.3299907958944,3084.37,3108.33,,,23.96,True,BothCorrect,Pipelines agree.
+R114_2026-08-18,838.0,838.0,818.7965391373186,846.9737275560256,818.797,846.974,,,28.177,True,BothCorrect,Pipelines agree.
+R112_2026-07-19,202.0,202.0,305.99807835302664,258.5367233724422,305.998,258.537,,,47.461,False,BothWrong,"Spark off by 51.5%, Python off by 28.0% of their actuals"
+R036_2026-08-18,2949.0,3753.272727272727,3908.3421617984063,2998.076609403664,3908.342,2998.077,,,910.266,False,BothCorrect,"Spark off by 4.1%, Python off by 1.7% of their actuals"
+R028_2026-08-09,1358.0,1358.0,2034.4854801018182,1877.8523970293688,2034.485,1877.852,,,156.633,True,BothWrong,Pipelines agree.
+R093_2026-08-15,143.0,143.0,199.41597416017737,125.14542852148041,199.416,125.145,,,74.271,False,BothWrong,"Spark off by 39.5%, Python off by 12.5% of their actuals"
+R106_2026-07-25,335.0,513.6666666666666,514.535028210095,323.6306735578205,514.535,323.631,,,190.904,False,BothCorrect,"Spark off by 0.2%, Python off by 3.4% of their actuals"
+R010_2026-07-09,2649.0,2649.0,2425.3267796530436,2129.6779508034715,2425.327,2129.678,,,295.649,False,SparkOnlyCorrect,"Spark off by 8.4%, Python off by 19.6% of their actuals"
+R030_2026-07-29,598.0,598.0,514.2414211738883,497.32205589911723,514.241,497.322,,,16.919,True,BothWrong,Pipelines agree.
+R083_2026-07-10,555.0,555.0,620.9141557986399,604.2751431132963,620.914,604.275,,,16.639,True,PyOnlyCorrect,Pipelines agree.
+R043_2026-08-26,1033.0,1033.0,1066.2570432497223,1009.523693599491,1066.257,1009.524,,,56.733,True,BothCorrect,Pipelines agree.
+R033_2026-08-09,1609.0,1609.0,2023.5403993608272,1909.6480854557713,2023.54,1909.648,,,113.892,True,BothWrong,Pipelines agree.
+R061_2026-07-25,1480.0,1480.0,1802.0081712736314,1696.8413549136963,1802.008,1696.841,,,105.167,True,BothWrong,Pipelines agree.
+R036_2026-07-14,2783.0,3565.71875,3656.7456214698095,2857.5284794758863,3656.746,2857.528,,,799.217,False,BothCorrect,"Spark off by 2.6%, Python off by 2.7% of their actuals"
+R076_2026-08-07,1103.0,1103.0,1048.1036726848888,1052.5703482919316,1048.104,1052.57,,,4.467,True,BothCorrect,Pipelines agree.
+R019_2026-07-18,1536.0,1689.6,1807.6467895917585,1477.8448382609522,1807.647,1477.845,,,329.802,False,BothCorrect,"Spark off by 7.0%, Python off by 3.8% of their actuals"
+R059_2026-07-26,164.0,164.0,252.89099810152024,181.37967575802887,252.891,181.38,,,71.511,False,BothWrong,"Spark off by 54.2%, Python off by 10.6% of their actuals"
+R004_2026-07-22,14481.0,15159.796875,13711.96940915738,12467.747130263615,13711.969,12467.747,,,1244.222,True,SparkOnlyCorrect,Pipelines agree.
+R030_2026-08-29,356.0,363.12,410.6703452102973,391.6739216955736,410.67,391.674,,,18.996,True,BothWrong,Pipelines agree.
+R069_2026-07-29,760.0,912.0,824.6099643278844,685.8843462284169,824.61,685.884,,,138.726,False,BothCorrect,"Spark off by 9.6%, Python off by 9.8% of their actuals"
+R039_2026-08-31,1142.0,1142.0,1283.1615363433239,1256.2976908061003,1283.162,1256.298,,,26.864,True,BothWrong,Pipelines agree.
+R037_2026-07-23,2036.0,2036.0,2400.99830290264,2312.298200305707,2400.998,2312.298,,,88.7,True,BothWrong,Pipelines agree.

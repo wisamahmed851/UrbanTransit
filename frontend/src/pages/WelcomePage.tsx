@@ -15,6 +15,7 @@ import {
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
 import { motion, useReducedMotion } from 'motion/react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { CountUp, Reveal, StaggerScope } from '../components/motion'
 import { useApi } from '../lib/useApi'
@@ -72,6 +73,48 @@ function Shot({ src, alt, className = '' }: { src: string; alt: string; classNam
  )
 }
 
+/**
+ * Hero promo: a muted 20 s loop (first and last frames share the dark background, so the seam
+ * is invisible). It plays only while on screen, so an off-screen video never competes with the
+ * scroll reveals for frames. With reduced motion it does not play and shows a dashboard still.
+ */
+function HeroVideo({ alt }: { alt: string }) {
+ const reduce = useReducedMotion()
+ const ref = useRef<HTMLVideoElement>(null)
+
+ useEffect(() => {
+  const video = ref.current
+  if (!video || reduce) return
+  video.muted = true // React does not reflect `muted` as an attribute; autoplay policies need it set
+  const io = new IntersectionObserver(([entry]) => {
+   if (entry.isIntersecting) video.play().catch(() => {})
+   else video.pause()
+  }, { threshold: 0.15 })
+  io.observe(video)
+  return () => io.disconnect()
+ }, [reduce])
+
+ return (
+  <figure className="site-shot site-shot-video">
+   <video
+    ref={ref}
+    src="/site/promo-hero.mp4"
+    poster={reduce ? '/site/promo-hero-still.webp' : '/site/promo-hero-poster.webp'}
+    aria-label={alt}
+    width={1280}
+    height={720}
+    muted
+    loop
+    playsInline
+    autoPlay={!reduce}
+    preload={reduce ? 'none' : 'auto'}
+    disablePictureInPicture
+    disableRemotePlayback
+   />
+  </figure>
+ )
+}
+
 export function WelcomePage() {
  const summary = useApi<PublicSummary>('/public/summary')
  const s = summary.data
@@ -112,7 +155,7 @@ export function WelcomePage() {
       </motion.div>
      </div>
      <motion.div className="site-hero-visual" {...enter(0.12)}>
-      <Shot src="/site/overview.webp" alt="The network overview dashboard: route scores, ridership and the route map." />
+      <HeroVideo alt="The network overview dashboard: route scores, ridership and the route map." />
       <img className="site-hero-logo" src="/logo-192.png" alt="" width={112} height={112} />
      </motion.div>
     </section>

@@ -25,6 +25,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
+import yaml
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import silhouette_score
@@ -35,6 +36,7 @@ sys.path.insert(0, str(ROOT / "python_pipeline"))
 import phase7_python_models as p7  # noqa: E402
 
 MODELS = ROOT / "models" / "python"
+SERVING = yaml.safe_load((ROOT / "config" / "serving.yaml").read_text(encoding="utf-8"))
 REPORT_PATH = ROOT / "reports" / "saved_model_evaluation.json"
 TOLERANCE = 0.005   # scores recomputed here may differ in the last digits across library builds
 
@@ -56,8 +58,23 @@ def compare(expected: dict, actual: dict, keys: tuple[str, ...]) -> dict:
     return out
 
 
+def served_algorithm(task: str) -> str:
+    return SERVING["served"][task]["algorithm"]
+
+
+def generalisation(train: float, test: float, higher_is_better: bool = True) -> dict:
+    """Train (the 70% the model learned from) vs test (unseen). A small gap means the
+    score on unseen data tracks the training score, i.e. the model is not overfitted."""
+    gap = train - test if higher_is_better else test - train
+    return {"train": train, "test": test, "gap": round(gap, 6),
+            "relative_gap_pct": round(gap / abs(train) * 100, 2) if train else None}
+
+
 def evaluate_classifier(trips: pd.DataFrame, task: str, algorithm: str = "xgboost") -> dict:
-    """Score `<task>/<algorithm>_v1.pkl` exactly the way run_classification scored it."""
+    """Score `<task>/<algorithm>_v1.pkl` exactly the way run_classification scored it.
+
+    `train` is scored too (no recorded value to match: Phase 7 does not save it), so the
+    train-vs-test gap shows whether the held-out score tracks the training score."""
     rec = recorded(task, algorithm)
     numeric, categorical = rec["features"]["numeric"], rec["features"]["categorical"]
     model = joblib.load(MODELS / task / f"{algorithm}_v1.pkl")
@@ -68,7 +85,7 @@ def evaluate_classifier(trips: pd.DataFrame, task: str, algorithm: str = "xgboos
     frame.loc[:, numeric] = frame[numeric].replace([np.inf, -np.inf], np.nan)
     result = {"task": task, "algorithm": algorithm, "model_file": f"models/python/{task}/{algorithm}_v1.pkl",
               "features": numeric + categorical, "threshold": rec.get("threshold"), "splits": {}}
-    for split in ("validation", "test"):
+    for split in ("train", "validation", "test"):
         part = p7.period(frame, split)
         proba = model.predict_proba(prep.transform(part[numeric + categorical]))
         if rec.get("threshold") is not None:           # binary crowding flag: tuned threshold on class "1.0"
@@ -77,19 +94,14 @@ def evaluate_classifier(trips: pd.DataFrame, task: str, algorithm: str = "xgboos
             pred = np.array(labels)[proba.argmax(1)]
         scores = p7.cls_scores(part[task].astype(str), pred)
         result["splits"][split] = {"rows": len(part), "accuracy": scores["accuracy"], "macro_f1": scores["macro_f1"],
-                                   "per_class_f1": scores["per_class_f1"], "confusion_matrix": scores["confusion_matrix"],
-                                   "vs_recorded": compare(rec[split], scores, ("accuracy", "macro_f1"))}
-    test = result["splits"]["test"]
-    if task == "delay_severity":
-        target_acc, target_f1 = 0.60, 0.40  # Lowered from 0.65 to accommodate practical limits
-        rule_str = f"accuracy >= {target_acc} or macro F1 >= {target_f1} (SRS NFR 4)"
-    else:
-        target_acc, target_f1 = TARGET_ACCURACY, TARGET_MACRO_F1
-        rule_str = f"accuracy >= {target_acc} or macro F1 >= {target_f1} (SRS NFR 4)"
-        
-    result["srs_target"] = {"rule": rule_str,
-                            "accuracy_met": test["accuracy"] >= target_acc,
-                            "macro_f1_met": test["macro_f1"] >= target_f1}
+                                   "per_class_f1": scores["per_class_f1"], "confusion_matrix": scores["confusion_matrix"]}
+        if split in rec:
+            result["splits"][split]["vs_recorded"] = compare(rec[split], scores, ("accuracy", "macro_f1"))
+    s = result["splits"]
+    result["train_vs_test"] = {m: generalisation(s["train"][m], s["test"][m]) for m in ("accuracy", "macro_f1")}
+    result["srs_target"] = {"rule": f"accuracy >= {TARGET_ACCURACY} or macro F1 >= {TARGET_MACRO_F1} (SRS NFR 4)",
+                            "accuracy_met": s["test"]["accuracy"] >= TARGET_ACCURACY,
+                            "macro_f1_met": s["test"]["macro_f1"] >= TARGET_MACRO_F1}
     return result
 
 
@@ -97,7 +109,7 @@ def evaluate_demand() -> dict:
     """Score the three saved regressors and the 28-day baseline on the demand frame."""
     d = p7.demand_frame()
     feats = ["lag_1", "lag_7", "lag_28", "rolling_7_mean", "rolling_28_mean"]
-    splits = {s: p7.period(d, s).dropna(subset=feats) for s in ("validation", "test")}
+    splits = {s: p7.period(d, s).dropna(subset=feats) for s in ("train", "validation", "test")}
     result = {"task": "daily_boardings", "features": feats, "algorithms": {}}
     for name in ("baseline_28day", "ridge", "random_forest", "xgboost"):
         rec, row = recorded("daily_boardings", name), {}
@@ -105,7 +117,11 @@ def evaluate_demand() -> dict:
         for split, part in splits.items():
             pred = part.rolling_28_mean if model is None else model.predict(part[feats])
             scores = p7.reg_scores(part.boardings, pred)
-            row[split] = {"rows": len(part), **scores, "vs_recorded": compare(rec[split], scores, ("mae", "rmse", "r2"))}
+            row[split] = {"rows": len(part), **scores}
+            if split in rec:
+                row[split]["vs_recorded"] = compare(rec[split], scores, ("mae", "rmse", "r2"))
+        row["train_vs_test"] = {"r2": generalisation(row["train"]["r2"], row["test"]["r2"]),
+                                "mae": generalisation(row["train"]["mae"], row["test"]["mae"], higher_is_better=False)}
         result["algorithms"][name] = row
     base_mae = result["algorithms"]["baseline_28day"]["test"]["mae"]
     # run_demand serves the lowest validation MAE among the trained models.
@@ -128,11 +144,24 @@ def evaluate_occupancy(trips: pd.DataFrame) -> dict:
     frame = trips.dropna(subset=["occupancy_pct", "prior_route_occupancy_mean"]).copy()
     frame.loc[:, numeric] = frame[numeric].replace([np.inf, -np.inf], np.nan)
     result = {"task": task, "algorithm": algorithm, "target": rec["target"], "splits": {}}
-    for split in ("validation", "test"):
+    for split in ("train", "validation", "test"):
         part = p7.period(frame, split)
         scores = p7.occupancy_scores(part.occupancy_pct, model.predict(prep.transform(part[numeric + categorical])))
-        result["splits"][split] = {"rows": len(part), **scores,
-                                   "vs_recorded": compare(rec[split], scores, ("mae", "rmse", "r2"))}
+        result["splits"][split] = {"rows": len(part), **scores}
+        if split in rec:
+            result["splits"][split]["vs_recorded"] = compare(rec[split], scores, ("mae", "rmse", "r2"))
+    s = result["splits"]
+    result["train_vs_test"] = {"r2": generalisation(s["train"]["r2"], s["test"]["r2"]),
+                               "mae": generalisation(s["train"]["mae"], s["test"]["mae"], higher_is_better=False)}
+    # SRS step 24 baseline: the prior route/direction/hour mean occupancy (strictly earlier
+    # trips; falls back to the route/direction mean where the hour cell has no history).
+    test = p7.period(frame, "test")
+    naive = test.prior_route_hour_occupancy_mean.fillna(test.prior_route_occupancy_mean)
+    base = p7.occupancy_scores(test.occupancy_pct, naive)
+    result["srs_target"] = {"rule": "model beats the prior route-hour mean occupancy baseline on test MAE (SRS step 24)",
+                            "baseline_test_mae": base["mae"], "selected_test_mae": s["test"]["mae"],
+                            "improvement_pct": round((base["mae"] - s["test"]["mae"]) / base["mae"] * 100, 2),
+                            "met": s["test"]["mae"] < base["mae"]}
     return result
 
 
@@ -180,19 +209,24 @@ def evaluate_clustering(trips: pd.DataFrame) -> dict:
 def print_summary(report: dict) -> None:
     for c in report["classifiers"]:
         for split, s in c["splits"].items():
-            ok = all(v["match"] for v in s["vs_recorded"].values())
+            ok = all(v["match"] for v in s.get("vs_recorded", {}).values())
+            recorded_note = f"recorded={'MATCH' if ok else 'DIFFERS'}" if "vs_recorded" in s else "(not recorded)"
             print(f"{c['task']:16s} {c['algorithm']:8s} {split:10s} rows={s['rows']:>8,d} "
-                  f"acc={s['accuracy']:.4f} macroF1={s['macro_f1']:.4f}  recorded={'MATCH' if ok else 'DIFFERS'}")
+                  f"acc={s['accuracy']:.4f} macroF1={s['macro_f1']:.4f}  {recorded_note}")
+        g = c["train_vs_test"]
+        print(f"{'':16s} train->test gap: accuracy {g['accuracy']['gap']:+.4f}, macro F1 {g['macro_f1']['gap']:+.4f}")
         print(f"{'':16s} SRS target: accuracy met={c['srs_target']['accuracy_met']}, macro F1 met={c['srs_target']['macro_f1_met']}")
     for name, a in report["demand"]["algorithms"].items():
-        t = a["test"]
+        t, g = a["test"], a["train_vs_test"]["r2"]
         ok = all(v["match"] for s in ("validation", "test") for v in a[s]["vs_recorded"].values())
-        print(f"daily_boardings  {name:14s} test MAE={t['mae']:8.1f} RMSE={t['rmse']:8.1f} R2={t['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
+        print(f"daily_boardings  {name:14s} train R2={g['train']:.3f} test MAE={t['mae']:8.1f} RMSE={t['rmse']:8.1f} "
+              f"R2={t['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
     print(f"{'':16s} SRS target: {report['demand']['srs_target']}")
     occupancy = report["occupancy_forecast"]
-    test = occupancy["splits"]["test"]
-    ok = all(v["match"] for s in occupancy["splits"].values() for v in s["vs_recorded"].values())
-    print(f"occupancy_forecast {occupancy['algorithm']:8s} test MAE={test['mae']:.4f} RMSE={test['rmse']:.4f} R2={test['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
+    test, g = occupancy["splits"]["test"], occupancy["train_vs_test"]["r2"]
+    ok = all(v["match"] for s in occupancy["splits"].values() for v in s.get("vs_recorded", {}).values())
+    print(f"occupancy_forecast {occupancy['algorithm']:8s} train R2={g['train']:.3f} test MAE={test['mae']:.4f} "
+          f"RMSE={test['rmse']:.4f} R2={test['r2']:.3f}  recorded={'MATCH' if ok else 'DIFFERS'}")
     c = report["clustering"]["agglomerative_k5"]
     print(f"route_clustering agglomerative_k5 silhouette={c['silhouette']} (recorded {c['recorded_silhouette']}), "
           f"labels identical={c['labels_identical_to_saved_model']}")
@@ -204,16 +238,17 @@ def main() -> int:
         "purpose": "Re-score the shared Phase 7 model files on this machine; no training.",
         "split_dates": p7.DATES,
         "tolerance": TOLERANCE,
-        "classifiers": [evaluate_classifier(trips, "crowding_flag", "random_forest"), evaluate_classifier(trips, "delay_severity")],
+        "classifiers": [evaluate_classifier(trips, t, served_algorithm(t)) for t in ("crowding_flag", "delay_severity")],
         "demand": evaluate_demand(),
         "occupancy_forecast": evaluate_occupancy(trips),
         "clustering": evaluate_clustering(trips),
     }
-    checks = [v["match"] for c in report["classifiers"] for s in c["splits"].values() for v in s["vs_recorded"].values()]
+    checks = [v["match"] for c in report["classifiers"] for s in c["splits"].values()
+              for v in s.get("vs_recorded", {}).values()]
     checks += [v["match"] for a in report["demand"]["algorithms"].values()
                for s in ("validation", "test") for v in a[s]["vs_recorded"].values()]
     checks += [v["match"] for s in report["occupancy_forecast"]["splits"].values()
-               for v in s["vs_recorded"].values()]
+               for v in s.get("vs_recorded", {}).values()]
     checks.append(report["clustering"]["agglomerative_k5"]["labels_identical_to_saved_model"])
     report["result"] = "PASS" if all(checks) else "DIFFERS"
     REPORT_PATH.write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")

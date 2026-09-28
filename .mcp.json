@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ui-color-palette": {
+      "type": "http",
+      "url": "https://mcp-uicp.yelbolt.workers.dev/mcp"
+    }
+  }
+}

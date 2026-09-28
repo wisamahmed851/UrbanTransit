@@ -1,0 +1,123 @@
+// UrbanTransit IQ — Power BI measures
+// Paste each one into Power BI: Model view -> right-click a table (use "Measures"
+// table below, or any fact table) -> New measure -> paste the DAX -> Enter.
+// All numbers here come straight from MySQL tables loaded via Get Data; none are
+// typed in by hand (SRS 1.8: no manually-created dashboard values).
+
+// ---------- Create an empty "Measures" table first (Home -> Enter Data -> no columns) ----------
+// Put every measure below into that table so they aren't scattered across fact tables.
+
+// ===== Executive Dashboard (Step 50) =====
+
+Total Passengers =
+SUM ( route_daily_boardings[boardings] )
+
+Total Trips =
+SUM ( eda_route_delay[trips] )
+
+Avg Occupancy % =
+AVERAGE ( overcrowding_summary[avg_occupancy] )
+
+Avg Delay (min) =
+AVERAGE ( eda_route_delay[avg_delay_min] )
+
+On-Time % =
+AVERAGE ( eda_route_delay[punctuality_rate] )
+
+High-Demand Routes =
+CALCULATE (
+    DISTINCTCOUNT ( route_performance[route_id] ),
+    route_performance[demand_score] >= 0.75
+)
+
+Overcrowded Routes =
+CALCULATE (
+    DISTINCTCOUNT ( overcrowding_summary[route_id] ),
+    overcrowding_summary[overload_share] >= 0.2
+)
+
+Underutilized Routes =
+DISTINCTCOUNT ( underutilized_services[route_id] )
+
+Critical Alerts =
+COUNTROWS ( anomalies )
+// anomalies has no severity column; every row is one detected anomaly
+// (anomaly_type / entity_type / observed_value vs expected_value).
+// Use anomaly_summary (pre-aggregated counts by anomaly_type/entity_type) for a
+// breakdown visual instead of a plain count if you want a table there too.
+
+// ===== Route Performance Dashboard (Step 52) =====
+
+Avg Reliability Score =
+AVERAGE ( route_performance[reliability_score] )
+
+Avg Composite Score =
+AVERAGE ( route_performance[composite_score] )
+// route_performance has BOTH a composite_score (overall rank) and per-dimension
+// scores (demand_score, occupancy_score, punctuality_score, delay_frequency_score,
+// travel_time_score, reliability_score, load_score, underutilization_score,
+// overcrowding_score) — use the per-dimension ones for the stacked-bar breakdown.
+
+Overcrowded Route Count =
+CALCULATE (
+    DISTINCTCOUNT ( route_performance[route_id] ),
+    route_performance[overcrowded_flag] = TRUE
+)
+
+// ===== Delay Dashboard (Step 53) =====
+
+Avg Excess Delay (min) =
+AVERAGE ( delay_by_stop[avg_record_delay_min] )
+
+Late Record Rate % =
+AVERAGE ( delay_by_stop[late_record_rate] )
+
+Bottleneck Stop Count =
+CALCULATE (
+    DISTINCTCOUNT ( delay_by_stop[stop_id] ),
+    delay_by_stop[is_bottleneck] = TRUE
+)
+
+// ===== Occupancy Dashboard (Step 54) =====
+
+Max Occupancy % =
+MAX ( overcrowding_summary[max_occupancy] )
+
+Overload Share % =
+AVERAGE ( overcrowding_summary[overload_share] )
+
+Critical Trips =
+SUM ( overcrowding_summary[critical_trips] )
+
+// ===== Forecast Dashboard (Step 55) =====
+
+Forecast Error =
+AVERAGE ( pipeline_comparison[absolute_difference] )
+// Filter this visual to Filters pane: pipeline_comparison[task] = "demand_forecast"
+// (check the exact task label in reports/comparison/task_c_demand_comparison.csv)
+
+// ===== Dual-Pipeline Comparison Dashboard (Step 43-44) =====
+
+Agreement % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( pipeline_comparison ), pipeline_comparison[match] = TRUE ),
+    COUNTROWS ( pipeline_comparison )
+)
+
+Disagreement Count =
+CALCULATE (
+    COUNTROWS ( pipeline_comparison ),
+    pipeline_comparison[match] = FALSE
+)
+
+// ===== Notes =====
+// - Column names above are taken from database/migrations/versions/*.py; double check
+//   against documentation/database_schema.md once the tables are loaded, since a few
+//   fact tables share column names (id, route_id) across different underlying tables.
+// - Exclude invalid Spark models (delay_severity models whose inputs include
+//   occupancy_pct — label leakage, known only after the trip). model_metrics.validity_flag
+//   is a text column, not boolean: "INVALID" marks the bad rows, NULL/other = fine.
+//   On the Spark-vs-Python page, add a filter: model_metrics[validity_flag] <> "INVALID"
+//   (or use "is blank or not INVALID" in the Filters pane's Advanced filtering).
+// - "High-Demand Routes" uses an arbitrary demand_score >= 0.75 cutoff — adjust once
+//   you've looked at the actual score distribution (Analyze in Power BI or a histogram).
