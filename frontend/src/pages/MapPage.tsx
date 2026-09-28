@@ -12,6 +12,7 @@ import { useBasemap } from '../components/map/useBasemap'
 import { RouteBadge, ErrorNotice, Loading } from '../components/ui'
 import { label, num } from '../lib/format'
 import { useApi } from '../lib/useApi'
+import { HeroBand } from '../components/TransitBackdrop'
 
 interface ReplayWindow { start: string | null; end: string | null; days: { date: string; pings: number }[]; vehicles: number; source: string }
 interface VehiclesResponse { at: string; active: number; vehicles: Vehicle[]; source: string }
@@ -99,10 +100,12 @@ export function MapPage() {
 
  return (
   <div className="page map-page">
-   <header className="page-head">
-    <h1>Network map</h1>
-    <p>All 118 routes and 756 stops. Bus positions replay the recorded 7-day GPS sample; there is no real-time feed.</p>
-   </header>
+   <HeroBand variant="map" compact>
+    <header className="page-head">
+     <h1>Network map</h1>
+     <p>All 118 routes and 756 stops. Bus positions replay the recorded 7-day GPS sample; there is no real-time feed.</p>
+    </header>
+   </HeroBand>
    {(geometry.error || replay.error) && <ErrorNotice error={(geometry.error ?? replay.error)!} />}
 
    {!basemap ? <Loading kind="block" what="map" /> : (

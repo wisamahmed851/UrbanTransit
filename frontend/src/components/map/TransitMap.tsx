@@ -10,10 +10,15 @@
  * parsed; tiles and fonts may still be loading) and fed with `setData` / `setFilter`.
  * The declarative react-map-gl <Source>/<Layer> children wait for the whole basemap to load,
  * which on a slow network or CPU left the buses and the overview's route lines empty (CMD-022).
+ *
+ * Reveal (CMD-029): the first time the network arrives, the layers fade in in sequence (routes,
+ * feeders, BRT glow, stops, hubs, buses) with MapLibre's own paint transitions, so no
+ * per-frame JavaScript runs. Skipped with reduced motion; not repeated on theme or filter changes.
  */
 
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { ExpressionSpecification, FilterSpecification, GeoJSONSource, LayerSpecification, Map as MlMap } from 'maplibre-gl'
+import { useReducedMotion } from 'motion/react'
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import Map, { type MapLayerMouseEvent, type MapRef } from 'react-map-gl/maplibre'
 import type { FeatureCollection, LineString, Point } from 'geojson'
@@ -90,10 +95,39 @@ const layersFor = (theme: MapTheme): LayerSpecification[] => {
  ]
 }
 
-/** Add our sources and layers once the style definition is in (idempotent). */
-function install(map: MlMap, theme: MapTheme) {
+type Paint = Parameters<MlMap['setPaintProperty']>[1]
+
+/** Opacity paint properties of each layer, in reveal order, with their shown value and delay (ms). */
+const REVEAL: { layer: string; props: string[]; value: number; delay: number }[] = [
+ { layer: 'routes-casing', props: ['line-opacity'], value: 0.8, delay: 0 },
+ { layer: 'routes', props: ['line-opacity'], value: 0.85, delay: 0 },
+ { layer: 'routes-feeder', props: ['line-opacity'], value: 0.9, delay: 250 },
+ { layer: 'routes-glow', props: ['line-opacity'], value: 0.28, delay: 400 },
+ { layer: 'stops', props: ['circle-opacity', 'circle-stroke-opacity'], value: 1, delay: 550 },
+ { layer: 'stops-hub', props: ['circle-opacity', 'circle-stroke-opacity'], value: 1, delay: 750 },
+ { layer: 'vehicles', props: ['circle-opacity', 'circle-stroke-opacity'], value: 1, delay: 950 },
+]
+
+/** Add our sources and layers once the style definition is in (idempotent). `hidden` starts
+ * them transparent, ready for the reveal. */
+function install(map: MlMap, theme: MapTheme, hidden: boolean) {
  for (const id of ['routes', 'stops', 'vehicles']) if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: EMPTY })
- for (const layer of layersFor(theme)) if (!map.getLayer(layer.id)) map.addLayer(layer)
+ for (const layer of layersFor(theme)) {
+  if (map.getLayer(layer.id)) continue
+  map.addLayer(layer)
+  if (hidden) for (const r of REVEAL.filter((x) => x.layer === layer.id)) for (const prop of r.props) map.setPaintProperty(layer.id, prop as Paint, 0)
+ }
+}
+
+/** Fade every layer to its shown opacity, staggered, using MapLibre paint transitions. */
+function reveal(map: MlMap, routeSelected: boolean) {
+ for (const r of REVEAL) {
+  for (const prop of r.props) {
+   // `<prop>-transition` is accepted by MapLibre at runtime but missing from its types.
+   map.setPaintProperty(r.layer, `${prop}-transition` as Paint, { duration: 700, delay: r.delay })
+   map.setPaintProperty(r.layer, prop as Paint, r.layer === 'routes' && routeSelected ? 1 : r.value)
+  }
+ }
 }
 
 export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
@@ -104,13 +138,15 @@ export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
  const [readyTheme, setReadyTheme] = useState<MapTheme | null>(null)
  const [cursor, setCursor] = useState('')
  const ready = readyTheme === basemap.theme
+ const reduce = useReducedMotion()
+ const revealed = useRef(false)   // the network has faded in once (not repeated on theme change)
 
  // Install our layers as soon as the style definition is parsed ('styledata' fires then,
  // long before tiles and fonts finish). install() is idempotent, so repeat events are harmless.
  const onStyleData = (e: { target: MlMap }) => {
   const map = e.target
   if (!(map as unknown as { style?: { _loaded?: boolean } }).style?._loaded) return
-  install(map, basemap.theme)
+  install(map, basemap.theme, !revealed.current && !reduce)
   if (readyTheme !== basemap.theme) setReadyTheme(basemap.theme)
  }
 
@@ -120,6 +156,11 @@ export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
   if (!ready || !map) return
   ;(map.getSource('routes') as GeoJSONSource).setData(geometry?.routes ?? EMPTY)
   ;(map.getSource('stops') as GeoJSONSource).setData(showStops && geometry ? geometry.stops : EMPTY)
+  if (geometry && !revealed.current) {
+   revealed.current = true
+   if (!reduce) requestAnimationFrame(() => reveal(map, !!route))
+  }
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [ready, geometry, showStops])
 
  const vehicleGeo = useMemo<FeatureCollection<Point>>(() => ({
@@ -145,7 +186,8 @@ export const TransitMap = forwardRef<MapRef, Props>(function TransitMap(
   map.setFilter('routes', filt(['all', lines, ['!=', ['get', 'route_type'], 'feeder']]))
   map.setFilter('routes-feeder', filt(['all', lines, ['==', ['get', 'route_type'], 'feeder']]))
   map.setFilter('vehicles', filt(['all', ['in', ['coalesce', ['get', 'route_type'], 'local'], ['literal', typeList]], byRoute]))
-  map.setPaintProperty('routes', 'line-opacity', route ? 1 : 0.85)
+  // Before the reveal the lines are still transparent; the reveal applies this value itself.
+  if (revealed.current) map.setPaintProperty('routes', 'line-opacity', route ? 1 : 0.85)
  }, [ready, types, route])
 
  const pick = (e: MapLayerMouseEvent) => {

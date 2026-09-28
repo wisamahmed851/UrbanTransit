@@ -14,6 +14,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import {
  Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts'
+import { usePageLoad } from '../lib/pageLoadContext'
 import { DataTable, type Column } from './DataTable'
 import { Segmented } from './ui'
 
@@ -45,7 +46,13 @@ const DASHED_SLOT = 2
 /** Shared transition props: animate data updates unless the viewer prefers reduced motion. */
 function useTransition() {
  const reduce = useReducedMotion()
- return { isAnimationActive: !reduce, animationDuration: 450, animationEasing: 'ease-out' as const }
+ return { isAnimationActive: !reduce, animationDuration: 650, animationEasing: 'ease-out' as const }
+}
+
+/** Charts mount while the page is still behind the loader, where their draw-in would be
+ * missed; keying on `revealed` remounts them once, so bars grow and lines draw in view. */
+function useRevealKey() {
+ return usePageLoad().revealed ? 'shown' : 'hidden'
 }
 
 /** Chart with a Chart / Table switch; the table is the accessible twin. */
@@ -99,10 +106,11 @@ export function HBarChart({ data, format, name, height }: {
 }) {
  const p = usePalette()
  const motion = useTransition()
+ const revealKey = useRevealKey()
  const h = height ?? Math.max(120, data.length * 30 + 40)
  const byLabel = new Map(data.map((d) => [d.label, d.value]))
  return (
-  <ResponsiveContainer width="100%" height={h}>
+  <ResponsiveContainer key={revealKey} width="100%" height={h}>
    <BarChart data={data} layout="vertical" margin={{ top: 4, right: 8, bottom: 4, left: 8 }} barCategoryGap={6}>
     <CartesianGrid horizontal={false} stroke={p['--hairline']} />
     <XAxis type="number" tickFormatter={format} stroke={p['--axis']} tick={{ fill: p['--ink-muted'], fontSize: 12 }} />
@@ -123,8 +131,9 @@ export function ColumnChart({ data, format, name, xFormat, height = 240 }: {
 }) {
  const p = usePalette()
  const motion = useTransition()
+ const revealKey = useRevealKey()
  return (
-  <ResponsiveContainer width="100%" height={height}>
+  <ResponsiveContainer key={revealKey} width="100%" height={height}>
    <BarChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 8 }} barCategoryGap={2}>
     <CartesianGrid vertical={false} stroke={p['--hairline']} />
     <XAxis dataKey="label" tickFormatter={xFormat} stroke={p['--axis']} tick={{ fill: p['--ink-muted'], fontSize: 12 }} />
@@ -144,8 +153,9 @@ export function LinesChart({ data, xKey, series, format, xFormat, height = 260 }
 }) {
  const p = usePalette()
  const motion = useTransition()
+ const revealKey = useRevealKey()
  return (
-  <ResponsiveContainer width="100%" height={height}>
+  <ResponsiveContainer key={revealKey} width="100%" height={height}>
    <LineChart data={data} margin={{ top: 8, right: 16, bottom: 4, left: 8 }}>
     <CartesianGrid vertical={false} stroke={p['--hairline']} />
     <XAxis dataKey={xKey} tickFormatter={xFormat} stroke={p['--axis']} tick={{ fill: p['--ink-muted'], fontSize: 12 }} minTickGap={24} />

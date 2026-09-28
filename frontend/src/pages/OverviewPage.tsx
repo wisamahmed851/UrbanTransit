@@ -10,6 +10,7 @@ import { useBasemap } from '../components/map/useBasemap'
 import { Empty, ErrorNotice, Loading, PageHead, Panel, RouteBadge, RouteClass, Stats, Status } from '../components/ui'
 import { label, num, ROUTE_CLASSES } from '../lib/format'
 import { useApi, useRows } from '../lib/useApi'
+import { HeroBand } from '../components/TransitBackdrop'
 
 const ALL_TYPES = new Set(ROUTE_TYPES.map((t) => t.type))
 const whole = (n: number) => num(Math.round(n))
@@ -80,9 +81,11 @@ export function OverviewPage() {
 
  return (
   <div className="page">
-   <PageHead title="Network overview">
-    A year of service, 1 Sep 2025 to 31 Aug 2026, scored from normal operating days. Special events and holidays are left out of route scores.
-   </PageHead>
+   <HeroBand variant="overview">
+    <PageHead title="Network overview">
+     A year of service, 1 Sep 2025 to 31 Aug 2026, scored from normal operating days. Special events and holidays are left out of route scores.
+    </PageHead>
+   </HeroBand>
 
    {error && <ErrorNotice error={error} />}
 
