@@ -35,6 +35,7 @@ SCENARIOS = {
     "shift_trip_time": "Move the departure by `minutes` (-180..180); the trip is taken to leave at half past the hour",
     "remove_low_demand_trip": "Cancel one trip per hour; its riders move to the remaining trips",
     "increase_demand": "Demand grows by `percent` (-90..300)",
+    "add_stop": "A new stop adds `dwell_seconds` (0..300) of dwell per trip and attracts `percent` (0..50) more riders",
 }
 
 
@@ -62,10 +63,13 @@ def occupancy_category(ratio: float) -> str:
     return "Critical"
 
 
-def model_risks(ctx, day: date, hour: int, headway: float) -> tuple[float | None, float | None]:
-    """Both classifiers on the cell's typical trip, with the scenario's headway and hour."""
+def model_risks(ctx, day: date, hour: int, headway: float, extra_runtime_min: float = 0.0) -> tuple[float | None, float | None]:
+    """Both classifiers on the cell's typical trip, with the scenario's headway, hour and any extra run time."""
     crowd_row = {**ms.feature_row("crowding_flag", ctx, day), "hour": hour, "headway_min": headway}
     delay_row = {**ms.feature_row("delay_severity", ctx, day), "hour": hour, "headway_min": headway}
+    for col in ("planned_runtime_min", "scheduled_runtime_min"):
+        if delay_row.get(col) is not None:
+            delay_row[col] = delay_row[col] + extra_runtime_min
     crowd = ms.load_classifier("crowding_flag")
     delay = ms.load_classifier("delay_severity")
     p_crowd = float(ms.predict_proba("crowding_flag", [crowd_row])[0][crowd["labels"].index("1.0")])
@@ -111,6 +115,7 @@ def simulate(scenario: str, route_id: str, direction: int, day: date, hour: int,
     before = state(ctx, day, hour, trips, capacity, demand, model_risks(ctx, day, hour, ctx.headway_min))
 
     new_hour, new_trips, new_capacity, new_demand, notes = hour, trips, capacity, demand, []
+    extra_runtime = 0.0
     if scenario == "increase_frequency":
         new_trips = trips + _number(params, "trips", 1, 1, 30)
     elif scenario == "add_vehicle":
@@ -140,13 +145,19 @@ def simulate(scenario: str, route_id: str, direction: int, day: date, hour: int,
             notes.append(f"The trip now leaves in the {new_hour:02d}:00 hour and meets that hour's demand "
                          f"({target.mean_max_load or 0:.0f} peak-load passengers per trip observed).")
             new_demand = demand
+    elif scenario == "add_stop":
+        extra_runtime = _number(params, "dwell_seconds", 30, 0, 300) / 60
+        new_demand = demand * (1 + _number(params, "percent", 5, 0, 50) / 100)
+        notes.append(f"The extra stop lengthens each trip by {extra_runtime * 60:.0f} s; the delay model sees the longer planned run time. "
+                     "Frequency is kept, so a much longer run may need an extra vehicle to hold the headway.")
+        notes.append("The extra riders are an assumption you set, not something the data can show for a stop with no history.")
     elif scenario == "increase_demand":
         new_demand = demand * (1 + _number(params, "percent", 10, -90, 300) / 100)
         notes.append("The models take no demand input, so crowding and delay risk are unchanged; occupancy shows the effect.")
 
     # A shifted trip takes the new hour's own history (the delay model uses route-hour inputs).
     after_ctx = ms.find_context(route_id, direction, day, new_hour) if new_hour != hour else ctx
-    risks = model_risks(after_ctx, day, new_hour, 60.0 / new_trips)
+    risks = model_risks(after_ctx, day, new_hour, 60.0 / new_trips, extra_runtime)
     after = state(ctx, day, new_hour, new_trips, new_capacity, new_demand, risks)
     if (after.occupancy - before.occupancy) * (after.crowding_probability - before.crowding_probability) < 0:
         notes.append("The crowding model and the occupancy estimate move in opposite directions. The model learned "

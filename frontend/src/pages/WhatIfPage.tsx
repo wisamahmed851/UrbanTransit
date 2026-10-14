@@ -8,14 +8,18 @@ import { DEFAULT_TRIP, type TripInput } from '../lib/trip'
 import { ErrorNotice, PageHead, Panel } from '../components/ui'
 import { num, pct } from '../lib/format'
 
-/** SRS steps 48-49. Each scenario has at most one number to set. */
-const SCENARIOS: { value: string; label: string; param?: { name: string; label: string; min: number; max: number; step: number; initial: number } }[] = [
+type Param = { name: string; label: string; min: number; max: number; step: number; initial: number }
+
+/** SRS steps 48-49. Each scenario has one or two numbers to set. */
+const SCENARIOS: { value: string; label: string; param?: Param; extra?: Param }[] = [
  { value: 'increase_frequency', label: 'Increase frequency', param: { name: 'trips', label: 'Extra trips per hour', min: 1, max: 30, step: 1, initial: 1 } },
  { value: 'decrease_frequency', label: 'Decrease frequency', param: { name: 'trips', label: 'Fewer trips per hour', min: 1, max: 30, step: 1, initial: 1 } },
  { value: 'add_vehicle', label: 'Add a vehicle' },
  { value: 'change_vehicle_capacity', label: 'Change vehicle capacity', param: { name: 'capacity', label: 'Places per vehicle', min: 10, max: 300, step: 5, initial: 120 } },
  { value: 'shift_trip_time', label: 'Shift trip start time', param: { name: 'minutes', label: 'Minutes (negative = earlier)', min: -180, max: 180, step: 15, initial: 60 } },
  { value: 'remove_low_demand_trip', label: 'Remove a low-demand trip' },
+ { value: 'add_stop', label: 'Add a new stop', param: { name: 'dwell_seconds', label: 'Extra dwell per trip (seconds)', min: 0, max: 300, step: 10, initial: 30 },
+  extra: { name: 'percent', label: 'Extra riders it attracts (%)', min: 0, max: 50, step: 1, initial: 5 } },
  { value: 'increase_demand', label: 'Increase predicted demand', param: { name: 'percent', label: 'Demand change (%)', min: -90, max: 300, step: 5, initial: 20 } },
 ]
 
@@ -40,20 +44,23 @@ export function WhatIfPage() {
  const [scenario, setScenario] = useState(SCENARIOS[0].value)
  const spec = SCENARIOS.find((s) => s.value === scenario)!
  const [value, setValue] = useState<number>(spec.param?.initial ?? 0)
+ const [extra, setExtra] = useState<number>(0)
  const [result, setResult] = useState<WhatIfResponse | null>(null)
  const [error, setError] = useState<ApiError | null>(null)
  const [busy, setBusy] = useState(false)
 
  const pick = (v: string) => {
   setScenario(v)
-  setValue(SCENARIOS.find((s) => s.value === v)!.param?.initial ?? 0)
+  const next = SCENARIOS.find((s) => s.value === v)!
+  setValue(next.param?.initial ?? 0)
+  setExtra(next.extra?.initial ?? 0)
   setResult(null)
  }
  const run = async (e: React.FormEvent) => {
   e.preventDefault()
   setBusy(true); setError(null)
   try {
-   const params = spec.param ? { [spec.param.name]: value } : {}
+   const params = { ...(spec.param ? { [spec.param.name]: value } : {}), ...(spec.extra ? { [spec.extra.name]: extra } : {}) }
    setResult(await api<WhatIfResponse>('/whatif', { method: 'POST', body: JSON.stringify({ ...trip, scenario, params }) }))
   } catch (err) {
    setResult(null); setError(err as ApiError)
@@ -81,10 +88,15 @@ export function WhatIfPage() {
         onChange={(e) => setValue(Number(e.target.value))} />
       </label>
      )}
+     {spec.extra && (
+      <label className="field">{spec.extra.label}
+       <input type="number" value={extra} min={spec.extra.min} max={spec.extra.max} step={spec.extra.step}
+        onChange={(e) => setExtra(Number(e.target.value))} />
+      </label>
+     )}
      <TripFields value={trip} onChange={setTrip} />
      <button className="btn" type="submit" disabled={busy}>{busy ? 'Simulating…' : 'Simulate'}</button>
     </form>
-    <p className="panel-note">Adding a new stop is not simulated: no model or measure here can estimate a stop that has no history.</p>
    </Panel>
 
    {error && <ErrorNotice error={error} />}

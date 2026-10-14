@@ -42,6 +42,15 @@ def load_contract(table: str) -> dict[str, dict]:
 CONTRACTS = {t: load_contract(t) for t in ("routes", "stops", "vehicles")}
 
 
+def load_foreign_keys(table: str) -> dict[str, str]:
+    """{column: referenced table} from the schema's foreign_keys (single-column keys only)."""
+    spec = json.loads((SCHEMA_DIR / f"{table}.json").read_text(encoding="utf-8"))
+    return {fk["columns"][0]: fk["references"]["table"] for fk in spec.get("foreign_keys", [])}
+
+
+FOREIGN_KEYS = {t: load_foreign_keys(t) for t in CONTRACTS}
+
+
 def _coerce(column: str, rule: dict, value, max_length: int | None):
     kind = rule["type"]
     if kind == "string":
@@ -76,6 +85,7 @@ def validate(table: str, model, body: dict, partial: bool) -> dict:
     """Return clean column values from a JSON body; 400 with every problem listed otherwise.
 
     `partial=True` (PATCH) only validates the keys present; the primary key cannot change.
+    On create the primary key is optional: the API generates it when absent.
     """
     contract = CONTRACTS[table]
     pk = model.__mapper__.primary_key[0].name
@@ -89,7 +99,7 @@ def validate(table: str, model, body: dict, partial: bool) -> dict:
     clean = {}
     for column, rule in contract.items():
         if column not in body:
-            if not partial and not rule["nullable"]:
+            if not partial and not rule["nullable"] and column != pk:  # the server generates the id
                 errors[column] = "is required"
             continue
         if partial and column == pk:

@@ -15,6 +15,9 @@ FILES = sorted(METRICS_DIR.glob("*.json"))
 PY_METRICS_DIR = METRICS_DIR.parent.parent / "python" / "metrics"
 PY_FILES = sorted(PY_METRICS_DIR.glob("*.json"))
 
+# These tests read the real Phase 6 metrics files (models/spark/metrics, delivered with models.zip); without them there is nothing to test.
+pytestmark = pytest.mark.skipif(not FILES, reason="models/spark/metrics/*.json not present on this machine")
+
 
 def rows_of(name: str) -> list[dict]:
     return normalise(name, json.loads((METRICS_DIR / name).read_text(encoding="utf-8")))

@@ -3,8 +3,9 @@
 Reference data (routes / stops / vehicles), MySQL working copy of the Phase 3 clean tables:
 
     GET    /api/admin/<entity>              list (paged; ?q= searches id and name)   reference:read
+    GET    /api/admin/<entity>/_meta        picker data: enum values, foreign-key targets  reference:read
     GET    /api/admin/<entity>/<id>         one row (+ its analytics summary)        reference:read
-    POST   /api/admin/<entity>              create                                   reference:write
+    POST   /api/admin/<entity>              create (id generated if omitted)                                 reference:write
     PATCH  /api/admin/<entity>/<id>         partial update                           reference:write
     DELETE /api/admin/<entity>/<id>         delete (409 if still referenced)         reference:write
 
@@ -29,7 +30,7 @@ from src.models.reference import REFERENCE_MODELS, Route, Stop
 from src.security import permission_required
 from src.services import audit
 from src.services.analytics_query import to_json_value
-from src.services.reference_validation import validate
+from src.services.reference_validation import CONTRACTS, FOREIGN_KEYS, validate
 from src.services.requests import int_arg, json_body
 
 bp = Blueprint("admin", __name__, url_prefix="/api/admin")
@@ -40,6 +41,16 @@ SUMMARIES = {
     "routes": [("route_performance", "route_id"), ("route_reliability", "route_id")],
     "stops": [("stop_performance", "stop_id")],
 }
+
+
+ID_PREFIX = {"routes": "R", "stops": "S", "vehicles": "V"}
+
+
+def _next_id(entity: str, model) -> str:
+    """Next free id in the table's own format (R119, S0757, V0776): highest number + 1."""
+    last = db.session.execute(select(func.max(model.__mapper__.primary_key[0]))).scalar()
+    digits = last[len(ID_PREFIX[entity]):] if last else "0"
+    return f"{ID_PREFIX[entity]}{int(digits) + 1:0{len(digits)}d}"
 
 
 def _model(entity: str):
@@ -89,6 +100,15 @@ def list_entities(entity: str):
     return jsonify(entity=entity, total=total, limit=limit, offset=offset, rows=[r.to_dict() for r in rows])
 
 
+@bp.get("/<entity>/_meta")
+@permission_required("reference:read")
+def entity_meta(entity: str):
+    """What the form needs to render pickers: allowed values per column and foreign-key targets."""
+    _model(entity)
+    enums = {c: r["enum"] for c, r in CONTRACTS[entity].items() if r["enum"]}
+    return jsonify(enums=enums, foreign_keys=FOREIGN_KEYS[entity])
+
+
 @bp.get("/<entity>/<key>")
 @permission_required("reference:read")
 def get_entity(entity: str, key: str):
@@ -102,6 +122,7 @@ def create_entity(entity: str):
     model = _model(entity)
     values = validate(entity, model, json_body(), partial=False)
     pk = model.__mapper__.primary_key[0].name
+    values.setdefault(pk, _next_id(entity, model))
     if db.session.get(model, values[pk]) is not None:
         raise ApiError(409, "conflict", f"{entity}/{values[pk]} already exists.")
     if model is Route:

@@ -28,6 +28,7 @@ const PredictionsPage = lazy(() => import('./pages/PredictionsPage').then((m) =>
 const RecommendationsPage = lazy(() => import('./pages/RecommendationsPage').then((m) => ({ default: m.RecommendationsPage })))
 const RouteDetailPage = lazy(() => import('./pages/RouteDetailPage').then((m) => ({ default: m.RouteDetailPage })))
 const RoutesPage = lazy(() => import('./pages/RoutesPage').then((m) => ({ default: m.RoutesPage })))
+const ServicePage = lazy(() => import('./pages/ServicePage').then((m) => ({ default: m.ServicePage })))
 const StopsPage = lazy(() => import('./pages/StopsPage').then((m) => ({ default: m.StopsPage })))
 const WhatIfPage = lazy(() => import('./pages/WhatIfPage').then((m) => ({ default: m.WhatIfPage })))
 
@@ -58,6 +59,7 @@ export function App() {
        <Route path="routes/:routeId" element={<RouteDetailPage />} />
        <Route path="delays" element={<DelaysPage />} />
        <Route path="crowding" element={<CrowdingPage />} />
+       <Route path="service" element={<ServicePage />} />
        <Route path="stops" element={<StopsPage />} />
        <Route path="demand" element={<DemandPage />} />
        <Route path="passengers" element={<PassengersPage />} />

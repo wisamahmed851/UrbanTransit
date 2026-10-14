@@ -223,6 +223,14 @@ def test_whatif_capacity_and_demand(client, auth, served):
 
 
 @needs_models
+def test_whatif_add_stop(client, auth, served):
+    body = whatif(client, auth, "add_stop", {"dwell_seconds": 60, "percent": 10}).get_json()
+    assert body["result"]["demand_per_hour"] == pytest.approx(body["baseline"]["demand_per_hour"] * 1.1, abs=0.2)
+    assert body["estimate"] is True and any("60 s" in n for n in body["notes"])
+    assert whatif(client, auth, "add_stop", {"percent": 99}).status_code == 400
+
+
+@needs_models
 def test_whatif_shift_moves_to_next_hour(client, auth, served):
     body = whatif(client, auth, "shift_trip_time", {"minutes": 45}).get_json()
     assert body["result"]["hour"] == 9

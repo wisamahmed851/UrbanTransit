@@ -24,6 +24,7 @@ const LINES: { title: string; kind?: 'sample'; stations: Station[] }[] = [
    { to: '/delays', label: 'Delays' },
    { to: '/crowding', label: 'Crowding and capacity' },
    { to: '/stops', label: 'Stops' },
+   { to: '/service', label: 'Service quality' },
    { to: '/demand', label: 'Demand and journeys' },
    { to: '/passengers', label: 'Passengers' },
   ],

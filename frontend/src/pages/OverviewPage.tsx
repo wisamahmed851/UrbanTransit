@@ -1,4 +1,4 @@
-import { ChartLineUp, Crown, Path, Siren, UsersThree } from '@phosphor-icons/react'
+import { ChartLineUp, Clock, Crown, Path, Siren, Timer, UsersThree, Bus, Armchair } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import type { Row } from '../api/client'
 import type { RecommendationsResponse } from '../api/types'
@@ -14,6 +14,7 @@ import { HeroBand } from '../components/TransitBackdrop'
 
 const ALL_TYPES = new Set(ROUTE_TYPES.map((t) => t.type))
 const whole = (n: number) => num(Math.round(n))
+const compact = (n: number) => new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 }).format(n)
 
 /** Small, non-interactive view of the network that links to the full map. */
 function NetworkPreview() {
@@ -56,6 +57,8 @@ export function OverviewPage() {
  const hours = useRows('eda_peak_hours', { limit: 1000 })
  const events = useRows('special_event_dates', { limit: 20, sort: '-routes_spiking' })
  const anomalies = useRows('anomaly_summary', { limit: 50 })
+ const demand = useRows('eda_route_demand', { limit: 1000 })
+ const delay = useRows('eda_route_delay', { limit: 1000 })
 
  const error = perf.error ?? days.error ?? hours.error
  const routes = perf.data?.rows ?? []
@@ -68,6 +71,13 @@ export function OverviewPage() {
  const dayRows = days.data?.rows ?? []
  const avgDaily = dayRows.length ? dayRows.reduce((s, r) => s + Number(r.est_system_boardings ?? 0), 0) / dayRows.length : null
  const signals = (anomalies.data?.rows ?? []).reduce((s, r) => s + Number(r.signals ?? 0), 0)
+
+ // SRS step 50 network KPIs: totals are sums over routes; delay and on-time are weighted by evaluated trips.
+ const sum = (rows: Row[], k: string) => rows.reduce((t, r) => t + Number(r[k] ?? 0), 0)
+ const delayRows = delay.data?.rows ?? []
+ const evaluated = sum(delayRows, 'evaluated_trips')
+ const weighted = (k: string) => (evaluated ? delayRows.reduce((t, r) => t + Number(r[k] ?? 0) * Number(r.evaluated_trips ?? 0), 0) / evaluated : null)
+ const occupancy = eligible.length ? sum(eligible, 'med_occupancy') / eligible.length : null
 
  // demand by hour: one row per hour, one column per day class
  const hourly = Array.from({ length: 24 }, (_, h) => {
@@ -100,6 +110,18 @@ export function OverviewPage() {
      sub: 'estimated system average, 1 Sep 2025 to 31 Aug 2026', spark: dayRows.map((r) => Number(r.est_system_boardings ?? 0)) },
     { label: 'Anomaly signals', icon: Siren, value: anomalies.data ? signals : '…', format: whole,
      sub: `${anomalies.data?.rows.length ?? 0} kinds, see Demand` },
+   ]} />
+
+   <Stats items={[
+    { label: 'Total passengers', icon: UsersThree, value: demand.data ? sum(demand.data.rows, 'est_total_boardings') : '…', format: compact,
+     sub: 'estimated boardings, whole year' },
+    { label: 'Total trips', icon: Bus, value: delay.data ? sum(delayRows, 'trips') : '…', format: compact, sub: 'scheduled trips, all routes' },
+    { label: 'Average occupancy', icon: Armchair, value: occupancy !== null ? `${num(occupancy * 100, 1)}%` : '…',
+     sub: 'typical trip load, mean of route medians' },
+    { label: 'Average delay', icon: Clock, value: weighted('avg_delay_min') !== null ? `${num(weighted('avg_delay_min'), 1)} min` : '…',
+     sub: 'per evaluated trip' },
+    { label: 'On-time', icon: Timer, value: weighted('punctuality_rate') !== null ? `${num((weighted('punctuality_rate') ?? 0) * 100, 1)}%` : '…',
+     sub: 'share of trips on time' },
    ]} />
 
    {can('recommendations:read') && <CriticalAlerts />}

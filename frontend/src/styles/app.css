@@ -790,3 +790,12 @@ table.data td.wrap { white-space: normal; min-width: 16rem; }
   .map-controls { top: auto; bottom: 11rem; }
   .map-offline { top: auto; bottom: 11rem; left: 0.9rem; transform: none; white-space: normal; }
 }
+
+/* Searchable foreign-key picker (SearchSelect) */
+.combo { position: relative; }
+.combo-list { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 0.25rem); max-height: 15rem; overflow-y: auto; margin: 0; padding: 0.25rem; list-style: none; background: var(--glass-solid); border: 1px solid var(--glass-border); border-radius: var(--radius-md); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); }
+.combo-list li { padding: 0.4rem 0.55rem; border-radius: var(--radius-sm, 6px); cursor: pointer; display: flex; gap: 0.5rem; font-size: var(--fs-sm); color: var(--ink); }
+.combo-list li span { color: var(--ink-2); }
+.combo-list li.on, .combo-list li:hover { background: color-mix(in srgb, var(--primary) 22%, transparent); }
+.combo-empty { color: var(--ink-muted); cursor: default !important; }
+.modal-body .combo input { width: 100%; min-width: 0; }

@@ -29,6 +29,14 @@ def test_create_update_delete_stop_is_audited(client, auth):
     assert actions[:3] == ["stops.delete", "stops.update", "stops.create"]
 
 
+def test_ids_are_generated_on_create(client, auth):
+    h = auth("admin")
+    body = {k: v for k, v in NEW_STOP.items() if k != "stop_id"}
+    first = client.post("/api/admin/stops", json=body, headers=h).get_json()["row"]["stop_id"]
+    second = client.post("/api/admin/stops", json=body, headers=h).get_json()["row"]["stop_id"]
+    assert first.startswith("S") and int(second[1:]) == int(first[1:]) + 1 and len(first) == len(second)
+
+
 def test_validation_uses_phase1_contract(client, auth):
     h = auth("admin")
     res = client.post("/api/admin/stops", json={**NEW_STOP, "stop_type": "bus_shelter", "latitude": "north"}, headers=h)
@@ -49,6 +57,15 @@ def test_route_foreign_keys(client, auth):
     assert res.status_code == 400
     res = client.delete("/api/admin/stops/S0001", headers=h)
     assert res.status_code == 409 and res.get_json()["error"]["details"]["routes"] == ["R001"]
+
+
+def test_entity_meta_drives_form_pickers(client, auth):
+    h = auth("analyst")
+    body = client.get("/api/admin/routes/_meta", headers=h).get_json()
+    assert body["foreign_keys"] == {"origin_stop_id": "stops", "destination_stop_id": "stops"}
+    assert body["enums"]["route_type"] == ["brt", "trunk", "local", "feeder"]
+    assert client.get("/api/admin/stops/_meta", headers=h).get_json()["foreign_keys"] == {}
+    assert client.get("/api/admin/buses/_meta", headers=h).status_code == 404
 
 
 def test_user_management(client, auth):
